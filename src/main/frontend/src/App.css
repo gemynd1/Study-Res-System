@@ -36,3 +36,149 @@
     transform: rotate(360deg);
   }
 }
+
+main {
+  position: relative;
+  width: 1920px;
+  height: 3637px;
+}
+
+header {
+  position: absolute;
+  width: 1920px;
+  height: 110px;
+  left: 0px;
+  top: 0px;
+}
+
+header #header_bar {
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 1920px;
+  height: 110px;
+  left: 0px;
+  top: calc(50% - 110px/2 - 1580.5px);
+
+  background: #FFFFFF;
+  border: 1px solid #000000;
+}
+
+header #menu_bar {
+  position: absolute;
+  width: 762px;
+  height: 46px;
+  left: 175px;
+  top: calc(50% - 46px/2 - 1265.5px);
+}
+
+header #logo_icon {
+  position: absolute;
+  width: 235px;
+  height: 72px;
+  left: 87px;
+  top: calc(50% - 72px/2 - 1265.5px);
+
+  background: url(snlogo.png);
+}
+
+header #home_link {
+  position: absolute;
+  left: 30.71%;
+  right: 65.62%;
+  top: 17.39%;
+  bottom: 4.35%;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+  text-decoration-line: underline;
+
+  color: #2158E6;
+}
+
+header #information_link {
+  position: absolute;
+  left: 45.54%;
+  right: 46.85%;
+  top: 17.39%;
+  bottom: 4.35%;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+
+  color: #000000;
+}
+
+header #community_link {
+  position: absolute;
+  left: 64.3%;
+  right: 24.15%;
+  top: 17.39%;
+  bottom: 4.35%;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+
+  color: #000000;
+}
+
+header #review_link {
+  position: absolute;
+  left: 87.01%;
+  right: 5.64%;
+  top: 17.39%;
+  bottom: 4.35%;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+
+  color: #000000;
+}
+
+header #alarm_button_section {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 1320px;
+  top: calc(50% - 40px/2 - 1264.5px);
+}
+
+header #alarm_button {
+  position: absolute;
+  left: 12.5%;
+  right: 12.5%;
+  top: 8.33%;
+  bottom: 8.35%;
+
+  border: 4px solid #1E1E1E;
+}
+
+header #message_button_section { 
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 1382px;
+  top: calc(50% - 40px/2 - 1265.5px);
+}
+
+header #message_button {
+  position: absolute;
+  left: 8.33%;
+  right: 8.33%;
+  top: 8.33%;
+  bottom: 8.33%;
+
+  background: #1D1B20;
+}
