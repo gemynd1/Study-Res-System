@@ -4,7 +4,7 @@ const Main = () => {
     return(
         <>
             <main>
-                test
+                main
             </main>
         </>
     )
