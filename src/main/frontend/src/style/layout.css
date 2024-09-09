@@ -94,3 +94,73 @@
     height: 60px;
     background: #000000;
 }
+
+
+
+
+/* Footer */
+.footer {
+    box-sizing: border-box;
+    
+    width: auto;
+    height: 316px;
+
+    background: #738272;
+    border: 1px solid #FFFFFF;
+}
+
+.footer img.logo {
+    width: 425.81px;
+    height: 150px;
+    margin: 18px auto;
+    display: block;
+    /* bottom: 0; */
+}
+
+.footer .footer-section-1 {
+    list-style: none;
+    /* width: 63px;
+    height: 18px; */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+
+    color: #FFFFFF;
+}
+
+/* SN스터디 */
+
+position: absolute;
+
+left: 810px;
+top: 3489px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 15px;
+line-height: 18px;
+
+color: #FFFFFF;
+
+
+/* 경기도 안양시 만안구 양화로37번길 34 */
+
+position: absolute;
+width: 248px;
+height: 18px;
+left: 895px;
+top: 3489px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 15px;
+line-height: 18px;
+
+color: #FFFFFF;
+
+

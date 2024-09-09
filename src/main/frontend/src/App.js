@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from 'axios';
 import Header from './Components/Layout/Header';
+import Footer from './Components/Layout/Footer';
 import Main from './Components/Content/Main';
 import './App.css';
 
@@ -23,6 +24,7 @@ function App() {
       <BrowserRouter>
         <Header />
           <Main />
+        <Footer />
           {/* {hello} */}
         {/* <Routes>
           <Route></Route>
