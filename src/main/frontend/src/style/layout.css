@@ -1,0 +1,96 @@
+/* header */
+.header {
+    width: 100vw;
+    height: 110px;
+}
+
+.header .menu {
+    width: 100%;
+    /* display: flex; */
+}
+
+.header .menu .menuList1 {
+    /* position: absolute; */
+    float: left;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    list-style: none;
+    /* justify-content: space-between; */
+}
+
+.header .menu .menuList1 .logo {
+    width: 235px;
+    height: 72px;
+}
+
+.header .menu .menuList1 li {
+    margin-left: 110px;
+    
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    
+}
+
+.header .menu .menuList1 li>a {
+    color: #000000;
+    text-decoration: none;
+    outline: none;
+}
+
+.header .menu .menuList2 {
+    float: right;
+    margin-right: 150px;
+    padding: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+
+.header .menu .menuList2 li {
+    margin-left: 20px;
+
+}
+
+.header .menu .menuList2 .bell,
+.header .menu .menuList2 .chat,
+.header .menu .menuList2 .menuList2-mypage .mypage,
+.header .menu .menuList2 .menuList2-logout .logout
+{
+    width: 40px;
+    height: 40px;
+}
+
+.header .menu .menuList2 .menuList2-mypage,
+.header .menu .menuList2 .menuList2-logout {
+    width: 170px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+
+    background: #D9D9D9;
+    border-radius: 100px;
+}
+
+.header .menu .menuList2 .menuList2-mypage img, span,
+.header .menu .menuList2 .menuList2-logout img, span {
+    padding: 3px;
+}
+
+.header .menu .menuList2 .menuList2-box {
+    width: 2px;
+    height: 60px;
+    background: #000000;
+}
