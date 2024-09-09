@@ -1,7 +1,10 @@
 // import logo from './logo.svg';
 import React, {useEffect, useState} from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from 'axios';
-import { BrowserRouter} from 'react-router-dom';
+import Header from './Components/Layout/Header';
+import Main from './Components/Content/Main';
+// import './App.css';
 
 function App() {
   const [hello, setHello] = useState('')
@@ -16,7 +19,14 @@ function App() {
 
   return (
     <>
-
+      <BrowserRouter>
+        <Header />
+          <Main />
+          {/* {hello} */}
+        {/* <Routes>
+          <Route></Route>
+        </Routes> */}
+      </BrowserRouter>
     </>
   );
 }
