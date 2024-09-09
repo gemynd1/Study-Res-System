@@ -1,6 +1,9 @@
 // import logo from './logo.svg';
 import React, {useEffect, useState} from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from 'axios';
+import Header from './Components/Layout/Header';
+import Main from './Components/Content/Main';
 // import './App.css';
 
 function App() {
@@ -15,9 +18,16 @@ function App() {
   }, []);
 
   return (
-      <div>
-        이곳은 테스트 입니다.ㅇㅇㅇ : {hello}
-      </div>
+    <>
+      <BrowserRouter>
+        <Header />
+          <Main />
+          {/* {hello} */}
+        {/* <Routes>
+          <Route></Route>
+        </Routes> */}
+      </BrowserRouter>
+    </>
   );
 }
 
