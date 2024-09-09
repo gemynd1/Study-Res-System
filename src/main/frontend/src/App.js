@@ -25,19 +25,19 @@ function AppContent() {
   const location = useLocation();
   const hideHeaderLogin = location.pathname === '/login' || location.pathname === '/join';
 
-  useEffect(() => {
-    axios.get('/api/hello')
-        .then((res) => {
-            setHello(res.data);
-        })
-        .catch(error => console.log(error))
-  }, []);
+  // useEffect(() => {
+  //   axios.get('/api/hello')
+  //       .then((res) => {
+  //           setHello(res.data);
+  //       })
+  //       .catch(error => console.log(error))
+  // }, []);
 
   return (
     <>
         {!hideHeaderLogin && <Header />}
         {/* <Header /> */}
-          {/* {hello} */}
+        {/*   {hello}*/}
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/info' element={<Info />} />
@@ -49,8 +49,8 @@ function AppContent() {
           
           {/* mypage 따로 나눌수 있음 */}
           <Route path='/mypage' element={<Mypage />} />
-          <Route path='/mypage/mypageUpdate' element={<MypageUpdate />} />
           <Route path='/mypage/mypageAccount' element={<MypageAccount />} />
+          <Route path='/mypage/mypageUpdate' element={<MypageUpdate />} />
           <Route path='/mypage/mypageBoard' element={<MypageBoard />} />
           <Route path='/mypage/mypageReview' element={<MypageReview />} />
           <Route path='/mypage/mypageAdd' element={<MypageAdd />} />

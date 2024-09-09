@@ -17,7 +17,6 @@
     "react-scripts": "^5.0.0",
     "web-vitals": "^2.1.4"
   },
-  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -44,5 +43,9 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^5.1.0"
+  },
+  "options": {
+    "allowedHosts": ["localhost", ".localhost"],
+    "proxy": "https://localhost:8099"
   }
 }
