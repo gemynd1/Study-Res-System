@@ -107,12 +107,15 @@
 
     background: #738272;
     border: 1px solid #FFFFFF;
+    padding: 0 40%;
+    /* text-align: center; */
+    /* align-items: center; */
 }
 
 .footer img.logo {
     width: 425.81px;
     height: 150px;
-    margin: 18px auto;
+    /* margin: 18px auto; */
     display: block;
     /* bottom: 0; */
 }
@@ -131,36 +134,35 @@
     color: #FFFFFF;
 }
 
-/* SN스터디 */
+.footer .footer-section-1 li.footer-address {
+    margin: 168px auto;
+    display: inline;
+}
 
-position: absolute;
+.footer .footer-section-1 li.footer-address div {
+    display: inline-block;
+}
 
-left: 810px;
-top: 3489px;
+.footer .footer-section-1 li.footer-address div.footer-address-1 {
+    margin-right: 22px;
+}
 
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 15px;
-line-height: 18px;
+.footer .footer-section-1 li.footer-team div {
+    display: inline-block;
+}
 
-color: #FFFFFF;
+.footer .footer-section-1 li.footer-team div.footer-team-1 {
+    margin-right: 58px;
+}
 
+.footer .footer-section-1 li.footer-email div {
+    display: inline-block;
+}
 
-/* 경기도 안양시 만안구 양화로37번길 34 */
+.footer .footer-section-1 li.footer-email div.footer.email-1 {
+    margin-right: 48px;
+}
 
-position: absolute;
-width: 248px;
-height: 18px;
-left: 895px;
-top: 3489px;
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 15px;
-line-height: 18px;
-
-color: #FFFFFF;
-
-
+.footer .footer-section-1 li.footer-copyright {
+    display: inline-block;
+}
