@@ -112,7 +112,7 @@ const Main = () => {
                 </div>
                 <Swiper
                     slidesPerView={3} // 한번에 보여지는 slide 개수
-                    spaceBetween={14} // slide간의 간격
+                    spaceBetween={35} // slide간의 간격
                     loopedSlides={2}
                     loop={true}
                     centeredSlides={true}
@@ -122,8 +122,8 @@ const Main = () => {
                     }}
                     breakpoints={{ // 반응형 구현
                         1200: {
+                            centeredSlides:true,
                             slidesPerView: 4.5,
-                            spaceBetween: 30,
                         }, // width 값이 1200이 넘을때 실행
                     }}
                     modules={modules}

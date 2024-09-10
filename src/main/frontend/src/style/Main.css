@@ -71,20 +71,21 @@
     color: #ffffff;
 }
 
-
+/* MainSection2 */
 .MainSection2 {
     height: 1136px;
 }
 
 .MainSection2 .MainSec2-title {
+    font-size: 30px;
     text-align: center;
     margin-top: 100px
 }
 
 .MainSection2 .sec2-swiper {
-    margin-top: 15vh;
+    margin-top: 10vh;
     padding-top: 40px;
-    
+   
 }
 
 .MainSection2 .sec2-swiper .img-box {
@@ -96,6 +97,7 @@
 }
 
 .MainSection2 .sec2-swiper .img-box img {
+    border-radius: 20px;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -105,15 +107,12 @@
 
 .MainSection2 .sec2-swiper .txt-box {
     margin-top: 26px;
+    padding: 0 10px 0 10px;
     /* text-align: center; */
 }
 
 .MainSection2 .sec2-swiper .txt-box h4 {
-    font-size: var(--font22);
     font-weight: 600;
-    letter-spacing: var(--spacing03);
-    line-height: var(--line03);
-    color: var(--gray01);
     margin-bottom: 28px;
 }
 
@@ -126,16 +125,11 @@
     font-weight: 600;
 }
 
-.MainSection2 .sec2-swiper .txt-box dl dt {
-    color: var(--gray01);
-}
-
 .MainSection2 .sec2-swiper .swiper-slide {
     transition: all 0.4s;
-    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 40px 30px;
-    
+    box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin-bottom: 30px;
 }
 .MainSection2 .sec2-swiper .swiper-slide-active {
     transform: translateY(-40px);
