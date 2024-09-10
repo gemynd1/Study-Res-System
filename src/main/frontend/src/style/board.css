@@ -1,0 +1,18 @@
+div.board-menubar {
+    width: 215px;
+    height: 690px;
+    margin-top: 43px;
+    margin-left: 184px;
+}
+
+div.board-menubar div.category-section {
+    margin: 33px 38px 21px 45px;
+}
+
+div.board-menubar div.category-section div.category1 div.category1-logo div.category1-circle-1 {
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    background: #FFFFFF;
+    border: 1px solid #000000;
+}
