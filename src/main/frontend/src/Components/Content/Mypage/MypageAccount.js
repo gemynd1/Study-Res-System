@@ -16,6 +16,7 @@ const MypageAccount = () => {
     return (
         <>
             <div>
+                Account
                 {MypageAccount}
             </div>
         </>

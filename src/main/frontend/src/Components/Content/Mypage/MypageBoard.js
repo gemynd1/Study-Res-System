@@ -16,6 +16,7 @@ const MypageBoard = () => {
     return (
         <>
             <div>
+                Board
                 {MypageBoard}
             </div>
         </>
