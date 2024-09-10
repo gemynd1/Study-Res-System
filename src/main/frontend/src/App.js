@@ -49,11 +49,11 @@ function AppContent() {
 
           {/* mypage 따로 나눌수 있음 git merge */}
           <Route path='/mypage/*' element={<Mypage />} />
-          {/*<Route path='/mypage/mypageAccount' element={<MypageAccount />} />*/}
-          {/*<Route path='/mypage/mypageUpdate' element={<MypageUpdate />} />*/}
-          {/*<Route path='/mypage/mypageBoard' element={<MypageBoard />} />*/}
-          {/*<Route path='/mypage/mypageReview' element={<MypageReview />} />*/}
-          {/*<Route path='/mypage/mypageAdd' element={<MypageAdd />} />*/}
+          <Route path='/mypage/mypageAccount' element={<MypageAccount />} />
+          <Route path='/mypage/mypageUpdate' element={<MypageUpdate />} />
+          <Route path='/mypage/mypageBoard' element={<MypageBoard />} />
+          <Route path='/mypage/mypageReview' element={<MypageReview />} />
+          <Route path='/mypage/mypageAdd' element={<MypageAdd />} />
         </Routes>
     </>
   );
