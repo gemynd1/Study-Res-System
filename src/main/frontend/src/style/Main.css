@@ -1,4 +1,4 @@
-.MainSection {
+.MainSection1 {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), 
                 url("/public/img/banner.png");
     width: 100%;
@@ -7,46 +7,89 @@
     overflow: hidden;
 }
 
-.MainSection .MainHeader {
+.MainSection1 .MainHeader {
     margin-top: 187px;
     text-align: center;
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 50px;
-    line-height: 91px;
-
     color: #ffffff;
 }
 
-.MainSection .MainContent {    
-    text-align: center;
-    align-items: center;
+.MainSection1 .MainContent {
+    margin-top: 100px;
 }
 
-.MainSection .MainContent .MainContent-title {
+.MainSection1 .MainHeader .MainHeader-first {
     font-family: 'Inter';
-    font-style: normal;
     font-weight: 700;
-    font-size: 28px;
-    line-height: 34px;
+    font-size: 50px;
+}
 
+.MainSection1 .MainHeader .MainHeader-second {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.MainSection1 .MainContent {    
+    text-align: center;
+    align-items: center;
     display: flex;
     justify-content: center;
-    list-style: none;
+}
+
+.MainSection1 .MainContent .MainContent-content1, 
+.MainSection1 .MainContent .MainContent-content2, 
+.MainSection1 .MainContent .MainContent-content3 {
+    margin: 0 60px;
+}
+
+.MainSection1 .MainContent .MainContent-content1 .MainContent-content1-first, 
+.MainSection1 .MainContent .MainContent-content2 .MainContent-content2-first, 
+.MainSection1 .MainContent .MainContent-content3 .MainContent-content3-first {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 28px;
     color: #ffffff; 
 }
 
-.MainSection .MainContent .MainContent-content {
+.MainSection1 .MainContent .MainContent-content1 .MainContent-content1-second, 
+.MainSection1 .MainContent .MainContent-content2 .MainContent-content2-second, 
+.MainSection1 .MainContent .MainContent-content3 .MainContent-content3-second {
     font-family: 'Lily Script One';
-    font-style: normal;
-    font-weight: 400;
+    font-style: oblique;
+    font-weight: 700;
     font-size: 96px;
-
-    display: flex;
-    justify-content: center;
-    list-style: none;
-
     color: #ffffff;
+}
+
+.MainSection1 .MainContent .MainContent-content1 .MainContent-content1-third, 
+.MainSection1 .MainContent .MainContent-content2 .MainContent-content2-third, 
+.MainSection1 .MainContent .MainContent-content3 .MainContent-content3-third {
+    font-family: 'Inter';
+    font-weight: 700;
+    padding: 10px;
+    font-size: 28px;
+    color: #ffffff;
+}
+
+
+.MainSection2 {
+    height: 1136px;
+}
+
+.MainSection2 .MainSec2-title {
+    text-align: center;
+    margin-top: 100px
+}
+
+.MainSection2 .sec2-swiper {
+    margin-top: 15vh;
+    padding-top: 40px;
+}
+
+.MainSection2 .sec2-swiper .img-box {
+    width: 100%;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    padding-bottom: 70%;
 }
