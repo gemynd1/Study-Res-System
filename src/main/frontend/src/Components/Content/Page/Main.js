@@ -111,7 +111,7 @@ const Main = () => {
                     </h1>
                 </div>
                 <Swiper
-                    slidesPerView={2.5} // 한번에 보여지는 slide 개수
+                    slidesPerView={3} // 한번에 보여지는 slide 개수
                     spaceBetween={14} // slide간의 간격
                     loopedSlides={2}
                     loop={true}
@@ -123,7 +123,7 @@ const Main = () => {
                     breakpoints={{ // 반응형 구현
                         1200: {
                             slidesPerView: 4.5,
-                            spaceBetween: 40,
+                            spaceBetween: 30,
                         }, // width 값이 1200이 넘을때 실행
                     }}
                     modules={modules}
@@ -134,9 +134,13 @@ const Main = () => {
                             <img src="/img/room/study room1-1.png" alt="room1" />
                         </div>
                         <div className="txt-box">
+                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                업무에 집중할 수 있도록 돕습니다.
+                            </h4>
                             <dl>
-                                <dt>룸1</dt>
-                                <dd>룸설명1</dd>
+                                <dt>수성방</dt>
                             </dl>
                         </div>
                     </SwiperSlide>
@@ -145,9 +149,13 @@ const Main = () => {
                             <img src="/img/room/study room1-1.png" alt="room1" />
                         </div>
                         <div className="txt-box">
+                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                업무에 집중할 수 있도록 돕습니다.
+                            </h4>
                             <dl>
-                                <dt>룸2</dt>
-                                <dd>룸설명2</dd>
+                                <dt>금성방</dt>
                             </dl>
                         </div>
                     </SwiperSlide>
@@ -156,9 +164,13 @@ const Main = () => {
                             <img src="/img/room/study room1-1.png" alt="room1" />
                         </div>
                         <div className="txt-box">
+                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                업무에 집중할 수 있도록 돕습니다.
+                            </h4>
                             <dl>
-                                <dt>룸3</dt>
-                                <dd>룸설명3</dd>
+                                <dt>지구방</dt>
                             </dl>
                         </div>
                     </SwiperSlide>
@@ -167,9 +179,13 @@ const Main = () => {
                             <img src="/img/room/study room1-1.png" alt="room1" />
                         </div>
                         <div className="txt-box">
+                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                업무에 집중할 수 있도록 돕습니다.
+                            </h4>
                             <dl>
-                                <dt>룸4</dt>
-                                <dd>룸설명4</dd>
+                                <dt>화성방</dt>
                             </dl>
                         </div>
                     </SwiperSlide>
@@ -178,9 +194,13 @@ const Main = () => {
                             <img src="/img/room/study room1-1.png" alt="room1" />
                         </div>
                         <div className="txt-box">
+                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                업무에 집중할 수 있도록 돕습니다.
+                            </h4>
                             <dl>
-                                <dt>룸5</dt>
-                                <dd>룸설명5</dd>
+                                <dt>달방</dt>
                             </dl>
                         </div>
                     </SwiperSlide>
