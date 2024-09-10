@@ -1,6 +1,6 @@
 import React from "react";
-import "../../style/layout.css";
-import {Link} from "react-router-dom";
+import "../../style/header.css";
+import { Link, Outlet } from "react-router-dom";
 
 const Header = () => {
     return (
@@ -17,23 +17,47 @@ const Header = () => {
                             <Link to="/">홈</Link>
                         </li>
                         <li>
-                            <Link to="/">정보</Link>
+                            <Link to="/info">정보</Link>
                         </li>
                         <li>
-                            <Link to="/">게시판</Link>
+                            <Link to="/board">게시판</Link>
                         </li>
                         <li>
-                            <Link to="/">리뷰</Link>
+                            <Link to="/review">리뷰</Link>
                         </li>
                     </ul>
-                    <ul className="menuList2"> 
+                    {/* <ul className="menuList2-fail"> 
                         <li><img src="/img/icon/bell.png" alt="bell" className="bell" /></li>
                         <li><img src="/img/icon/chat.png" alt="chat" className="chat" /></li>
                         <li>
-                            <div className="menuList2-mypage">
-                                <img src="/img/icon/mypage.png" alt="mypage" className="mypage" />
-                                <span>마이페이지</span>
-                            </div>
+                            <Link to="/login" style={{ textDecoration: 'none' }}>
+                                <div className="menuList2-login">
+                                    <img src="/img/icon/login.png" alt="login" className="login" />
+                                    <span>로그인</span>
+                                </div>
+                            </Link>
+                        </li>
+                        <li className="menuList2-box"></li>
+                        <li>
+                            <Link to="/join" style={{ textDecoration: 'none' }}>
+                                <div className="menuList2-join">
+                                    <img src="/img/icon/join.png" alt="join" className="join" />
+                                    <span>회원가입</span>
+                                </div>
+                            </Link>
+                        </li>
+                    </ul> */}
+                    <ul className="menuList2-sucs"> 
+                        <li><img src="/img/icon/bell.png" alt="bell" className="bell" /></li>
+                        <li><img src="/img/icon/chat.png" alt="chat" className="chat" /></li>
+                        <li>
+                            <Link to="/mypage" style={{ textDecoration: 'none' }}>
+                                <div className="menuList2-mypage">
+                                    <img src="/img/icon/mypage.png" alt="mypage" className="mypage" />
+                                    <span>마이페이지</span>
+                                </div>
+                            </Link>
+                            
                         </li>
                         <li className="menuList2-box"></li>
                         <li>
