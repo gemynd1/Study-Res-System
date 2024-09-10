@@ -1,0 +1,115 @@
+/* Footer */
+.footer {
+    position: relative;
+    box-sizing: border-box;
+    
+    width: auto;
+    height: 316px;
+
+    background: #738272;
+    border: 1px solid #FFFFFF;
+    padding: 0 40%;
+    /* text-align: center; */
+    /* align-items: center; */
+}
+
+.footer .footer-section-1 {
+    list-style: none;
+    /* width: 63px;
+    height: 18px; */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+
+    color: #FFFFFF;
+    
+}
+
+.footer img.logo {
+    padding-right: 20px;
+    width: 425.81px;
+    height: 150px;
+    margin: 18px auto;
+    display: block;
+    /* bottom: 0; */
+}
+
+.footer .footer-section-1 div.footer-text {
+    width: 360px;
+    height: 90px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.footer .footer-section-1 div.footer-address {
+    margin: 168px auto;
+    display: inline;
+}
+
+.footer .footer-section-1 div.footer-address div {
+    display: inline-block;
+}
+
+.footer .footer-section-1 div.footer-address div.footer-address-1 {
+    margin-right: 22px;
+}
+
+.footer .footer-section-1 div.footer-team div {
+    display: inline-block;
+}
+
+.footer .footer-section-1 div.footer-team div.footer-team-1 {
+    margin-right: 58px;
+}
+
+.footer .footer-section-1 div.footer-email div {
+    display: inline-block;
+}
+
+.footer .footer-section-1 div.footer-email div.footer.email-1 {
+    margin-right: 48px;
+}
+
+.footer .footer-section-1 div.footer-copyright {
+    display: inline-block;
+}
+
+.footer div.footer-section-2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 67px;
+    margin-bottom: 39px;
+    width: 201px;
+    height: 52px;
+}
+
+.footer div.footer-section-2 img.footer-message {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    width: 48px;
+    height: 48px;
+    margin-right: 24px;
+}
+
+.footer div.footer-section-2 img.footer-call {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    width: 50px;
+    height: 50px;
+    margin-right: 29px;
+}
+
+.footer div.footer-section-2 img.footer-github {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    width: 50px;
+    height: 50px;
+}
