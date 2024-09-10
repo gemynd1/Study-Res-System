@@ -47,7 +47,7 @@ function AppContent() {
           <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
 
-          {/* mypage 따로 나눌수 있음 git */}
+          {/* mypage 따로 나눌수 있음 git merge */}
           <Route path='/mypage/*' element={<Mypage />} />
           {/*<Route path='/mypage/mypageAccount' element={<MypageAccount />} />*/}
           {/*<Route path='/mypage/mypageUpdate' element={<MypageUpdate />} />*/}
