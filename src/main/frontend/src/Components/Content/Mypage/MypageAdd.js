@@ -16,6 +16,7 @@ const MypageAdd = () => {
     return (
         <>
             <div>
+                Add
                 {MypageAdd}
             </div>
         </>

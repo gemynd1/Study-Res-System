@@ -16,6 +16,7 @@ const MypageReview = () => {
     return (
         <>
             <div>
+                Reviw
                 {MypageReview}
             </div>
         </>
