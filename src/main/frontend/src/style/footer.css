@@ -7,13 +7,14 @@
     height: 316px;
 
     background: #738272;
-    border: 1px solid #FFFFFF;
+    /* border: 1px solid #FFFFFF; */
     padding: 0 40%;
     /* text-align: center; */
     /* align-items: center; */
 }
 
 .footer .footer-section-1 {
+    position: absolute;
     list-style: none;
     /* width: 63px;
     height: 18px; */
@@ -29,7 +30,8 @@
 }
 
 .footer img.logo {
-    padding-right: 20px;
+    position: relative;
+    padding-right: 30px;
     width: 425.81px;
     height: 150px;
     margin: 18px auto;
