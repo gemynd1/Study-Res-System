@@ -15,6 +15,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
     "react-scripts": "^5.0.0",
+    "swiper": "^10.3.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -45,7 +46,10 @@
     "webpack-dev-server": "^5.1.0"
   },
   "options": {
-    "allowedHosts": ["localhost", ".localhost"],
+    "allowedHosts": [
+      "localhost",
+      ".localhost"
+    ],
     "proxy": "https://localhost:8099"
   }
 }
