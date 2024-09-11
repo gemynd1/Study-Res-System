@@ -65,6 +65,7 @@ const Main = () => {
             }
         };
     
+        // 브라우저 실행하면 자동 실행
         setStartAnimation(true);
         window.addEventListener('scroll', handleScroll);
     
