@@ -1,15 +1,15 @@
 /* 마이페이지 헤더 */
 .Mypageheader {
     width: 1920px;
-    height: 104px;
+    height: 74px;
     margin-top: 30px;
     background: #E8E8E8;
     display: flex;
 }
 
 .MypageHome {
-    width: 104px;
-    height: 104px;
+    width: 74px;
+    height: 74px;
     margin-left: 170px;
     background: #D9D9D9;
     display: flex;
@@ -18,8 +18,8 @@
 }
 
 .icon {
-    width: 33px;
-    height: 33px;
+    width: 25px;
+    height: 25px;
 }
 
 .Mypageheader2 {
@@ -29,7 +29,7 @@
 
 .MypageheaderLine {
     text-align: center;
-    margin-top: 38px;
+    margin-top: 23px;
 }
 
 .mypagetext {
@@ -37,7 +37,7 @@
     height: 29px;
     font-style: normal;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 22px;
     line-height: 29px;
     color: #000000;
 
@@ -86,7 +86,7 @@
 }
 
 .editText {
-    /* width: 133px; */
+    /*width: 133px;*/
     height: 29px;
     font-style: normal;
     font-weight: 700;
@@ -111,18 +111,30 @@
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
-    /* text-align: center; */
+    /*text-align: center;*/
     color: #000000;
     margin-left: 60px;
 }
 
 .AccountInput3 {
     width: 595px;
-    height: 109px;
+    height: 80px;
     margin-left: 238px;
     margin-top: 35px;
     background: #D9D9D9;
     border-top: 6px solid #B8B8B8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.AccountInput4 {
+    width: 595px;
+    height: 80px;
+    margin-left: 238px;
+    /*margin-top: 35px;*/
+    background: #D9D9D9;
+    border-top: 3px solid #AAAAAA;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -134,7 +146,7 @@
     height: 39px;
     font-style: normal;
     font-weight: 600;
-    font-size: 32px;
+    font-size: 27px;
     line-height: 39px;
     color: #000000;
 }
@@ -144,13 +156,165 @@
 }
 
 .AccountInputID2 {
-
     margin-top: 35px;
     border-top: 6px solid #B8B8B8;
 }
 
+.AccountInputID4 {
+    border-top: 3px solid #AAAAAA;
+    display: flex;
+}
+
+.AccountInputID4 span {
+    position: absolute;
+    display: flex;
+}
+
+
 .AccountExist {
     width: 595px;
-    height: 108px;
+    height: 80px;
     border: none;
+    font-size: 27px;
 }
+
+.InputBody {
+    height: 500px;
+}
+
+.AccountBtn {
+    margin-left: 45%;
+    margin-top: 10%;
+    width: 213px;
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    background: #FFCFBB;
+    font-size: 20px;
+}
+
+
+/* 마이페이지 css */
+.MypageSelect {
+    display: flex;
+    box-sizing: border-box;
+    width: 1440px;
+    height: 241px;
+    left: 426px;
+    top: 198px;
+    margin: 10px auto auto 200px;
+    background: #FFFFFF;
+    border: 1px solid #C9C9C9;
+    justify-content: space-evenly;
+}
+
+.circle {
+    width: 157px;
+    height: 157px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.mypageIcon {
+    width: 66px;
+    height: 66px;
+}
+
+.mypageIcon4 {
+    width: 90px;
+    height: 90px;
+}
+
+.mypageBox {
+    height: 880px;
+}
+
+.Inquiry {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.mypageIcon1 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 25px;
+}
+
+.mypageIcon2 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 23px;
+}
+
+.mypageIcon3 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 30px;
+}
+
+.mypageIcon5 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 45px;
+}
+
+.InquiryText {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 26px;
+}
+
+.InquiryText2 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 12px;
+}
+
+.InquiryText3 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 33px;
+}
+
+.passwordIcon {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    margin-left: 550px;
+    margin-top: 15px;
+}
+
+
