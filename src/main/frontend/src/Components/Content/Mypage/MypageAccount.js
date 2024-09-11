@@ -17,11 +17,11 @@ const MypageAccount = () => {
     return (
         <div className="MyPage">
             <div className="Mypageheader">
-                <Link to='/'>
-                    <div className="MypageHome">
+                <div className="MypageHome">
+                    <Link to='/'>
                         <img src="/img/icon/home.png" alt='/' className="icon"/>
-                    </div>
-                </Link>
+                    </Link>
+                </div>ddd
                 <div className="Mypageheader2">
                     <div className="MypageheaderLine">
                         <Link to='/mypage' style={{textDecoration: 'none'}}>
