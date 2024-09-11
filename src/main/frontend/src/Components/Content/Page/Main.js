@@ -2,9 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import "../../../style/Main.css"
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Link } from "react-router-dom";
 
 import "swiper/css";
 
+// 숫자 자동으로 올려주는 함수들
 function easeOutExpo(t) {
     return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 }
@@ -41,16 +43,11 @@ const Main = () => {
     const totalUsers = useCountNum(startAnimation ? 100000 : 0, 0, 2000);
     const satisfaction = useCountNum(startAnimation ? 100 : 0, 0, 2000);
 
+    // 숫자에 콤마 찍어주는 함수들
     const addComma = (price) => {
         let returnString = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return returnString;
     }
-        
-    const onChangePoints = (e) => {
-        const { value } = e.target;
-        let str = value.replaceAll(",", "");
-        setComma(str);
-    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -68,6 +65,7 @@ const Main = () => {
             }
         };
     
+        // 브라우저 실행하면 자동 실행
         setStartAnimation(true);
         window.addEventListener('scroll', handleScroll);
     
@@ -130,81 +128,165 @@ const Main = () => {
                     className={'mySwiper sec2-swiper'}
                 >
                     <SwiperSlide>
-                        <div className="img-box">
-                            <img src="/img/room/study room1-1.png" alt="room1" />
-                        </div>
-                        <div className="txt-box">
-                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                업무에 집중할 수 있도록 돕습니다.
-                            </h4>
-                            <dl>
-                                <dt>수성방</dt>
-                            </dl>
-                        </div>
+                        <Link to="/">
+                            <div className="img-box">
+                                <img src="/img/room/study room1-1.png" alt="room1" />
+                            </div>
+                            <div className="txt-box">
+                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                    업무에 집중할 수 있도록 돕습니다.
+                                </h4>
+                                <dl>
+                                    <dt>수성방</dt>
+                                </dl>
+                            </div>
+                        </Link>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className="img-box">
-                            <img src="/img/room/study room1-1.png" alt="room1" />
-                        </div>
-                        <div className="txt-box">
-                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                업무에 집중할 수 있도록 돕습니다.
-                            </h4>
-                            <dl>
-                                <dt>금성방</dt>
-                            </dl>
-                        </div>
+                        <Link to="/">
+                            <div className="img-box">
+                                <img src="/img/room/study room1-1.png" alt="room1" />
+                            </div>
+                            <div className="txt-box">
+                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                    업무에 집중할 수 있도록 돕습니다.
+                                </h4>
+                                <dl>
+                                    <dt>금성방</dt>
+                                </dl>
+                            </div>
+                        </Link>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className="img-box">
-                            <img src="/img/room/study room1-1.png" alt="room1" />
-                        </div>
-                        <div className="txt-box">
-                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                업무에 집중할 수 있도록 돕습니다.
-                            </h4>
-                            <dl>
-                                <dt>지구방</dt>
-                            </dl>
-                        </div>
+                        <Link to="/">
+                            <div className="img-box">
+                                <img src="/img/room/study room1-1.png" alt="room1" />
+                            </div>
+                            <div className="txt-box">
+                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                    업무에 집중할 수 있도록 돕습니다.
+                                </h4>
+                                <dl>
+                                    <dt>지구방</dt>
+                                </dl>
+                            </div>
+                        </Link>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className="img-box">
-                            <img src="/img/room/study room1-1.png" alt="room1" />
-                        </div>
-                        <div className="txt-box">
-                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                업무에 집중할 수 있도록 돕습니다.
-                            </h4>
-                            <dl>
-                                <dt>화성방</dt>
-                            </dl>
-                        </div>
+                        <Link to="/">
+                            <div className="img-box">
+                                <img src="/img/room/study room1-1.png" alt="room1" />
+                            </div>
+                            <div className="txt-box">
+                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                    업무에 집중할 수 있도록 돕습니다.
+                                </h4>
+                                <dl>
+                                    <dt>화성방</dt>
+                                </dl>
+                            </div>
+                        </Link>
                     </SwiperSlide>
                     <SwiperSlide>
-                        <div className="img-box">
-                            <img src="/img/room/study room1-1.png" alt="room1" />
-                        </div>
-                        <div className="txt-box">
-                            <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                업무에 집중할 수 있도록 돕습니다.
-                            </h4>
-                            <dl>
-                                <dt>달방</dt>
-                            </dl>
-                        </div>
+                        <Link to="/">
+                            <div className="img-box">
+                                <img src="/img/room/study room1-1.png" alt="room1" />
+                            </div>
+                            <div className="txt-box">
+                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
+                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
+                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
+                                    업무에 집중할 수 있도록 돕습니다.
+                                </h4>
+                                <dl>
+                                    <dt>달방</dt>
+                                </dl>
+                            </div>
+                        </Link>
                     </SwiperSlide>
                 </Swiper>
+            </section>
+            <section className="MainSection3">
+                <div className="MainSec3-title">
+                    <h1>
+                        개인좌석
+                    </h1>
+                </div>
+                <div className="seatContainer1">
+                    <ul className="showcase">
+                        <li>
+                            <div className="availableSeat"></div>
+                            <small className="small">빈자리</small>
+                        </li>
+                        <li>
+                            <div className="selectedSeatIcon"></div>
+                            <small className="small">사용중인 자리</small>
+                        </li>
+                    </ul>
+                    <div className="seatContainer">
+                        <div className="row">
+                            <span className="seat selectedSeat" id="seat1"></span>
+                            <span className="seat" id="seat2"></span>
+                            <span className="seat selectedSeat" id="seat3"></span>
+                            <span className="seat" id="seat4"></span>
+                            <span className="seat" id="seat5"></span>
+                            <span className="seat" id="seat6"></span>
+                        </div>
+                        <div className="row">
+                            <span className="seat" id="seat7"></span>
+                            <span className="seat" id="seat8"></span>
+                            <span className="seat" id="seat9"></span>
+                            <span className="seat" id="seat10"></span>
+                            <span className="seat" id="seat11"></span>
+                            <span className="seat" id="seat12"></span>
+                        </div>
+                        <div className="row">
+                            <span className="seat" id="seat13"></span>
+                            <span className="seat" id="seat14"></span>
+                            <span className="seat" id="seat15"></span>
+                            <span className="seat" id="seat16"></span>
+                            <span className="seat" id="seat17"></span>
+                            <span className="seat" id="seat18"></span>
+                        </div>
+                        <div className="row">
+                            <span className="seat" id="seat19"></span>
+                            <span className="seat" id="seat20"></span>
+                            <span className="seat" id="seat21"></span>
+                            <span className="seat" id="seat22"></span>
+                            <span className="seat" id="seat23"></span>
+                            <span className="seat" id="seat24"></span>
+                        </div>
+                        <div className="row">
+                            <span className="seat" id="seat25"></span>
+                            <span className="seat" id="seat26"></span>
+                            <span className="seat" id="seat27"></span>
+                            <span className="seat" id="seat28"></span>
+                            <span className="seat" id="seat29"></span>
+                            <span className="seat" id="seat30"></span>
+                        </div>
+                        <div className="row">
+                            <span className="seat" id="seat31"></span>
+                            <span className="seat" id="seat32"></span>
+                            <span className="seat" id="seat33"></span>
+                            <span className="seat" id="seat34"></span>
+                            <span className="seat" id="seat35"></span>
+                            <span className="seat" id="seat36"></span>
+                        </div>
+                    </div>
+                </div>
+                <p className="text">
+                    <img src="/img/icon/image.png" /> 총 좌석 <span id="totalcount">&nbsp; 3</span>&nbsp;
+                    <img src="/img/icon/image.png" /> 사용 중 <span id="usecount">&nbsp; 4</span>&nbsp;
+                    <img src="/img/icon/image.png" /> 남은 자리 <span id="leftcount">&nbsp; 5</span>
+                </p>
             </section>
         </>
     )
