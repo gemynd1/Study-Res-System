@@ -167,7 +167,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 8.89px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar div.board-category-1-headerbar-btn {
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar .board-category-1-headerbar-btn {
     display: inline;
     position: inherit;
     width: 65px;
@@ -177,9 +177,10 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-top: 16px;
     margin-right: 32px;
     right: 0;
+    text-decoration: none;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar div.board-category-1-headerbar-btn span.board-category-1-headerbar-btn-text {
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar .board-category-1-headerbar-btn span.board-category-1-headerbar-btn-text {
     font-weight: 400;
     font-size: 10px;
     line-height: 12px;
@@ -188,16 +189,18 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 18px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content {
     margin-top: 72px;
     margin-left: 15px;
+    position: absolute;
     width: 1090px;
     height: 136px;
     background: #FFFFFF;
     border-radius: 30px;
+    text-decoration: none;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-title {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-title {
     margin-top: 13px;
     margin-left: 32px;
     margin-bottom: 8px;
@@ -207,7 +210,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     color: #000000;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-detail {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-detail {
     /* width: 513px; */
     height: 21px;
     font-weight: 400;
@@ -219,16 +222,16 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-bottom: 0px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content div.board-category-1-content-info {
     position: absolute;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info div,
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info p {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content div.board-category-1-content-info div,
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content div.board-category-1-content-info p {
     display: inline-block;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info div.board-category-1-content-info-dday {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content div.board-category-1-content-info div.board-category-1-content-info-dday {
     /* display: inline; */
     width: 43px;
     height: 20px;
@@ -238,7 +241,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 32px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info-dday span.board-category-1-content-info-dday-text {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content div.board-category-1-content-info-dday span.board-category-1-content-info-dday-text {
     /* display: inline; */
     display: flex;
     font-weight: 400;
@@ -251,7 +254,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 4px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-info-date {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-info-date {
     display: inline;
     font-weight: 400;
     font-size: 11px;
@@ -260,7 +263,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 10px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-info-address {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-info-address {
     display: inline;
     font-weight: 400;
     font-size: 11px;
@@ -269,16 +272,16 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 22px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-info2 {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-info2 {
     position: relative;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content .board-category-1-content-info2 img,
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content .board-category-1-content-info2 p {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content .board-category-1-content-info2 img,
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content .board-category-1-content-info2 p {
     display: inline-block;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content .board-category-1-content-info2-group {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content .board-category-1-content-info2-group {
     display: inline;
     width: 18.57px;
     height: 20px;
@@ -286,7 +289,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
     margin-left: 40px;
 }
 
-div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content .board-category-1-content-info2-count {
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content .board-category-1-content-info2-count {
     position: absolute;
     width: 100px;
     height: 15px;

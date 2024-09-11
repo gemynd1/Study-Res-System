@@ -36,7 +36,7 @@ const BoardCategory = () => {
                             <img src="/img/icon/곧마감.png" alt="곧마감" className="board-category-1-headerbar-img"></img>
                             <p className="board-category-1-headerbar-title">시작이 얼마남지 않은 모임을 확인해보세요! </p>
                         </div>
-                        <div className="board-category-1-content">
+                        <Link to="/board/post/1" className="board-category-1-content">
                             <p className="board-category-1-content-title">이 글의 제목입니다.</p>
                             <p className="board-category-1-content-detail">이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.</p>
                             <div className="board-category-1-content-info">
@@ -50,9 +50,12 @@ const BoardCategory = () => {
                                 <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
                                 <p className="board-category-1-content-info2-count">1 / 5 명 (최소 2명)</p>
                             </div>
-                        </div>
+                        </Link>
                         <div className="moreButton">
-
+                            <div className="moreButton-section">
+                                <span className="moreButton-text">MORE</span>
+                                <img src="/img/icon/arrow(down).png" alt="moreButton" className="moreButton-arrow" />
+                            </div>
                         </div>
                     </div>
                 </div>
