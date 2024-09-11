@@ -1,4 +1,14 @@
-div.board-menubar {
+div.board-page p,
+div.board-page span {
+    font-family: 'Inter';
+    font-style: normal;
+}
+
+div.board-page div {
+    display: inline-block;
+}
+
+div.board-page div.board-menubar {
     /* position: relative; */
     width: 215px;
     height: 690px;
@@ -6,83 +16,243 @@ div.board-menubar {
     margin-left: 184px;
 }
 
-div.board-menubar div.category-section {
+div.board-page div.board-menubar div.category-section {
     position: absolute;
     width: 150px;
     height: 532px;
     margin: 33px 38px 21px 45px;
 }
 
-div.board-menubar div.category-section div.category1 {
+div.board-page div.board-menubar div.category-section div.category1 {
     display: flex;
     align-items: center;
     margin-bottom: 42px;
 }
 
-div.board-menubar div.category-section div.category1 img {
+div.board-page div.board-menubar div.category-section div.category1 img {
     width: 50px;
     height: 50px;
 }
 
-div.board-menubar div.category-section div.category1 div.category1-title {
-    width: 100px;
+div.board-page div.board-menubar div.category-section div.category1 div.category1-title {
+    /* width: 100px; */
     margin-left: 11px;
 }
 
-div.board-menubar div.category-section div.category2 {
+div.board-page div.board-menubar div.category-section div.category2 {
     display: flex;
     align-items: center;
     margin-bottom: 42px;
 }
 
-div.board-menubar div.category-section div.category2 img {
+div.board-page div.board-menubar div.category-section div.category2 img {
     width: 50px;
     height: 50px;
 }
 
-div.board-menubar div.category-section div.category2 div.category2-title {
-    width: 100px;
+div.board-page div.board-menubar div.category-section div.category2 div.category2-title {
+    /* width: 100px; */
     margin-left: 11px;
 }
 
-div.board-menubar div.category-section div.category3 {
+div.board-page div.board-menubar div.category-section div.category3 {
     display: flex;
     align-items: center;
     margin-bottom: 42px;
 }
 
-div.board-menubar div.category-section div.category3 img {
+div.board-page div.board-menubar div.category-section div.category3 img {
     width: 50px;
     height: 50px;
 }
 
-div.board-menubar div.category-section div.category3 div.category3-title {
-    width: 100px;
+div.board-page div.board-menubar div.category-section div.category3 div.category3-title {
+    /* width: 100px; */
     margin-left: 11px;
 }
 
-div.board-menubar div.category-section div.category4 {
+div.board-page div.board-menubar div.category-section div.category4 {
     display: flex;
     align-items: center;
     margin-bottom: 42px;
 }
 
-div.board-menubar div.category-section div.category4 img {
+div.board-page div.board-menubar div.category-section div.category4 img {
     width: 50px;
     height: 50px;
 }
 
-div.board-menubar div.category-section div.category4 div.category4-title {
-    width: 100px;
+div.board-page div.board-menubar div.category-section div.category4 div.category4-title {
+    /* width: 100px; */
     margin-left: 11px;
 }
 
-div.board-menubar div.writteButton {
+div.board-page div.board-menubar div.writeButton {
+    position: absolute;
     width: 126px;
     height: 52px;
     background: #6A8728;
     border-radius: 10px;
+    margin-top: 617px;
+    margin-left: 57px;
 }
+
+div.board-page div.board-menubar div.writeButton div.writeButton-1 {
+    /* position: absolute; */
+    margin: 15px 40px 16px 39px;
+    width: 60px;
+    height: 21px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 21px;
+
+    color: #FFFFFF;
+}
+
+div.board-page div.board-category-1 {
+    position: absolute;
+    width: 1120px;
+    height: 688px;
+    margin-left: 123px;
+    margin-top: 58px;
+}
+
+div.board-page div.board-category-1 div {
+    display: inline-block;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background {
+    position: relative;
+    width: 1120px;
+    height: 688px;
+    background: #D9D9D9;
+    border-radius: 30px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-headerbar {
+    position: absolute;
+    display: inline-block;
+    width: 1120px;
+    height: 58px;
+    background: #808080;
+    border-radius: 30px 30px 0px 0px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar img.board-category-1-headerbar-img {
+    /* display: inline; */
+    width: 31.11px;
+    height: 30px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    margin-left: 34px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar p.board-category-1-headerbar-title {
+    display: inline;
+    position: absolute;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar div.board-category-1-headerbar-btn {
+    display: inline;
+    position: inherit;
+    width: 65px;
+    height: 26px;
+    background: #FFFFFF;
+    border-radius: 30px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar div.board-category-1-headerbar-btn span.board-category-1-headerbar-btn-text {
+
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content {
+    margin-top: 72px;
+    margin-left: 15px;
+    width: 1090px;
+    height: 136px;
+    background: #FFFFFF;
+    border-radius: 30px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-title {
+    margin-top: 13px;
+    margin-left: 32px;
+    margin-bottom: 8px;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-detail {
+    /* width: 513px; */
+    height: 21px;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 21px;
+    color: #000000;
+    margin-left: 32px;
+    margin-bottom: 0px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info div,
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info p {
+    display: inline-block;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info div.board-category-1-content-info-dday {
+    display: inline;
+    width: 43px;
+    height: 20px;
+    background: #E35656;
+    border-radius: 5px;
+    margin-top: 8px;
+    margin-left: 36px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content div.board-category-1-content-info-dday span.board-category-1-content-info-dday-text {
+    /* display: inline; */
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #000000;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-info-date {
+    display: inline;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #000000;
+    margin-left: 10px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content p.board-category-1-content-info-address {
+    display: inline;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #000000;
+    margin-left: 22px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content .board-category-1-content-group {
+    width: 18.57px;
+    height: 20px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-content .board-category-1-content-count {
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #000000;
+}
+
 
 
 

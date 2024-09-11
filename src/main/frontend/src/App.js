@@ -28,6 +28,7 @@ function AppContent() {
   const location = useLocation();
   const hideHeaderLogin = location.pathname === '/login' || location.pathname === '/join';
 
+
   // useEffect(() => {
   //   axios.get('/api/hello')
   //       .then((res) => {
