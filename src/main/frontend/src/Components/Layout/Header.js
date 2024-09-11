@@ -53,7 +53,7 @@ const Header = () => {
                         <li>
                             <Link to="/mypage" style={{ textDecoration: 'none' }}>
                                 <div className="menuList2-mypage">
-                                    <img src="/img/icon/mypage.png" alt="mypage" className="mypage" />
+                                    <img src="/img/icon/mypage.png" alt="Main" className="mypage" />
                                     <span>마이페이지</span>
                                 </div>
                             </Link>
