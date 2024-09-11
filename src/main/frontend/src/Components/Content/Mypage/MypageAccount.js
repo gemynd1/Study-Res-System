@@ -21,7 +21,7 @@ const MypageAccount = () => {
                     <Link to='/'>
                         <img src="/img/icon/home.png" alt='/' className="icon"/>
                     </Link>
-                </div>ddd
+                </div>
                 <div className="Mypageheader2">
                     <div className="MypageheaderLine">
                         <Link to='/mypage' style={{textDecoration: 'none'}}>
@@ -39,6 +39,8 @@ const MypageAccount = () => {
                     </div>
                 </div>
             </div>
+
+
             <div className="AccountBody">
                 <div className="editPersonal">
                     <span className="AccountText">개인정보수정</span>

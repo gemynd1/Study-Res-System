@@ -86,7 +86,7 @@
 }
 
 .editText {
-    width: 133px;
+    /*width: 133px;*/
     height: 29px;
     font-style: normal;
     font-weight: 700;
@@ -105,14 +105,15 @@
 }
 
 .editText2 {
-    width: 661px;
+    /*width: 661px;*/
     height: 29px;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
-    text-align: center;
+    /*text-align: center;*/
     color: #000000;
+    margin-left: 60px;
 }
 
 .AccountInput3 {
