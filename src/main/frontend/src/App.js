@@ -37,8 +37,6 @@ function AppContent() {
   return (
     <>
         {!hideHeaderLogin && <Header />}
-        {/* <Header /> */}
-        {/*   {hello}*/}
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/info' element={<Info />} />
@@ -56,7 +54,7 @@ function AppContent() {
           <Route path='/mypage/mypageReview' element={<MypageReview />} />
           <Route path='/mypage/mypageAdd' element={<MypageAdd />} />
         </Routes>
-        <Footer />
+        {!hideHeaderLogin && <Footer />}
     </>
   );
 }
