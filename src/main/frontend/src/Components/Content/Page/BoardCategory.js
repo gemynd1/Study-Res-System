@@ -1,8 +1,8 @@
 import React from "react";
-import "../../../style/board.css";
 import { Link } from "react-router-dom";
+import "../../../style/boardCategory.css";
 
-const Board = () => {
+const BoardCategory = () => {
     return (
         <>
             <div className="board-page">
@@ -35,9 +35,6 @@ const Board = () => {
                         <div className="board-category-1-headerbar">
                             <img src="/img/icon/곧마감.png" alt="곧마감" className="board-category-1-headerbar-img"></img>
                             <p className="board-category-1-headerbar-title">시작이 얼마남지 않은 모임을 확인해보세요! </p>
-                            <div className="board-category-1-headerbar-btn">
-                                <span className="board-category-1-headerbar-btn-text">더보기</span>
-                            </div>
                         </div>
                         <div className="board-category-1-content">
                             <p className="board-category-1-content-title">이 글의 제목입니다.</p>
@@ -54,6 +51,9 @@ const Board = () => {
                                 <p className="board-category-1-content-info2-count">1 / 5 명 (최소 2명)</p>
                             </div>
                         </div>
+                        <div className="moreButton">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,4 +61,4 @@ const Board = () => {
     )
 }
 
-export default Board;
+export default BoardCategory;

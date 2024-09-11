@@ -9,6 +9,7 @@ import Footer from './Components/Layout/Footer';
 import Main from './Components/Content/Page/Main';
 import Info from './Components/Content/Page/Info';
 import Board from './Components/Content/Page/Board';
+import BoardCategory from './Components/Content/Page/BoardCategory';
 import Review from './Components/Content/Page/Review';
 import Mypage from "./Components/Content/Page/Mypage";
 import TeamDetail from "./Components/Content/Page/teamdetail";
@@ -44,6 +45,7 @@ function AppContent() {
           <Route path='/' element={<Main />} />
           <Route path='/info' element={<Info />} />
           <Route path='/board' element={<Board />} />
+          <Route path='/board/category/*' element={<BoardCategory />} />
           <Route path='/review' element={<Review />} />
 
           <Route path='/login' element={<Login />} />
