@@ -1,0 +1,239 @@
+.MainSection1 {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), 
+                url("/public/img/banner.png");
+    width: 100%;
+    height: 900px;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.MainSection1 .MainHeader {
+    margin-top: 187px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.MainSection1 .MainContent {
+    margin-top: 100px;
+}
+
+.MainSection1 .MainHeader .MainHeader-first {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 50px;
+}
+
+.MainSection1 .MainHeader .MainHeader-second {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.MainSection1 .MainContent {    
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.MainSection1 .MainContent .MainContent-content1, 
+.MainSection1 .MainContent .MainContent-content2, 
+.MainSection1 .MainContent .MainContent-content3 {
+    margin: 0 60px;
+}
+
+.MainSection1 .MainContent .MainContent-content1 .MainContent-content1-first, 
+.MainSection1 .MainContent .MainContent-content2 .MainContent-content2-first, 
+.MainSection1 .MainContent .MainContent-content3 .MainContent-content3-first {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 28px;
+    color: #ffffff; 
+}
+
+.MainSection1 .MainContent .MainContent-content1 .MainContent-content1-second, 
+.MainSection1 .MainContent .MainContent-content2 .MainContent-content2-second, 
+.MainSection1 .MainContent .MainContent-content3 .MainContent-content3-second {
+    font-family: 'Lily Script One';
+    font-style: oblique;
+    font-weight: 700;
+    font-size: 96px;
+    color: #ffffff;
+}
+
+.MainSection1 .MainContent .MainContent-content1 .MainContent-content1-third, 
+.MainSection1 .MainContent .MainContent-content2 .MainContent-content2-third, 
+.MainSection1 .MainContent .MainContent-content3 .MainContent-content3-third {
+    font-family: 'Inter';
+    font-weight: 700;
+    padding: 10px;
+    font-size: 28px;
+    color: #ffffff;
+}
+
+/* MainSection2 */
+/* .MainSection2 {
+    height: 1136px;
+} */
+
+.MainSection2 .MainSec2-title {
+    font-size: 30px;
+    text-align: center;
+    margin-top: 100px
+}
+
+.MainSection2 .sec2-swiper {
+    margin-top: 10vh;
+    padding-top: 40px;
+   
+}
+
+.MainSection2 .sec2-swiper .img-box {
+    width: 100%;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    padding-bottom: 70%;
+}
+
+.MainSection2 .sec2-swiper .img-box img {
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.MainSection2 .sec2-swiper .txt-box {
+    margin-top: 26px;
+    padding: 0 30px;
+    /* text-align: center; */
+}
+
+.MainSection2 .sec2-swiper .txt-box h4 {
+    font-weight: 600;
+    margin-bottom: 28px;
+}
+
+.MainSection2 .sec2-swiper .txt-box dl {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.MainSection2 .sec2-swiper .swiper-slide {
+    transition: all 0.4s;
+    box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+.MainSection2 .sec2-swiper .swiper-slide-active {
+    transform: translateY(-40px);
+}
+
+.MainSection2 .sec2-swiper .swiper-slide a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.MainSection2 .sec2-swiper .swiper-slide:hover {
+    background: lightgray;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* MainSection3 */
+.MainSection3 .MainSec3-title {
+    font-size: 30px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.MainSection3 .showcase {
+    background-color: #777;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    padding: 15px 10px;
+    width: 25.2%;
+    margin: 0 auto 30px auto;
+    font-size: 20px;
+}
+
+.MainSection3 .showcase > li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.MainSection3 .showcase .availableSeat {
+    background-color: #444451;
+    width: 15px;
+    height: 12px;
+    margin: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: default;
+}
+
+.MainSection3 .showcase .selectedSeatIcon {
+    background-color: #6feaf6;
+    width: 15px;
+    height: 12px;
+    margin: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: default;
+}
+
+.MainSection3 .seatContainer .row {
+    display: flex;
+    justify-content: center;
+}
+
+.MainSection3 .seatContainer .seat {
+    background-color: #444451;
+    width: 70px;
+    height: 60px;
+    margin: 6px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+}
+
+.MainSection3 .seatContainer .selectedSeat {
+    background-color: rgb(111, 234, 246);
+}
+
+.MainSection3 .seatContainer .seat:hover {
+    scale: 1.2;
+}
+
+.MainSection3 .seatContainer .selectedSeat:hover {
+    scale: 1.2;
+}
+
+.MainSection3 .seatContainer .seat:nth-of-type(2) {
+    margin-right: 18px;
+}
+
+.MainSection3 .seatContainer .seat:nth-of-type(4) {
+    margin-right: 18px;
+}
+
+.MainSection3 .text {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.MainSection3 .text img {
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+}

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 import Header from './Components/Layout/Header';
+import Footer from './Components/Layout/Footer';
 
 import Main from './Components/Content/Page/Main';
 import Info from './Components/Content/Page/Info';
@@ -37,8 +38,6 @@ function AppContent() {
   return (
     <>
         {!hideHeaderLogin && <Header />}
-        {/* <Header /> */}
-        {/*   {hello}*/}
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/info' element={<Info />} />
@@ -56,6 +55,7 @@ function AppContent() {
           <Route path='/mypage/mypageReview' element={<MypageReview />} />
           <Route path='/mypage/mypageAdd' element={<MypageAdd />} />
         </Routes>
+        {!hideHeaderLogin && <Footer />}
     </>
   );
 }
