@@ -17,6 +17,7 @@ import MypageBoard from './Components/Content/Mypage/MypageBoard';
 import MypageReview from './Components/Content/Mypage/MypageReview';
 import MypageAdd from './Components/Content/Mypage/MypageAdd';
 import Login from './Components/Content/Account/login';
+// import Redirect from './Components/Content/Account/kakaoredirect';
 import Join from './Components/Content/Account/join';
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
 // import './App.css';
@@ -45,6 +46,7 @@ function AppContent() {
           <Route path='/review' element={<Review />} />
 
           <Route path='/login' element={<Login />} />
+          {/* <Route path="/oauth" element={<Redirect />} /> */}
           <Route path='/join' element={<Join />} />
 
           {/* mypage 따로 나눌수 있음 git merge */}

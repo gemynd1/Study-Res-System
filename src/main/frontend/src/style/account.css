@@ -1,12 +1,107 @@
 /* login */
-body {
-    /* background-color: #D9D9D9; */
-}
-section.loginSec .loginMain{
-    /* height: 100%; */
-    /* background-color: #D9D9D9; */
-    /* background: #D9D9D9; */
+.loginSec {
+    min-height: 100vh;
+    background-color: #D9D9D9;
+    text-align: center;
 }
 
+.loginSec .loginMain {
+    text-align: center;
+}
+
+.loginSec .loginMain .loginImg .logo {
+    margin-right: 20px;
+    padding-top: 4%;
+    width: 20%;
+    height: 20%;
+}
+
+.loginSec .loginMain .login-tit {
+    /* margin-top: 30px; */
+    font-size: 50px;
+    font-weight: 800;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+
+.loginSec .loginMain .loginContent {
+    width: 70%;
+    height: 50%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.loginSec .loginMain .loginContent .kakaoButton {
+    width: 85%;
+    border: 1px solid black;
+    background-color: transparent;
+    margin: 60px 0 20px 0;
+    padding: 7px 0;
+}
+
+.loginSec .loginMain .loginContent .kakaoButton img {
+    width: 17%;
+}
+
+.loginSec .loginMain .loginContent .hrline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginSec .loginMain .loginContent .hrline .line1,
+.loginSec .loginMain .loginContent .hrline .line2
+{
+    width: 440px;
+    color: #79747E;
+}
+
+.loginSec .loginMain .loginContent .form-content .idInput input, 
+.loginSec .loginMain .loginContent .form-content .pwInput input
+{
+    width: 85%;
+    height: 50px;
+    /* border: 1px solid black; */
+    /* background-color: transparent; */
+    margin: 20px 0 5px 0;
+    padding: 7px 0;
+    font-size: 25px;
+}
+
+.loginSec .loginMain .loginContent .form-content .idInput input::placeholder, 
+.loginSec .loginMain .loginContent .form-content .pwInput input::placeholder
+{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.5);
+    text-indent: 5px;
+}
+
+.loginSec .loginMain .loginContent .form-content .pwFind {
+    display: flex;
+}
+
+.loginSec .loginMain .loginContent .form-content .pwFind a {
+    margin: 0 110px 0 auto;
+    text-decoration: none;
+    color: #000000;
+}
+
+.loginSec .loginMain .loginContent .form-content .loginbtn {
+    width: 85%;
+    height: 64px;
+    margin: 30px 0 60px 0;
+    background-color: #FFD600;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    color: #000000;
+}
 
 /* join */
