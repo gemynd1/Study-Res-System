@@ -1,0 +1,88 @@
+div.board-menubar {
+    /* position: relative; */
+    width: 215px;
+    height: 690px;
+    margin-top: 43px;
+    margin-left: 184px;
+}
+
+div.board-menubar div.category-section {
+    position: absolute;
+    width: 150px;
+    height: 532px;
+    margin: 33px 38px 21px 45px;
+}
+
+div.board-menubar div.category-section div.category1 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 42px;
+}
+
+div.board-menubar div.category-section div.category1 img {
+    width: 50px;
+    height: 50px;
+}
+
+div.board-menubar div.category-section div.category1 div.category1-title {
+    width: 100px;
+    margin-left: 11px;
+}
+
+div.board-menubar div.category-section div.category2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 42px;
+}
+
+div.board-menubar div.category-section div.category2 img {
+    width: 50px;
+    height: 50px;
+}
+
+div.board-menubar div.category-section div.category2 div.category2-title {
+    width: 100px;
+    margin-left: 11px;
+}
+
+div.board-menubar div.category-section div.category3 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 42px;
+}
+
+div.board-menubar div.category-section div.category3 img {
+    width: 50px;
+    height: 50px;
+}
+
+div.board-menubar div.category-section div.category3 div.category3-title {
+    width: 100px;
+    margin-left: 11px;
+}
+
+div.board-menubar div.category-section div.category4 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 42px;
+}
+
+div.board-menubar div.category-section div.category4 img {
+    width: 50px;
+    height: 50px;
+}
+
+div.board-menubar div.category-section div.category4 div.category4-title {
+    width: 100px;
+    margin-left: 11px;
+}
+
+div.board-menubar div.writteButton {
+    width: 126px;
+    height: 52px;
+    background: #6A8728;
+    border-radius: 10px;
+}
+
+
+
