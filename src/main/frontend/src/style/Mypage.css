@@ -1,6 +1,6 @@
 /* 마이페이지 헤더 */
 .Mypageheader {
-    width: 1920px;
+    width: 100%;
     height: 74px;
     margin-top: 30px;
     background: #E8E8E8;
@@ -170,6 +170,11 @@
     display: flex;
 }
 
+.UpdateInput span {
+    position: absolute;
+    display: flex;
+}
+
 
 .AccountExist {
     width: 595px;
@@ -317,4 +322,270 @@
     margin-top: 15px;
 }
 
+/* 마이페이지 Update css*/
+.updateText {
+    height: 39px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 39px;
+    color: #000000;
+    display: flex;
+    margin: 100px auto auto 12%;
+}
 
+.updateText2 {
+    height: 39px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 39px;
+    color: #000000;
+    display: flex;
+    margin: 100px auto auto 12%;
+}
+
+.MypageUpdate {
+    width: 100%;
+    height: 770px;
+}
+
+.MypageUpdate2 {
+    width: 100%;
+    height: 1100px;
+}
+
+.MypageMenu {
+    height: 1100px;
+    box-sizing: border-box;
+    width: 19%;
+    float: left;
+    border-right: 1px solid #000000;
+}
+
+.menuText {
+    margin-left: 20px;
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.selectMenu {
+    background: #75BDFF;
+}
+
+.UpdateBody {
+    box-sizing: border-box;
+    width: 80%;
+    float: right;
+}
+
+.UpdateBodyText {
+    margin: 40px auto auto 40px;
+}
+
+.UpdateText {
+    height: 58px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 58px;
+    color: #000000;
+}
+
+.exitMember {
+    display: flex;
+    margin: 20px auto auto 100px;
+    align-items: center;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.arrow2 {
+    width: 35px;
+    height: 35px;
+}
+
+.exitMember2 {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.MemberInfo {
+    height: 44px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+}
+
+.MemberInfoBox {
+    border-bottom: 3px solid #7E7E7E;
+    width: 66%;
+    margin-top: 20px;
+}
+
+.UpdateInputBox {
+    width: 66%;
+    margin-top: 30px;
+    display: flex;
+}
+
+.Inputspan span {
+    height: 29px;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+    font-weight: bold;
+
+}
+
+.Inputspan {
+    width: 400px;
+    border-right: 1px solid #000000;
+}
+
+.UpdateInput input {
+    width: 500px;
+    height: 42px;
+    border: 1px solid #000000;
+}
+
+.UpdateInput {
+    margin-left: 47px;
+    display: flex;
+}
+
+.saveCheck {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFCFBB;
+    width: 213px;
+    height: 37px;
+    margin: 40px auto auto 400px;
+}
+
+.saveCheck button {
+    border: none;
+    background: none;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.check {
+    width: 24px;
+    height: 24px;
+}
+
+.UpdatepasswordIcon {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    margin: 4px auto auto 460px;
+}
+
+/* 작성한 글 확인 css*/
+.AllText{
+    margin: 45px auto 40px 40px;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.writeBox {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 1392px;
+    height: 71px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.table-container {
+    width: 90%;
+    height: 300px;
+    text-align: center;
+    font-size: 18px;
+
+    border: 1px #a39485 solid;
+    box-shadow: 0 2px 5px rgba(0,0,0,.25);
+    border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.table-container th {
+    border-width: 1px 0 3px 0;
+    border-style: solid;
+}
+
+.table-container td, th {
+    padding: 1em .5em;
+    vertical-align: middle;
+}
+
+.table-container th {
+    border-bottom: 3px solid #a39485;
+}
+
+.table-container td {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+/* 페이지네이션 */
+.pagination-container {
+    display: flex;
+    margin: 20px auto auto 420px;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    border: none;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    padding: 8px 12px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+    background: #ffffff;
+}
+
+.paginationNum {
+    display: flex;
+    cursor: pointer;
+}
+
+.paginationIcon {
+    width: 35px;
+    height: 35px;
+}
+
+.page-link:hover {
+    color: #ffffff;
+    background: #2e9cdf;
+}
+
+.page-link:focus {
+    color: #ffffff;
+    background: #2e9cdf;
+}
+
+.page-link:active {
+    cursor: default;
+    color: #ffffff;
+}
