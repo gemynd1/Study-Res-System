@@ -9,4 +9,9 @@ public class BoardController {
     public String board() {
         return "게시판 페이지입니다.";
     }
+
+    @RequestMapping("/board/category/*")
+    public String boardCategory() {
+        return "게시판 페이지입니다.";
+    }
 }

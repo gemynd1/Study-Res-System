@@ -1,5 +1,6 @@
 /* header */
 .header {
+    /*width: 100vw;*/
     height: 10.19vh;
 }
 
@@ -22,7 +23,7 @@
 
 .header .menu .menuList1 .logo {
     width: 12.24vw;
-    /* height: 6.67vh; */
+    height: 6.67vh;
 }
 
 .header .menu .menuList1 li {
