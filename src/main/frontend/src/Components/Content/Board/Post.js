@@ -2,6 +2,79 @@ import React from "react";
 // import { Link } from "react-router-dom";
 import '../../../style/post.css';
 
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+const options = [
+    'None',
+    'Atria',
+    'Callisto',
+    'Dione',
+    'Ganymede',
+    'Hangouts Call',
+    'Luna',
+    'Oberon',
+    'Phobos',
+    'Pyxis',
+    'Sedna',
+    'Titania',
+    'Triton',
+    'Umbriel',
+];
+
+const ITEM_HEIGHT = 48;
+
+function LongMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    return (
+      <div>
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? 'long-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          MenuListProps={{
+            'aria-labelledby': 'long-button',
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          slotProps={{
+            paper: {
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: '20ch',
+              },
+            },
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
+      </div>
+    );
+}
+
 const Post = () => {
     return (
         <>
@@ -96,7 +169,7 @@ const Post = () => {
 
                 <div className="post-comment">
                     <div className="post-comment-header">
-                        <span className="QandA">Q & A</span>
+                        <span className="QandA">Q&A</span>
                         <span className="QandA-count">(2개)</span>
                         <div className="QandA-button">
                             <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
@@ -106,18 +179,21 @@ const Post = () => {
                     <div className="post-comment-main">
                         <div className="post-question">
                             <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
-                            <span className="comment-author-name">김지민</span>
-                            <p className="comment-detail">
-                            안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
-                            안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
-                            안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
-                            </p>
-                            <span className="comment-loaddate">2024-09-05 21:49:17</span>
-                            <img src="/img/icon/seemore.png" alt="seemoreicon" className="comment-seemore" />
+                            <div className="comment-text">
+                                <span className="comment-author-name">김지민</span>
+                                <p className="comment-detail">
+                                안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
+                                안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
+                                안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
+                                </p>
+                                <span className="comment-loaddate">2024-09-05 21:49:17</span>
+                            </div>
+                            <LongMenu />
+                            {/* <img src="/img/icon/seemore.png" alt="seemoreicon" className="comment-seemore" />
                             <div className="comment-seemore-detail">
                                 <img src="/img/icon/report.png" alt="reporticon" className="comment-report-icon" />
                                 <span className="comment-report-text">신고</span>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="post-reply">

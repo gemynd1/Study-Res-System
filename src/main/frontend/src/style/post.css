@@ -215,12 +215,13 @@ div.post div.post-info3 div.post-member span.post-member-name {
 }
 
 div.post div.post-info4 {
-    position: absolute;
+    position: relative;
     width: 1202px;
     background: #FFFFFF;
     border-radius: 20px;
     margin-top: 98px;
     margin-left: 133px;
+    padding-bottom: 88px;
 }
 
 div.post div.post-info4 div.post-startdate {
@@ -369,57 +370,145 @@ div.post div.post-info4 div.kakaomap {
     height: 378px;
     margin-top: 39px;
     margin-left: 56px;
-    margin-bottom: 88px;
+    /* margin-bottom: 88px; */
     background-color: #268B5F;
 }
 
 div.post div.post-content {
+    position: relative;
+    width: 1202px;
+    height: auto;
+    background: #FFFFFF;
+    border-radius: 20px;
+    margin-top: 37px;
+    margin-left: 133px;
+    padding-top: 22px;
+    padding-bottom: 32px;
+}
+
+div.post div.post-content p.post-content-text {
+    width: 1077px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    /* margin-top: 22px; */
+    margin-left: 69px;
+}
+
+div.post div.post-comment {
     position: absolute;
     width: 1202px;
     height: auto;
     background: #FFFFFF;
     border-radius: 20px;
-    margin-top: 900px;
+    margin-top: 73px;
     margin-left: 133px;
 }
 
-div.post div.post-content p.post-content-text {
-    width: 930px;
+div.post div.post-comment div.post-comment-header {
+    display: inline-block;
+}
+
+div.post div.post-comment div.post-comment-header span.QandA {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+    margin-top: 23px;
+    margin-left: 56px;
+}
+
+div.post div.post-comment div.post-comment-header span.QandA-count {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #268B5F;
+    margin-top: 23px;
+    margin-left: 112px;
+}
+
+div.post div.post-comment div.post-comment-header div.QandA-button {
+    position: absolute;
+    display: inline-block;
+    width: 175px;
+    height: 45px;
+    background: #268B5F;
+    border-radius: 30px;
+    right: 0px;
+    margin-top: 23px;
+    margin-right: 56px;
+}
+
+div.post div.post-comment div.post-comment-header div.QandA-button img.QandA-button-icon {
+    width: 20px;
+    height: 20px;
+    margin-top: 12px;
+    margin-left: 30px;
+}
+
+div.post div.post-comment div.post-comment-header div.QandA-button span.QandA-button-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+    margin-top: 14px;
+    margin-left: 8px;
+}
+
+div.post div.post-comment div.post-comment-main {
+    /* display: inline-block; */
+}
+
+div.post div.post-comment div.post-comment-main div.post-question {
+    position: relative;
+    display: inline-block;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question img.comment-author {
+    position: relative;
+    width: 70px;
+    height: 70px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text span.comment-author-name {
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
     color: #000000;
-    margin-top: 22px;
-    margin-left: 69px;
 }
 
-div.post div.post-comment {
-    width: 1202px;
-    height: auto;
-    background: #FFFFFF;
-    border-radius: 20px;
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text p.comment-detail {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
 }
 
-div.post div.post-comment div.post-comment-header {
-
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text span.comment-loaddate {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #808080;
 }
 
-div.post div.post-comment div.post-comment-header span.QandA {
-
-}
-
-div.post div.post-comment div.post-comment-header span.QandA-count {
+/* div.post div.post-comment div.post-comment-main div.post-question img.comment-seemore {
 
 }
 
-div.post div.post-comment div.post-comment-header div.QandA-button {
+div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail {
 
 }
 
-div.post div.post-comment div.post-comment-header div.QandA-button img.QandA-button-icon {
+div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail img.comment-report-icon {
 
 }
 
-div.post div.post-comment div.post-comment-header div.QandA-button span.QandA-button-text {
+div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail span.comment-report-text {
 
-}
+} */
