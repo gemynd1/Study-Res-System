@@ -1,3 +1,15 @@
+div.ilovecode {
+    /* i love this tag ^_^ */
+}
+
+div.board-page {
+    width: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-left: 30%;
+}
+
 div.board-page p,
 div.board-page span {
     font-family: 'Inter';
@@ -122,7 +134,7 @@ div.board-page div.board-menubar div.writeButton div.writeButton-1 {
 }
 
 div.board-page div.board-category-1 {
-    position: absolute;
+    position: relative;
     width: 1120px;
     height: 688px;
     margin-left: 123px;
@@ -181,6 +193,7 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
 }
 
 div.board-page div.board-category-1 div.board-category-1-background div.board-category-1-headerbar .board-category-1-headerbar-btn span.board-category-1-headerbar-btn-text {
+    position: absolute;
     font-weight: 400;
     font-size: 10px;
     line-height: 12px;
@@ -198,6 +211,7 @@ div.board-page div.board-category-1 div.board-category-1-background .board-categ
     background: #FFFFFF;
     border-radius: 30px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-title {
@@ -302,7 +316,5 @@ div.board-page div.board-category-1 div.board-category-1-background .board-categ
     margin-bottom: 10px;
     margin-top: 38px;
 }
-
-
 
 
