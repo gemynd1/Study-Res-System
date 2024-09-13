@@ -7,10 +7,11 @@ div.post span {
 div.post {
     position: relative;
     width: 1444px;
-    height: 2606px;
+    height: auto;
     background: #D9D9D9;
     margin-top: 110px;
     margin-left: 227px;
+    padding-bottom: 60px;
 }
 
 div.post p.title {
@@ -397,7 +398,7 @@ div.post div.post-content p.post-content-text {
 }
 
 div.post div.post-comment {
-    position: absolute;
+    position: relative;
     width: 1202px;
     height: auto;
     background: #FFFFFF;
@@ -468,12 +469,20 @@ div.post div.post-comment div.post-comment-main {
 div.post div.post-comment div.post-comment-main div.post-question {
     position: relative;
     display: inline-block;
+    margin-top: 151px;
 }
 
 div.post div.post-comment div.post-comment-main div.post-question img.comment-author {
     position: relative;
     width: 70px;
     height: 70px;
+    margin-left: 47px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text {
+    display: inline;
+    position: absolute;
+    margin-left: 35px;
 }
 
 div.post div.post-comment div.post-comment-main div.post-question div.comment-text span.comment-author-name {
@@ -484,6 +493,7 @@ div.post div.post-comment div.post-comment-main div.post-question div.comment-te
 }
 
 div.post div.post-comment div.post-comment-main div.post-question div.comment-text p.comment-detail {
+    width: 733px;
     font-weight: 400;
     font-size: 15px;
     line-height: 18px;
@@ -495,6 +505,13 @@ div.post div.post-comment div.post-comment-main div.post-question div.comment-te
     font-size: 10px;
     line-height: 12px;
     color: #808080;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.longmenu-style {
+    display: inline;
+    position: absolute;
+    margin-left: 999px;
+    margin-top: 35px;
 }
 
 /* div.post div.post-comment div.post-comment-main div.post-question img.comment-seemore {
@@ -512,3 +529,71 @@ div.post div.post-comment div.post-comment-main div.post-question div.comment-se
 div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail span.comment-report-text {
 
 } */
+
+div.post div.post-comment div.post-comment-main div.post-reply {
+    position: relative;
+    margin-top: 124px;
+    margin-left: 146px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-reply b.post-reply-author {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #268B5F;
+}
+
+div.post div.post-comment div.post-comment-main div.post-reply p.reply-detail {
+    width: 733px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+}
+
+div.post div.post-comment div.post-comment-main div.post-reply span.reply-loaddate {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #808080;
+}
+
+div.post div.post-comment nav.MuiPagination-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 78px;
+    padding-bottom: 112px;
+}
+
+div.post div.join-button-section {
+    position: relative;
+    margin-top: 145px;
+    display: flex;
+    justify-content: center;
+}
+
+div.post div.join-button-section div.join-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1202px;
+    height: 58px;
+    background: rgba(38, 139, 95, 0.5);
+    border-radius: 30px;
+}
+
+div.post div.join-button-section div.join-button img.join-button-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 23px;
+}
+
+div.post div.join-button-section div.join-button span.join-button-text {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+}
+
+

@@ -6,6 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const options = [
     'None',
@@ -37,7 +39,7 @@ function LongMenu() {
     };
   
     return (
-      <div>
+      <div className="longmenu-style">
         <IconButton
           aria-label="more"
           id="long-button"
@@ -74,6 +76,12 @@ function LongMenu() {
       </div>
     );
 }
+
+function BasicPagination() {
+    return (
+    <Pagination count={10} />
+    );
+  }
 
 const Post = () => {
     return (
@@ -188,7 +196,9 @@ const Post = () => {
                                 </p>
                                 <span className="comment-loaddate">2024-09-05 21:49:17</span>
                             </div>
+
                             <LongMenu />
+
                             {/* <img src="/img/icon/seemore.png" alt="seemoreicon" className="comment-seemore" />
                             <div className="comment-seemore-detail">
                                 <img src="/img/icon/report.png" alt="reporticon" className="comment-report-icon" />
@@ -197,7 +207,7 @@ const Post = () => {
                         </div>
 
                         <div className="post-reply">
-                            <span className="psot-reply-author">호스트의 답글</span>
+                            <b className="post-reply-author">호스트의 답글</b>
                             <p className="reply-detail">
                             네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북
                             사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능
@@ -212,7 +222,8 @@ const Post = () => {
                         </div>
                     </div>
 
-                    <div className="post-comment-footer">
+                    <BasicPagination />
+                    {/* <div className="post-comment-footer">
                         <img src="/img/icon/beforePage.png" alt="beforepageicon" className="before-page" />
                         <img src="/img/icon/beforeNum.png" alt="beforenumicon" className="before-num" />
                         <div className="page-num-section">
@@ -222,15 +233,17 @@ const Post = () => {
                         </div>
                         <img src="/img/icon/nextNum.png" alt="nextnumicon" className="next-num" />
                         <img src="/img/icon/nextPage.png" alt="nextpageicon" className="next-page" />
+                    </div> */}
+
+                </div>
+
+                <div className="join-button-section">
+                    <div className="join-button">
+                        <img src="/img/icon/check.png" alt="checkicon" className="join-button-icon" />
+                        <span className="join-button-text">참여하기</span>
                     </div>
-
                 </div>
 
-                <div className="join-button">
-                    <img src="/img/icon/check.png" alt="checkicon" className="join-button-icon" />
-                    <span className="join-button-text">참여하기</span>
-                </div>
-                
             </div>
         </>
     )
