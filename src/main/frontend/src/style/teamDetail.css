@@ -1,35 +1,49 @@
 h2 {
   margin: 0;
 }
+.host {
+  margin-top: 16px;
+  color: #7ee9bb;
+}
+
+.teamDetail__main-header-line {
+  border: 1px solid #fffdfd;
+  margin: 5px 0;
+  opacity: 0.5;
+}
+.teamDetail__side-header-line {
+  border: 1px solid #fffdfd;
+  margin: 10px 0;
+  opacity: 0.5;
+}
 
 .teamDetail {
   display: flex;
   flex-direction: row;
-  background-color: gray;
+  /* background-color: gray; */
   width: 1440px;
-  height: 1400px;
+  height: 100%;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
 .teamDetail__main {
-  background-color: rgb(126, 54, 54);
+  background-color: #d9d9d9;
   width: 867px;
-  height: 1400px;
-  /* margin: 0 auto; */
+  height: 100%;
   display: flex;
-  flex-direction: column; /* 세로로 정렬 */
-  justify-content: center; /* 수직 정렬 */
-  align-items: center; /* 수평 정렬 */
-  height: 100vh; /* 화면 높이에 맞추기 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .teamDetail__main-image {
-  background-color: rgb(117, 139, 139);
+  background-color: rgb(17, 121, 24);
   width: 761px;
-  height: 364px;
+  height: 400px;
   margin: 36px 0;
   position: relative;
+  z-index: 99;
 }
 
 .moveButton {
@@ -60,12 +74,12 @@ h2 {
 
 .teamDetail__main-content {
   /* margin: 5px 52.995px; */
-  background-color: rgb(77, 164, 73);
+  /* background-color: rgb(77, 164, 73); */
   width: 761px;
   margin-bottom: 36px;
 }
 .teamDetail__main-review {
-  background-color: rgb(117, 139, 139);
+  background-color: #ffffff;
   width: 761px;
   height: 650.34px;
   display: flex;
@@ -83,18 +97,18 @@ h2 {
   margin-top: 40px;
   width: 600px;
   height: 36px;
-  background-color: #00ff45;
   justify-content: space-between;
   align-items: center;
 }
-.teamDetail__main-review-name {
+.teamDetail__main-review-wrap {
+  margin-left: 10px;
 }
 .teamDetail__main-review-star {
   width: 36px;
   height: 36px;
 }
 .teamDetail__main-review-photo {
-  background-color: #00ff45;
+  /* background-color: #00ff45; */
   display: flex;
   justify-content: space-between;
 }
@@ -103,7 +117,7 @@ h2 {
   width: 168px;
 }
 .teamDetail__side {
-  background-color: rgb(126, 54, 54);
+  background-color: #d9d9d9;
   margin-left: 35px;
   width: 538px;
   /* height: 1400px; */
@@ -115,23 +129,23 @@ h2 {
   /* height: 100vh; 화면 높이에 맞추기 */
 }
 .teamDetail__side-header {
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
   width: 361px;
   /* height: 164px; */
 }
 .teamDetail__side-radio {
-  background-color: rgb(129, 181, 227);
+  /* background-color: rgb(129, 181, 227); */
   width: 361px;
   display: flex;
 }
 .teamDetail__side-image {
   width: 361px;
   height: 200px;
-  background-color: rgb(19, 38, 54);
+  background-color: #ffffff;
 }
 .teamDetail__side-description {
   width: 361px;
-  background-color: rgb(27, 80, 127);
+  /* background-color: rgb(27, 80, 127); */
 }
 .teamDetail__side-calendar-header {
   width: 361px;
@@ -142,22 +156,31 @@ h2 {
   width: 361px;
   display: flex;
   justify-content: space-around;
+  margin: 24px 0;
 }
 .teamDetail__side-legend-wrap {
   display: flex;
 }
-.teamDetail__side-legend-boxColor {
-  background-color: black;
+.teamDetail__side-legend-boxColor1 {
+  background-color: #ffffff;
+  width: 20px;
+}
+.teamDetail__side-legend-boxColor2 {
+  background-color: #a5a6b9;
+  width: 20px;
+}
+.teamDetail__side-legend-boxColor3 {
+  background-color: #50f6af;
   width: 20px;
 }
 .teamDetail__side-choiceTime {
   width: 361px;
-  background-color: rgb(10, 69, 121);
+  background-color: #ffffff;
   height: 60px;
 }
 .teamDetail__side-count-control {
   width: 370px;
-  background-color: rgb(10, 69, 121);
+  background-color: #ffffff;
   height: 60px;
 }
 .teamDetail__buttons {
