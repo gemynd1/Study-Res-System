@@ -1,6 +1,6 @@
 import React from "react";
 import '../../../style/postRewrite.css';
-import { RadioGroup } from "@mui/material";
+// import { RadioGroup } from "@mui/material";
 
 const PostRewrite = () => {
     return (
@@ -39,7 +39,7 @@ const PostRewrite = () => {
                         </div>
                         <div className="/">/</div>
                         <div className="maximum-count">
-                            <input />
+                            <input value={"5"} />
                             <span>명</span>
                         </div>
                     </div>
@@ -61,6 +61,10 @@ const PostRewrite = () => {
                         </form>
                     </div>
 
+                    <div className="test">
+                        스터디룸
+                    </div>
+
                     <div className="startdate-section">
                         <div className="startdate">
                             <span className="startdate-text">시작일</span>
@@ -75,11 +79,13 @@ const PostRewrite = () => {
                         <input />
                     </div>
 
-                    <div className="active-button">
-                        <img src="/img/icon/check.png" alt="" className="activeIcon" />
-                        <span className="active-text">작성하기</span>
+                    <div className="button-section">
+                        <div className="active-button">
+                            <img src="/img/icon/check.png" alt="" className="activeIcon" />
+                            <span className="active-text">작성하기</span>
+                        </div>
                     </div>
-
+                    
                 </div>
             </div>
         </>
