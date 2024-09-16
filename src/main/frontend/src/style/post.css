@@ -12,6 +12,7 @@ div.post {
     margin-top: 110px;
     margin-left: 227px;
     padding-bottom: 60px;
+    margin-bottom: 5%;
 }
 
 div.post p.title {
@@ -468,9 +469,9 @@ div.post div.post-comment div.post-comment-header div.QandA-button div.QandA-but
     margin-left: 8px;
 }
 
-div.post div.post-comment div.post-comment-main {
-    /* display: inline-block; */
-}
+/* div.post div.post-comment div.post-comment-main {
+    display: inline-block;
+} */
 
 div.post div.post-comment div.post-comment-main div.post-question {
     position: relative;
@@ -609,9 +610,9 @@ div.post div.join-button-section div.join-button span.join-button-text {
 
 
 /* modal디자인 */
-div.MuiBox-root {
+/* div.MuiBox-root {
 
-}
+} */
 
 div.MuiBox-root div.modal-header {
     position: relative;

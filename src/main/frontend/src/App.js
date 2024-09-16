@@ -11,6 +11,7 @@ import Info from './Components/Content/Page/Info';
 import Board from './Components/Content/Board/Board';
 import BoardCategory from './Components/Content/Board/BoardCategory';
 import Post from './Components/Content/Board/Post';
+import PostRewrite from './Components/Content/Board/PostRewrite';
 import Review from './Components/Content/Page/Review';
 import Mypage from "./Components/Content/Page/Mypage";
 import TeamDetail from "./Components/Content/Page/teamdetail";
@@ -42,14 +43,15 @@ function AppContent() {
 
   return (
     <>
-        {!hideHeaderLogin && <Header />}
-        <Routes>
-          <Route path='/' element={<Main />} />
-          <Route path='/info' element={<Info />} />
-          <Route path='/board' element={<Board />} />
-          <Route path='/board/category/*' element={<BoardCategory />} />
-          <Route path='/board/post/*' element={<Post />} />
-          <Route path='/review' element={<Review />} />
+      {!hideHeaderLogin && <Header />}
+      <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/info' element={<Info />} />
+        <Route path='/board' element={<Board />} />
+        <Route path='/board/category/*' element={<BoardCategory />} />
+        <Route path='/board/post/*' element={<Post />} />
+        <Route path='/board/postRewrite/*' element={<PostRewrite />} />
+        <Route path='/review' element={<Review />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />

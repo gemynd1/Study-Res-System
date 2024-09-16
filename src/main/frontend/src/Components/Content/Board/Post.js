@@ -1,8 +1,8 @@
 import React from "react";
 // import { Link } from "react-router-dom";
+import '../../../style/post.css';
 
 // 댓글 더보기 버튼 import
-import '../../../style/post.css';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -51,8 +51,9 @@ function FadeMenu() {
         TransitionComponent={Fade}
       >
         <MenuItem onClick={handleClose}>신고</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>답글작성</MenuItem>
+        <MenuItem onClick={handleClose}>수정</MenuItem>
+        <MenuItem onClick={handleClose}>개시글 삭제</MenuItem>
       </Menu>
     </div>
   );
