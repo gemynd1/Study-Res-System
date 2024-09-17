@@ -684,6 +684,20 @@ div.MuiBox-root input {
     margin-left: 92px;
 }
 
+div.MuiBox-root form.MuiBox-root {
+    position: relative;
+    width: 368px;
+    height: 233px;
+    margin-top: 23px;
+    margin-left: 92px;
+}
+
+div.MuiBox-root form.MuiBox-root div.MuiFormControl-root {
+    width: 368px;
+    height: 233px;
+    margin: 0px;
+}
+
 div.MuiBox-root div.modal-caution-section {
     display: inline-block;
     position: relative;
