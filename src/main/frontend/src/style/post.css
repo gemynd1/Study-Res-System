@@ -582,6 +582,7 @@ div.post div.join-button-section {
     margin-top: 145px;
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 
 div.post div.join-button-section div.join-button {

@@ -53,13 +53,23 @@ div.postRewrite-section div.title-section div.title span.title-text {
     color: #000000;
 }
 
-div.postRewrite-section div.title-section input {
+div.postRewrite-section div.title-section form.MuiBox-root {
     display: inline;
     position: relative;
     width: 714px;
     height: 54px;
     background: #FFFFFF;
-    border: 1px solid #000000;
+    /* border: 1px solid #000000; */
+    border-radius: 10px;
+}
+
+div.postRewrite-section div.title-section form.MuiBox-root div.MuiFormControl-root {
+    width: 714px;
+    height: 54px;
+    margin: 0px;
+}
+
+div.postRewrite-section div.title-section form.MuiBox-root div.MuiFormControl-root div.MuiInputBase-root {
     border-radius: 10px;
 }
 
@@ -93,14 +103,22 @@ div.postRewrite-section div.category-section div.category span.category-text {
     color: #000000;
 }
 
-div.postRewrite-section div.category-section input {
+div.postRewrite-section div.category-section div.MuiBox-root {
     display: inline;
     position: relative;
     width: 714px;
     height: 54px;
     background: #FFFFFF;
-    border: 1px solid #000000;
     border-radius: 10px;
+}
+
+div.postRewrite-section div.category-section div.MuiBox-root input {
+    display: none;
+}
+
+div.postRewrite-section div.category-section div.MuiBox-root div.MuiFormControl-root div.MuiInputBase-root {
+    width: 714px;
+    height: 54px;
 }
 
 div.postRewrite-section div.content-section {
@@ -133,14 +151,24 @@ div.postRewrite-section div.content-section div.content span.content-text {
     color: #000000;
 }
 
-div.postRewrite-section div.content-section textarea {
+div.postRewrite-section div.content-section form.MuiBox-root {
     display: inline;
     position: relative;
     width: 714px;
-    height: 368px;
+    height: 378px;
     box-sizing: border-box;
     background: #FFFFFF;
-    border: 1px solid #000000;
+    /* border: 1px solid #000000; */
+    border-radius: 10px;
+}
+
+div.postRewrite-section div.content-section form.MuiBox-root div.MuiFormControl-root {
+    width: 714px;
+    height: 378px;
+    margin: 0px;
+}
+
+div.postRewrite-section div.content-section form.MuiBox-root div.MuiFormControl-root div.MuiInputBase-root {
     border-radius: 10px;
 }
 
@@ -179,7 +207,7 @@ div.postRewrite-section div.groupCount-section div.current-count {
     display: inline-block;
 }
 
-div.postRewrite-section div.groupCount-section div.current-count input {
+/* div.postRewrite-section div.groupCount-section div.current-count input {
     margin-right: 29px;
     width: 154.69px;
     height: 53.93px;
@@ -195,7 +223,7 @@ div.postRewrite-section div.groupCount-section div.current-count span {
     font-size: 30px;
     line-height: 36px;
     color: #000000;
-}
+} */
 
 div.postRewrite-section div.groupCount-section div.\/ {
     margin-right: 52px;
@@ -209,7 +237,7 @@ div.postRewrite-section div.groupCount-section div.maximum-count {
     display: inline-block;
 }
 
-div.postRewrite-section div.groupCount-section div.maximum-count input {
+/* div.postRewrite-section div.groupCount-section div.maximum-count input {
     margin-right: 29px;
     width: 154.69px;
     height: 53.93px;
@@ -224,7 +252,7 @@ div.postRewrite-section div.groupCount-section div.maximum-count span {
     font-size: 30px;
     line-height: 36px;
     color: #000000;
-}
+} */
 
 div.postRewrite-section div.meetingPoint-section {
     display: flex;
