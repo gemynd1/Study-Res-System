@@ -11,11 +11,14 @@ import Fade from '@mui/material/Fade';
 // 페이지네이션 import
 import Pagination from '@mui/material/Pagination';
 
-// 모달import
+// 모달 import
 import Box from '@mui/material/Box';
 // import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
+// 텍스트 ui import
+import TextField from '@mui/material/TextField';
+// import Box from '@mui/material/Box';
 
 
 // 댓글 더보기 버튼
@@ -66,6 +69,20 @@ function BasicPagination() {
     );
 }   
 
+// input ui component
+function BasicTextFields() {
+    return (
+      <Box
+        component="form"
+        sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} />
+      </Box>
+    );
+}
+
 //모달
 const style = {
     position: 'absolute',
@@ -106,7 +123,7 @@ function BasicModal() {
                 <span className="modal-title-count2">/200자</span>
             </div>
 
-            <input />
+            <BasicTextFields />
 
             <div className="modal-caution-section">
                 <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />

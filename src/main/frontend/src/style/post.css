@@ -582,6 +582,7 @@ div.post div.join-button-section {
     margin-top: 145px;
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 
 div.post div.join-button-section div.join-button {
@@ -681,6 +682,20 @@ div.MuiBox-root input {
     height: 233px;
     margin-top: 23px;
     margin-left: 92px;
+}
+
+div.MuiBox-root form.MuiBox-root {
+    position: relative;
+    width: 368px;
+    height: 233px;
+    margin-top: 23px;
+    margin-left: 92px;
+}
+
+div.MuiBox-root form.MuiBox-root div.MuiFormControl-root {
+    width: 368px;
+    height: 233px;
+    margin: 0px;
 }
 
 div.MuiBox-root div.modal-caution-section {
