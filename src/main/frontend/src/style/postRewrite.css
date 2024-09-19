@@ -234,15 +234,6 @@ div.postRewrite-section div.groupCount-section div.\/ {
 div.postRewrite-section div.groupCount-section div.maximum-count {
     display: inline-block;
 }
-
-/* div.postRewrite-section div.groupCount-section div.maximum-count input {
-    margin-right: 29px;
-    width: 154.69px;
-    height: 53.93px;
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 10px;
-} */
     
 div.postRewrite-section div.groupCount-section div.maximum-count div.MuiFormControl-root {
     margin-right: 29px;
