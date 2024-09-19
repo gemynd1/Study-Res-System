@@ -2,6 +2,8 @@
 
 - main에 push 또는 pullrequest 하지말 것
 - 본인의 branch외에는 push 하지말 것
+- 각 branch들은 무조건 main에서만 pull할 것 
+- main이 아닌 다른 branch에서 pull 하지말 것
 
 
 # commit 방식
