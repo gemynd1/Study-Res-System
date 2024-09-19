@@ -247,6 +247,27 @@ div.postRewrite-section div.groupCount-section div.maximum-count div.MuiFormCont
     border-radius: 10px;
 }
 
+div.postRewrite-section div.groupCount-section div.maximum-count div.MuiBox-root {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+div.postRewrite-section div.groupCount-section div.maximum-count p.maximum-count-text {
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: 3px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-left: 14px;
+    margin-right: 14px;
+}
+
 div.postRewrite-section div.meetingPoint-section {
     display: flex;
     justify-content: center;
