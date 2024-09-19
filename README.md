@@ -7,8 +7,8 @@
 # commit 방식
 
 (본인이 만들고 있는 기능) (현재기능의 상태) (본인의 이름) <br>
-ex) 로그인기능 진행중 백지민 <br>
-    메인페이지ui 완료 백지민
+ex) feat: 로그인기능 <br>
+    fix: 메인페이지ui
 
 
 # git 명령어 
@@ -32,8 +32,11 @@ ex) 로그인기능 진행중 백지민 <br>
 
 ### remote(원격저장소 github)에 있는 프로젝트를 가져오는 명령어
 - `git pull origin {코드를 가져올 branch이름}` : 본인의 local코드에 remote(원격저장소 github)에 있는 코드를 합치는 명령어
-- `git clone (github에서 프로젝트의 주소)` : 해당 github의 주소에 해당하는 프로젝트를 다운로드해오는 명령어
+- `git clone (github에서 프로젝트의 주소)` : 해당 github의 주소에 해당하는 프로젝트를 다운로드해오는 명령어 
+<br>
 
-
-## 만약에 본인의 local코드가 본인의 github branch에 push되지 않을경우에는 본인의 branch에 해당하는 코드를 pull 하고 다시 push 진행하기 
-`git pull origin {코드를 가져올 branch이름}` -> `git push origin {본인의 branch이름}`
+## 만약에 본인의 local코드에 다른 branch의 코드가 pull 되지 않을 경우에는 커밋내역이 맞지않아서 그런것일 수 있음 작업중인 파일이 있다면 stash를 사용해보기
+- `git stash` : 현재 작업중인 코드를 잠시 다른공간(?)에 저장시두는 명령어 **(git pull을 하기전에 remote의 커밋과 local의 커밋내역이 맞지않으면 pull이 되지않기 때문에 하는 것 )** 
+- `git stash apply` : 내가 stash로 저장했던 코드를 다시 local에 가져오는 명령어
+- `git stash list` : 내가 stash명령어로 저장시켜놓은 hunk(깃에서 하나의 변경사항이 담긴 단위)들을 확인하는 명령어
+- `git stash drop` : 내가 stash명령어로 저장시켜놓은 hunk(깃에서 하나의 변경사항이 담긴 단위) 하나를 삭제하는 명령어 가장 최근에 만든 hunk 하나만 삭제된다.
