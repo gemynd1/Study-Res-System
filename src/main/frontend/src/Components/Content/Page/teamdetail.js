@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Rating from "@mui/material/Rating";
 import Radio from "@mui/material/Radio";
 import Button from "@mui/material/Button";
@@ -12,6 +12,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import dayjs from "dayjs";
+
 function MyButtons({ swiper }) {
   return (
     <div className="moveButton">
@@ -69,13 +71,39 @@ function RadioButtonsGroup() {
     </FormControl>
   );
 }
+// function BasicDateCalendar() {
+//   // 현재 날짜를 구합니다.
+//   const today = dayjs().startOf("day"); // 시작 시간을 자정으로 설정
+
+//   return (
+//     <LocalizationProvider dateAdapter={AdapterDayjs}>
+//       <DateCalendar
+//         minDate={today} // 현재 날짜 이후의 날짜만 선택 가능
+//       />
+//     </LocalizationProvider>
+//   );
+// }
+
 function BasicDateCalendar() {
+  const disablePastDates = (date) => {
+    return date.isBefore(dayjs(), "day"); // 오늘보다 이전 날짜는 비활성화
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar />
+      <DateCalendar
+        shouldDisableDate={disablePastDates} // 현재 날짜 이후의 날짜만 선택 가능
+      />
     </LocalizationProvider>
   );
 }
+// function BasicDateCalendar() {
+//   return (
+//     <LocalizationProvider dateAdapter={AdapterDayjs}>
+//       <DateCalendar/>
+//     </LocalizationProvider>
+//   );
+// }
 function BasicButtons({
   text,
   width,
