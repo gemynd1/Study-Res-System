@@ -91,10 +91,10 @@ const MypageAccount = () => {
                             <input type={pwType.type} className="AccountExist" placeholder="비밀번호를 입력해주세요."/>
                             <span onClick={handlePassWordType}>
                                 {pwType.visible ? (
-                                    <img src="/img/icon/password.png" alt="비밀번호 보기" className="passwordIcon"/> )
-                                        :
+                                        <img src="/img/icon/password.png" alt="비밀번호 보기" className="passwordIcon"/> )
+                                    :
                                     (<img src="/img/icon/seepassword.png" alt="비밀번호 숨기기" className="passwordIcon" />
-                                )}
+                                    )}
                             </span>
                         </div>
 
