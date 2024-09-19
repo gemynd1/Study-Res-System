@@ -1,0 +1,245 @@
+/* login */
+.loginSec {
+    min-height: 100vh;
+    background-color: #D9D9D9;
+    text-align: center;
+}
+
+.loginSec .loginMain {
+    text-align: center;
+}
+
+.loginSec .loginMain .loginImg .logo {
+    margin-right: 10px;
+    padding-top: 2%;
+    width: 20%;
+    height: 20%;
+}
+
+.loginSec .loginMain .login-tit {
+    /* margin-top: 30px; */
+    font-size: 50px;
+    font-weight: 800;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+
+.loginSec .loginMain .loginContent {
+    width: 45%;
+    height: 50%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.loginSec .loginMain .loginContent .kakaoButton {
+    width: 85%;
+    border: 1px solid black;
+    background-color: transparent;
+    margin: 60px 0 20px 0;
+    padding: 7px 0;
+}
+
+.loginSec .loginMain .loginContent .kakaoButton img {
+    width: 17%;
+}
+
+.loginSec .loginMain .loginContent .hrline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginSec .loginMain .loginContent .hrline .line1,
+.loginSec .loginMain .loginContent .hrline .line2
+{
+    width: 32%;
+    color: #79747E;
+}
+
+.loginSec .loginMain .loginContent .form-content .idInput input, 
+.loginSec .loginMain .loginContent .form-content .pwInput input
+{
+    width: 85%;
+    /* height: 50px; */
+    /* border: 1px solid black; */
+    /* background-color: transparent; */
+    margin: 10px 0 5px 0;
+    padding: 13px 0;
+    font-size: 20px;
+}
+
+.loginSec .loginMain .loginContent .form-content .idInput input::placeholder, 
+.loginSec .loginMain .loginContent .form-content .pwInput input::placeholder
+{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+    text-indent: 5px;
+}
+
+.loginSec .loginMain .loginContent .form-content .pwFind {
+    display: flex;
+}
+
+.loginSec .loginMain .loginContent .form-content .pwFind a {
+    margin: 0 70px 0 auto;
+    text-decoration: none;
+    color: #000000;
+}
+
+.loginSec .loginMain .loginContent .form-content .loginbtn {
+    width: 85%;
+    height: 64px;
+    margin: 30px 0 60px 0;
+    background-color: #FFD600;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    color: #000000;
+}
+
+/* join */
+.joinSec {
+    min-height: 100vh;
+    background-color: #D9D9D9;
+    text-align: center;
+}
+
+.joinSec .joinMain {
+    text-align: center;
+}
+
+.joinSec .joinMain .joinImg .logo {
+    margin-right: 10px;
+    padding-top: 2%;
+    width: 20%;
+    height: 20%;
+}
+
+.joinSec .joinMain .join-tit {
+    font-size: 50px;
+    font-weight: 800;
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
+
+.joinSec .joinMain .joinContent {
+    width: 45%;
+    height: 50%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.joinSec .joinMain .joinContent .kakaoButton {
+    width: 85%;
+    border: 1px solid black;
+    background-color: transparent;
+    margin: 60px 0 20px 0;
+    padding: 7px 0;
+}
+
+.joinSec .joinMain .joinContent .kakaoButton img {
+    width: 17%;
+}
+
+.joinSec .joinMain .joinContent .hrline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.joinSec .joinMain .joinContent .hrline .line1,
+.joinSec .joinMain .joinContent .hrline .line2
+{
+    width: 32%;
+    color: #79747E;
+}
+
+.joinSec .joinMain .joinContent .form-content .postInput input {
+    width: 20%;
+    margin: 10px 0 5px 0;
+    padding: 13px 0;
+    font-size: 20px;
+}
+
+.joinSec .joinMain .joinContent .form-content .postInput .postBtn {
+    width: 15%;
+    margin: 10px 0 5px 10px;
+    padding: 14px 0;
+    font-size: 15px;
+    margin-right: 48.7%;
+}
+
+.joinSec .joinMain .joinContent .form-content .nickInput input,
+.joinSec .joinMain .joinContent .form-content .addInput input,
+.joinSec .joinMain .joinContent .form-content .detailAddInput input,
+.joinSec .joinMain .joinContent .form-content .idInput input, 
+.joinSec .joinMain .joinContent .form-content .pwInput input,
+.joinSec .joinMain .joinContent .form-content .pwCheck input
+{
+    width: 85%;
+    margin: 10px 0 5px 0;
+    padding: 13px 0;
+    font-size: 20px;
+
+    /* height: 50px; */
+    /* border: 1px solid black; */
+    /* background-color: transparent; */
+}
+
+.joinSec .joinMain .joinContent .form-content .nickInput input::placeholder,
+.joinSec .joinMain .joinContent .form-content .postInput input::placeholder,
+.joinSec .joinMain .joinContent .form-content .addInput input::placeholder,
+.joinSec .joinMain .joinContent .form-content .detailAddInput input::placeholder,
+.joinSec .joinMain .joinContent .form-content .idInput input::placeholder, 
+.joinSec .joinMain .joinContent .form-content .pwInput input::placeholder,
+.joinSec .joinMain .joinContent .form-content .pwCheck input::placeholder
+{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+    text-indent: 5px;
+}
+
+.joinSec .joinMain .joinContent .form-content .pwInput .pwCheckInfo {
+    text-align: left;
+    margin-top: 3px;
+    margin-left: 70px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.joinSec .joinMain .joinContent .form-content .agreecheck ul {
+    display: flex;
+    list-style: none;
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 18px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.joinSec .joinMain .joinContent .form-content .agreecheck .line3 {
+    /* display: flex; */
+    width: 85%;
+    color: #79747E;
+}
+
+.joinSec .joinMain .joinContent .form-content .agreecheck ul li {
+    margin-left: 5px;
+}

@@ -14,12 +14,39 @@ const MypageUpdate = () => {
     }, []);
 
     return (
-        <>
-            <div>
-                Update
-                {MypageUpdate}
+        <div className="MyPage">
+            <div className="Mypageheader">
+                <div className="MypageHome">
+                    <Link to='/'>
+                        <img src="/img/icon/home.png" alt='/' className="icon"/>
+                    </Link>
+                </div>
+                <div className="Mypageheader2">
+                    <div className="MypageheaderLine">
+                        <Link to='/mypage' style={{textDecoration: 'none'}}>
+                            <span className="mypagetext">마이페이지</span>
+                        </Link>
+                        <img src="/img/icon/arrow.png" alt='/' className="mypagearrow"/>
+                    </div>
+                </div>
+                <div className="Mypageheader2">
+                    <div className="MypageheaderLine">
+                        <Link to='/mypage/mypageUpdate' style={{textDecoration: 'none'}}>
+                            <span className="mypagetext">개인정보수정</span>
+                        </Link>
+                        <img src="/img/icon/arrow.png" alt='/' className="mypagearrow"/>
+                    </div>
+                </div>
             </div>
-        </>
+
+
+                <div>
+                    Update
+                    {MypageUpdate}
+                </div>
+        </div>
+
+
     )
 }
 
