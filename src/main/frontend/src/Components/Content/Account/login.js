@@ -30,10 +30,10 @@ const Login = () => {
                         </div>
                         <form className="form-content">
                             <div className="idInput">
-                                <input type="text" placeholder="아이디" size={30} />
+                                <input type="text" placeholder="아이디" size={20} />
                             </div>
                             <div className="pwInput">
-                                <input type="password" placeholder="비밀번호" size={30} />
+                                <input type="password" placeholder="비밀번호" size={20} />
                             </div>
                             <div className="pwFind">
                                 <Link to="/login">비밀번호 찾기</Link>
