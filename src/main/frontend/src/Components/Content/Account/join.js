@@ -13,9 +13,6 @@ const Join = () => {
     return (
         <>
             <section className="joinSec">
-<<<<<<< HEAD
-                
-=======
                 <div className="joinMain">
                     <div className="join-tit">
                         <span>회원가입</span>
@@ -110,7 +107,6 @@ const Join = () => {
                         <img src="/img/snlogo.png" alt="snlogo" className="logo" />
                     </div>
                 </div>
->>>>>>> 73d48fff2dfa00487783dccb13240cdb32e501d8
             </section>
         </>
     )
