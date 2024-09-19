@@ -113,6 +113,7 @@ function BasicButtons({
   margin,
   backgroundColor,
   color,
+  onClick,
 }) {
   return (
     <Button
@@ -128,9 +129,53 @@ function BasicButtons({
         margin: margin || "2px 2px",
         color: color || "#000000",
       }}
+      onClick={onClick}
     >
       {text}
     </Button>
+  );
+}
+
+function TeamDetailButtons() {
+  const [count, setCount] = useState(3); // 초기값은 3
+
+  const handleIncrement = () => {
+    if (count < 10) {
+      setCount(count + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
+  };
+
+  return (
+    <div className="teamDetail__side-buttons-wrap">
+      <BasicButtons
+        text={count}
+        width="364px"
+        height="74px"
+        backgroundColor="#ffffff"
+      />
+      <div className="teamDetail__side-buttons">
+        <BasicButtons
+          text="-"
+          width="84px"
+          height="74px"
+          backgroundColor="#A5A6B9"
+          onClick={handleDecrement}
+        />
+        <BasicButtons
+          text="+"
+          width="84px"
+          height="74px"
+          backgroundColor="#A5A6B9"
+          onClick={handleIncrement}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -320,7 +365,7 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">h3총예약인원</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <div className="teamDetail__side-buttons-wrap">
+          {/* <div className="teamDetail__side-buttons-wrap">
             <BasicButtons
               text="3"
               width="364px"
@@ -341,7 +386,8 @@ const TeamDetail = () => {
                 backgroundColor="#A5A6B9"
               />
             </div>
-          </div>
+          </div> */}
+          <TeamDetailButtons />
         </div>
         <div className="teamDetail__side-contact-actions-buttons">
           <div className="teamDitail__call-chating">
