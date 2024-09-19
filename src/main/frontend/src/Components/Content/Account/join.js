@@ -4,9 +4,9 @@ import {Link } from "react-router-dom";
 const Join = () => {
     return (
         <>
-            <div>
-                회원가입
-            </div>
+            <section className="joinSec">
+                
+            </section>
         </>
     )
 }
