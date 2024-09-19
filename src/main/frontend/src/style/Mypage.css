@@ -1,15 +1,15 @@
 /* 마이페이지 헤더 */
 .Mypageheader {
-    width: 1920px;
-    height: 104px;
+    width: 100%;
+    height: 74px;
     margin-top: 30px;
     background: #E8E8E8;
     display: flex;
 }
 
 .MypageHome {
-    width: 104px;
-    height: 104px;
+    width: 74px;
+    height: 74px;
     margin-left: 170px;
     background: #D9D9D9;
     display: flex;
@@ -18,8 +18,8 @@
 }
 
 .icon {
-    width: 33px;
-    height: 33px;
+    width: 25px;
+    height: 25px;
 }
 
 .Mypageheader2 {
@@ -29,7 +29,7 @@
 
 .MypageheaderLine {
     text-align: center;
-    margin-top: 38px;
+    margin-top: 23px;
 }
 
 .mypagetext {
@@ -37,10 +37,9 @@
     height: 29px;
     font-style: normal;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 22px;
     line-height: 29px;
     color: #000000;
-
 }
 
 .mypagearrow {
@@ -86,7 +85,6 @@
 }
 
 .editText {
-    width: 133px;
     height: 29px;
     font-style: normal;
     font-weight: 700;
@@ -105,19 +103,22 @@
 }
 
 .editText2 {
-    width: 661px;
+
     height: 29px;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
-    text-align: center;
     color: #000000;
+    margin-left: 60px;
+
+    text-align: center;
+
 }
 
 .AccountInput3 {
     width: 595px;
-    height: 109px;
+    height: 80px;
     margin-left: 238px;
     margin-top: 35px;
     background: #D9D9D9;
@@ -127,13 +128,35 @@
     align-items: center;
 }
 
+.AccountInput4 {
+    width: 595px;
+    height: 80px;
+    margin-left: 238px;
+    /*margin-top: 35px;*/
+    background: #D9D9D9;
+    border-top: 3px solid #AAAAAA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.AccountID {*/
+/*    position: absolute;*/
+/*    !* width: 89px; *!*/
+/*    height: 39px;*/
+/*    font-style: normal;*/
+/*    font-weight: 600;*/
+/*    font-size: 27px;*/
+
 .AccountID {
     position: absolute;
-    width: 89px;
+
+    /*width: 89px;*/
     height: 39px;
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
+
     line-height: 39px;
     color: #000000;
 }
@@ -143,13 +166,1069 @@
 }
 
 .AccountInputID2 {
-
     margin-top: 35px;
     border-top: 6px solid #B8B8B8;
 }
 
+.AccountInputID4 {
+    border-top: 3px solid #AAAAAA;
+    display: flex;
+}
+
+.AccountInputID4 span {
+    position: absolute;
+    display: flex;
+}
+
+.UpdateInput span {
+    position: absolute;
+    display: flex;
+}
+
+
 .AccountExist {
     width: 595px;
-    height: 108px;
+    height: 79px;
+    border: none;
+    font-size: 27px;
+}
+
+.InputBody {
+    height: 500px;
+}
+
+.AccountBtn {
+    margin-left: 45%;
+    margin-top: 10%;
+    width: 213px;
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    background: #FFCFBB;
+    font-size: 20px;
+}
+
+
+/* 마이페이지 css */
+.MypageSelect {
+    display: flex;
+    box-sizing: border-box;
+    width: 1440px;
+    height: 241px;
+    left: 426px;
+    top: 198px;
+    margin: 10px auto auto 200px;
+    background: #FFFFFF;
+    border: 1px solid #C9C9C9;
+    justify-content: space-evenly;
+}
+
+.circle {
+    width: 157px;
+    height: 157px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.mypageIcon {
+    width: 66px;
+    height: 66px;
+}
+
+.mypageIcon4 {
+    width: 90px;
+    height: 90px;
+}
+
+.mypageBox {
+    height: 880px;
+}
+
+.Inquiry {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.mypageIcon1 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 25px;
+}
+
+.mypageIcon2 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 23px;
+}
+
+.mypageIcon3 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 30px;
+}
+
+.mypageIcon5 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 45px;
+}
+
+.InquiryText {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 26px;
+}
+
+.InquiryText2 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 12px;
+}
+
+.InquiryText3 {
+    height: 24px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 33px;
+}
+
+.passwordIcon {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    margin-left: 550px;
+    margin-top: 15px;
+}
+
+/* 마이페이지 Update css*/
+.updateText {
+    height: 39px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 39px;
+    color: #000000;
+    display: flex;
+    margin: 100px auto auto 12%;
+}
+
+.updateText2 {
+    height: 39px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 39px;
+    color: #000000;
+    display: flex;
+    margin: 100px auto auto 12%;
+}
+
+.MypageUpdate {
+    width: 100%;
+    height: 770px;
+}
+
+.MypageUpdate2 {
+    width: 100%;
+    height: 1100px;
+}
+
+.MypageMenu {
+    height: 1100px;
+    box-sizing: border-box;
+    width: 19%;
+    float: left;
+    border-right: 1px solid #000000;
+}
+
+.menuText {
+    margin-left: 20px;
+    font-size: 32px;
+    font-weight: 400;
+    color: black;
+}
+
+
+.selectMenu {
+    background: #75BDFF;
+}
+
+.UpdateBody {
+    box-sizing: border-box;
+    width: 80%;
+    float: right;
+}
+
+.UpdateBodyText {
+    margin: 40px auto auto 40px;
+}
+
+.UpdateText {
+    height: 58px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 58px;
+    color: #000000;
+}
+
+.exitMember {
+    display: flex;
+    margin: 20px auto auto 100px;
+    align-items: center;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.arrow2 {
+    width: 35px;
+    height: 35px;
+}
+
+.exitMember2 {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.MemberInfo {
+    height: 44px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+}
+
+.MemberInfoBox {
+    border-bottom: 3px solid #7E7E7E;
+    width: 66%;
+    margin-top: 20px;
+}
+
+.UpdateInputBox {
+    width: 66%;
+    margin-top: 30px;
+    display: flex;
+}
+
+.Inputspan span {
+    height: 29px;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+    font-weight: bold;
+
+}
+
+.Inputspan {
+    width: 400px;
+    border-right: 1px solid #000000;
+}
+
+.UpdateInput input {
+    width: 500px;
+    height: 42px;
+    border: 1px solid #000000;
+}
+
+.UpdateInput {
+    margin-left: 47px;
+    display: flex;
+}
+
+.saveCheck {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFCFBB;
+    width: 213px;
+    height: 37px;
+    margin: 40px auto auto 400px;
+}
+
+.saveCheck button {
+    border: none;
+    background: none;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.check {
+    width: 24px;
+    height: 24px;
+}
+
+.UpdatepasswordIcon {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    margin: 4px auto auto 460px;
+}
+
+/* 작성한 글 확인 css*/
+.AllText{
+    margin: 45px auto 40px 40px;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.table-container {
+    width: 90%;
+    height: 300px;
+    text-align: center;
+    font-size: 18px;
+
+    border: 1px #a39485 solid;
+    box-shadow: 0 2px 5px rgba(0,0,0,.25);
+    border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.table-container th {
+    border-width: 1px 0 3px 0;
+    border-style: solid;
+}
+
+.table-container td, th {
+    padding: 1em .5em;
+    vertical-align: middle;
+}
+
+.table-container th {
+    border-bottom: 3px solid #a39485;
+}
+
+.table-container td {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+/* 페이지네이션 */
+.pagination-container {
+    display: flex;
+    margin: 20px auto auto 420px;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    border: none;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    padding: 8px 12px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+    background: #ffffff;
+}
+
+.paginationNum {
+    display: flex;
+    cursor: pointer;
+}
+
+.paginationIcon {
+    width: 35px;
+    height: 35px;
+}
+
+.page-link:hover {
+    color: #ffffff;
+    background: #2e9cdf;
+}
+
+.page-link:focus {
+    color: #ffffff;
+    background: #2e9cdf;
+}
+
+.page-link:active {
+    cursor: default;
+    color: #ffffff;
+}
+
+/* 시간충전 css */
+.exitMember button {
+    background-color: white;
+    border: none;
+    color: red;
+    font-weight: 800;
+}
+
+.MypageAdd {
+    width: 100%;
+    height: 900px;
+}
+
+.AddText {
+    height: 77px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 77px;
+    color: #000000;
+}
+
+.AddBodyText {
+    margin: 40px auto 48px 40px;
+    width: 80%;
+    box-shadow: 0 6px 4px -6px black;
+    padding: 1em .5em;
+}
+
+.TicketBox {
+    display: flex;
+    margin-left: 50px;
+
+}
+
+.TicketBox1 button{
+    width: 245px;
+    height: 87px;
+    /*border-radius: 3px;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #75BDFF;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+}
+
+.TicketBox2 button {
+    width: 247px;
+    height: 87px;
+    /*border-radius: 3px;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+}
+
+.TimeBox {
+    width: 492px;
+    height: 484px;
+    left: 530px;
+    top: 485px;
+    background: #FFFAFA;
+    border-radius: 3px;
+    margin-left: 50px;
+}
+
+.Timebox2 {
+    display: flex;
+}
+
+.SameTime {
+    width: 222px;
+    height: 83px;
+    left: 542px;
+    top: 519px;
+    background: #FBF1EE;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 53px auto 10px 12px;
+}
+
+.SameTime button {
+    height: 48px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+    border: none;
+    background: #FBF1EE;
+}
+
+.TicketBox button {
+    border:none;
+    background-color: #9B9B9B;
+    color: white;
+    cursor: pointer;
+}
+
+.TicketBox button.active {
+    background-color: #75BDFF;
+    color: white;
+}
+
+.AddAllBox {
+    width: 100%;
+    height: auto;
+}
+
+.AddBox {
+    width: 30%;
+    float: left;
+}
+
+.AddTime {
+    width: 60%;
+    float: right;
+    /*display: flex;*/
+    /*align-items: center;*/
+}
+
+.AddTime img {
+    width: 79px;
+    height: 64px;
+}
+
+.AddTime span {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 39px;
+    color: #000000;
+}
+
+.AddTime1 {
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+}
+
+.AddTimeText {
+    margin: 30px auto auto 80px;
+}
+
+.AddTimeText span{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 39px;
+    color: #000000;
+}
+
+.AddStudyTime {
+    width: 651px;
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 100px;
+    border-bottom: 1px solid #C3C3C3
+}
+
+.AddStudyTime span{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 39px;
+    color: #000000;
+}
+
+/* 시간추가 모달 css */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.custom-modal {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    height: 700px;
+}
+
+.Modal-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.Modal-content button {
+    border: none;
+    width: 450px;
+    height: 100px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.Modal-content button:hover {
+    background-color: #ffd000;
+}
+
+.Payment {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 77px;
+    color: #000000;
+    margin: auto 150px auto 110px;
+}
+
+.deletemodal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deletemodal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 40px;
+    width: 400px;
+    height: 600px;
+    text-align: center;
+}
+
+.MemberBox {
+    background-color: #FF5B5B;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+}
+
+.MemberDelete {
+    display: flex;
+    justify-content: center;
+}
+
+.MemberBox3 {
+    width: 300px;
+    font-size: 25px;
+    margin-top: 7%;
+    font-weight: 500;
+    color: black;
+}
+
+.MemberBox2 {
+    font-weight: bold;
+    font-size: 35px;
+    margin-top: 10%;
+    color: black;
+}
+
+.MemberBox1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.DeleteBtn {
+    border-radius: 10px;
+    width: 400px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    background-color: #FF5B5B;
+    margin-top: 20%;
+}
+
+.cancleBtn {
+    border-radius: 10px;
+    width: 400px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+
+.DeleteBtn2 {
+    display: flex;
+}
+
+.DeleteBtn2 button {
+    background-color: white;
+    font-weight: bold;
+    font-size: 26px;
+    color: #CCCCCC;
     border: none;
 }
+
+.DeleteBtn1 {
+    display: flex;
+}
+
+.DeleteBtn1 button{
+    background-color: #FF5B5B;
+    font-weight: bold;
+    font-size: 26px;
+    color: #EFEFEF;
+    border: none;
+}
+
+
+.close {
+    /*position: absolute;*/
+    /*right: 10px;*/
+    /*top: 10px;*/
+    cursor: pointer;
+}
+
+.Payment1 {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.PaymentAllBox {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+}
+
+.PaymentBox {
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.AllCredit {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    margin: 30px auto 20px auto;
+}
+
+.PaymentText {
+    font-size: 20px;
+    font-weight: 700;
+    color: #738272;
+}
+
+.PaymentText1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #738272;
+}
+
+.AllCredit2 {
+    border-bottom: 1px solid #ccc;
+}
+
+.updateText2 {
+    height: 39px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 39px;
+    color: #000000;
+    display: flex;
+    margin: 100px auto auto 12%;
+}
+
+.MypageUpdate {
+    width: 100%;
+    height: 770px;
+}
+
+.MypageUpdate2 {
+    width: 100%;
+    height: 1100px;
+}
+
+.MypageMenu {
+    height: 1100px;
+    box-sizing: border-box;
+    width: 19%;
+    float: left;
+    border-right: 1px solid #000000;
+}
+
+.menuText {
+    margin-left: 20px;
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.selectMenu {
+    background: #75BDFF;
+}
+
+.UpdateBody {
+    box-sizing: border-box;
+    width: 80%;
+    float: right;
+}
+
+.UpdateBodyText {
+    margin: 40px auto auto 40px;
+}
+
+.UpdateText {
+    height: 58px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 58px;
+    color: #000000;
+}
+
+.exitMember {
+    display: flex;
+    margin: 20px auto auto 100px;
+    align-items: center;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.arrow2 {
+    width: 35px;
+    height: 35px;
+}
+
+.exitMember2 {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.MemberInfo {
+    height: 44px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+}
+
+.MemberInfoBox {
+    border-bottom: 3px solid #7E7E7E;
+    width: 66%;
+    margin-top: 20px;
+}
+
+.UpdateInputBox {
+    width: 66%;
+    margin-top: 30px;
+    display: flex;
+}
+
+.Inputspan span {
+    height: 29px;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+    font-weight: bold;
+
+}
+
+.Inputspan {
+    width: 400px;
+    border-right: 1px solid #000000;
+}
+
+.UpdateInput input {
+    width: 500px;
+    height: 42px;
+    border: 1px solid #000000;
+}
+
+.UpdateInput {
+    margin-left: 47px;
+    display: flex;
+}
+
+.saveCheck {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFCFBB;
+    width: 213px;
+    height: 37px;
+    margin: 40px auto auto 400px;
+}
+
+.saveCheck button {
+    border: none;
+    background: none;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.check {
+    width: 24px;
+    height: 24px;
+}
+
+.UpdatepasswordIcon {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    margin: 4px auto auto 460px;
+}
+
+/* 작성한 글 확인 css*/
+.AllText{
+    margin: 45px auto 40px 40px;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.writeBox {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 1392px;
+    height: 71px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.table-container {
+    width: 90%;
+    height: 300px;
+    text-align: center;
+    font-size: 18px;
+
+    border: 1px #a39485 solid;
+    box-shadow: 0 2px 5px rgba(0,0,0,.25);
+    border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.table-container th {
+    border-width: 1px 0 3px 0;
+    border-style: solid;
+}
+
+.table-container td, th {
+    padding: 1em .5em;
+    vertical-align: middle;
+}
+
+.table-container th {
+    border-bottom: 3px solid #a39485;
+}
+
+.table-container td {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+/* 페이지네이션 */
+.pagination-container {
+    display: flex;
+    margin: 20px auto auto 420px;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    border: none;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    padding: 8px 12px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+    background: #ffffff;
+}
+
+.paginationNum {
+    display: flex;
+    cursor: pointer;
+}
+
+.paginationIcon {
+    width: 35px;
+    height: 35px;
+}
+
+.page-link:hover {
+    color: #ffffff;
+    background: #2e9cdf;
+}
+
+.page-link:focus {
+    color: #ffffff;
+    background: #2e9cdf;
+}
+
+.page-link:active {
+    cursor: default;
+    color: #ffffff;
+}
+

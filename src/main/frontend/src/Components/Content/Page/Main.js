@@ -283,9 +283,9 @@ const Main = () => {
                     </div>
                 </div>
                 <p className="text">
-                    <img src="/img/icon/image.png" /> 총 좌석 <span id="totalcount">&nbsp; 3</span>&nbsp;
-                    <img src="/img/icon/image.png" /> 사용 중 <span id="usecount">&nbsp; 4</span>&nbsp;
-                    <img src="/img/icon/image.png" /> 남은 자리 <span id="leftcount">&nbsp; 5</span>
+                    <img src="/img/icon/arrow.png" /> 총 좌석 <span id="totalcount">&nbsp; 3</span>&nbsp;
+                    <img src="/img/icon/arrow.png" /> 사용 중 <span id="usecount">&nbsp; 4</span>&nbsp;
+                    <img src="/img/icon/arrow.png" /> 남은 자리 <span id="leftcount">&nbsp; 5</span>
                 </p>
             </section>
         </>
