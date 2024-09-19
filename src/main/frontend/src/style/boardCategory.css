@@ -122,7 +122,7 @@ div.board-page div.board-menubar div.writeButton div.writeButton-1 {
 }
 
 div.board-page div.board-category-1 {
-    position: absolute;
+    position: relative;
     width: 1120px;
     height: 688px;
     margin-left: 123px;
