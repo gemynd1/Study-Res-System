@@ -6,10 +6,30 @@ const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
 const kakaoURL = 'https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code';
 
+
+
 const Join = () => {
+    // const [ModalOpen, setModalOpen] = useState(false);
+    const [Agree1Open, setAgree1Open] = useState(false);
+    const [Agree2Open, setAgree2Open] = useState(false);
+    const [Agree3Open, setAgree3Open] = useState(false);
+
+    const Agree1OpenModal = () => {
+        setAgree1Open(true);
+    }
+
+    const Agree2OpenModal = () => {
+        setAgree2Open(true);
+    }
+
+    const Agree3OpenModal = () => {
+        setAgree3Open(true);
+    }
+
     const handlekakaLogin = () => {
         window.location.href = kakaoURL;
     }
+
     return (
         <>
             <section className="joinSec">
@@ -79,7 +99,8 @@ const Join = () => {
                                             <input type="checkbox" name="chk" id="chk" required />
                                         </li>
                                         <li>
-                                            <button>서비스 이용약관(필수)</button>
+                                            <button 
+                                                onClick={() => Agree1OpenModal()}>서비스 이용약관(필수)</button>
                                         </li>
                                     </ul>
                                 </div>
