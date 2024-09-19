@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import Rating from "@mui/material/Rating";
 import Radio from "@mui/material/Radio";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 function MyButtons({ swiper }) {
   return (
     <div className="moveButton">
@@ -85,23 +84,53 @@ function BasicButtons({
   padding,
   margin,
   backgroundColor,
+  color,
 }) {
   return (
     <Button
       variant="contained"
       sx={{
         backgroundColor: backgroundColor || "#7EE9BB",
-        "&:hover": { backgroundColor: "#5CC8A4" },
+        // "&:hover": { backgroundColor: "#5CC8A4" },
         fontWeight: "bold",
         width: width || "92px", // 기본값은 auto
         height: height || "74px", // 기본값은 auto
         fontSize: fontSize || "1.25rem", // 기본값은 1rem
         padding: padding || "12px 24px", // 기본값은 '8px 16px'
         margin: margin || "2px 2px",
+        color: color || "#000000",
       }}
     >
       {text}
     </Button>
+  );
+}
+
+function TimeSelector() {
+  const [selectedTimes, setSelectedTimes] = useState([]);
+
+  const handleChange = (event, newSelectedTimes) => {
+    // 최대 2개까지 선택할 수 있도록 제한
+    if (newSelectedTimes.length <= 2) {
+      setSelectedTimes(newSelectedTimes);
+    }
+  };
+
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+
+  return (
+    <ToggleButtonGroup
+      value={selectedTimes}
+      onChange={handleChange}
+      aria-label="time-selector"
+      size="small"
+    >
+      {hours.map((hour) => (
+        <ToggleButton key={hour} value={hour} aria-label={`${hour}:00`}>
+          {hour}:00
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
   );
 }
 
@@ -203,7 +232,6 @@ const TeamDetail = () => {
             <FormControlLabel control={<Radio />} label="시간단위 예약하기" />
           </div>
           <div className="teamDetail__side-calendar">
-            {/* <div className="teamDetail__side-calendar-header">달력</div> */}
             <BasicDateCalendar />
           </div>
           <div className="teamDetail__side-legend">
@@ -224,7 +252,7 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">h3시간선택</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <div className="teamDetail__side-choiceTime">시간선택버튼</div>
+          <TimeSelector />
           <div className="teamDetail__side-legend">
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor1"></div>
@@ -244,9 +272,30 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">h3총예약인원</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <div className="teamDetail__side-count-control">인원증감버튼</div>
+          <div className="teamDetail__side-buttons-wrap">
+            <BasicButtons
+              text="3"
+              width="364px"
+              height="74px"
+              backgroundColor="#ffffff"
+            />
+            <div className="teamDetail__side-buttons">
+              <BasicButtons
+                text="-"
+                width="84px"
+                height="74px"
+                backgroundColor="#A5A6B9"
+              />
+              <BasicButtons
+                text="+"
+                width="84px"
+                height="74px"
+                backgroundColor="#A5A6B9"
+              />
+            </div>
+          </div>
         </div>
-        <div className="teamDetail__buttons">
+        <div className="teamDetail__side-contact-actions-buttons">
           <div className="teamDitail__call-chating">
             <BasicButtons text="전화" />
             <BasicButtons text="채팅" />

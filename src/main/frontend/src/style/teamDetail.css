@@ -183,7 +183,23 @@ h2 {
   background-color: #ffffff;
   height: 60px;
 }
-.teamDetail__buttons {
+.teamDetail__side-buttons-wrap {
+  display: flex;
+  position: relative;
+  margin: 15px 0 25px;
+}
+.teamDetail__side-buttons {
+  position: absolute;
+  top: 50%; /* Center the buttons vertically */
+  width: 100%; /* Stretch the button container across the Swiper */
+  display: flex;
+  justify-content: space-between; /* Push buttons to opposite ends */
+  align-items: center;
+  transform: translateY(-50%);
+  z-index: 2;
+  opacity: 0.8;
+}
+.teamDetail__side-contact-actions-buttons {
   display: flex;
   margin-left: 35px;
   justify-content: space-between;
