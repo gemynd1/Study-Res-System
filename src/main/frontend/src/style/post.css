@@ -1,0 +1,775 @@
+div.post p,
+div.post span {
+    font-family: 'Inter';
+    font-style: normal;
+}
+
+div.post {
+    position: relative;
+    width: 1444px;
+    height: auto;
+    background: #D9D9D9;
+    margin-top: 110px;
+    margin-left: 227px;
+    padding-bottom: 60px;
+    margin-bottom: 5%;
+}
+
+div.post p.title {
+    position: absolute;
+    font-weight: 400;
+    font-size: 45px;
+    line-height: 54px;
+    color: #000000;
+    margin-top: 77px;
+    margin-left: 133px;
+}
+
+div.post div.breadcrumb {
+    position: absolute;
+    display: inline-block;
+    margin-top: 119px;
+    /* margin-right: 114px; */
+    right: 100px;
+}
+
+div.post div.breadcrumb img.breadcrumb-home {
+    /* position: absolute; */
+    width: 20px;
+    height: 20px;
+    display: inline;
+}
+
+div.post div.breadcrumb img.breadcrumb-arrow {
+    /* position: absolute; */
+    width: 20px;
+    height: 20px;
+    display: inline;
+}
+
+div.post div.breadcrumb span.breadcrumb-board {
+    /* position: absolute; */
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+div.post div.breadcrumb img.breadcrumb-arrow2 {
+    /* position: absolute; */
+    width: 20px;
+    height: 20px;
+    display: inline;
+}
+
+div.post div.breadcrumb span.breadcrumb-category {
+    /* position: absolute; */
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}   
+
+div.post div.contour {
+    position: absolute;
+    width: 1200px;
+    height: 1px;
+    background: #000000;
+    margin-top: 158px;
+    margin-left: 133px;
+}
+
+div.post div.post-info1 {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 1202px;
+    height: 57px;
+    background: #FFFFFF;
+    border-width: 1px 0px;
+    border-style: solid;
+    border-color: #000000;
+    margin-top: 195px;
+    margin-left: 133px;
+}
+
+div.post div.post-info1 img.post-author-icon {
+    /* position: absolute; */
+    display: inline;
+    width: 30px;
+    height: 30px;
+    margin-top: 12px;
+    margin-bottom: 15px;
+}
+
+div.post div.post-info1 span.post-author {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 18px;
+}
+
+div.post div.post-info1 img.post-calendar-icon {
+    position: absolute;
+    display: inline;
+    width: 26px;
+    height: 26px;
+    margin-right: 138px;
+    margin-top: 14px;
+    margin-bottom: 17px;
+    right: 100px;
+}
+
+div.post div.post-info1 span.post-writeday {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-top: 15px;
+    margin-bottom: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+    right: 100px;
+}
+
+div.post div.post-info2 {
+    /* position: relative; */
+    display: inline-block;
+    width: 220px;
+    height: 40px;
+    margin-left: 133px;
+    margin-top: 50px;
+}
+
+div.post div.post-info2 img.post-group-icon {
+    /* position: absolute; */
+    display: inline;
+    width: 40px;
+    height: 40px;
+}
+
+
+div.post div.post-info2 span.post-group {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 16px;
+}
+
+div.post div.post-info2 span.post-group2 {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #268B5F;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 91px;
+}
+
+div.post div.post-info3 {
+    position: relative;
+    display: inline-block;
+    width: 1444px;
+}
+
+div.post div.post-info3 div.post-member {
+    position: absolute;
+    display: inline-block;
+    width: 129px;
+    height: 52px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 133px;
+}
+
+div.post div.post-info3 div.post-member img.post-member-icon {
+    display: inline;
+    width: 30px;
+    height: 30px;
+    margin-top: 11px;
+    margin-bottom: 11px;
+    margin-left: 10px;
+}
+
+div.post div.post-info3 div.post-member span.post-member-name {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    margin-left: 16px;
+}
+
+div.post div.post-info4 {
+    position: relative;
+    width: 1202px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    margin-top: 98px;
+    margin-left: 133px;
+    padding-bottom: 88px;
+}
+
+div.post div.post-info4 div.post-startdate {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-top: 21px;
+    margin-left: 20px;
+}
+
+div.post div.post-info4 div.post-startdate img.post-startdate-icon {
+    display: inline;
+    width: 30px;
+    height: 30px;
+    margin-right: 25px;
+}
+
+div.post div.post-info4 div.post-startdate span.post-startdate-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+div.post div.post-info4 div.post-enddate {
+    margin-top: 11px;
+    width: auto;
+    height: auto;
+    margin-left: 20px;
+}
+
+div.post div.post-info4 div.post-enddate img.post-enddate-icon {
+    display: inline;
+    width: 30px;
+    height: 30px;
+    margin-right: 25px;
+}
+
+div.post div.post-info4 div.post-enddate span.post-enddate-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+div.post div.post-info4 div.post-location {
+    margin-top: 11px;
+    width: auto;
+    height: auto;
+    margin-left: 20px;
+}
+
+div.post div.post-info4 div.post-location img.post-location-icon {
+    display: inline;
+    width: 30px;
+    height: 30px;
+    margin-right: 25px;
+}
+
+div.post div.post-info4 div.post-location span.post-location-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+div.post div.post-info4 div.kakao-button {
+    display: inline-block;
+    width: auto;
+    height: auto;
+}
+
+div.post div.post-info4 div.kakao-button div.goto-info-button {
+    display: inline-block;
+    width: 354px;
+    height: 76px;
+    background: #D9D9D9;
+    border-radius: 20px;
+    margin-top: 38px;
+    margin-left: 193px;
+    cursor: pointer;
+}
+
+div.post div.post-info4 div.kakao-button div.goto-info-button img.goto-info-icon {
+    display: inline;
+    width: 35px;
+    height: 35px;
+    margin-top: 20px;
+    margin-bottom: 21px;
+    margin-left: 103px;
+}
+
+div.post div.post-info4 div.kakao-button div.goto-info-button span.goto-info-text {
+    display: inline;
+    position: absolute;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+    margin-left: 22px;
+    margin-top: 23px;
+    margin-bottom: 23px;
+}
+
+div.post div.post-info4 div.kakao-button div.goto-road-button {
+    display: inline-block;
+    width: 354px;
+    height: 76px;
+    background: #D9D9D9;
+    border-radius: 20px;
+    margin-top: 38px;
+    margin-left: 112px;
+    cursor: pointer;
+}
+
+div.post div.post-info4 div.kakao-button div.goto-road-button img.goto-road-icon {
+    display: inline;
+    width: 35px;
+    height: 35px;
+    margin-top: 20px;
+    margin-bottom: 21px;
+    margin-left: 114px;
+}
+
+div.post div.post-info4 div.kakao-button div.goto-road-button span.goto-road-text {
+    display: inline;
+    position: absolute;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+    margin-left: 23px;
+    margin-top: 26px;
+    margin-bottom: 20px;
+}
+
+div.post div.post-info4 div.kakaomap {
+    width: 1090px;
+    height: 378px;
+    margin-top: 39px;
+    margin-left: 56px;
+    /* margin-bottom: 88px; */
+    background-color: #268B5F;
+}
+
+div.post div.post-content {
+    position: relative;
+    width: 1202px;
+    height: auto;
+    background: #FFFFFF;
+    border-radius: 20px;
+    margin-top: 37px;
+    margin-left: 133px;
+    padding-top: 22px;
+    padding-bottom: 32px;
+}
+
+div.post div.post-content p.post-content-text {
+    width: 1077px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    /* margin-top: 22px; */
+    margin-left: 69px;
+}
+
+div.post div.post-comment {
+    position: relative;
+    width: 1202px;
+    height: auto;
+    background: #FFFFFF;
+    border-radius: 20px;
+    margin-top: 73px;
+    margin-left: 133px;
+}
+
+div.post div.post-comment div.post-comment-header {
+    display: inline-block;
+}
+
+div.post div.post-comment div.post-comment-header span.QandA {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+    margin-top: 23px;
+    margin-left: 56px;
+}
+
+div.post div.post-comment div.post-comment-header span.QandA-count {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #268B5F;
+    margin-top: 23px;
+    margin-left: 112px;
+}
+
+div.post div.post-comment div.post-comment-header div.QandA-button {
+    position: absolute;
+    display: inline-block;
+    width: 175px;
+    height: 45px;
+    background: #268B5F;
+    border-radius: 30px;
+    right: 0px;
+    margin-top: 23px;
+    margin-right: 56px;
+    cursor: pointer;
+}
+
+div.post div.post-comment div.post-comment-header div.QandA-button img.QandA-button-icon {
+    display: inline;
+    width: 20px;
+    height: 20px;
+    margin-top: 12px;
+    margin-left: 30px;
+}
+
+div.post div.post-comment div.post-comment-header div.QandA-button div.QandA-button-text {
+    position: absolute;
+    display: inline;
+    width: 100px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+    margin-top: 15px;
+    margin-left: 8px;
+}
+
+/* div.post div.post-comment div.post-comment-main {
+    display: inline-block;
+} */
+
+div.post div.post-comment div.post-comment-main div.post-question {
+    position: relative;
+    display: inline-block;
+    margin-top: 151px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question img.comment-author {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    margin-left: 47px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text {
+    display: inline;
+    position: absolute;
+    margin-left: 35px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text span.comment-author-name {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text p.comment-detail {
+    width: 733px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-text span.comment-loaddate {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #808080;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.fademenu {
+    display: inline;
+    position: absolute;
+    margin-left: 999px;
+    margin-top: 35px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.fademenu img.seemore-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* div.post div.post-comment div.post-comment-main div.post-question img.comment-seemore {
+
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail {
+
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail img.comment-report-icon {
+
+}
+
+div.post div.post-comment div.post-comment-main div.post-question div.comment-seemore-detail span.comment-report-text {
+
+} */
+
+div.post div.post-comment div.post-comment-main div.post-reply {
+    position: relative;
+    margin-top: 124px;
+    margin-left: 146px;
+}
+
+div.post div.post-comment div.post-comment-main div.post-reply b.post-reply-author {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #268B5F;
+}
+
+div.post div.post-comment div.post-comment-main div.post-reply p.reply-detail {
+    width: 733px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+}
+
+div.post div.post-comment div.post-comment-main div.post-reply span.reply-loaddate {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #808080;
+}
+
+div.post div.post-comment nav.MuiPagination-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 78px;
+    padding-bottom: 112px;
+}
+
+div.post div.join-button-section {
+    position: relative;
+    margin-top: 145px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+div.post div.join-button-section div.join-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1202px;
+    height: 58px;
+    background: rgba(38, 139, 95, 0.5);
+    border-radius: 30px;
+}
+
+div.post div.join-button-section div.join-button img.join-button-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 23px;
+}
+
+div.post div.join-button-section div.join-button span.join-button-text {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+}
+
+
+/* modal디자인 */
+/* div.MuiBox-root {
+
+} */
+
+div.MuiBox-root div.modal-header {
+    position: relative;
+    width: 562px;
+    height: 50px;
+    background: #268B5F;
+    border-radius: 20px 20px 0px 0px;
+}
+
+div.MuiBox-root div.modal-header span.modal-header-title {
+    position: absolute;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #FFFFFF;
+    margin-left: 54px;
+    margin-top: 20px;
+}
+
+div.MuiBox-root div.modal-title-section {
+    width: 562px;
+    height: 33px;
+    position: relative;
+    display: inline-block;
+    margin-top: 73px;
+}
+
+div.MuiBox-root div.modal-title-section span.modal-title {
+    position: absolute;
+    display: inline;
+    width: 45px;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 27px;
+    color: #000000;
+    margin-left: 88.8px;
+}
+
+div.MuiBox-root div.modal-title-section span.modal-title-count1 {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #808080;
+    right: 0;
+    margin-top: 13.5px;
+    margin-right: 142px;
+}
+
+div.MuiBox-root div.modal-title-section span.modal-title-count2 {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #808080;
+    right: 0;
+    margin-top: 13.5px;
+    margin-right: 100px;
+}
+
+div.MuiBox-root input {
+    position: relative;
+    width: 368px;
+    height: 233px;
+    margin-top: 23px;
+    margin-left: 92px;
+}
+
+div.MuiBox-root form.MuiBox-root {
+    position: relative;
+    width: 368px;
+    height: 233px;
+    margin-top: 23px;
+    margin-left: 92px;
+}
+
+div.MuiBox-root form.MuiBox-root div.MuiFormControl-root {
+    width: 368px;
+    height: 233px;
+    margin: 0px;
+}
+
+div.MuiBox-root div.modal-caution-section {
+    display: inline-block;
+    position: relative;
+    margin-top: 60px;
+    width: 562px;
+    height: 24px;
+}
+
+div.MuiBox-root div.modal-caution-section img.modal-caution-icon {
+    display: inline;
+    width: 22.39px;
+    height: 23.78px;
+    margin-left: 85px;
+}
+
+div.MuiBox-root div.modal-caution-section span.modal-caution-text {
+    position: absolute;
+    display: inline;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FF0000;
+    margin-left: 8.2px;
+    margin-top: 5px;
+}
+
+div.MuiBox-root div.modal-button-section {
+    position: relative;
+    display: inline-block;
+    width: 562px;
+    height: 58px;
+    margin-top: 86.5px;
+    margin-bottom: 78.5px;
+}
+
+div.MuiBox-root div.modal-button-section div.modal-cancel-button {  
+    position: absolute;
+    width: 138.82px;
+    height: 57.08px;
+    background: #D9D9D9;
+    border-radius: 20px;
+    margin-left: 107.5px;
+    cursor: pointer;
+}
+
+div.MuiBox-root div.modal-button-section div.modal-cancel-button span.modal-cancel-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+    margin-top: 17.5px;
+    margin-left: 52.2px;
+}
+
+div.MuiBox-root div.modal-button-section div.modal-active-button {
+    position: absolute;
+    width: 138.82px;
+    height: 57.08px;
+    background: #268B5F;
+    border-radius: 20px;
+    right: 0px;
+    margin-right: 102px;
+}
+
+div.MuiBox-root div.modal-button-section div.modal-active-button span.modal-active-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+    margin-top: 17.5px;
+    margin-left: 52.2px;
+    cursor: pointer;
+}
