@@ -19,6 +19,7 @@ import MypageAdd from './Components/Content/Mypage/MypageAdd';
 import Login from './Components/Content/Account/login';
 import Join from './Components/Content/Account/join';
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
+import CustomerService from "./Components/Content/Page/CustomerService";
 // import './App.css';
 
 function AppContent() {
@@ -42,6 +43,8 @@ function AppContent() {
           <Route path='/info' element={<Info />} />
           <Route path='/board' element={<Board />} />
           <Route path='/review' element={<Review />} />
+          <Route path='/customerService' element={<CustomerService />} />
+
 
           <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
