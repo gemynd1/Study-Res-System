@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 import axios from 'axios';
 import Pagination from "./Pagination";
+import MemberDeleteModal from "./MemberDeleteModal";
 
 const MypageReview = () => {
     const [MypageReview, setMypageReview] = useState('')
@@ -197,6 +198,12 @@ const MypageReview = () => {
         setSearchResults(result);
     }, []);
 
+    const [MemberModalOpen, setMemberModalOpen] = useState(false);
+
+    const MemberOpenModal = () => {
+        setMemberModalOpen(true);
+    }
+
     const indexOfLastResult = currentPage * resultsPerpage;
     const indexOfFirstResult = indexOfLastResult - resultsPerpage;
     const currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult);
@@ -247,7 +254,7 @@ const MypageReview = () => {
                     </Link>
                     <div className="exitMember">
                         <img src="/img/icon/arrow2.png" alt="회원탈퇴" className="arrow2"/>
-                        <span className="exitMember2">회원탈퇴</span>
+                        <button onClick={() => MemberOpenModal()} className="exitMember2">회원탈퇴</button>
                     </div>
                     <Link to='/mypage/mypageBoard' style={{textDecoration: 'none'}}>
                         <div className="updateText2">
@@ -305,6 +312,10 @@ const MypageReview = () => {
                     </div>
                 </div>
             </div>
+            <MemberDeleteModal
+                open={MemberModalOpen}
+                onClose={() => setMemberModalOpen(false)}
+            />
         </div>
     );
 };

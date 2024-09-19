@@ -2,14 +2,16 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import '../../../style/Mypage.css';
 
-const MemberDelete = ({ open, onClose }) => {
+const MemberDeleteModal = ({ open, onClose }) => {
+    const navigate = useNavigate();
+
     if (!open) return null;
 
-    // const navigate = useNavigate();
-    //
-    // const navigateBtn = () => {
-    //     navigate('/');
-    // }
+
+    const navigateBtn = () => {
+        alert('탈퇴되었습니다.')
+        navigate('/');
+    };
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -36,7 +38,7 @@ const MemberDelete = ({ open, onClose }) => {
                 </div>
                 <div className="DeleteBtn">
                     <div className="DeleteBtn1">
-                        <button>회원탈퇴</button>
+                        <button onClick={navigateBtn}>회원탈퇴</button>
                     </div>
                 </div>
                 <div className="cancleBtn">
@@ -49,4 +51,4 @@ const MemberDelete = ({ open, onClose }) => {
     );
 };
 
-export default MemberDelete;
+export default MemberDeleteModal;

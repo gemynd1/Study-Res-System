@@ -101,20 +101,7 @@ const MypageAccount = () => {
                     </div>
                     <button className="AccountBtn" onClick={navigateBtn}>확인</button>
                 </div>
-                    <img src="/img/icon/logo.png" className="logo" alt="/" />
-                    <span className="editText">개인정보수정</span>
-                </div>
-                <div className="AccountInput2">
-                    <span className="editText2">회원님의 개인정보는 본인 동 없이 절대 공개되지 않습니다.</span>
-                </div>
-                <div className="AccountInputID">
-                    <div className="AccountInput3">
-                        <span className="AccountID">아이디</span>
-                    </div>
-                    <div className="AccountInputID2">
-                        <input className="AccountExist"/>
-                    </div>
-                </div>
+            </div>
         </div>
     )
 }

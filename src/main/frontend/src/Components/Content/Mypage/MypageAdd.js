@@ -3,7 +3,7 @@ import {BrowserRouter, Link, Outlet, Route, Routes, useNavigate} from "react-rou
 import axios from 'axios';
 import MoneyModal from "./MoneyModal";
 import {Modal} from "@mui/material";
-import MemberDelete from "./MemberDelete";
+import MemberDeleteModal from "./MemberDeleteModal";
 
 const MypageAdd = () => {
     const [MypageAdd, setMypageAdd] = useState('');
@@ -15,12 +15,6 @@ const MypageAdd = () => {
     const [ModalOpen, setModalOpen] = useState(false);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
 
-
-    const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) {
-            MemberCloseModal();
-        }
-    };
 
     const openModal = (amount, Name) => {
         setSelectAmount(amount);
@@ -52,9 +46,9 @@ const MypageAdd = () => {
 
     useEffect(() => {
         if (MemberModalOpen) {
-            document.body.style.overflow = "hidden"; // 스크롤 막기
+            document.body.style.overflow = "hidden";
         } else {
-            document.body.style.overflow = "auto"; // 스크롤 풀기
+            document.body.style.overflow = "auto";
         }
 
         return () => {
@@ -100,36 +94,6 @@ const MypageAdd = () => {
                     <div className="exitMember">
                         <img src="/img/icon/arrow2.png" alt="회원탈퇴" className="arrow2" />
                         <button onClick={() => MemberOpenModal()} className="exitMember2">회원탈퇴</button>
-                        {/*{MemberModalOpen && (*/}
-                        {/*    <div className="deletemodal" onClick={handleOverlayClick}>*/}
-                        {/*        <div className="deletemodal-content">*/}
-                        {/*            <div className="MemberBox1">*/}
-                        {/*                <div className="MemberBox">*/}
-                        {/*                    <img src="/img/icon/memberOut.png" alt="회월탈퇴"*/}
-                        {/*                         style={{width: "60px", height: "60px"}}/>*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*            <div className="MemberBox2">*/}
-                        {/*                <span>정말 탈퇴하시겠어요?</span>*/}
-                        {/*            </div>*/}
-                        {/*            <div className="MemberDelete">*/}
-                        {/*                <div className="MemberBox3">*/}
-                        {/*                    <span>회원탈퇴 버튼 선택시, 계정은 삭제되며 복구되지 않습니다.</span>*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*            <div className="DeleteBtn">*/}
-                        {/*                <div className="DeleteBtn1">*/}
-                        {/*                    <button onClick={navigateBtn}>회원탈퇴</button>*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*            <div className="cancleBtn">*/}
-                        {/*                <div className="DeleteBtn2">*/}
-                        {/*                    <button onClick={MemberCloseModal}>취소</button>*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*)}*/}
                     </div>
                     <Link to='/mypage/mypageBoard' style={{textDecoration: 'none'}}>
                         <div className="updateText2">
@@ -259,7 +223,7 @@ const MypageAdd = () => {
                 amount={selectAmount}
                 Name={selectName}
             />
-            <MemberDelete
+            <MemberDeleteModal
                 open={MemberModalOpen}
                 onClose={() => setMemberModalOpen(false)}
             />

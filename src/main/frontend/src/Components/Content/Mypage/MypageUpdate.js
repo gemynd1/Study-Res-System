@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {BrowserRouter, Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
 import axios from 'axios';
+import MemberDeleteModal from "./MemberDeleteModal";
 
 const MypageUpdate = () => {
     const [MypageUpdate, setMypageUpdate] = useState('')
     const navigate = useNavigate();
+    const [MemberModalOpen, setMemberModalOpen] = useState(false);
 
+    const MemberOpenModal = () => {
+        setMemberModalOpen(true);
+    }
 
     useEffect(() => {
         axios.get('/api/mypage/mypageUpdate')
@@ -85,7 +90,7 @@ const MypageUpdate = () => {
                     </Link>
                         <div className="exitMember">
                             <img src="/img/icon/arrow2.png" alt="회원탈퇴" className="arrow2" />
-                            <span className="exitMember2">회원탈퇴</span>
+                            <button onClick={() => MemberOpenModal()} className="exitMember2">회원탈퇴</button>
                         </div>
                     <Link to='/mypage/mypageBoard' style={{textDecoration: 'none'}}>
                         <div className="updateText2">
@@ -184,6 +189,10 @@ const MypageUpdate = () => {
                     </div>
                 </div>
             </div>
+            <MemberDeleteModal
+                open={MemberModalOpen}
+                onClose={() => setMemberModalOpen(false)}
+            />
         </div>
     )
 }
