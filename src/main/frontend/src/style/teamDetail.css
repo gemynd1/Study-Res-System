@@ -230,3 +230,14 @@ h2 {
   height: 100%;
   object-fit: cover;
 }
+
+.time-togglebutton {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* 버튼 간의 간격을 설정 */
+}
+
+.time-togglebutton .MuiToggleButton-root {
+  flex: 1 0 14%; /* 한 줄에 6개씩 나오도록 너비를 16.66%로 설정 */
+  margin-bottom: 1px; /* 버튼 아래쪽 여백 */
+}

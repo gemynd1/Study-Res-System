@@ -138,9 +138,28 @@ function TimeSelector() {
   const [selectedTimes, setSelectedTimes] = useState([]);
 
   const handleChange = (event, newSelectedTimes) => {
-    // 최대 2개까지 선택할 수 있도록 제한
     if (newSelectedTimes.length <= 2) {
-      setSelectedTimes(newSelectedTimes);
+      // 만약 두 개의 시간이 선택되면 사이의 값을 추가합니다.
+      if (newSelectedTimes.length === 2) {
+        const [first, second] = newSelectedTimes;
+        const start = Math.min(first, second);
+        const end = Math.max(first, second);
+
+        // 사이의 값 추가
+        const newSelection = [];
+        for (let i = start; i <= end; i++) {
+          if (!newSelectedTimes.includes(i)) {
+            newSelection.push(i);
+          }
+        }
+
+        // 선택된 시간이 2개 이하일 때만 업데이트
+        setSelectedTimes([...newSelectedTimes, ...newSelection]);
+      } else {
+        setSelectedTimes(newSelectedTimes);
+      }
+    } else {
+      setSelectedTimes([]);
     }
   };
 
@@ -152,6 +171,7 @@ function TimeSelector() {
       onChange={handleChange}
       aria-label="time-selector"
       size="small"
+      className="time-togglebutton"
     >
       {hours.map((hour) => (
         <ToggleButton key={hour} value={hour} aria-label={`${hour}:00`}>
@@ -280,7 +300,7 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">h3시간선택</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <TimeSelector />
+          <TimeSelector className="ab" />
           <div className="teamDetail__side-legend">
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor1"></div>
