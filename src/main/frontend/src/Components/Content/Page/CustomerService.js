@@ -11,62 +11,24 @@ const CustomerService = () => {
     const [helpBox5, setHelpBox5] = useState(false);
     const [helpBox6, setHelpBox6] = useState(false);
 
-
-    // const handleClick = () => {
-    //     setHelpBox(!helpBox);
-    //     setHelpBox2(false);
-    //     setHelpBox3(false);
-    //     setHelpBox4(false);
-    //     setHelpBox5(false);
-    //     setHelpBox6(false);
-    // };
-
     const handleClick = (boxIndex) => {
-        setHelpBox(boxIndex === 1);
-        setHelpBox2(boxIndex === 2);
-        setHelpBox3(boxIndex === 3);
-        setHelpBox4(boxIndex === 4);
-        setHelpBox5(boxIndex === 5);
-        setHelpBox6(boxIndex === 6);
+        setHelpBox(prevState => (boxIndex === 1 ? !prevState : false));
+        setHelpBox2(prevState => (boxIndex === 2 ? !prevState : false));
+        setHelpBox3(prevState => (boxIndex === 3 ? !prevState : false));
+        setHelpBox4(prevState => (boxIndex === 4 ? !prevState : false));
+        setHelpBox5(prevState => (boxIndex === 5 ? !prevState : false));
+        setHelpBox6(prevState => (boxIndex === 6 ? !prevState : false));
     };
 
-    const handleClick2 = () => {
+    const handleCloseClick = () => {
         setHelpBox(false);
-        setHelpBox2(!helpBox2);
+        setHelpBox2(false);
         setHelpBox3(false);
         setHelpBox4(false);
         setHelpBox5(false);
         setHelpBox6(false);
-    };
 
-    const handleClick3 = () => {
-        setHelpBox(false);
-        setHelpBox2(false);
-        setHelpBox3(!helpBox3);
-        setHelpBox4(false);
-        setHelpBox5(false);
-        setHelpBox6(false);
-    };
-
-    const helpBoxRef = useRef(null);
-
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            if (helpBoxRef.current && !helpBoxRef.current.contains(event.target)) {
-                setHelpBox(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleOutsideClick);
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, []);
-
-    const handleClose = () => {
-        setHelpBox(false);
     }
-
 
     return (
         <div className="MyPage">
@@ -86,7 +48,7 @@ const CustomerService = () => {
                 </div>
                 <div className="CustomerServiceIcon">
                     <div className="CustomerService">
-                        <Link to='/CustomerService' style={{ textDecoration: "none", display: "contents"}}>
+                        <Link to='/CustomerWrite' style={{ textDecoration: "none", display: "contents"}}>
                             <span>문의하기</span>
                             <img src='/img/icon/customerWrite.png' alt="문의하기" style={{width: "30px", height: "30px"}}/>
                         </Link>
@@ -116,7 +78,8 @@ const CustomerService = () => {
                             <span>Q. 개인 좌석 이용방법</span>
                         </div>
                     </button>
-                    <button className="helpBox">
+
+                    <button onClick={() => handleClick(3)} className="helpBox">
                         <div className="helpBoxText">
                             <span>Q. 룸 대여 이용방법</span>
                         </div>
@@ -124,38 +87,125 @@ const CustomerService = () => {
                 </div>
                 {helpBox && (
                     <div className="newDiv">
-                        <span>결제와 관련된 문의사항은 고객센터로 연락 주시기 바랍니다.</span>
+                        <div className="newDivHeader">
+                            <div className="HeaderText">
+                                <span>Q. 결제 문의 안내</span>
+                                <button onClick={handleCloseClick} className="closeBtn">
+                                    <img src="/img/icon/close.png" alt="닫기"
+                                         style={{width: "30px", height: "30px", marginRight: "50px"}}/>
+                                </button>
+
+                            </div>
+                        </div>
+                        <div className="BodyText">
+                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                        </div>
                     </div>
                 )}
                 {helpBox2 && (
                     <div className="newDiv">
-                        <span>ddd2</span>
+                        <div className="newDivHeader">
+                            <div className="HeaderText">
+                                <span>Q. 개인 좌석 이용방법</span>
+                                <button onClick={handleCloseClick} className="closeBtn">
+                                    <img src="/img/icon/close.png" alt="닫기"
+                                         style={{width: "30px", height: "30px", marginRight: "50px"}}/>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="BodyText">
+                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                        </div>
+                    </div>
+                )}
+                {helpBox3 && (
+                    <div className="newDiv">
+                        <div className="newDivHeader">
+                            <div className="HeaderText">
+                                <span>Q. 룸 대여 이용방법</span>
+                                <button onClick={handleCloseClick} className="closeBtn">
+                                    <img src="/img/icon/close.png" alt="닫기"
+                                         style={{width: "30px", height: "30px", marginRight: "50px"}}/>
+                                </button>
+
+                            </div>
+                        </div>
+                        <div className="BodyText">
+                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                        </div>
                     </div>
                 )}
 
-
                 <div className="CustomerBox">
-                    <button className="helpBox">
+                    <button onClick={() => handleClick(4)} className="helpBox">
                         <div className="helpBoxText">
                             <span>Q. 게시판 사용 안내</span>
                         </div>
                     </button>
-                    <button className="helpBox">
+
+                    <button onClick={() => handleClick(5)} className="helpBox">
                         <div className="helpBoxText">
                             <span>Q. 룸 대여 모임 안내</span>
                         </div>
                     </button>
-                    <button className="helpBox">
+
+                    <button onClick={() => handleClick(6)} className="helpBox">
                         <div className="helpBoxText">
                             <span>Q. 인원 추가 및 삭제 안내</span>
                         </div>
                     </button>
                 </div>
-
-
+                {helpBox4 && (
+                    <div className="newDiv">
+                        <div className="newDivHeader">
+                            <div className="HeaderText">
+                                <span>Q. 게시판 사용 안내</span>
+                                <button onClick={handleCloseClick} className="closeBtn">
+                                    <img src="/img/icon/close.png" alt="닫기"
+                                         style={{width: "30px", height: "30px", marginRight: "50px"}}/>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="BodyText">
+                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                        </div>
+                    </div>
+                )}
+                {helpBox5 && (
+                    <div className="newDiv">
+                        <div className="newDivHeader">
+                            <div className="HeaderText">
+                                <span>Q. 룸 대여 모임 안내</span>
+                                <button onClick={handleCloseClick} className="closeBtn">
+                                    <img src="/img/icon/close.png" alt="닫기"
+                                         style={{width: "30px", height: "30px", marginRight: "50px"}}/>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="BodyText">
+                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                        </div>
+                    </div>
+                )}
+                {helpBox6 && (
+                    <div className="newDiv">
+                        <div className="newDivHeader">
+                            <div className="HeaderText">
+                                <span>Q. 인원 추가 및 삭제 안내</span>
+                                <button onClick={handleCloseClick} className="closeBtn">
+                                    <img src="/img/icon/close.png" alt="닫기"
+                                         style={{width: "30px", height: "30px", marginRight: "50px"}}/>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="BodyText">
+                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CustomerService;

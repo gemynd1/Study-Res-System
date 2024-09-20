@@ -23,11 +23,12 @@ import MypageAdd from "./Components/Content/Mypage/MypageAdd";
 import Login from "./Components/Content/Account/login";
 import Join from "./Components/Content/Account/join";
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
-<<<<<<< HEAD
+
 import CustomerService from "./Components/Content/Page/CustomerService";
-=======
+
 import TeamDetail from "./Components/Content/Page/teamdetail";
->>>>>>> 1b672bc980597308d51f8ba53c5d75a269459371
+import CustomerWrite from "./Components/Content/Page/CustomerWrite";
+
 // import './App.css';
 
 function AppContent() {
@@ -46,7 +47,7 @@ function AppContent() {
 
   return (
     <>
-<<<<<<< HEAD
+
         {!hideHeaderLogin && <Header />}
         <Routes>
           <Route path='/' element={<Main />} />
@@ -54,14 +55,9 @@ function AppContent() {
           <Route path='/board' element={<Board />} />
           <Route path='/review' element={<Review />} />
           <Route path='/customerService' element={<CustomerService />} />
+            <Route path='/customerWrite' element={<CustomerWrite />} />
 
-=======
-      {!hideHeaderLogin && <Header />}
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/info" element={<Info />} />
-        <Route path="/review" element={<Review />} />
->>>>>>> 1b672bc980597308d51f8ba53c5d75a269459371
+
 
         <Route path="/board" element={<Board />} />
         <Route path="/board/category/*" element={<BoardCategory />} />
