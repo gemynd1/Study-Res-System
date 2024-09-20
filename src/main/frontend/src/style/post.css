@@ -676,13 +676,13 @@ div.MuiBox-root div.modal-title-section span.modal-title-count2 {
     margin-right: 100px;
 }
 
-div.MuiBox-root input {
+/* div.MuiBox-root input {
     position: relative;
     width: 368px;
     height: 233px;
     margin-top: 23px;
     margin-left: 92px;
-}
+} */
 
 div.MuiBox-root form.MuiBox-root {
     position: relative;

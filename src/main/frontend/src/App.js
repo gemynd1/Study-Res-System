@@ -14,6 +14,7 @@ import Mypage from "./Components/Content/Page/Mypage";
 import Board from "./Components/Content/Board/Board";
 import BoardCategory from "./Components/Content/Board/BoardCategory";
 import Post from "./Components/Content/Board/Post";
+import PostWrite from "./Components/Content/Board/PostWrite";
 import PostRewrite from "./Components/Content/Board/PostRewrite";
 
 import MypageUpdate from "./Components/Content/Mypage/MypageUpdate";
@@ -62,6 +63,7 @@ function AppContent() {
         <Route path="/board" element={<Board />} />
         <Route path="/board/category/*" element={<BoardCategory />} />
         <Route path="/board/post/*" element={<Post />} />
+        <Route path="/board/postWrite" element={<PostWrite />} />
         <Route path="/board/postRewrite/*" element={<PostRewrite />} />
 
 
