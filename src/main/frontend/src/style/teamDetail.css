@@ -1,3 +1,6 @@
+.flex {
+  display: flex;
+}
 h2 {
   margin: 0;
 }
@@ -71,7 +74,12 @@ h2 {
 .nextButton {
   margin-right: 10px; /* Adjust spacing from the right */
 }
-
+.teamDetail__main-header {
+  /* margin: 5px 52.995px; */
+  /* background-color: rgb(77, 164, 73); */
+  width: 761px;
+  margin-top: 15px;
+}
 .teamDetail__main-content {
   /* margin: 5px 52.995px; */
   /* background-color: rgb(77, 164, 73); */
@@ -142,6 +150,12 @@ h2 {
   width: 361px;
   height: 200px;
   background-color: #ffffff;
+}
+.teamDetail__side-content-text-text {
+  margin-right: 16px;
+}
+.teamDetail__side-content-text-text2 {
+  color: #3a3b45;
 }
 .teamDetail__side-description {
   width: 361px;
@@ -234,20 +248,35 @@ h2 {
   object-fit: cover;
 }
 
-.time-togglebutton {
+.toggleButtonGroup {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px; /* 버튼 간의 간격을 설정 */
+  gap: 8px;
+  width: 400px;
+  padding: 8px;
+  justify-content: space-evenly;
 }
 
-.time-togglebutton .MuiToggleButton-root {
-  flex: 1 0 14%; /* 한 줄에 6개씩 나오도록 너비를 16.66%로 설정 */
-  margin-bottom: 1px; /* 버튼 아래쪽 여백 */
+.toggleButton {
+  border-radius: 8px;
+  width: 60px; /* 버튼의 고정 너비 */
+  height: 36px; /* 버튼의 고정 높이 */
+  background-color: #ffd600 !important; /* 기본 배경색 */
+  color: #000; /* 기본 텍스트 색상 */
+  padding: 10px 16px; /* 버튼 내부 여백 */
+  font-weight: bold;
+
+  &:hover {
+    background-color: #ffd600 !important; /* hover 시 배경색을 기본 배경색과 동일하게 설정 */
+  }
+
+  &.Mui-selected {
+    background-color: #7ee9bb !important; /* 선택된 버튼의 배경색 */
+    color: #000; /* 선택된 버튼의 텍스트 색상 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+
+    &:hover {
+      background-color: #7ee9bb !important; /* 선택된 버튼 위에 마우스를 올렸을 때 배경색 유지 */
+    }
+  }
 }
-/* :root {
-  --swiper-theme-color: #7ee9bb;
-}
-.css-23p0if-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
-  border: 1px solid rgba(0, 0, 0, 0.6);
-  background-color: #ffd600;
-} */

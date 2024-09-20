@@ -64,50 +64,20 @@ function RadioButtonsGroup() {
         name="radio-buttons-group"
         onChange={handleChange} // 변경 시 상태 업데이트
       >
-        <FormControlLabel value="2~4" control={<Radio />} label="2~4" />
-        <FormControlLabel value="5~7" control={<Radio />} label="5~7" />
-        <FormControlLabel value="8~10" control={<Radio />} label="8~10" />
+        <FormControlLabel
+          value="2~4"
+          control={<Radio />}
+          label="1000원/시간(인)"
+        />
+        <FormControlLabel
+          value="3~4"
+          control={<Radio />}
+          label="2000원/시간(인)"
+        />
       </RadioGroup>
     </FormControl>
   );
 }
-// function BasicDateCalendar() {
-//   // 현재 날짜를 구합니다.
-//   const today = dayjs().startOf("day"); // 시작 시간을 자정으로 설정
-
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterDayjs}>
-//       <DateCalendar
-//         minDate={today} // 현재 날짜 이후의 날짜만 선택 가능
-//       />
-//     </LocalizationProvider>
-//   );
-// }
-// const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
-//   ".MuiPickersDay-root": {
-//     "&.Mui-disabled": {
-//       backgroundColor: "#A5A6B9",
-//     },
-//     "&.Mui-selected": {
-//       backgroundColor: "#7ee9bb",
-//       color: "#000000",
-//       "&.Mui-selected:hover": {
-//         backgroundColor: "#7ee9bb !important",
-//       },
-//       "&.MuiPickersDay-root:focus.Mui-selected": {
-//         backgroundColor: "#7ee9bb !important",
-//       },
-//       "css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root": {
-//         backgroundColor: "#7ee9bb",
-//         color: "#000000",
-//       },
-//       ".css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root:focus.Mui-selected": {
-//         backgroundColor: "#7ee9bb",
-//         color: "#000000",
-//       },
-//     },
-//   },
-// }));
 
 const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
   ".MuiPickersDay-root": {
@@ -115,10 +85,12 @@ const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
     color: "#000000",
     "&.Mui-disabled": {
       backgroundColor: "#A5A6B9", // 비활성화된 날짜의 배경색
+      color: "#000000",
     },
     "&.Mui-selected": {
       border: "1px solid rgba(0, 0, 0, 0.6)",
       backgroundColor: "#7ee9bb", // 선택된 날짜의 배경색
+      color: "#000000",
       "&:hover, &:focus": {
         backgroundColor: "#7ee9bb", // 선택된 날짜에서 hover와 focus 상태
         color: "#000000",
@@ -126,6 +98,7 @@ const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
     },
     "&:not(.Mui-selected)": {
       border: "1px solid rgba(0, 0, 0, 0.6)",
+      color: "#000000",
       "&.MuiPickersDay-today": {
         backgroundColor: "#ffd600", // 오늘 날짜의 배경색
       },
@@ -145,13 +118,6 @@ function BasicDateCalendar() {
     </LocalizationProvider>
   );
 }
-// function BasicDateCalendar() {
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterDayjs}>
-//       <DateCalendar/>
-//     </LocalizationProvider>
-//   );
-// }
 function BasicButtons({
   text,
   width,
@@ -232,13 +198,11 @@ function TimeSelector() {
 
   const handleChange = (event, newSelectedTimes) => {
     if (newSelectedTimes.length <= 2) {
-      // 만약 두 개의 시간이 선택되면 사이의 값을 추가합니다.
       if (newSelectedTimes.length === 2) {
         const [first, second] = newSelectedTimes;
         const start = Math.min(first, second);
         const end = Math.max(first, second);
 
-        // 사이의 값 추가
         const newSelection = [];
         for (let i = start; i <= end; i++) {
           if (!newSelectedTimes.includes(i)) {
@@ -246,7 +210,6 @@ function TimeSelector() {
           }
         }
 
-        // 선택된 시간이 2개 이하일 때만 업데이트
         setSelectedTimes([...newSelectedTimes, ...newSelection]);
       } else {
         setSelectedTimes(newSelectedTimes);
@@ -259,19 +222,26 @@ function TimeSelector() {
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   return (
-    <ToggleButtonGroup
-      value={selectedTimes}
-      onChange={handleChange}
-      aria-label="time-selector"
-      size="small"
-      className="time-togglebutton"
-    >
-      {hours.map((hour) => (
-        <ToggleButton key={hour} value={hour} aria-label={`${hour}:00`}>
-          {hour}:00
-        </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
+    <div>
+      <ToggleButtonGroup
+        value={selectedTimes}
+        onChange={handleChange}
+        aria-label="time-selector"
+        size="small"
+        className="toggleButtonGroup"
+      >
+        {hours.map((hour) => (
+          <ToggleButton
+            key={hour}
+            value={hour}
+            aria-label={`${hour}:00`}
+            className="toggleButton"
+          >
+            {hour}:00
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </div>
   );
 }
 
@@ -280,6 +250,12 @@ const TeamDetail = () => {
   return (
     <div className="teamDetail">
       <div className="teamDetail__main">
+        <div className="teamDetail__main-header">
+          <h1 className="teamDetail__main-content-title">안양역 스터디룸</h1>
+          <h4 className="teamDetail__main-content-title-option">
+            스터디 최적의 공간
+          </h4>
+        </div>
         <div className="teamDetail__main-image">
           <MyButtons swiper={swiper} />
           <Swiper
@@ -301,14 +277,18 @@ const TeamDetail = () => {
           </Swiper>
         </div>
         <div className="teamDetail__main-content">
-          <h1 className="teamDetail__main-content-title">h1제목</h1>
+          <h1 className="teamDetail__main-content-title">
+            세미나, 클래스, 스터디 모임 등
+          </h1>
           <h4 className="teamDetail__main-content-title-option">
-            h4내용|내용|내용|내용|내용
+            공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기
           </h4>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text">
-            <h3 className="teamDetail__main-content-text-title">h3제목</h3>
-            <h4 className="teamDetail__main-content-text-text">h4내용</h4>
+            <h3 className="teamDetail__main-content-text-title">공간소개</h3>
+            <h4 className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </h4>
           </div>
         </div>
         <div className="teamDetail__main-review">
@@ -321,11 +301,13 @@ const TeamDetail = () => {
           </div>
           <div className="teamDetail__main-review-wrap">
             <div className="teamDetail__main-review-header">
-              <h2 className="teamDetail__main-review-name">h2이름</h2>
+              <h2 className="teamDetail__main-review-name">김지민</h2>
 
               <ControlledRating />
             </div>
-            <h4 className="teamDetail__main-content-text-title">h4내용</h4>
+            <h4 className="teamDetail__main-content-text-title">
+              안양역 스터디룸 괜찮네요
+            </h4>
             <div className="teamDetail__main-review-photo">
               <img
                 className="photos"
@@ -344,14 +326,16 @@ const TeamDetail = () => {
               ></img>
             </div>
             <h2 className="teamDetail__main-review-name host">호스트</h2>
-            <h4 className="teamDetail__side-content-text-title">h4내용</h4>
+            <h4 className="teamDetail__side-content-text-title">
+              시설이 괜찮다니 다행입니다.
+            </h4>
           </div>
         </div>
       </div>
       <div className="teamDetail__side&buttons">
         <div className="teamDetail__side">
           <div className="teamDetail__side-header">
-            <h1 className="teamDetail__side-header-title">h1제목</h1>
+            <h1 className="teamDetail__side-header-title">예약 & 결제</h1>
             <div className="teamDetail__side-header-line" />
           </div>
           <div className="teamDetail__side-radio">
@@ -359,18 +343,36 @@ const TeamDetail = () => {
           </div>
           <div className="teamDetail__side-image"></div>
           <div className="teamDetail__side-description">
-            <h3 className="teamDetail__side-content-text-text">h3제목</h3>
+            <div className="flex">
+              <h3 className="teamDetail__side-content-text-text">공간유형</h3>
+              <h4 className="teamDetail__side-content-text-text2">
+                회의룸 파티룸 스터디룸 강의실
+              </h4>
+            </div>
             <div className="teamDetail__side-header-line" />
-            <h3 className="teamDetail__side-content-text-text">h3제목</h3>
+            <div className="flex">
+              <h3 className="teamDetail__side-content-text-text">공간면적</h3>
+              <h4 className="teamDetail__side-content-text-text2">22평</h4>
+            </div>
             <div className="teamDetail__side-header-line" />
 
-            <h3 className="teamDetail__side-content-text-text">h3제목</h3>
+            <div className="flex">
+              <h3 className="teamDetail__side-content-text-text">예약시간</h3>
+              <h4 className="teamDetail__side-content-text-text2">
+                최소 2시간부터
+              </h4>
+            </div>
             <div className="teamDetail__side-header-line" />
-            <h3 className="teamDetail__side-content-text-text">h3제목</h3>
+            <div className="flex">
+              <h3 className="teamDetail__side-content-text-text">수용인원</h3>
+              <h4 className="teamDetail__side-content-text-text2">
+                최소4명 ~ 최대 10명
+              </h4>
+            </div>
             <div className="teamDetail__side-header-line" />
           </div>
           <div className="teamDetail__side-radio">
-            <FormControlLabel control={<Radio />} label="시간단위 예약하기" />
+            <FormControlLabel control={<Radio />} label="날짜 예약하기" />
           </div>
           <div className="teamDetail__side-calendar">
             <BasicDateCalendar />
@@ -390,10 +392,10 @@ const TeamDetail = () => {
             </div>
           </div>
           <div className="teamDetail__side-header">
-            <h3 className="teamDetail__side-content-text-text">h3시간선택</h3>
+            <h3 className="teamDetail__side-content-text-text">시간선택</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <TimeSelector className="ab" />
+          <TimeSelector />
           <div className="teamDetail__side-legend">
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor1"></div>
@@ -410,31 +412,9 @@ const TeamDetail = () => {
           </div>
 
           <div className="teamDetail__side-header">
-            <h3 className="teamDetail__side-content-text-text">h3총예약인원</h3>
+            <h3 className="teamDetail__side-content-text-text">총예약인원</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          {/* <div className="teamDetail__side-buttons-wrap">
-            <BasicButtons
-              text="3"
-              width="364px"
-              height="74px"
-              backgroundColor="#ffffff"
-            />
-            <div className="teamDetail__side-buttons">
-              <BasicButtons
-                text="-"
-                width="84px"
-                height="74px"
-                backgroundColor="#A5A6B9"
-              />
-              <BasicButtons
-                text="+"
-                width="84px"
-                height="74px"
-                backgroundColor="#A5A6B9"
-              />
-            </div>
-          </div> */}
           <TeamDetailButtons />
         </div>
         <div className="teamDetail__side-contact-actions-buttons">
