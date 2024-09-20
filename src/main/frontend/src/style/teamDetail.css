@@ -200,6 +200,13 @@ h2 {
   background-color: #ffffff;
   height: 60px;
 }
+.teamDetail__side-price {
+  width: 370px;
+  display: flex;
+  justify-content: flex-end;
+  color: #000000;
+  margin: 16px 0 32px;
+}
 .teamDetail__side-buttons-wrap {
   display: flex;
   position: relative;

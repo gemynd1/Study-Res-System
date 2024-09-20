@@ -122,9 +122,43 @@ function BasicButtons({
     </Button>
   );
 }
+function BasicButtons2({
+  text,
+  width,
+  height,
+  fontSize,
+  padding,
+  margin,
+  backgroundColor,
+  color,
+  selectedTimes,
+}) {
+  const handleButtonClick = () => {
+    alert(`선택된 시간: ${selectedTimes.join(", ")}`);
+  };
+  return (
+    <Button
+      variant="contained"
+      sx={{
+        backgroundColor: backgroundColor || "#7EE9BB",
+        // "&:hover": { backgroundColor: "#5CC8A4" },
+        fontWeight: "bold",
+        width: width || "92px", // 기본값은 auto
+        height: height || "74px", // 기본값은 auto
+        fontSize: fontSize || "1.25rem", // 기본값은 1rem
+        padding: padding || "12px 24px", // 기본값은 '8px 16px'
+        margin: margin || "2px 2px",
+        color: color || "#000000",
+      }}
+      onClick={handleButtonClick}
+    >
+      {text}
+    </Button>
+  );
+}
 
-function TeamDetailButtons() {
-  const [count, setCount] = useState(3); // 초기값은 3
+function TeamDetailButtons({ count, setCount }) {
+  // const [count, setCount] = useState(3); // 초기값은 3
 
   const handleIncrement = () => {
     if (count < 10) {
@@ -166,9 +200,7 @@ function TeamDetailButtons() {
   );
 }
 
-function TimeSelector() {
-  const [selectedTimes, setSelectedTimes] = useState([]);
-
+function TimeSelector({ selectedTimes, onTimeChange }) {
   const handleChange = (event, newSelectedTimes) => {
     if (newSelectedTimes.length <= 2) {
       if (newSelectedTimes.length === 2) {
@@ -183,12 +215,12 @@ function TimeSelector() {
           }
         }
 
-        setSelectedTimes([...newSelectedTimes, ...newSelection]);
+        onTimeChange([...newSelectedTimes, ...newSelection]);
       } else {
-        setSelectedTimes(newSelectedTimes);
+        onTimeChange(newSelectedTimes);
       }
     } else {
-      setSelectedTimes([]);
+      onTimeChange([]);
     }
   };
 
@@ -220,6 +252,12 @@ function TimeSelector() {
 
 const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
+  const [selectedTimes, setSelectedTimes] = useState([]);
+  const [count, setCount] = useState(3); // 초기값 3
+
+  // 선택된 인덱스의 총 개수와 count를 곱한 가격 계산
+  const totalPrice = selectedTimes.length * count * 1000;
+
   return (
     <div className="teamDetail">
       <div className="teamDetail__main">
@@ -279,7 +317,7 @@ const TeamDetail = () => {
               <ControlledRating />
             </div>
             <h4 className="teamDetail__main-content-text-title">
-              안양역 스터디룸 괜찮네요
+              안양역 스터디룸 괜찮네요.
             </h4>
             <div className="teamDetail__main-review-photo">
               <img
@@ -300,7 +338,7 @@ const TeamDetail = () => {
             </div>
             <h2 className="teamDetail__main-review-name host">호스트</h2>
             <h4 className="teamDetail__side-content-text-title">
-              시설이 괜찮다니 다행입니다.
+              다음에 또 들려주세요!
             </h4>
           </div>
         </div>
@@ -368,7 +406,10 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">시간선택</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <TimeSelector />
+          <TimeSelector
+            selectedTimes={selectedTimes}
+            onTimeChange={setSelectedTimes}
+          />
           <div className="teamDetail__side-legend">
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor1"></div>
@@ -388,19 +429,25 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">총예약인원</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <TeamDetailButtons />
+          <TeamDetailButtons count={count} setCount={setCount} />
+          <div className="teamDetail__side-header">
+            <h3 className="teamDetail__side-content-text-text">공간사용료</h3>
+            <div className="teamDetail__side-header-line" />
+            <h2 className="teamDetail__side-price">
+              총 가격: {totalPrice.toLocaleString()}원
+            </h2>
+          </div>
         </div>
         <div className="teamDetail__side-contact-actions-buttons">
           <div className="teamDitail__call-chating">
             <BasicButtons text="전화" />
             <BasicButtons text="채팅" />
           </div>
-          <BasicButtons
+          <BasicButtons2
             text="예약가능"
             width="192px"
             height="74px"
-            // backgroundColor="#7FB29C"
-            // onClick={}
+            selectedTimes={selectedTimes}
           />
         </div>
       </div>
