@@ -30,10 +30,10 @@ const Board = () => {
                                 <div className="category4-title">영어</div>
                             </Link>
                         </div>
-                        <div className="writeButton">
+                        <Link to="/board/postWrite" className="writeButton">
                             <div className="writeButton-1">글쓰기</div>
                             {/* <div className="writeButton-2"></div> */}
-                        </div>
+                        </Link>
                     </div>
                     <div className="board-category-1">
                         <div className="board-category-1-background">

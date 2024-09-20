@@ -209,6 +209,17 @@ const MypageReview = () => {
     const currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult);
     const total = searchResults.length;
 
+    useEffect(() => {
+        if (MemberModalOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [MemberModalOpen]);
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     }

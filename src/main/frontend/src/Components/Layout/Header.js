@@ -69,6 +69,22 @@ const Header = () => {
                         </li>
                     </ul>
                 </div>
+
+                <div className="alarm-section">
+                    <div className="alarm-headerBar">
+                        <img src="" alt="" className="" />
+                        <span className="">알림</span>
+                        <div className="">
+                            <div className="">모두 지우기</div>
+                        </div>
+                    </div>
+                    <div className="">
+                        <img src="" alt="" className="" />
+                        <p className=""></p>
+                        <span className=""></span>
+                    </div>        
+                </div>
+
             </header>
         </>
         
