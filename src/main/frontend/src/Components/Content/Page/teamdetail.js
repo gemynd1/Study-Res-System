@@ -13,6 +13,54 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { styled, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import dayjs from "dayjs";
+import { Modal, Box, Typography } from "@mui/material";
+
+function PaymentModal({
+  open,
+  onClose,
+  roomTitle,
+  date,
+  time,
+  people,
+  totalPrice,
+}) {
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Box sx={{ ...modalStyle }}>
+        <Typography variant="h6">{roomTitle}</Typography>
+        <Typography>날짜: {date}</Typography>
+        <Typography>시간: {time}</Typography>
+        <Typography>인원: {people}명</Typography>
+        <Typography>총 가격: {totalPrice}원</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "16px",
+          }}
+        >
+          <Button onClick={onClose} sx={{ marginRight: "8px" }}>
+            취소
+          </Button>
+          <Button variant="contained" color="primary">
+            예약
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
+  );
+}
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
 
 function MyButtons({ swiper }) {
   return (
@@ -49,9 +97,7 @@ function ControlledRating() {
     </div>
   );
 }
-function RadioButtonsGroup() {
-  const [selectedValue, setSelectedValue] = useState("2~4"); // 초기 값 설정
-
+function RadioButtonsGroup({ selectedValue, setSelectedValue }) {
   const handleChange = (event) => {
     setSelectedValue(event.target.value); // 선택된 값 업데이트
   };
@@ -132,28 +178,44 @@ function BasicButtons2({
   backgroundColor,
   color,
   selectedTimes,
+  totalPrice,
+  count,
 }) {
-  const handleButtonClick = () => {
-    alert(`선택된 시간: ${selectedTimes.join(", ")}`);
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const roomTitle = "스터디룸 A";
+  const selectedDate = "2024-09-25";
   return (
-    <Button
-      variant="contained"
-      sx={{
-        backgroundColor: backgroundColor || "#7EE9BB",
-        // "&:hover": { backgroundColor: "#5CC8A4" },
-        fontWeight: "bold",
-        width: width || "92px", // 기본값은 auto
-        height: height || "74px", // 기본값은 auto
-        fontSize: fontSize || "1.25rem", // 기본값은 1rem
-        padding: padding || "12px 24px", // 기본값은 '8px 16px'
-        margin: margin || "2px 2px",
-        color: color || "#000000",
-      }}
-      onClick={handleButtonClick}
-    >
-      {text}
-    </Button>
+    <>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: backgroundColor || "#7EE9BB",
+          // "&:hover": { backgroundColor: "#5CC8A4" },
+          fontWeight: "bold",
+          width: width || "92px", // 기본값은 auto
+          height: height || "74px", // 기본값은 auto
+          fontSize: fontSize || "1.25rem", // 기본값은 1rem
+          padding: padding || "12px 24px", // 기본값은 '8px 16px'
+          margin: margin || "2px 2px",
+          color: color || "#000000",
+        }}
+        onClick={handleOpenModal}
+      >
+        {text}
+      </Button>
+      <PaymentModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        roomTitle={roomTitle}
+        date={selectedDate}
+        time={selectedTimes}
+        people={count}
+        totalPrice={totalPrice}
+      />
+    </>
   );
 }
 
@@ -254,9 +316,10 @@ const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [count, setCount] = useState(3); // 초기값 3
+  const [selectedValue, setSelectedValue] = useState("1000"); // 초기 값 설정
 
   // 선택된 인덱스의 총 개수와 count를 곱한 가격 계산
-  const totalPrice = selectedTimes.length * count * 1000;
+  const totalPrice = selectedTimes.length * count * selectedValue;
 
   return (
     <div className="teamDetail">
@@ -350,7 +413,10 @@ const TeamDetail = () => {
             <div className="teamDetail__side-header-line" />
           </div>
           <div className="teamDetail__side-radio">
-            <RadioButtonsGroup />
+            <RadioButtonsGroup
+              selectedValue={selectedValue}
+              setSelectedValue={setSelectedValue}
+            />
           </div>
           <div className="teamDetail__side-image"></div>
           <div className="teamDetail__side-description">
@@ -383,7 +449,7 @@ const TeamDetail = () => {
             <div className="teamDetail__side-header-line" />
           </div>
           <div className="teamDetail__side-radio">
-            <FormControlLabel control={<Radio />} label="날짜 예약하기" />
+            <FormControlLabel control={<Radio />} label="시간단위 예약하기" />
           </div>
           <div className="teamDetail__side-calendar">
             <BasicDateCalendar />
@@ -448,6 +514,8 @@ const TeamDetail = () => {
             width="192px"
             height="74px"
             selectedTimes={selectedTimes}
+            totalPrice={totalPrice}
+            count={count}
           />
         </div>
       </div>
