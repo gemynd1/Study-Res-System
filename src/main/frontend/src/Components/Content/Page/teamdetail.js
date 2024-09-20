@@ -65,12 +65,12 @@ function RadioButtonsGroup() {
         onChange={handleChange} // 변경 시 상태 업데이트
       >
         <FormControlLabel
-          value="2~4"
+          value="1000"
           control={<Radio />}
           label="1000원/시간(인)"
         />
         <FormControlLabel
-          value="3~4"
+          value="2000"
           control={<Radio />}
           label="2000원/시간(인)"
         />
@@ -79,34 +79,6 @@ function RadioButtonsGroup() {
   );
 }
 
-const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
-  ".MuiPickersDay-root": {
-    boxSizing: "border-box",
-    color: "#000000",
-    "&.Mui-disabled": {
-      backgroundColor: "#A5A6B9", // 비활성화된 날짜의 배경색
-      color: "#000000",
-    },
-    "&.Mui-selected": {
-      border: "1px solid rgba(0, 0, 0, 0.6)",
-      backgroundColor: "#7ee9bb", // 선택된 날짜의 배경색
-      color: "#000000",
-      "&:hover, &:focus": {
-        backgroundColor: "#7ee9bb", // 선택된 날짜에서 hover와 focus 상태
-        color: "#000000",
-      },
-    },
-    "&:not(.Mui-selected)": {
-      border: "1px solid rgba(0, 0, 0, 0.6)",
-      color: "#000000",
-      "&.MuiPickersDay-today": {
-        backgroundColor: "#ffd600", // 오늘 날짜의 배경색
-      },
-    },
-  },
-}));
-
-// #FFD600
 function BasicDateCalendar() {
   const disablePastDates = (date) => {
     return date.isBefore(dayjs(), "day");
@@ -114,10 +86,11 @@ function BasicDateCalendar() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <StyledDateCalendar shouldDisableDate={disablePastDates} sx={{}} />
+      <DateCalendar shouldDisableDate={disablePastDates} />
     </LocalizationProvider>
   );
 }
+
 function BasicButtons({
   text,
   width,
@@ -426,7 +399,8 @@ const TeamDetail = () => {
             text="예약가능"
             width="192px"
             height="74px"
-            backgroundColor="#7FB29C"
+            // backgroundColor="#7FB29C"
+            // onClick={}
           />
         </div>
       </div>
