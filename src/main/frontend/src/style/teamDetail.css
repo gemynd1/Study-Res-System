@@ -162,16 +162,19 @@ h2 {
   display: flex;
 }
 .teamDetail__side-legend-boxColor1 {
-  background-color: #ffffff;
+  background-color: #ffd600;
   width: 20px;
+  margin-right: 5px;
 }
 .teamDetail__side-legend-boxColor2 {
   background-color: #a5a6b9;
   width: 20px;
+  margin-right: 5px;
 }
 .teamDetail__side-legend-boxColor3 {
   background-color: #50f6af;
   width: 20px;
+  margin-right: 5px;
 }
 .teamDetail__side-choiceTime {
   width: 361px;
@@ -241,3 +244,10 @@ h2 {
   flex: 1 0 14%; /* 한 줄에 6개씩 나오도록 너비를 16.66%로 설정 */
   margin-bottom: 1px; /* 버튼 아래쪽 여백 */
 }
+/* :root {
+  --swiper-theme-color: #7ee9bb;
+}
+.css-23p0if-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  background-color: #ffd600;
+} */

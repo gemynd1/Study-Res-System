@@ -11,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { styled, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import dayjs from "dayjs";
 
 function MyButtons({ swiper }) {
@@ -83,17 +83,65 @@ function RadioButtonsGroup() {
 //     </LocalizationProvider>
 //   );
 // }
+// const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
+//   ".MuiPickersDay-root": {
+//     "&.Mui-disabled": {
+//       backgroundColor: "#A5A6B9",
+//     },
+//     "&.Mui-selected": {
+//       backgroundColor: "#7ee9bb",
+//       color: "#000000",
+//       "&.Mui-selected:hover": {
+//         backgroundColor: "#7ee9bb !important",
+//       },
+//       "&.MuiPickersDay-root:focus.Mui-selected": {
+//         backgroundColor: "#7ee9bb !important",
+//       },
+//       "css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root": {
+//         backgroundColor: "#7ee9bb",
+//         color: "#000000",
+//       },
+//       ".css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root:focus.Mui-selected": {
+//         backgroundColor: "#7ee9bb",
+//         color: "#000000",
+//       },
+//     },
+//   },
+// }));
 
+const StyledDateCalendar = styled(DateCalendar)(({ theme }) => ({
+  ".MuiPickersDay-root": {
+    boxSizing: "border-box",
+    color: "#000000",
+    "&.Mui-disabled": {
+      backgroundColor: "#A5A6B9", // 비활성화된 날짜의 배경색
+    },
+    "&.Mui-selected": {
+      border: "1px solid rgba(0, 0, 0, 0.6)",
+      backgroundColor: "#7ee9bb", // 선택된 날짜의 배경색
+      "&:hover, &:focus": {
+        backgroundColor: "#7ee9bb", // 선택된 날짜에서 hover와 focus 상태
+        color: "#000000",
+      },
+    },
+    "&:not(.Mui-selected)": {
+      border: "1px solid rgba(0, 0, 0, 0.6)",
+      "&.MuiPickersDay-today": {
+        backgroundColor: "#ffd600", // 오늘 날짜의 배경색
+      },
+    },
+  },
+}));
+
+// #FFD600
 function BasicDateCalendar() {
   const disablePastDates = (date) => {
-    return date.isBefore(dayjs(), "day"); // 오늘보다 이전 날짜는 비활성화
+    return date.isBefore(dayjs(), "day");
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar
-        shouldDisableDate={disablePastDates} // 현재 날짜 이후의 날짜만 선택 가능
-      />
+      <StyledDateCalendar shouldDisableDate={disablePastDates} sx={{}} />
     </LocalizationProvider>
   );
 }
@@ -330,7 +378,7 @@ const TeamDetail = () => {
           <div className="teamDetail__side-legend">
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor1"></div>
-              <div className="teamDetail___side-legned-title">예약가능</div>
+              <div className="teamDetail___side-legned-title">오늘</div>
             </div>
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor2"></div>
@@ -338,7 +386,7 @@ const TeamDetail = () => {
             </div>
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor3"></div>
-              <div className="teamDetail___side-legned-title">오늘</div>
+              <div className="teamDetail___side-legned-title">선택</div>
             </div>
           </div>
           <div className="teamDetail__side-header">
@@ -357,7 +405,7 @@ const TeamDetail = () => {
             </div>
             <div className="teamDetail__side-legend-wrap">
               <div className="teamDetail__side-legend-boxColor3"></div>
-              <div className="teamDetail___side-legned-title">오늘</div>
+              <div className="teamDetail___side-legned-title">선택</div>
             </div>
           </div>
 
