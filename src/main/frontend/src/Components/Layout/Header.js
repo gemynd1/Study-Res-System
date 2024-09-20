@@ -1,9 +1,15 @@
-import React from "react";
+import {React, useState} from "react";
 import "../../style/header.css";
 // import "../../style/reset.css"
 import { Link, Outlet } from "react-router-dom";
 
 const Header = () => {
+    const [notification, setNotification] = useState(false);
+
+    const notification_toggle = () => {
+        setNotification(!notification);
+    }
+
     return (
         <>
             <header className="header"> 
@@ -49,7 +55,9 @@ const Header = () => {
                         </li>
                     </ul> */}
                     <ul className="menuList2-sucs"> 
-                        <li><img src="/img/icon/bell.png" alt="bell" className="bell" /></li>
+                        <li>
+                            <img src="/img/icon/bell.png" alt="bell" className="bell" onClick={notification_toggle} />
+                        </li>
                         <li><img src="/img/icon/chat.png" alt="chat" className="chat" /></li>
                         <li>
                             <Link to="/mypage" style={{ textDecoration: 'none' }}>
@@ -70,19 +78,63 @@ const Header = () => {
                     </ul>
                 </div>
 
-                <div className="alarm-section">
-                    <div className="alarm-headerBar">
-                        <img src="" alt="" className="" />
-                        <span className="">알림</span>
-                        <div className="">
-                            <div className="">모두 지우기</div>
+                <div className={notification ? "test" : "test hide"}>
+                    <div className="test2">
+                        <div className="notification-headerBar">
+                            <img src="/img/icon/bell(white).png" alt="bellIcon" className="notification-icon" />
+                            <span className="notification-text">알림</span>
+                            <div className="clear-button">
+                                <div className="clear-button-text">모두 지우기</div>
+                            </div>
+                        </div>
+                        <div className="notification-section">
+                            <div className="notification">
+                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
+                                <p className="notification-content">
+                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
+                                </p>
+                                <span className="notification-date">
+                                    2024-09-08 22:51
+                                </span>
+                            </div>
+                            <div className="notification">
+                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
+                                <p className="notification-content">
+                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
+                                </p>
+                                <span className="notification-date">
+                                    2024-09-08 22:51
+                                </span>
+                            </div> 
+                            <div className="notification">
+                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
+                                <p className="notification-content">
+                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
+                                </p>
+                                <span className="notification-date">
+                                    2024-09-08 22:51
+                                </span>
+                            </div> 
+                            <div className="notification">
+                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
+                                <p className="notification-content">
+                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
+                                </p>
+                                <span className="notification-date">
+                                    2024-09-08 22:51
+                                </span>
+                            </div> 
+                            <div className="notification">
+                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
+                                <p className="notification-content">
+                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
+                                </p>
+                                <span className="notification-date">
+                                    2024-09-08 22:51
+                                </span>
+                            </div> 
                         </div>
                     </div>
-                    <div className="">
-                        <img src="" alt="" className="" />
-                        <p className=""></p>
-                        <span className=""></span>
-                    </div>        
                 </div>
 
             </header>

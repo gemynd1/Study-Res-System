@@ -154,3 +154,123 @@
     height: 5.56vh;
     background: #000000;
 }
+
+
+/* notification css */
+
+header div.test {
+    position: relative;
+    width: 100%;
+    z-index: 9;
+}
+
+header div.test.hide {
+    display: none;
+}
+
+header div.test div.test2 {
+    position: absolute;
+    margin-left: 60%;
+    margin-top: 6%;
+    width: 524px;
+    height: 650px;
+}
+
+header div.test div.test2 div.notification-section {
+    position: relative;
+    width: 524px;
+    height: 650px;
+    background: #F3F0F0;
+    overflow-y: auto; /* 세로 스크롤을 나타나게 하는 속성 추가 */
+    overflow-x: hidden; /* 가로 스크롤을 숨기는 속성 추가 */
+}
+
+header div.test div.test2 div.notification-headerBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 524px;
+    height: 50px;
+    background: #268B5F;
+    border-radius: 20px 20px 0px 0px;
+}
+
+header div.test div.test2 div.notification-headerBar img.notification-icon {
+    display: inline;
+    width: 30px;
+    height: 30px;
+    margin-left: 3%;
+}
+
+header div.test div.test2 div.notification-headerBar span.notification-text {
+    display: inline;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 30px;
+    color: #FFFFFF;
+    margin-left: 3%;
+}
+
+header div.test div.test2 div.notification-headerBar div.clear-button {
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 34px;
+    background: #FFFFFF;
+    border-radius: 30px;
+    margin-right: 3%;
+}
+
+header div.test div.test2 div.notification-headerBar div.clear-button div.clear-button-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000000;
+}
+
+header div.test div.test2 div.notification-section div.notification {
+    position: relative;
+    width: 524px;
+    height: 140px;
+}
+
+header div.test div.test2 div.notification-section div.notification img.notification-XIcon {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    left: 88%;
+    margin-top: 3%;
+}
+
+header div.test div.test2 div.notification-section div.notification p.notification-content {
+    width: 85%;
+    height: 60px;
+    position: relative;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    color: #000000;
+    margin-top: 0;
+    margin-left: 5%;
+    margin-bottom: 0;
+}
+
+header div.test div.test2 div.notification-section div.notification span.notification-date {
+    position: relative;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    color: #808080;
+    left: 70%;
+}
