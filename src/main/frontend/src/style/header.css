@@ -178,7 +178,7 @@ header div.test div.test2 {
 
 header div.test div.test2 div.notification-section {
     position: relative;
-    width: 524px;
+    width: 500px;
     height: 650px;
     background: #F3F0F0;
     overflow-y: auto; /* 세로 스크롤을 나타나게 하는 속성 추가 */
@@ -189,7 +189,7 @@ header div.test div.test2 div.notification-headerBar {
     position: relative;
     display: flex;
     align-items: center;
-    width: 524px;
+    width: 500px;
     height: 50px;
     background: #268B5F;
     border-radius: 20px 20px 0px 0px;
@@ -237,15 +237,15 @@ header div.test div.test2 div.notification-headerBar div.clear-button div.clear-
 
 header div.test div.test2 div.notification-section div.notification {
     position: relative;
-    width: 524px;
+    width: 500px;
     height: 140px;
 }
 
 header div.test div.test2 div.notification-section div.notification img.notification-XIcon {
     position: relative;
-    width: 30px;
-    height: 30px;
-    left: 88%;
+    width: 27px;
+    height: 27px;
+    left: 91%;
     margin-top: 3%;
 }
 
@@ -256,7 +256,7 @@ header div.test div.test2 div.notification-section div.notification p.notificati
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 28px;
     color: #000000;
     margin-top: 0;
@@ -269,8 +269,102 @@ header div.test div.test2 div.notification-section div.notification span.notific
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 18px;
     color: #808080;
     left: 70%;
+}
+
+/* message css */
+
+header div.first-background {
+
+}
+
+header div.first-background div.second--background {
+
+}
+
+header div.first-background div.second--background div.message-headerBar {
+
+}
+
+header div.first-background div.second--background div.message-headerBar img.message-icon {
+
+}
+
+header div.first-background div.second--background div.message-headerBar span.message-text {
+
+}
+
+header div.first-background div.second--background div.message-section {
+
+}
+
+header div.first-background div.second--background div.message-section div.typeBar {
+
+}
+
+header div.first-background div.second--background div.message-section div.typeBar div.personal-message {
+
+}
+
+header div.first-background div.second--background div.message-section div.typeBar div.personal-message span.personal-message-text {
+
+}
+
+header div.first-background div.second--background div.message-section div.typeBar div.group-message {
+
+}
+
+header div.first-background div.second--background div.message-section div.typeBar div.group-message span.group-message-text {
+
+}
+
+header div.first-background div.second--background div.message-section div.personal-message-section {
+
+}
+
+header div.first-background div.second--background div.message-section div.personal-message-section div.personal-message-content {
+
+}
+
+header div.first-background div.second--background div.message-section div.personal-message-section div.personal-message-content img.personIcon {
+
+}
+
+header div.first-background div.second--background div.message-section div.personal-message-section div.personal-message-content span.sender-text {
+
+}
+
+header div.first-background div.second--background div.message-section div.personal-message-section div.personal-message-content p.message-content {
+
+}
+
+header div.first-background div.second--background div.message-section div.personal-message-section div.personal-message-content img.redDot {
+
+}
+
+header div.first-background div.second--background div.message-section div.group-message-section {
+
+}
+
+header div.first-background div.second--background div.message-section div.group-message-section div.group-message-content {
+
+}
+
+header div.first-background div.second--background div.message-section div.group-message-section div.group-message-content img.groupIcon {
+
+}
+
+header div.first-background div.second--background div.message-section div.group-message-section div.group-message-content span.groupName-text {
+
+}
+
+header div.first-background div.second--background div.message-section div.group-message-section div.group-message-content p.message-content {
+
+}
+
+header div.first-background div.second--background div.message-section div.group-message-section div.group-message-content img.redDot {
+    
 }

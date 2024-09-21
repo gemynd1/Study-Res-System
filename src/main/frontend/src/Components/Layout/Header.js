@@ -137,6 +137,48 @@ const Header = () => {
                     </div>
                 </div>
 
+                <div className="first-background">
+                    <div className="second-background">
+
+                        <div className="message-headerBar">
+                            <img src="" alt="chatIcon" className="message-icon" />
+                            <span className="message-text">채팅</span>
+                        </div>
+
+                        <div className="message-section">
+
+                            <div className="typeBar">
+                                <div className="personal-message">
+                                    <span className="personal-message-text">받은 메시지함</span>
+                                </div>
+                                <div className="group-message">
+                                    <span className="group-message-text">모임</span>
+                                </div>
+                            </div>
+
+                            <div className="personal-message-secion">
+                                <div className="personal-message-content">
+                                    <img src="" alt="personIcon" className="personIcon" />
+                                    <span className="sender-text">정희수</span>
+                                    <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                    <img src="" alt="redDot" className="redDot" />
+                                </div>
+                            </div>
+
+                            <div className="group-message-section">
+                                <div className="group-message-content">
+                                    <img src="" alt="groupIcon" className="groupIcon" />
+                                    <span className="groupName-text">(123) 백지민, 김지민....</span>
+                                    <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                    <img src="" alt="redDot" className="redDot" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
             </header>
         </>
         
