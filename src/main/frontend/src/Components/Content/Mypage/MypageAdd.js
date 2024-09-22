@@ -34,8 +34,6 @@ const MypageAdd = () => {
         setModalOpen(false);
     }
 
-
-
     useEffect(() => {
         axios.get('/api/mypage/mypageAdd')
             .then((res) => {
