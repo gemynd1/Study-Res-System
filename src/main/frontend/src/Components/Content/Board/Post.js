@@ -23,43 +23,43 @@ import TextField from '@mui/material/TextField';
 
 // 댓글 더보기 버튼
 function FadeMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-  return (
-    <div className="fademenu">
-      <Button
-        id="fade-button"
-        aria-controls={open ? 'fade-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        <img src="/img/icon/seemore.png" alt="seemoreicon" className="seemore-icon" />
-      </Button>
-      <Menu
-        id="fade-menu"
-        MenuListProps={{
-          'aria-labelledby': 'fade-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Fade}
-      >
-        <MenuItem onClick={handleClose}>신고</MenuItem>
-        <MenuItem onClick={handleClose}>답글작성</MenuItem>
-        <MenuItem onClick={handleClose}>수정</MenuItem>
-        <MenuItem onClick={handleClose}>개시글 삭제</MenuItem>
-      </Menu>
-    </div>
-  );
+    return (
+        <div className="fademenu">
+            <Button
+                id="fade-button"
+                aria-controls={open ? 'fade-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+            >
+                <img src="/img/icon/seemore.png" alt="seemoreicon" className="seemore-icon" />
+            </Button>
+            <Menu
+                id="fade-menu"
+                MenuListProps={{
+                'aria-labelledby': 'fade-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+            >
+                <MenuItem onClick={handleClose}>신고</MenuItem>
+                <MenuItem onClick={handleClose}>답글작성</MenuItem>
+                <MenuItem onClick={handleClose}>수정</MenuItem>
+                <MenuItem onClick={handleClose}>개시글 삭제</MenuItem>
+            </Menu>
+        </div>
+    );
 }
 
 // 댓글 페이지네이션
@@ -72,14 +72,14 @@ function BasicPagination() {
 // input ui component
 function BasicTextFields() {
     return (
-      <Box
-        component="form"
-        sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} />
-      </Box>
+        <Box
+            component="form"
+            sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
+            noValidate
+            autoComplete="off"
+        >
+            <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} />
+        </Box>
     );
 }
 
@@ -100,48 +100,43 @@ function BasicModal() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-  
+
     return (
-      <div className="QandA-button" >
-        <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
-        <div className="QandA-button-text" onClick={handleOpen}>질문 작성하기</div>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
+        <div className="QandA-button" >
+            <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
+            <div className="QandA-button-text" onClick={handleOpen}>질문 작성하기</div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <div className="modal-header">
+                        <span className="modal-header-title">질문 작성하기</span>
+                    </div>
 
-            <div className="modal-header">
-                <span className="modal-header-title">질문 작성하기</span>
-            </div>
-
-            <div className="modal-title-section">
-                <span className="modal-title">질문</span>
-                <span className="modal-title-count1">0자</span>
-                <span className="modal-title-count2">/200자</span>
-            </div>
-
-            <BasicTextFields />
-
-            <div className="modal-caution-section">
-                <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
-                <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
-            </div>
-
-            <div className="modal-button-section">
-                <div onClick={handleClose} className="modal-cancel-button">
-                    <span className="modal-cancel-text">취소</span>
-                </div>
-                <div onClick={handleClose} className="modal-active-button">
-                    <span className="modal-active-text">등록</span>
-                </div>
-            </div>
-
-          </Box>
-        </Modal>
-      </div>
+                    <div className="modal-title-section">
+                        <span className="modal-title">질문</span>
+                        <span className="modal-title-count1">0자</span>
+                        <span className="modal-title-count2">/200자</span>
+                    </div>
+                    <BasicTextFields />
+                    <div className="modal-caution-section">
+                        <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
+                        <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
+                    </div>
+                    <div className="modal-button-section">
+                        <div onClick={handleClose} className="modal-cancel-button">
+                            <span className="modal-cancel-text">취소</span>
+                        </div>
+                        <div onClick={handleClose} className="modal-active-button">
+                            <span className="modal-active-text">등록</span>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+        </div>
     );
 }
 
