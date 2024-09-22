@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-const PhoneVali = (props) => {
+const IdVali = (props) => {
     const [value, setValue] = useState(props.value ?? '');
     const [error, setError] = useState();
     const onChange = (e) => {
@@ -8,8 +8,8 @@ const PhoneVali = (props) => {
 
         let hasError = false;
         props.validators.forEach((rule) => {
-            if(!hasError) {
-                if(!rule.fn(e.target.value)) {
+            if (!hasError) {
+                if (!rule.fn(newValue)) {
                     setError(rule.message);
                     hasError = true;
                 }
@@ -20,23 +20,26 @@ const PhoneVali = (props) => {
             setError(null);
             // props.onInput(newValue)
             props.onInput?.(newValue);
-            console.log("ss" + newValue);
+            console.log("성공" + newValue);
         } else {
-            console.log("ff" + newValue);
+            console.log("실패" + newValue);
         }
+
+        // id 체크 여부 기능 넣어야함
     }
+
     return (
         <>
             <input
                 type="text"
-                name="phonenumber"
+                name="id"
                 value={value}
                 onChange={onChange}
-                placeholder="전화번호"
+                placeholder="아이디"
             />
             <span style={{color: 'red', fontSize: '12px', display: 'block'}}>{error}</span>
         </>
     )
 }
 
-export default PhoneVali;
+export default IdVali;

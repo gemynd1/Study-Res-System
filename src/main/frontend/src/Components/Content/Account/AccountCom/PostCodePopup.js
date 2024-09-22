@@ -67,7 +67,6 @@ const PostCodePopup = (props) => {
                     
                 </div>
             }
-            
         </div>
     );
 };

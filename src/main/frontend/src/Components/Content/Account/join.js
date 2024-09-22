@@ -4,8 +4,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import JsonData from "../../../db/join.json";
 
+// 컴포넌트 연결
 import PostCodePopup from "./AccountCom/PostCodePopup";
 import PhoneVali from "./AccountCom/PhoneVali";
+import IdVali from "./AccountCom/IdVali";
 
 const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
@@ -63,19 +65,32 @@ const BasicModal = (props) => {
     )
 }
 
-const Join = (props) => {
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const isNumeric = (input) => /^[0-9]+$/.test(input);
+const Join = () => {
+    const isNumeric = (input) => /^[0-9]+$/.test(input); // 전화번호 정규식
+    const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
+
+    // input 체크
+    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : ''});
 
     // 우편번호 API
     const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: ''});
     const [popup, setPopup] = useState(false);
+
     const handleInput = (e) => {
         setEnroll_company({
             ...enroll_company,
             [e.target.name]:e.target.value,
-        })
+        });
     }
+    const handleInput2 = (e) => {
+        console.log(e.target.name, e.target.value)
+        setauthObj({
+            ...authObj,
+            [e.target.name]:e.target.value,
+        });
+    }
+
+    // 우편번호
     const handleComplete = (data) => {
         setPopup(!popup);
     }
@@ -85,126 +100,38 @@ const Join = (props) => {
         window.location.href = kakaoURL;
     }
 
-    // form input 체크
-    const [authObj, setauthObj] = useState({
-        nickname : "",
-        zonecode : enroll_company.zonecode,
-        address : enroll_company.address,
-        detailAddress : "",
-        phonenumber : phoneNumber,
-        id : "",
-        pw : ""
-    });
-    const [pwConfirm, setpwConfirm] = useState(""); // 비밀번호 확인
-    const [idError, setIdError] = useState(""); // id 입력 에러
-    const [pwError, setPwError] = useState(""); // 비밀번호 에러
-    const [pwConfirmError, setpwConfirmError] = useState(""); // 비밀번호 확인 에러
-    const [isIdCheck, setIsIdCheck] = useState(false); // 중복체크
-    const [isIdAvailable, setIsIdAvailable] = useState(false); // id 사용가능여부
+    // const onChangePasswordHandler = (e) => {
+    //     const {name, value} = e.target;
+    //     if(name === 'pw') {
+    //         setauthObj({...authObj, [name] : value});
+    //         passwordCheckHandler(value, pwConfirm);
+    //     } else {
+    //         setpwConfirm(value);
+    //         passwordCheckHandler(authObj.pw, value);
+    //     }
+    // }
 
-    const onChangeIdHandler = (e) => {
-        const idValue = e.target.value;
-        setauthObj({...authObj ["id"], idValue});
-    }
-    
-    const onChangePasswordHandler = (e) => {
-        const {name, value} = e.target;
-        if(name === 'pw') {
-            setauthObj({...authObj, [name] : value});
-            passwordCheckHandler(value, pwConfirm);
-        } else {
-            setpwConfirm(value);
-            passwordCheckHandler(authObj.pw, value);
-        }
-    }
-
-    const idCheckHandler = async (id) => {
-        const idRegex = /^[a-z\d]{5,20}$/;
-        if (id === '') {
-            setIdError('아이디를 입력해주세요.');
-            setIsIdAvailable(false);
-            return false;
-        } else if (!idRegex.test(id)) {
-            setIdError('아이디는 5~10자의 영소문자, 숫자만 입력 가능합니다.');
-            setIsIdAvailable(false);
-            return false;
-        } else {
-            setIdError('사용 가능한 아이디 입니다.');
-            ㄴ(true);
-            setIsIdAvailable(true);
-            return true;
-        }
-        // 서버 연동 후 진행 idcheck
-        // try {
-        //     const responseData = await idDuplicateCheck(id);
-        //     if (responseData) {
-        //         setIdError('사용 가능한 아이디입니다.');
-        //         setIsIdCheck(true);
-        //         setIsIdAvailable(true);
-        //         return true;
-        //     } else {
-        //         setIdError('이미 사용중인 아이디입니다.');
-        //         setIsIdAvailable(false);
-        //         return false;
-        //     }
-        // } catch (error) {
-        //     alert('서버 오류입니다. 관리자에게 문의하세요.');
-        //     console.error(error);
-        //     return false;
-        // }
-    }
-
-    // 비밀번호 유효성 검사
-    const passwordCheckHandler = (password, pwConfirm) => {
-        const passwordRegex = /^[a-z\d!@*&-_]{8,30}$/;
-        if (password === '') {
-            setPwError('비밀번호를 입력해주세요.');
-            return false;
-        } else if (!passwordRegex.test(password)) {
-            setPwError('비밀번호는 8~30자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
-            return false;
-        } else if (pwConfirm !== password) {
-            setPwError('');
-            setpwConfirmError('비밀번호가 일치하지 않습니다.');
-            return false;
-        } else {
-            setPwError('');
-            setpwConfirmError('');
-            return true;
-        }
-    }
-
-    const signupHandler = async (e) => {
-        e.preventDefault();
-        
-        const idCheckresult = await idCheckHandler([authObj.id]);
-        if (idCheckresult) setIdError('');
-        else return;
-        if (!isIdCheck || !isIdAvailable) {
-            alert('아이디 중복 검사를 해주세요.');
-            return;
-        }
-    
-        const passwordCheckResult = passwordCheckHandler([authObj.pw], pwConfirm);
-        if (passwordCheckResult) { setPwError(''); setpwConfirmError(''); }
-        else return;
-        
-        // 서버연동 후 진행 회원가입
-        // try {
-        //     const responseData = await signup(id, password, pwConfirm);
-        //     if (responseData) {
-        //         localStorage.setItem('loginId', id);
-        //         setOpenModal(true);
-        //     } else {
-        //         alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
-        //     }
-        // } catch (error) {
-        //     alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
-        //     console.error(error);
-        // }
-    }
-
+    // // 비밀번호 유효성 검사
+    // const passwordCheckHandler = (password, pwConfirm) => {
+    //     const passwordRegex = /^[a-z\d!@*&-_]{8,30}$/;
+    //     if (password === '') {
+    //         setPwError('비밀번호를 입력해주세요.');
+    //         return false;
+    //     } else if (!passwordRegex.test(password)) {
+    //         setPwError('비밀번호는 8~30자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
+    //         return false;
+    //     } else if (pwConfirm !== password) {
+    //         setPwError('');
+    //         setpwConfirmError('비밀번호가 일치하지 않습니다.');
+    //         return false;
+    //     } else {
+    //         setPwError('');
+    //         setpwConfirmError('');
+    //         return true;
+    //     }
+    // }
     // console.log(JsonData);
+    
     return (
         <>
             <section className="joinSec">
@@ -223,9 +150,9 @@ const Join = (props) => {
                             </div>
                             <hr className="line2" />    
                         </div>
-                        <form className="form-content" onSubmit={signupHandler}> 
+                        <form className="form-content"> 
                             <div className="nickInput">
-                                <input type="text" name="nickname" placeholder="닉네임" size={10} value={authObj.nickname} />
+                                <input type="text" name="nickname" placeholder="닉네임" onChange={handleInput2} value={authObj.nickname} />
                             </div>
                             <div class="postInput">
                                 <input type="text" name="zonecode" placeholder="우편번호" onChange={handleInput} value={enroll_company.zonecode} readOnly />
@@ -239,19 +166,21 @@ const Join = (props) => {
                                 <input
                                     type="text"
                                     class="form-control"
-                                    name="detailAddress"
+                                    name="detailedAddress"
                                     placeholder="상세 주소"
-                                    value={authObj.detailAddress}
+                                    value={enroll_company.detailedAddress}
+                                    onChange={handleInput}
                                 />
                             </div>
                             <div className="phoneInput">
                                 <PhoneVali
-                                    value={phoneNumber}
-                                    onInput={setPhoneNumber}
+                                    value={authObj.phonenumber}
+                                    onInput={handleInput2.phonenumber}
+                                    onChange={handleInput2}
                                     validators={[
                                         {
                                             fn: (input) => input.length > 0,
-                                            message: '내용을 입력해주세요.',
+                                            message: '전화번호를 입력해주세요.',
                                         },
                                         {
                                             fn: isNumeric,
@@ -266,15 +195,29 @@ const Join = (props) => {
                                 {/* <input type="text" placeholder="전화번호"/>/ */}
                             </div>
                             <div className="idInput">
-                                <input 
-                                    type="text" 
-                                    name="id" 
-                                    placeholder="아이디" 
-                                    size={30} 
-                                    value={authObj.id} 
-                                    onChange={onChangeIdHandler}
+                                <IdVali
+                                    value={authObj.id}
+                                    onInput={handleInput2.id}
+                                    onChange={handleInput2}
+                                    validators={[
+                                        {
+                                            fn: (input) => input.length > 0,
+                                            message: '아이디를 입력해주세요.',
+                                        },
+                                        {
+                                            fn : idRegex,
+                                            message : '아이디는 5~20자의 영소문자, 숫자만 입력 가능합니다.',
+                                        },
+                                        {
+                                            fn: (input) => input.length >= 5,
+                                            message: '5자 이상 입력해주세요.',
+                                        },
+                                        // {
+                                        //     fn: isIdCheck,
+                                        //     message: '아이디 중복 검사를 해주세요.',
+                                        // },
+                                    ]}
                                 />
-                                {idError && <small style={{color: 'red', fontSize: '12px', display: 'block'}} className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
                                 {/* <button type="button" className="idcheckbtn">중복확인</button> */}
                             </div>
                             <div className="pwInput">
@@ -282,11 +225,10 @@ const Join = (props) => {
                                     type="password" 
                                     name="pw" 
                                     placeholder="비밀번호" 
-                                    size={30} 
-                                    value={authObj.pw} 
-                                    onChange={onChangePasswordHandler}
+                                    size={30}
+                                    onChange={handleInput}
                                 />
-                                {pwError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwError}</small>}
+                                {/* {pwError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwError}</small>} */}
                                 <div className="pwCheckInfo">
                                     <span>- 비밀번호는 8~30자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.</span> <br />
                                     {/* <span>- 3개 이상 키보드 상 배열이 연속되거나 동일한 문자/숫자 제외</span> */}
@@ -297,11 +239,10 @@ const Join = (props) => {
                                     type="password" 
                                     name="pwConfirm"
                                     placeholder="비밀번호 확인" 
-                                    size={30} 
-                                    value={pwConfirm}
-                                    onChange={onChangePasswordHandler}    
+                                    size={30}
+                                    onChange={handleInput}
                                 />
-                                {pwConfirmError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwConfirmError}</small>}
+                                {/* {pwConfirmError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwConfirmError}</small>} */}
                             </div>
                             <div className="agreecheck">
                                 <div className="agree1">
