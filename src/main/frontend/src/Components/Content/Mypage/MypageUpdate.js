@@ -20,6 +20,20 @@ const MypageUpdate = () => {
             .catch(error => console.log(error))
     }, []);
 
+    useEffect(() => {
+        if (MemberModalOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [MemberModalOpen]);
+
+
+
     const navigateBtn = () => {
         navigate('/mypage')
     };

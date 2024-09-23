@@ -8,9 +8,14 @@ import Footer from "./Components/Layout/Footer";
 
 import Main from "./Components/Content/Page/Main";
 import Info from "./Components/Content/Page/Info";
-import Board from "./Components/Content/Page/Board";
 import Review from "./Components/Content/Page/Review";
 import Mypage from "./Components/Content/Page/Mypage";
+
+import Board from "./Components/Content/Board/Board";
+import BoardCategory from "./Components/Content/Board/BoardCategory";
+import Post from "./Components/Content/Board/Post";
+import PostWrite from "./Components/Content/Board/PostWrite";
+import PostRewrite from "./Components/Content/Board/PostRewrite";
 
 import MypageUpdate from "./Components/Content/Mypage/MypageUpdate";
 import MypageBoard from "./Components/Content/Mypage/MypageBoard";
@@ -19,7 +24,12 @@ import MypageAdd from "./Components/Content/Mypage/MypageAdd";
 import Login from "./Components/Content/Account/login";
 import Join from "./Components/Content/Account/join";
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
+
+import CustomerService from "./Components/Content/Page/CustomerService";
+
 import TeamDetail from "./Components/Content/Page/teamdetail";
+import CustomerWrite from "./Components/Content/Page/CustomerWrite";
+
 // import './App.css';
 
 function AppContent() {
@@ -38,12 +48,24 @@ function AppContent() {
 
   return (
     <>
-      {!hideHeaderLogin && <Header />}
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/info" element={<Info />} />
+
+        {!hideHeaderLogin && <Header />}
+        <Routes>
+          <Route path='/' element={<Main />} />
+          <Route path='/info' element={<Info />} />
+          <Route path='/board' element={<Board />} />
+          <Route path='/review' element={<Review />} />
+          <Route path='/customerService' element={<CustomerService />} />
+            <Route path='/customerWrite' element={<CustomerWrite />} />
+
+
+
         <Route path="/board" element={<Board />} />
-        <Route path="/review" element={<Review />} />
+        <Route path="/board/category/*" element={<BoardCategory />} />
+        <Route path="/board/post/*" element={<Post />} />
+        <Route path="/board/postWrite" element={<PostWrite />} />
+        <Route path="/board/postRewrite/*" element={<PostRewrite />} />
+
 
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />

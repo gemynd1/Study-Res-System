@@ -96,7 +96,7 @@ div.board-page div.board-menubar div.category-section .category4 .category4-titl
     margin-left: 11px;
 }
 
-div.board-page div.board-menubar div.writeButton {
+div.board-page div.board-menubar a.writeButton {
     position: absolute;
     width: 126px;
     height: 52px;
@@ -106,7 +106,7 @@ div.board-page div.board-menubar div.writeButton {
     margin-left: 57px;
 }
 
-div.board-page div.board-menubar div.writeButton div.writeButton-1 {
+div.board-page div.board-menubar a.writeButton div.writeButton-1 {
     /* position: absolute; */
     margin: 15px 40px 16px 39px;
     width: 60px;
@@ -122,7 +122,7 @@ div.board-page div.board-menubar div.writeButton div.writeButton-1 {
 }
 
 div.board-page div.board-category-1 {
-    position: absolute;
+    position: relative;
     width: 1120px;
     height: 688px;
     margin-left: 123px;

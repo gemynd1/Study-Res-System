@@ -28,7 +28,7 @@ const Footer = () => {
                     <Link to="고객센터(문의하기)">
                         <img src="/img/icon/message(white).png" alt="message" className="footer-message"/>
                     </Link>
-                    <Link to="고객센터">
+                    <Link to="/CustomerService">
                         <img src="/img/icon/call(white).png" alt="call" className="footer-call"/>
                     </Link>
                     <Link to="https://github.com/breath03/SnakeDev">

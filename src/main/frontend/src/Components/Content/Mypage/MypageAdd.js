@@ -34,8 +34,6 @@ const MypageAdd = () => {
         setModalOpen(false);
     }
 
-
-
     useEffect(() => {
         axios.get('/api/mypage/mypageAdd')
             .then((res) => {
@@ -56,6 +54,17 @@ const MypageAdd = () => {
         };
     }, [MemberModalOpen]);
 
+    useEffect(() => {
+        if (ModalOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [ModalOpen]);
 
     return (
         <div className="MyPage">

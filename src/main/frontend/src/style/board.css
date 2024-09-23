@@ -3,11 +3,11 @@ div.ilovecode {
 }
 
 div.board-page {
-    width: auto;
+    width: 100%;
     position: relative;
     display: flex;
     justify-content: center;
-    margin-left: 30%;
+    margin-bottom: 3%;
 }
 
 div.board-page p,
@@ -29,7 +29,7 @@ div.board-page div.board-menubar {
 }
 
 div.board-page div.board-menubar div.category-section {
-    position: absolute;
+    position: relative;
     width: 150px;
     height: 532px;
     margin: 33px 38px 21px 45px;
@@ -108,7 +108,7 @@ div.board-page div.board-menubar div.category-section .category4 .category4-titl
     margin-left: 11px;
 }
 
-div.board-page div.board-menubar div.writeButton {
+div.board-page div.board-menubar a.writeButton {
     position: absolute;
     width: 126px;
     height: 52px;
@@ -116,9 +116,10 @@ div.board-page div.board-menubar div.writeButton {
     border-radius: 10px;
     margin-top: 617px;
     margin-left: 57px;
+    cursor: pointer;
 }
 
-div.board-page div.board-menubar div.writeButton div.writeButton-1 {
+div.board-page div.board-menubar a.writeButton div.writeButton-1 {
     /* position: absolute; */
     margin: 15px 40px 16px 39px;
     width: 60px;
@@ -134,7 +135,7 @@ div.board-page div.board-menubar div.writeButton div.writeButton-1 {
 }
 
 div.board-page div.board-category-1 {
-    position: relative;
+    /* position: relative; */
     width: 1120px;
     height: 688px;
     margin-left: 123px;

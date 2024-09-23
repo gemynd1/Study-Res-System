@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import '../../../style/postRewrite.css';
+import '../../../style/postWrite.css';
 
 
 // 텍스트 ui import
@@ -13,14 +13,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 // import Box from '@mui/material/Box';
-
-// group-section input ui import
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-// import FormControl from '@mui/material/FormControl';
-// import Box from '@mui/material/Box';
-// import TextField from '@mui/material/TextField';
 
 // meetingPoint-section radio ui import
 import Radio from '@mui/material/Radio';
@@ -85,25 +77,6 @@ function BasicSelect() {
           </Select>
         </FormControl>
       </Box>
-    );
-}
-
-// group-section input ui component
-function InputAdornments({type}) { 
-    const typeText = type === 'current' ? '현재' : '최대';
-
-    return (
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <OutlinedInput
-            id="outlined-adornment-weight"
-            endAdornment={<InputAdornment position="end">명</InputAdornment>}
-            aria-describedby="outlined-weight-helper-text"
-            inputProps={{
-              'aria-label': 'weight',
-            }}
-          />
-          <FormHelperText id="outlined-weight-helper-text">모임의 {typeText} 인원</FormHelperText>
-        </FormControl>
     );
 }
 
@@ -381,30 +354,10 @@ const PostRewrite = () => {
                             <span className="groupCount-text">모임인원</span>
                         </div>
                         <div className="testgroup">
-                            <div className="current-count">
-                                <InputAdornments type='current' />
-                            </div>
-                            <div className="/">/</div>
                             <div className="maximum-count">
+                                {/* <InputAdornments type='maximum' /> */}
                                 <NumberInputAdornments />
                                 <p className="maximum-count-text">모임의 최대인원</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="groupCount-user-section">
-                        <div className="group-user-background">
-                            <div className="group-user">
-                                <img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
-                                <span className="user-text">김지민</span>
-                                <img src="/img/icon/x.png" alt="XIcon" className="X-icon" />
-                            </div>
-                        </div>
-                        <div className="group-user-background">
-                            <div className="group-user">
-                                <img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
-                                <span className="user-text">김지민</span>
-                                <img src="/img/icon/x.png" alt="XIcon" className="X-icon" />
                             </div>
                         </div>
                     </div>
