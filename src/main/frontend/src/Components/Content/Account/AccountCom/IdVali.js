@@ -2,10 +2,11 @@ import React, {useState} from "react";
 
 const IdVali = (props) => {
     const [value, setValue] = useState(props.value ?? '');
-    const [error, setError] = useState();
+    const [error, setError] = useState(null);
     const onChange = (e) => {
-        const newValue = setValue(e.target.value);
-
+        const newValue = e.target.value;
+        setValue(newValue);
+        
         let hasError = false;
         props.validators.forEach((rule) => {
             if (!hasError) {

@@ -8,6 +8,8 @@ import JsonData from "../../../db/join.json";
 import PostCodePopup from "./AccountCom/PostCodePopup";
 import PhoneVali from "./AccountCom/PhoneVali";
 import IdVali from "./AccountCom/IdVali";
+import PwVali from "./AccountCom/PwVali";
+
 
 const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
@@ -68,6 +70,7 @@ const BasicModal = (props) => {
 const Join = () => {
     const isNumeric = (input) => /^[0-9]+$/.test(input); // 전화번호 정규식
     const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
+    const isPwNumeric = (input) => /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/.test(input); // 비밀번호 정규식, 영문 숫자 특수기호 조합 8자리 이상
 
     // input 체크
     const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : ''});
@@ -83,7 +86,6 @@ const Join = () => {
         });
     }
     const handleInput2 = (e) => {
-        console.log(e.target.name, e.target.value)
         setauthObj({
             ...authObj,
             [e.target.name]:e.target.value,
@@ -221,12 +223,24 @@ const Join = () => {
                                 {/* <button type="button" className="idcheckbtn">중복확인</button> */}
                             </div>
                             <div className="pwInput">
-                                <input 
-                                    type="password" 
-                                    name="pw" 
-                                    placeholder="비밀번호" 
-                                    size={30}
-                                    onChange={handleInput}
+                                <PwVali 
+                                    value={authObj.pw}
+                                    onInput={handleInput2.pw}
+                                    onChange={handleInput2}
+                                    validators={[
+                                        {
+                                            fn: (input) => input.length > 0,
+                                            message: '비밀번호를 입력해주세요.',
+                                        },
+                                        {
+                                            fn: isPwNumeric,
+                                            message: '형식에 맞지 않습니다.',
+                                        },
+                                        {
+                                            fn: (input) => input.length >= 8,
+                                            message: '8자 이상 입력해주세요.',
+                                        },
+                                    ]}
                                 />
                                 {/* {pwError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwError}</small>} */}
                                 <div className="pwCheckInfo">
@@ -238,9 +252,8 @@ const Join = () => {
                                 <input 
                                     type="password" 
                                     name="pwConfirm"
-                                    placeholder="비밀번호 확인" 
-                                    size={30}
-                                    onChange={handleInput}
+                                    placeholder="비밀번호 확인"
+                                    onChange={handleInput2}
                                 />
                                 {/* {pwConfirmError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwConfirmError}</small>} */}
                             </div>
