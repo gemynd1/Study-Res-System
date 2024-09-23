@@ -64,6 +64,14 @@
 .header .menu .menuList2-fail .chat {
     width: 2.08vw;
     height: 3.70vh;
+    cursor: pointer;
+}
+
+header.header div.menu ul.menuList2-fail li img.bell:hover,
+header.header div.menu ul.menuList2-fail li img.chat:hover {
+    background: lightgray;
+    padding: 5%;
+    border-radius: 10px;
 }
 
 .header .menu .menuList2-fail .menuList2-login .login,
@@ -125,6 +133,16 @@
 {
     width: 2.08vw;
     height: 3.70vh;
+    cursor: pointer;
+}
+
+.header .menu .menuList2-sucs .bell:hover,
+.header .menu .menuList2-sucs .chat:hover,
+.header .menu .menuList2-sucs .bell.active,
+.header .menu .menuList2-sucs .chat.active {
+    background: lightgray;
+    padding: 5%;
+    border-radius: 10px;
 }
 
 .header .menu .menuList2-sucs .menuList2-mypage,

@@ -6,7 +6,7 @@ import { Link, Outlet } from "react-router-dom";
 const Header = () => {
     const [active_index, setActive_index] = useState(null);
     const [active_message_index, setActive_message_index] = useState(0);
-
+ 
     const index_choice = (index) => {
         if(active_index === index) {
             setActive_index(null);
@@ -65,10 +65,10 @@ const Header = () => {
                     </ul> */}
                     <ul className="menuList2-sucs"> 
                         <li>
-                            <img src="/img/icon/bell.png" alt="bell" className="bell" onClick={() => {index_choice(0)}} />
+                            <img src="/img/icon/bell.png" alt="bell" className={active_index === 0 ? "bell active" : "bell"} onClick={() => {index_choice(0)}} />
                         </li>
                         <li>
-                            <img src="/img/icon/chat.png" alt="chat" className="chat" onClick={() => {index_choice(1)}} />
+                            <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
                         </li>
                         <li>
                             <Link to="/mypage" style={{ textDecoration: 'none' }}>
