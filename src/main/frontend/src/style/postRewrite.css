@@ -313,12 +313,14 @@ div.postRewrite-section div.groupCount-user-section div.group-user-background di
     color: #000000;
     white-space: nowrap; /* 줄 바꿈 방지 */
     margin-right: 5%;
+    cursor: default;
 }
 
 div.postRewrite-section div.groupCount-user-section div.group-user-background div.group-user img.X-icon {
     width: 27.73px;
     height: 30px;
     margin-right: 5%;
+    cursor: pointer;
 }
 
 div.postRewrite-section div.meetingPoint-section {
