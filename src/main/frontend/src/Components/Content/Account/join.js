@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect, cloneElement} from "react";
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -8,7 +8,8 @@ import JsonData from "../../../db/join.json";
 import PostCodePopup from "./AccountCom/PostCodePopup";
 import PhoneVali from "./AccountCom/PhoneVali";
 import IdVali from "./AccountCom/IdVali";
-import PwVali from "./AccountCom/PwVali";
+// import PwVali from "./AccountCom/PwVali";
+// import PwCheckVali from "./AccountCom/PwCheckVali";
 
 
 const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
@@ -36,7 +37,7 @@ const BasicModal = (props) => {
     return (
         <>  
             <div>
-                <button type={'button'} onClick={handleOpen}>{props.title}</button>
+                <input type={'button'} onClick={handleOpen} value={props.title} />
             </div>
             <Modal
                 open={open}
@@ -68,18 +69,27 @@ const BasicModal = (props) => {
 }
 
 const Join = () => {
-    const isNumeric = (input) => /^[0-9]+$/.test(input); // 전화번호 정규식
-    const isNumeric2 = (input) => /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4}$/.test(input); // 전화번호 정규식
-
+    const isNumeric = (input) => /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4}$/.test(input); // 전화번호 정규식
     const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
-    const isPwNumeric = (input) => /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/.test(input); // 비밀번호 정규식, 영문 숫자 특수기호 조합 8자리 이상
+    // const isPwNumeric = (input) => /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/.test(input); // 비밀번호 정규식, 영문 숫자 특수기호 조합 8자리 이상
 
     // input 체크
-    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwCheck : ''});
+    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwcheck : ''});
+    const [isPassword, setIsPassword] = useState(false)
+    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false)
+    const [PasswordMessage, setPasswordMessage] = useState('');
+    const [PasswordConfirmMessage, setPasswordConfirmMessage] = useState('');
+    const [allAgreed, setAllAgreed] = useState(false);
+    const [agreement, setAgreement] = useState({isAgree1: false, isAgree2: false, isAgree3: false});
 
     // 우편번호 API
     const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: ''});
     const [popup, setPopup] = useState(false);
+
+    // 우편번호
+    const handleComplete = (data) => {
+        setPopup(!popup);
+    }
 
     const handleInput = (e) => {
         setEnroll_company({
@@ -94,9 +104,71 @@ const Join = () => {
         });
     }
 
-    // 우편번호
-    const handleComplete = (data) => {
-        setPopup(!popup);
+    // 비밀번호 
+    const password = (e) => {
+        const passwordcurrent = e.target.value;
+        setauthObj({
+            ...authObj,
+            pw : passwordcurrent,
+        })
+        const isPwNumeric = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/ // 비밀번호 정규식, 영문 숫자 특수기호 조합 8자리 이상
+        if(!isPwNumeric.test(passwordcurrent)) {
+            setPasswordMessage("형식에 맞지 않습니다.")
+            setIsPassword(false)
+        } else if(passwordcurrent.length <= 8) {
+            setPasswordMessage("8자 이상 입력해주세요")
+            setIsPassword(false)
+        } else {
+            setPasswordMessage(null)
+            console.log(passwordcurrent)
+            setIsPassword(true)
+        }
+        
+    }
+
+    // 비밀번호 확인
+    const passwordCheck = (e) => {
+        const passwordcheckcurrent = e.target.value
+        setauthObj({
+            ...authObj,
+            pwcheck : passwordcheckcurrent,
+        })
+        // console.log(authObj.pw)
+        // console.log(passwordcheckcurrent)
+        if(authObj.pw === passwordcheckcurrent) {
+            setPasswordConfirmMessage(null)
+            setIsPasswordConfirm(true)
+        } else {
+            // console.log(authObj.pwcheck)
+            setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.")
+            setIsPasswordConfirm(false)
+        }
+    }
+
+    // 체크박스
+    const handleAgreementChange = (e) => {
+        const {name, checked} = e.target;
+        setAgreement({
+            ...agreement,
+            [name]: e.target.checked
+        })
+
+        const allChecked = Object.values({ ...agreement, [name]: checked }).every(value => value === true);
+        setAllAgreed(allChecked);
+    }
+
+    const handleAllAgreeChange = (e) => {
+        const {checked} = e.target;
+        setAgreement((prevAgreenment) => 
+            Object.keys(prevAgreenment).reduce(
+                (newAgreement, agreementKey) => ({
+                    ...newAgreement,
+                    [agreementKey] : checked,
+                }),
+                {}
+            )
+        );
+        setAllAgreed(checked)
     }
 
     // 카카오 로그인
@@ -104,37 +176,8 @@ const Join = () => {
         window.location.href = kakaoURL;
     }
 
-    // const onChangePasswordHandler = (e) => {
-    //     const {name, value} = e.target;
-    //     if(name === 'pw') {
-    //         setauthObj({...authObj, [name] : value});
-    //         passwordCheckHandler(value, pwConfirm);
-    //     } else {
-    //         setpwConfirm(value);
-    //         passwordCheckHandler(authObj.pw, value);
-    //     }
-    // }
-
-    // // 비밀번호 유효성 검사
-    // const passwordCheckHandler = (password, pwConfirm) => {
-    //     const passwordRegex = /^[a-z\d!@*&-_]{8,30}$/;
-    //     if (password === '') {
-    //         setPwError('비밀번호를 입력해주세요.');
-    //         return false;
-    //     } else if (!passwordRegex.test(password)) {
-    //         setPwError('비밀번호는 8~30자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
-    //         return false;
-    //     } else if (pwConfirm !== password) {
-    //         setPwError('');
-    //         setpwConfirmError('비밀번호가 일치하지 않습니다.');
-    //         return false;
-    //     } else {
-    //         setPwError('');
-    //         setpwConfirmError('');
-    //         return true;
-    //     }
-    // }
     // console.log(JsonData);
+    
     
     return (
         <>
@@ -156,7 +199,7 @@ const Join = () => {
                         </div>
                         <form className="form-content"> 
                             <div className="nickInput">
-                                <input type="text" name="nickname" placeholder="닉네임" onChange={handleInput2} value={authObj.nickname} />
+                                <input type="text" name="nickname" placeholder="닉네임" onChange={handleInput2} value={authObj.nickname} required />
                             </div>
                             <div class="postInput">
                                 <input type="text" name="zonecode" placeholder="우편번호" onChange={handleInput} value={enroll_company.zonecode} readOnly />
@@ -187,7 +230,7 @@ const Join = () => {
                                             message: '전화번호를 입력해주세요.',
                                         },
                                         {
-                                            fn: isNumeric2,
+                                            fn: isNumeric,
                                             message: "숫자만 입력해주세요.",
                                         },
                                         {
@@ -195,8 +238,8 @@ const Join = () => {
                                             message: '10자 이상 입력해주세요.',
                                         },
                                     ]}
+                                    
                                 />
-                                {/* <input type="text" placeholder="전화번호"/>/ */}
                             </div>
                             <div className="idInput">
                                 <IdVali
@@ -221,30 +264,22 @@ const Join = () => {
                                         //     message: '아이디 중복 검사를 해주세요.',
                                         // },
                                     ]}
+                                    
                                 />
                                 {/* <button type="button" className="idcheckbtn">중복확인</button> */}
                             </div>
                             <div className="pwInput">
-                                <PwVali 
+                                <input 
+                                    type="password" 
+                                    name="pw"
+                                    placeholder="비밀번호"
+                                    onChange={password}
                                     value={authObj.pw}
-                                    onInput={handleInput2.pw}
-                                    onChange={handleInput2}
-                                    validators={[
-                                        {
-                                            fn: (input) => input.length > 0,
-                                            message: '비밀번호를 입력해주세요.',
-                                        },
-                                        {
-                                            fn: isPwNumeric,
-                                            message: '형식에 맞지 않습니다.',
-                                        },
-                                        {
-                                            fn: (input) => input.length >= 8,
-                                            message: '8자 이상 입력해주세요.',
-                                        },
-                                    ]}
+                                    required
                                 />
-                                {/* {pwError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwError}</small>} */}
+                                {authObj.pw.length > 0 && (
+                                    <span style={{color: 'red', fontSize: '12px', display: 'block'}}>{PasswordMessage}</span>
+                                )}
                                 <div className="pwCheckInfo">
                                     <span>- 비밀번호는 8~30자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.</span> <br />
                                     {/* <span>- 3개 이상 키보드 상 배열이 연속되거나 동일한 문자/숫자 제외</span> */}
@@ -253,17 +288,23 @@ const Join = () => {
                             <div className="pwCheck">
                                 <input 
                                     type="password" 
-                                    name="pwConfirm"
+                                    name="pwcheck"
                                     placeholder="비밀번호 확인"
-                                    onChange={handleInput2}
+                                    onChange={passwordCheck}
+                                    value={authObj.pwcheck}
+                                    required
                                 />
-                                {/* {pwConfirmError && <small style={{color: 'red', fontSize: '12px', display: 'block'}}>{pwConfirmError}</small>} */}
+                                {authObj.pwcheck.length > 0 && (
+                                    <span style={{color: 'red', fontSize: '12px', display: 'block'}}>{PasswordConfirmMessage}</span>
+                                )}
                             </div>
                             <div className="agreecheck">
                                 <div className="agree1">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="chkall" id="chkall" />
+                                            <input type="checkbox" name="chkall" id="chkall" 
+                                                checked={allAgreed}
+                                                onChange={handleAllAgreeChange} />
                                         </li>
                                         <li>
                                             아래 약관에 모두 동의합니다.
@@ -274,33 +315,39 @@ const Join = () => {
                                 <div className="agree2">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="chk" id="chk" />
+                                            <input type="checkbox" name="isAgree1" id="isAgree1" 
+                                                checked={agreement.isAgree1} 
+                                                onChange={handleAgreementChange}
+                                                required />
                                         </li>
                                         <li>
-                                            <BasicModal title={'약관'} />
-                                            서비스 이용약관(필수)
+                                            <BasicModal title={'약관'} /> 서비스 이용약관(필수)
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="agree3">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="chk" id="chk" />
+                                            <input type="checkbox" name="isAgree2" id="isAgree2" 
+                                                checked={agreement.isAgree2} 
+                                                onChange={handleAgreementChange}
+                                                required />
                                         </li>
                                         <li>
-                                            <BasicModal title={'개인정보'} />
-                                            개인정보 수집 및 이용에 대한 안내(필수)
+                                            <BasicModal title={'개인정보'} /> 개인정보 수집 및 이용에 대한 안내(필수)
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="agree4">
                                     <ul>
                                         <li>
-                                            <input type="checkbox" name="chk" id="chk" />
+                                            <input type="checkbox" name="isAgree3" id="isAgree3" 
+                                                checked={agreement.isAgree3} 
+                                                onChange={handleAgreementChange}
+                                                required />
                                         </li>
                                         <li>
-                                            <BasicModal title={'위치정보'} />
-                                            위치정보 이용약관 동의(필수)
+                                            <BasicModal title={'위치정보'} /> 위치정보 이용약관 동의(필수)
                                         </li>
                                     </ul>
                                 </div>

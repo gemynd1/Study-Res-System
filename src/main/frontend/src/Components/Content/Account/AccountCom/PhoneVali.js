@@ -9,7 +9,7 @@ const PhoneVali = (props) => {
         const numberLength = 11;
         const numberLength2 = 10;
         let result = '';
-        console.log(newValue);
+        // console.log(newValue);
         if(newValue.length <= numberLength2) {
             for (let i = 0; i < newValue.length && i < numberLength2; i++) {
                 if (i === 3 || i === 6) {
@@ -31,9 +31,8 @@ const PhoneVali = (props) => {
             return false;
         }
         
-        
         setValue(result);
-        console.log(result);
+        // console.log(result);
         
         let hasError = false;
         props.validators.forEach((rule) => {
@@ -45,20 +44,14 @@ const PhoneVali = (props) => {
             }
         });
 
-        // if(newValue.length === 13) {
-        //     newValue.replace(/-/g, '');
-        //     setValue(newValue.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'))   
-        // } else if(newValue.length === 10) {
-        //     setValue(newValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'))   
-        // }
-
         if(!hasError) {
             setError(null);
-
             props.onInput?.(result);
-            console.log("성공" + result);
+            // console.log("성공" + result);
+            return true;
         } else {
-            console.log("실패" + result);
+            // console.log("실패" + result);
+            return false;
         }
     }
     return (
@@ -69,6 +62,7 @@ const PhoneVali = (props) => {
                 value={value}
                 onChange={onChange}
                 placeholder="전화번호"
+                required
             />
             <span style={{color: 'red', fontSize: '12px', display: 'block'}}>{error}</span>
         </>

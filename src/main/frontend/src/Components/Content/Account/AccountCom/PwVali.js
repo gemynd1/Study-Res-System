@@ -6,11 +6,13 @@ const PwVali = (props) => {
     const onChange = (e) => {
         const newValue = e.target.value;
         setValue(newValue);
+        // console.log(props.onInput)
         
         let hasError = false;
         props.validators.forEach((rule) => {
             if (!hasError) {
                 if (!rule.fn(newValue)) {
+                    // console.log(rule.fn)
                     setError(rule.message);
                     hasError = true;
                 }
@@ -21,12 +23,12 @@ const PwVali = (props) => {
             setError(null);
             // props.onInput(newValue)
             props.onInput?.(newValue);
-            console.log("성공" + newValue);
+            // console.log("성공" + newValue);
+            return true;
         } else {
-            console.log("실패" + newValue);
+            // console.log("실패" + newValue);
+            return false;
         }
-
-        // id 체크 여부 기능 넣어야함
     }
 
     return (
