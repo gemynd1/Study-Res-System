@@ -251,12 +251,14 @@ header div.test div.test2 div.notification-headerBar div.clear-button div.clear-
     font-size: 15px;
     line-height: 18px;
     color: #000000;
+    cursor: pointer;
 }
 
 header div.test div.test2 div.notification-section div.notification {
     position: relative;
     width: 500px;
     height: 140px;
+    cursor: default;
 }
 
 header div.test div.test2 div.notification-section div.notification img.notification-XIcon {
@@ -265,6 +267,7 @@ header div.test div.test2 div.notification-section div.notification img.notifica
     height: 27px;
     left: 91%;
     margin-top: 3%;
+    cursor: pointer;
 }
 
 header div.test div.test2 div.notification-section div.notification p.notification-content {

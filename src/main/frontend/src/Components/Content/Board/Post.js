@@ -1,5 +1,5 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../../../style/post.css';
 
 // 댓글 더보기 버튼 import
@@ -145,12 +145,12 @@ function BasicModal() {
 // 카카오맵
 const TheaterLocation = () => {
     return (
-      <div>
+      <div className="kakaomap">
         <Map
-          center={{ lat: 37.506320759000715, lng: 127.05368251210247 }}
+          center={{ lat: 37.398184423401, lng: 126.91023974128 }}
           style={{
-            width: '600px',
-            height: '500px',
+            width: '1090px',
+            height: '378px',
             borderRadius: '20px',
           }}
         >
@@ -158,7 +158,7 @@ const TheaterLocation = () => {
         
           <MapMarker
             style={{ border: 'tranparent' }}
-            position={{ lat: 37.506320759000715, lng: 127.05368251210247 }}
+            position={{ lat: 37.398184423401, lng: 126.91023974128 }}
           >
           {/* 핀 찍힐 위치 */}
           
@@ -172,7 +172,7 @@ const TheaterLocation = () => {
                 padding: '2.5px',
               }}
             >
-              🎬 small box 🎬
+              연성대학교
             </div>
           </MapMarker>
         </Map>
@@ -237,21 +237,21 @@ const Post = () => {
 
                     <div className="kakao-button">
 
-                        <div className="goto-info-button">
+                        <Link to="https://place.map.kakao.com/8430579" className="goto-info-button">
                             <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
                             <span className="goto-info-text">정보보기</span>
-                        </div>
+                        </Link>
 
-                        <div className="goto-road-button">
+                        <Link to="https://map.kakao.com/link/to/8430579" className="goto-road-button">
                             <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
                             <span className="goto-road-text">길찾기</span>
-                        </div>
+                        </Link>
 
                     </div>
 
                     <div className="kakaomap">
                     </div>
-                        <TheaterLocation />
+                    <TheaterLocation />
                     
                 </div>
 

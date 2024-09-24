@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import '../../../style/postRewrite.css';
 
 
@@ -350,6 +349,17 @@ const Button = styled('button')(
 const PostRewrite = () => {
   const [RadioValue, setRadioValue] = useState('');
 
+  const [groupMemberInfos, setGroupMemberInfos] = useState([
+    {id: 1, name: '김지민'},
+    {id: 2, name: '김태랑'}
+  ]);
+
+  const del_groupMember = (event) => {
+    const id = event.target.getAttribute('data-id');
+    // db에 실제로 데이터를 지워야함
+    setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.id !== Number(id)));
+  }
+
     return (
         <>
             <div className="ilovecode">
@@ -393,20 +403,15 @@ const PostRewrite = () => {
                     </div>
 
                     <div className="groupCount-user-section">
-                        <div className="group-user-background">
-                            <div className="group-user">
-                                <img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
-                                <span className="user-text">김지민</span>
-                                <img src="/img/icon/x.png" alt="XIcon" className="X-icon" />
+                        {groupMemberInfos.map((groupMemberInfo) => (
+                            <div className="group-user-background">
+                                <div className="group-user" key={groupMemberInfo.id}>
+                                    <img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
+                                    <span className="user-text">{groupMemberInfo.name}</span>
+                                    <img src="/img/icon/x.png" alt="XIcon" className="X-icon" data-id={groupMemberInfo.id} onClick={del_groupMember} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="group-user-background">
-                            <div className="group-user">
-                                <img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
-                                <span className="user-text">김지민</span>
-                                <img src="/img/icon/x.png" alt="XIcon" className="X-icon" />
-                            </div>
-                        </div>
+                        ))}
                     </div>
 
                     <div className="meetingPoint-section">
