@@ -69,11 +69,13 @@ const BasicModal = (props) => {
 
 const Join = () => {
     const isNumeric = (input) => /^[0-9]+$/.test(input); // 전화번호 정규식
+    const isNumeric2 = (input) => /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4}$/.test(input); // 전화번호 정규식
+
     const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
     const isPwNumeric = (input) => /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/.test(input); // 비밀번호 정규식, 영문 숫자 특수기호 조합 8자리 이상
 
     // input 체크
-    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : ''});
+    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwCheck : ''});
 
     // 우편번호 API
     const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: ''});
@@ -185,8 +187,8 @@ const Join = () => {
                                             message: '전화번호를 입력해주세요.',
                                         },
                                         {
-                                            fn: isNumeric,
-                                            message: '숫자만 입력해주세요.',
+                                            fn: isNumeric2,
+                                            message: "숫자만 입력해주세요.",
                                         },
                                         {
                                             fn: (input) => input.length >= 10,
