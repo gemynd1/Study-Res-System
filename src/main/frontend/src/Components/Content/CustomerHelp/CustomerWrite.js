@@ -20,7 +20,7 @@ const CustomerWrite = () => {
                 </div>
                 <div className="Mypageheader2">
                     <div className="MypageheaderLine">
-                        <Link to='/CustomerService' style={{textDecoration: 'none'}}>
+                        <Link to='/CustomerHelp/CustomerService' style={{textDecoration: 'none'}}>
                             <span className="mypagetext">고객센터</span>
                         </Link>
                         <img src="/img/icon/arrow.png" alt='/' className="mypagearrow"/>
@@ -28,7 +28,7 @@ const CustomerWrite = () => {
                 </div>
                 <div className="Mypageheader2">
                     <div className="MypageheaderLine">
-                        <Link to='/CustomerWrite' style={{textDecoration: 'none'}}>
+                        <Link to='/CustomerHelp/CustomerWrite' style={{textDecoration: 'none'}}>
                             <span className="mypagetext">문의하기</span>
                         </Link>
                         <img src="/img/icon/arrow.png" alt='/' className="mypagearrow"/>
@@ -37,11 +37,11 @@ const CustomerWrite = () => {
 
                 <div className="CustomerServiceIcon1">
                     <div className="CustomerService">
-                        <Link to='/CustomerWrite' style={{textDecoration: "none", display: "contents"}}>
+                        <Link to='/CustomerHelp/CustomerWrite' style={{textDecoration: "none", display: "contents"}}>
                             <span>문의하기</span>
                             <img src='/img/icon/customerWrite.png' alt="문의하기" style={{width: "30px", height: "30px"}}/>
                         </Link>
-                        <Link to='/' style={{textDecoration: "none", display: "contents"}}>
+                        <Link to='/CustomerHelp/customerDetail' style={{textDecoration: "none", display: "contents"}}>
                             <span>문의내역</span>
                             <img src='/img/icon/customerHistory.png' alt="문의하기"
                                  style={{width: "30px", height: "30px"}}/>

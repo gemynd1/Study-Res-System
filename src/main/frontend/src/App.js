@@ -25,10 +25,11 @@ import Login from "./Components/Content/Account/login";
 import Join from "./Components/Content/Account/join";
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
 
-import CustomerService from "./Components/Content/Page/CustomerService";
+import CustomerService from "./Components/Content/CustomerHelp/CustomerService";
 
 import TeamDetail from "./Components/Content/Page/teamdetail";
-import CustomerWrite from "./Components/Content/Page/CustomerWrite";
+import CustomerWrite from "./Components/Content/CustomerHelp/CustomerWrite";
+import CustomerDetail from "./Components/Content/CustomerHelp/CustomerDetail";
 
 // import './App.css';
 
@@ -55,8 +56,13 @@ function AppContent() {
           <Route path='/info' element={<Info />} />
           <Route path='/board' element={<Board />} />
           <Route path='/review' element={<Review />} />
-          <Route path='/customerService' element={<CustomerService />} />
-            <Route path='/customerWrite' element={<CustomerWrite />} />
+
+
+
+
+        <Route path='/CustomerHelp/customerService' element={<CustomerService />} />
+        <Route path='/CustomerHelp/customerWrite' element={<CustomerWrite />} />
+        <Route path='/CustomerHelp/customerDetail' element={<CustomerDetail /> } />
 
 
 
