@@ -39,6 +39,13 @@ const Header = () => {
         // 실제로 db 알림에 해당하는 데이터를 delete시켜야함
     }
 
+    const smallChat = () => {
+        // 해당 버튼을 클릭하는 요소의 id값을 넘겨받을꺼임 그 넘겨받은 id값에 해당하는 chat-main을 none으로 
+        // 바꿔야함
+        const chat_section = document.querySelector(".chat-main");
+        chat_section.style.display = "none";
+    }
+
     return (
         <>
             <header className="header"> 
@@ -289,6 +296,88 @@ const Header = () => {
 
                         </div>
 
+                    </div>
+                </div>
+
+                <div className="chat-section">
+                    <div className="test">
+                        <div className="chat-background">
+
+                            <div className="chat-headerBar">
+                                <p className="chat-partner">정희수,김태랑,백지민,김지민</p>
+                                <img src="/img/icon/arrow(down).png" alt="arrow-icon" className="arrow-icon" onClick={smallChat} />
+                                <img src="/img/icon/x.png" alt="x-icon" className="x-icon" />
+                            </div>
+
+                            <div className="chat-main" style={{display: "none"}}>
+
+                                <div className="chatbox">
+                                    <div className="chatbox-background">
+                                        <input />
+                                        <img src="/img/icon/send-chat.png" alt="send-chat-icon" className="send-chat-icon" />
+                                    </div>
+                                </div>
+
+                                <div className="chat-content-group">
+                                    <div className="chat-recipient">
+                                        <img src="/img/icon/person(comment).png" alt="recipient-icon" className="recipient-icon" />
+                                        <div className="chat-info">
+                                            <span className="chat-recipient-name">정희수</span>
+                                            <div className="chat-text-box">
+                                                <p className="chat-content">안녕하세요.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="chat-sender">
+                                        <div className="chat-text-box">
+                                            <p className="chat-content">안녕하세요.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div className="chat-background">
+
+                            <div className="chat-headerBar">
+                                <p className="chat-partner">정희수,김태랑,백지민,김지민</p>
+                                <img src="/img/icon/arrow(down).png" alt="arrow-icon" className="arrow-icon" onClick={smallChat} />
+                                <img src="/img/icon/x.png" alt="x-icon" className="x-icon" />
+                            </div>
+
+                            <div className="chat-main" style={{display: "none"}}>
+
+                                <div className="chatbox">
+                                    <div className="chatbox-background">
+                                        <input />
+                                        <img src="/img/icon/send-chat.png" alt="send-chat-icon" className="send-chat-icon" />
+                                    </div>
+                                </div>
+
+                                <div className="chat-content-group">
+                                    <div className="chat-recipient">
+                                        <img src="/img/icon/person(comment).png" alt="recipient-icon" className="recipient-icon" />
+                                        <div className="chat-info">
+                                            <span className="chat-recipient-name">정희수</span>
+                                            <div className="chat-text-box">
+                                                <p className="chat-content">안녕하세요.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="chat-sender">
+                                        <div className="chat-text-box">
+                                            <p className="chat-content">안녕하세요.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 

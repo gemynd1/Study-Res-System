@@ -25,9 +25,9 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="footer-section-2">
-                    <Link to="고객센터(문의하기)">
+                    {/* <Link to="고객센터(문의하기)">
                         <img src="/img/icon/message(white).png" alt="message" className="footer-message"/>
-                    </Link>
+                    </Link> */}
                     <Link to="/CustomerHelp/CustomerService">
                         <img src="/img/icon/call(white).png" alt="call" className="footer-call"/>
                     </Link>
