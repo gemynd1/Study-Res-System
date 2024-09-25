@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -125,14 +125,31 @@ function RadioButtonsGroup({ selectedValue, setSelectedValue }) {
   );
 }
 
-function BasicDateCalendar() {
+function BasicDateCalendar({ selectedDate, setSelectedDate }) {
+  // const [selectedDate, setSelectedDate] = useState(null);
+
   const disablePastDates = (date) => {
     return date.isBefore(dayjs(), "day");
   };
 
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate); // 선택된 날짜를 상태로 저장
+  };
+
+  // 상태가 업데이트된 후, 선택된 날짜를 콘솔에 출력
+  useEffect(() => {
+    if (selectedDate) {
+      console.log("선택된 날짜:", selectedDate.format("YYYY-MM-DD"));
+    }
+  }, [selectedDate]); // selectedDate가 변경될 때마다 실행
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar shouldDisableDate={disablePastDates} />
+      <DateCalendar
+        shouldDisableDate={disablePastDates}
+        onChange={handleDateChange} // 날짜 선택 핸들러 추가
+        value={selectedDate} // 선택된 날짜를 상태로 관리
+      />
     </LocalizationProvider>
   );
 }
@@ -153,12 +170,11 @@ function BasicButtons({
       variant="contained"
       sx={{
         backgroundColor: backgroundColor || "#7EE9BB",
-        // "&:hover": { backgroundColor: "#5CC8A4" },
         fontWeight: "bold",
-        width: width || "92px", // 기본값은 auto
-        height: height || "74px", // 기본값은 auto
-        fontSize: fontSize || "1.25rem", // 기본값은 1rem
-        padding: padding || "12px 24px", // 기본값은 '8px 16px'
+        width: width || "92px",
+        height: height || "74px",
+        fontSize: fontSize || "1.25rem",
+        padding: padding || "12px 24px",
         margin: margin || "2px 2px",
         color: color || "#000000",
       }}
@@ -168,6 +184,7 @@ function BasicButtons({
     </Button>
   );
 }
+
 function BasicButtons2({
   text,
   width,
@@ -180,25 +197,46 @@ function BasicButtons2({
   selectedTimes,
   totalPrice,
   count,
+  selectedDate, // 부모 컴포넌트에서 전달받은 selectedDate
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 시간을 범위로 변환하는 함수
+  const formatTimeRange = (times) => {
+    if (times.length >= 2) {
+      const start = Math.min(...times); // 가장 작은 시간
+      const end = Math.max(...times); // 가장 큰 시간
+      const totalHours = end - start + 1; // 선택된 총 시간 계산
+      return {
+        timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
+          end + 1
+        ).padStart(2, "0")}:00 (총 ${totalHours}시간)`,
+      };
+    }
+    return { timeRange: "", totalHours: 0 };
+  };
+
+  // 모달 열기 핸들러
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   const roomTitle = "스터디룸 A";
-  const selectedDate = "2024-09-25";
+  const { timeRange, totalHours } = formatTimeRange(selectedTimes); // 변환된 시간 범위와 총 시간
+
+  // selectedDate가 dayjs 객체라면 형식을 변환하여 사용
+  const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : "";
+
   return (
     <>
       <Button
         variant="contained"
         sx={{
           backgroundColor: backgroundColor || "#7EE9BB",
-          // "&:hover": { backgroundColor: "#5CC8A4" },
           fontWeight: "bold",
-          width: width || "92px", // 기본값은 auto
-          height: height || "74px", // 기본값은 auto
-          fontSize: fontSize || "1.25rem", // 기본값은 1rem
-          padding: padding || "12px 24px", // 기본값은 '8px 16px'
+          width: width || "92px",
+          height: height || "74px",
+          fontSize: fontSize || "1.25rem",
+          padding: padding || "12px 24px",
           margin: margin || "2px 2px",
           color: color || "#000000",
         }}
@@ -210,8 +248,9 @@ function BasicButtons2({
         open={isModalOpen}
         onClose={handleCloseModal}
         roomTitle={roomTitle}
-        date={selectedDate}
-        time={selectedTimes}
+        date={formattedDate} // 날짜를 형식화해서 전달
+        time={timeRange} // 변환된 시간 범위를 전달
+        totalHours={totalHours} // 총 선택된 시간을 전달
         people={count}
         totalPrice={totalPrice}
       />
@@ -269,7 +308,6 @@ function TimeSelector({ selectedTimes, onTimeChange }) {
         const [first, second] = newSelectedTimes;
         const start = Math.min(first, second);
         const end = Math.max(first, second);
-
         const newSelection = [];
         for (let i = start; i <= end; i++) {
           if (!newSelectedTimes.includes(i)) {
@@ -317,8 +355,8 @@ const TeamDetail = () => {
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [count, setCount] = useState(3); // 초기값 3
   const [selectedValue, setSelectedValue] = useState("1000"); // 초기 값 설정
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  // 선택된 인덱스의 총 개수와 count를 곱한 가격 계산
   const totalPrice = selectedTimes.length * count * selectedValue;
 
   return (
@@ -452,7 +490,10 @@ const TeamDetail = () => {
             <FormControlLabel control={<Radio />} label="시간단위 예약하기" />
           </div>
           <div className="teamDetail__side-calendar">
-            <BasicDateCalendar />
+            <BasicDateCalendar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
           </div>
           <div className="teamDetail__side-legend">
             <div className="teamDetail__side-legend-wrap">
@@ -516,6 +557,7 @@ const TeamDetail = () => {
             selectedTimes={selectedTimes}
             totalPrice={totalPrice}
             count={count}
+            selectedDate={selectedDate}
           />
         </div>
       </div>
