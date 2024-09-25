@@ -305,7 +305,7 @@ div.post div.post-info4 div.kakao-button {
     height: auto;
 }
 
-div.post div.post-info4 div.kakao-button div.goto-info-button {
+div.post div.post-info4 div.kakao-button a.goto-info-button {
     display: inline-block;
     width: 354px;
     height: 76px;
@@ -316,7 +316,7 @@ div.post div.post-info4 div.kakao-button div.goto-info-button {
     cursor: pointer;
 }
 
-div.post div.post-info4 div.kakao-button div.goto-info-button img.goto-info-icon {
+div.post div.post-info4 div.kakao-button a.goto-info-button img.goto-info-icon {
     display: inline;
     width: 35px;
     height: 35px;
@@ -325,7 +325,7 @@ div.post div.post-info4 div.kakao-button div.goto-info-button img.goto-info-icon
     margin-left: 103px;
 }
 
-div.post div.post-info4 div.kakao-button div.goto-info-button span.goto-info-text {
+div.post div.post-info4 div.kakao-button a.goto-info-button span.goto-info-text {
     display: inline;
     position: absolute;
     font-weight: 400;
@@ -337,7 +337,7 @@ div.post div.post-info4 div.kakao-button div.goto-info-button span.goto-info-tex
     margin-bottom: 23px;
 }
 
-div.post div.post-info4 div.kakao-button div.goto-road-button {
+div.post div.post-info4 div.kakao-button a.goto-road-button {
     display: inline-block;
     width: 354px;
     height: 76px;
@@ -348,7 +348,7 @@ div.post div.post-info4 div.kakao-button div.goto-road-button {
     cursor: pointer;
 }
 
-div.post div.post-info4 div.kakao-button div.goto-road-button img.goto-road-icon {
+div.post div.post-info4 div.kakao-button a.goto-road-button img.goto-road-icon {
     display: inline;
     width: 35px;
     height: 35px;
@@ -357,7 +357,7 @@ div.post div.post-info4 div.kakao-button div.goto-road-button img.goto-road-icon
     margin-left: 114px;
 }
 
-div.post div.post-info4 div.kakao-button div.goto-road-button span.goto-road-text {
+div.post div.post-info4 div.kakao-button a.goto-road-button span.goto-road-text {
     display: inline;
     position: absolute;
     font-weight: 400;
@@ -370,12 +370,12 @@ div.post div.post-info4 div.kakao-button div.goto-road-button span.goto-road-tex
 }
 
 div.post div.post-info4 div.kakaomap {
-    width: 1090px;
-    height: 378px;
+    /* width: 1090px;
+    height: 378px; */
     margin-top: 39px;
     margin-left: 56px;
     /* margin-bottom: 88px; */
-    background-color: #268B5F;
+    /* background-color: #268B5F; */
 }
 
 div.post div.post-content {
@@ -617,6 +617,8 @@ div.post div.join-button-section div.join-button span.join-button-text {
 
 div.MuiBox-root div.modal-header {
     position: relative;
+    display: flex;
+    align-items: center;
     width: 562px;
     height: 50px;
     background: #268B5F;
@@ -629,8 +631,7 @@ div.MuiBox-root div.modal-header span.modal-header-title {
     font-size: 15px;
     line-height: 18px;
     color: #FFFFFF;
-    margin-left: 54px;
-    margin-top: 20px;
+    margin-left: 8%;
 }
 
 div.MuiBox-root div.modal-title-section {
@@ -676,13 +677,13 @@ div.MuiBox-root div.modal-title-section span.modal-title-count2 {
     margin-right: 100px;
 }
 
-div.MuiBox-root input {
+/* div.MuiBox-root input {
     position: relative;
     width: 368px;
     height: 233px;
     margin-top: 23px;
     margin-left: 92px;
-}
+} */
 
 div.MuiBox-root form.MuiBox-root {
     position: relative;
