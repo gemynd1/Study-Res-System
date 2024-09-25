@@ -82,15 +82,20 @@ const Mypage = () => {
                     <div className="MypageSelect">
                         <div className="circleBox">
                             <div className="circle">
-                                <span className="Inquiry">1</span>
+                                <Link to='/CustomerHelp/CustomerWrite'>
+                                <img src='/img/icon/customerWrite.png' alt="문의하기" style={{ width: "70px", height: "70px"}} />
+                                {/*<span className="Inquiry">1</span>*/}
+                                </Link>
                             </div>
-                            <span className="InquiryText">문의 신청 건</span>
+                            <span className="InquiryText">문의하기</span>
                         </div>
                         <div className="circleBox">
                             <div className="circle">
-                                <span className="Inquiry">1</span>
+                                <Link to='/CustomerHelp/CustomerDetail'>
+                                <img src='/img/icon/customerHistory.png' alt="문의내역" style={{ width: "70px", height: "70px"}} />
+                                </Link>
                             </div>
-                            <span className="InquiryText2">문의 임시저장 건</span>
+                            <span className="InquiryText2">문의내역</span>
                         </div>
                         <div className="circleBox">
                             <div className="circle">
