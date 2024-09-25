@@ -1,6 +1,8 @@
 {
-    "약관" : {
-        "MainTitle" : "이용약관 동의(필수)",
+    "agree1" : 
+    {
+        "propTitle" : "약관",
+        "MainTitle" : "서비스 이용약관 동의(필수)",
         "content" : [
             {
                 "subTitle" : "제 1 장 총 칙",
@@ -28,8 +30,9 @@
             }
         ]
     },
-    "개인정보" :
+    "agree2" :
     {
+        "propTitle" : "개인정보",
         "MainTitle" : "개인정보 수집 및 이용에 대한 안내(필수)",
         "content" : [
             {
@@ -68,9 +71,10 @@
             
         ]
     },
-    "위치정보" : 
+    "agree3" : 
     {
-        "MainTitle" : "위치정보 이용약관 동의(선택)",
+        "propTitle" : "위치정보",
+        "MainTitle" : "위치정보 이용약관 동의(필수)",
         "content" : [
             {
                 "subTitle" : "제 1 조 (목적)",
@@ -130,5 +134,4 @@
             }
         ]
     }
-    
 }

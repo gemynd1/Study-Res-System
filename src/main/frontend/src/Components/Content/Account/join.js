@@ -21,7 +21,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 562,
+    // width: 562,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     borderRadius: 6,
@@ -29,43 +29,57 @@ const style = {
 }
 
 const BasicModal = (props) => {
+    // const [openModal, setOpenModal] = useState({});
     const [open, setOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpen = (item) => {
+        setSelectedItem(item);
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+        setSelectedItem(null)
+    }
 
     return (
-        <>  
-            <div>
-                <input type={'button'} onClick={handleOpen} value={props.title} />
-            </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description">
-                <Box sx={style}>
-                <div className="modal-header">
-                        <span className="modal-header-title">{props.title}</span>
+        <div>      
+            {Object.entries(JsonData)
+                .filter(([key, item]) => item.propTitle.includes(props.title))
+                .map(([key, item]) => (
+                    <div key={key}>
+                        <input type={'button'} onClick={() => handleOpen(item)} value={item.MainTitle} />
                     </div>
-                    <div className="modal-title-section">
-                        <span className="modal-title">질문</span>
-                        <span className="modal-title-count1">0자</span>
-                        <span className="modal-title-count2">/200자</span>
-                    </div>
-                    <div className="modal-caution-section">
-                        {/* <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" /> */}
-                        {/* <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span> */}
-                    </div>
-                    <div className="modal-button-section">
-                        <div onClick={handleClose} className="modal-active-button">
-                            <span className="modal-active-text">확인</span>
+                    )
+                )
+            } 
+            {selectedItem && (
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div className="modal-join-header">
+                            <span className="modal-join-header-title">{selectedItem.propTitle}</span>
                         </div>
-                    </div>
-                </Box>
-            </Modal>
-        </>
-    )
+                        <div className="modal-join-title-section">
+                            {selectedItem.content.map((contentitem, index) => (
+                                <span className="modal-join-title" key={index}>{contentitem.subTitle}</span>
+                            ))}
+                        </div>
+                        <div className="modal-join-button-section">
+                            <div onClick={handleClose} className="modal-join-active-button">
+                                <span className="modal-active-text">확인</span>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>
+            )}
+        </div>
+    )  
 }
 
 const Join = () => {
@@ -175,9 +189,6 @@ const Join = () => {
     const handlekakaLogin = () => {
         window.location.href = kakaoURL;
     }
-
-    // console.log(JsonData);
-    
     
     return (
         <>
@@ -307,7 +318,7 @@ const Join = () => {
                                                 onChange={handleAllAgreeChange} />
                                         </li>
                                         <li>
-                                            아래 약관에 모두 동의합니다.
+                                            <label htmlFor="chkall">아래 약관에 모두 동의합니다.</label>
                                         </li>
                                     </ul>
                                 </div>
@@ -321,7 +332,8 @@ const Join = () => {
                                                 required />
                                         </li>
                                         <li>
-                                            <BasicModal title={'약관'} /> 서비스 이용약관(필수)
+                                            <BasicModal title={'약관'} /> 
+                                            {/* 서비스 이용약관(필수) */}
                                         </li>
                                     </ul>
                                 </div>
@@ -334,7 +346,8 @@ const Join = () => {
                                                 required />
                                         </li>
                                         <li>
-                                            <BasicModal title={'개인정보'} /> 개인정보 수집 및 이용에 대한 안내(필수)
+                                            <BasicModal title={'개인정보'} /> 
+                                            {/* 개인정보 수집 및 이용에 대한 안내(필수) */}
                                         </li>
                                     </ul>
                                 </div>
@@ -347,7 +360,8 @@ const Join = () => {
                                                 required />
                                         </li>
                                         <li>
-                                            <BasicModal title={'위치정보'} /> 위치정보 이용약관 동의(필수)
+                                            <BasicModal title={'위치정보'} /> 
+                                            {/* 위치정보 이용약관 동의(필수) */}
                                         </li>
                                     </ul>
                                 </div>
