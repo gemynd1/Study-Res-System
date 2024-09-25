@@ -516,3 +516,211 @@ header div.first-background div.second-background div.message-section div.group-
     height: 10px;
     margin-right: 8%;
 }
+
+
+
+/* chat css */
+
+header div.chat-section {
+    position: relative;
+    width: 100%;
+    z-index: 9;
+}
+
+header div.chat-section.hide {
+    display: none;;
+}
+
+header div.chat-section div.chat-background {
+    position: fixed;
+    /* margin-left: 60%;
+    margin-top: 6%; */
+    right: 0;
+    bottom: 0;
+    width: 524px;
+    height: auto;
+}
+
+header div.chat-section div.chat-background:nth-of-type(2) {
+    position: fixed;
+    /* margin-left: 60%;
+    margin-top: 6%; */
+    right: 524px;
+    bottom: 0;
+    width: 524px;
+    height: auto;
+}
+
+header div.chat-section div.chat-background:nth-of-type(3) {
+    position: fixed;
+    /* margin-left: 60%;
+    margin-top: 6%; */
+    right: 1048px;
+    bottom: 0;
+    width: 524px;
+    height: auto;
+}
+
+header div.chat-section div.chat-background div.chat-headerBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 500px;
+    height: 50px;
+    background: #268B5F;
+    border-radius: 20px 20px 0px 0px;
+}
+
+header div.chat-section div.chat-background div.chat-headerBar p.chat-partner {
+    display: inline;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 30px;
+    color: #FFFFFF;
+    margin-left: 3%;
+}
+
+header div.chat-section div.chat-background div.chat-headerBar img.arrow-icon {
+    position: absolute;
+    right: 0;
+    width: 25px;
+    height: 15px;
+    margin-right: 13%;
+    cursor: pointer;
+}
+
+header div.chat-section div.chat-background div.chat-headerBar img.x-icon {
+    position: absolute;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    margin-right: 3%;
+    cursor: pointer;
+}
+
+header div.chat-section div.chat-background div.chat-main {
+    position: relative;
+    width: 500px;
+    height: 650px;
+    background: #F3F0F0;
+    overflow-y: auto; /* 세로 스크롤을 나타나게 하는 속성 추가 */
+    overflow-x: hidden; /* 가로 스크롤을 숨기는 속성 추가 */
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group {
+    position: relative;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-recipient {
+    position: relative;
+    /* display: inline-block; */
+    width: 500px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    margin-left: 3%;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-recipient img.recipient-icon {
+    position: relative;
+    display: inline;
+    width: 40px;
+    height: 40px;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-recipient div.chat-info {
+    position: relative;
+    display: inline;
+    margin-left: 3%;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-recipient div.chat-info span.chat-recipient-name {
+
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-recipient div.chat-info div.chat-text-box {
+    max-width: 400px;
+    height: auto;
+    background: #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-recipient div.chat-info div.chat-text-box p.chat-content {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+    margin: 10px;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-sender {
+    position: relative;
+    width: 500px;
+    height: auto;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-sender div.chat-text-box {
+    position: absolute;
+    right: 0;
+    max-width: 400px;
+    height: auto;
+    background: #D9D9D9;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+    margin-right: 5%;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chat-content-group div.chat-sender div.chat-text-box p.chat-content {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+    margin: 10px;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chatbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2%;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chatbox div.chatbox-background {
+    position: relative;
+    width: 477px;
+    height: 94px;
+    background: #D9D9D9;
+    display: flex;
+    align-items: center;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chatbox div.chatbox-background input {
+    background-color: #D9D9D9;
+    width: 384px;
+    height: 61px;
+    margin-left: 4%;
+}
+
+header div.chat-section div.chat-background div.chat-main div.chatbox div.chatbox-background img.send-chat-icon {
+    position: absolute;
+    width: 26.94px;
+    height: 25px;
+    right: 0;
+    margin-right: 4%;
+}
