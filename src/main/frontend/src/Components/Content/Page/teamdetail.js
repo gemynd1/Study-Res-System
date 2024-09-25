@@ -14,6 +14,8 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { styled, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import dayjs from "dayjs";
 import { Modal, Box, Typography } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 function PaymentModal({
   open,
@@ -431,44 +433,55 @@ const TeamDetail = () => {
             </h4>
           </div>
         </div>
-        <div className="teamDetail__main-review">
-          <div className="teamDetail__main-review-profileIcon">
-            <img
-              className="profile"
-              src="/img/icon/profile.png"
-              alt="Profile"
-            />
-          </div>
-          <div className="teamDetail__main-review-wrap">
-            <div className="teamDetail__main-review-header">
-              <h2 className="teamDetail__main-review-name">김지민</h2>
 
-              <ControlledRating />
+        <div className="flex fd-c ai-c p-r">
+          <div className="teamDetail__main-review">
+            <div className="teamDetail__main-review-profileIcon">
+              <img
+                className="profile"
+                src="/img/icon/profile.png"
+                alt="Profile"
+              />
             </div>
-            <h4 className="teamDetail__main-content-text-title">
-              안양역 스터디룸 괜찮네요.
-            </h4>
-            <div className="teamDetail__main-review-photo">
-              <img
-                className="photos"
-                src="/img/icon/곧마감.png"
-                alt="star"
-              ></img>
-              <img
-                className="photos"
-                src="/img/icon/곧마감.png"
-                alt="star"
-              ></img>
-              <img
-                className="photos"
-                src="/img/icon/곧마감.png"
-                alt="star"
-              ></img>
+            <div className="teamDetail__main-review-wrap">
+              <div className="teamDetail__main-review-header">
+                <h2 className="teamDetail__main-review-name">김지민</h2>
+
+                <ControlledRating />
+              </div>
+              <h4 className="teamDetail__main-content-text-title">
+                안양역 스터디룸 괜찮네요.
+              </h4>
+              <h5>2024.09.27 00:00:00</h5>
+              <div className="teamDetail__main-review-photo">
+                <img
+                  className="photos"
+                  src="/img/icon/곧마감.png"
+                  alt="star"
+                ></img>
+                <img
+                  className="photos"
+                  src="/img/icon/곧마감.png"
+                  alt="star"
+                ></img>
+                <img
+                  className="photos"
+                  src="/img/icon/곧마감.png"
+                  alt="star"
+                ></img>
+              </div>
+              <h2 className="teamDetail__main-review-name host">호스트</h2>
+              <h4 className="teamDetail__side-content-text-title">
+                다음에 또 들려주세요!
+              </h4>
+              <h5>2024.09.27 00:00:00</h5>
+              <div className="teamDetail__side-header-line black" />
             </div>
-            <h2 className="teamDetail__main-review-name host">호스트</h2>
-            <h4 className="teamDetail__side-content-text-title">
-              다음에 또 들려주세요!
-            </h4>
+          </div>
+          <div className="p-r b-80">
+            <Stack spacing={2}>
+              <Pagination count={5} />
+            </Stack>
           </div>
         </div>
       </div>

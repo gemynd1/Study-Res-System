@@ -1,12 +1,28 @@
 .flex {
   display: flex;
 }
+.fd-c {
+  flex-direction: column;
+}
+.ai-c {
+  align-items: center;
+}
+
 h2 {
   margin: 0;
 }
 .host {
   margin-top: 16px;
   color: #7ee9bb;
+}
+.black {
+  border: 1px solid #000 !important;
+}
+.p-r {
+  position: relative;
+}
+.b-80 {
+  bottom: 80px;
 }
 
 .teamDetail__main-header-line {
