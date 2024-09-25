@@ -36,6 +36,7 @@ const Login = () => {
                                 <input type="password" placeholder="비밀번호" size={20} />
                             </div>
                             <div className="pwFind">
+                                <Link to="/join">회원가입</Link>
                                 <Link to="/login">비밀번호 찾기</Link>
                             </div>
                             <button type="submit" className="loginbtn">로그인</button>
