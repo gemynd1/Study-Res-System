@@ -301,7 +301,7 @@
     font-size: 20px;
     line-height: 24px;
     color: #000000;
-    margin-left: 26px;
+    margin-left: 47px;
 }
 
 .InquiryText2 {
@@ -311,7 +311,7 @@
     font-size: 20px;
     line-height: 24px;
     color: #000000;
-    margin-left: 12px;
+    margin-left: 46px;
 }
 
 .InquiryText3 {
@@ -544,6 +544,7 @@
 .pagination {
     list-style: none;
     display: flex;
+
 }
 
 .page-item {
@@ -1492,5 +1493,64 @@
     color: red;
     font-size: 28px;
     margin-left: 5px;
+    font-weight: bold;
+}
+
+/* 문의내역 css */
+.CustomerDetailBody {
+    width: 100%;
+    height: auto;
+}
+
+.CustomerText {
+    width: 100%;
+    /*height: 700px;*/
+    display: flex;
+    justify-content: center;
+    /*margin-top: 50px;*/
+    margin: 50px auto 100px auto
+}
+
+.DetailText{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 65px;
+    line-height: 58px;
+    color: #000000;
+}
+
+.CustomerDetailBox {
+    display: flex;
+    justify-content: center;
+
+}
+
+.DetailBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    height: 90px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: #333333;
+    /*margin-top: 10px;*/
+}
+
+.DetailBox span {
+    margin-left: 30px;
+    color: #999999;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.DetailBox:hover {
+    background-color: #f0f0f0;
+}
+
+.DetailBox .DetailBox2 span {
+    color: #999999;
+    margin-right: 30px;
+    font-size: 18px;
     font-weight: bold;
 }
