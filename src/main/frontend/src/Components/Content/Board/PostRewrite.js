@@ -365,6 +365,21 @@ const Button = styled("button")(
 const PostRewrite = () => {
   const [RadioValue, setRadioValue] = useState("");
 
+  const [groupMemberInfos, setGroupMemberInfos] = useState([
+    { id: 1, name: "김지민" },
+    { id: 2, name: "김태랑" },
+  ]);
+
+  const del_groupMember = (event) => {
+    const id = event.target.getAttribute("data-id");
+    // db에 실제로 데이터를 지워야함
+    setGroupMemberInfos(
+      groupMemberInfos.filter(
+        (groupMemberInfo) => groupMemberInfo.id !== Number(id)
+      )
+    );
+  };
+
   return (
     <>
       <div className="ilovecode">

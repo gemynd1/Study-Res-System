@@ -1,5 +1,5 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../../../style/post.css';
 
 // 댓글 더보기 버튼 import
@@ -20,6 +20,8 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 // import Box from '@mui/material/Box';
 
+// 카카오맵 import
+import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // 댓글 더보기 버튼
 function FadeMenu() {
@@ -140,6 +142,45 @@ function BasicModal() {
     );
 }
 
+// 카카오맵
+const TheaterLocation = () => {
+    return (
+      <div className="kakaomap">
+        <Map
+          center={{ lat: 37.398184423401, lng: 126.91023974128 }}
+          style={{
+            width: '1090px',
+            height: '378px',
+            borderRadius: '20px',
+          }}
+        >
+        {/* 지도에 보여줄 위치 지정 (위도,경도)  */}
+        
+          <MapMarker
+            style={{ border: 'tranparent' }}
+            position={{ lat: 37.398184423401, lng: 126.91023974128 }}
+          >
+          {/* 핀 찍힐 위치 */}
+          
+            <div
+              style={{
+                color: '#9971ff',
+                fontSize: '19px',
+                fontWeight: '700',
+                border: '4px solid #9971ff',
+                borderRadius: '10px',
+                padding: '2.5px',
+              }}
+            >
+              연성대학교
+            </div>
+          </MapMarker>
+        </Map>
+      </div>
+      //핀에 적힐 이름 (위치 이름)
+    );
+  };
+
 const Post = () => {
     return (
         <>
@@ -196,21 +237,21 @@ const Post = () => {
 
                     <div className="kakao-button">
 
-                        <div className="goto-info-button">
+                        <Link to="https://place.map.kakao.com/8430579" className="goto-info-button">
                             <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
                             <span className="goto-info-text">정보보기</span>
-                        </div>
+                        </Link>
 
-                        <div className="goto-road-button">
+                        <Link to="https://map.kakao.com/link/to/8430579" className="goto-road-button">
                             <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
                             <span className="goto-road-text">길찾기</span>
-                        </div>
+                        </Link>
 
                     </div>
 
                     <div className="kakaomap">
-                        지도
                     </div>
+                    <TheaterLocation />
                     
                 </div>
 

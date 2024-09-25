@@ -6,7 +6,7 @@ import { Link, Outlet } from "react-router-dom";
 const Header = () => {
     const [active_index, setActive_index] = useState(null);
     const [active_message_index, setActive_message_index] = useState(0);
-
+ 
     const index_choice = (index) => {
         if(active_index === index) {
             setActive_index(null);
@@ -17,6 +17,26 @@ const Header = () => {
 
     const message_type_choice = (index) => {
         setActive_message_index(index);
+    }
+
+//    notification에 대한 정보
+    const [notifications, setNotifications] = useState([
+        {id: 1, content: "1김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        {id: 2, content: "2김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        {id: 3, content: "3김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        {id: 4, content: "4김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        {id: 5, content: "5김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"}
+    ]);
+
+    const del_notification = (event) => {
+        const id = event.target.getAttribute('data-id');
+        // db에 있는 알림을 지우고 다시 select한 결과로 notifications변경해야함
+        setNotifications(notifications.filter(notification => notification.id !== parseInt(id)));
+    }
+
+    const delAll_notification = () => {
+        setNotifications ([]);
+        // 실제로 db 알림에 해당하는 데이터를 delete시켜야함
     }
 
     return (
@@ -65,10 +85,10 @@ const Header = () => {
                     </ul> */}
                     <ul className="menuList2-sucs"> 
                         <li>
-                            <img src="/img/icon/bell.png" alt="bell" className="bell" onClick={() => {index_choice(0)}} />
+                            <img src="/img/icon/bell.png" alt="bell" className={active_index === 0 ? "bell active" : "bell"} onClick={() => {index_choice(0)}} />
                         </li>
                         <li>
-                            <img src="/img/icon/chat.png" alt="chat" className="chat" onClick={() => {index_choice(1)}} />
+                            <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
                         </li>
                         <li>
                             <Link to="/mypage" style={{ textDecoration: 'none' }}>
@@ -94,56 +114,22 @@ const Header = () => {
                         <div className="notification-headerBar">
                             <img src="/img/icon/bell(white).png" alt="bellIcon" className="notification-icon" />
                             <span className="notification-text">알림</span>
-                            <div className="clear-button">
+                            <div className="clear-button" onClick={delAll_notification}>
                                 <div className="clear-button-text">모두 지우기</div>
                             </div>
                         </div>
                         <div className="notification-section">
-                            <div className="notification">
-                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
-                                <p className="notification-content">
-                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
-                                </p>
-                                <span className="notification-date">
-                                    2024-09-08 22:51
-                                </span>
-                            </div>
-                            <div className="notification">
-                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
-                                <p className="notification-content">
-                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
-                                </p>
-                                <span className="notification-date">
-                                    2024-09-08 22:51
-                                </span>
-                            </div> 
-                            <div className="notification">
-                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
-                                <p className="notification-content">
-                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
-                                </p>
-                                <span className="notification-date">
-                                    2024-09-08 22:51
-                                </span>
-                            </div> 
-                            <div className="notification">
-                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
-                                <p className="notification-content">
-                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
-                                </p>
-                                <span className="notification-date">
-                                    2024-09-08 22:51
-                                </span>
-                            </div> 
-                            <div className="notification">
-                                <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" />
-                                <p className="notification-content">
-                                    김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.
-                                </p>
-                                <span className="notification-date">
-                                    2024-09-08 22:51
-                                </span>
-                            </div> 
+                            {notifications.map((notification) => (
+                                <div className="notification" key={notification.id}>
+                                    <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" data-id={notification.id} onClick={del_notification} />
+                                    <p className="notification-content">
+                                        {notification.content}
+                                    </p>
+                                    <span className="notification-date">
+                                        {notification.date}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
