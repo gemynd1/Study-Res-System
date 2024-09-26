@@ -348,7 +348,7 @@ const Header = () => {
                                 <img src="/img/icon/x.png" alt="x-icon" className="x-icon" />
                             </div>
 
-                            <div className="chat-main" style={{display: "none"}}>
+                            <div className="chat-main" >
 
                                 <div className="chatbox">
                                     <div className="chatbox-background">
