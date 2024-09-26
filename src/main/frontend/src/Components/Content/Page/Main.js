@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../../style/Main.css"
-import axios from "axios";
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
@@ -78,31 +77,11 @@ const Main = () => {
 
     const modules = [Autoplay];
 
-    const [hello, setHello] = useState([]);
-    const baseUrl = "http://localhost:8099";
-    
-    useEffect(() => {
-        axios.get(baseUrl + '/api/main')
-            .then((res) => {
-                console.log(res.data);
-                setHello(res.data)
-            })
-            .catch(error => console.log(error))
-    }, []); 
-
     return(
         <>
-            
             <section className="MainSection1" ref={sectionRef}>
                 <div className="MainHeader">
-                    <div>
-                        {hello ? hello.map((datas) => (
-                            <div key={datas.classidx}>
-                                <span className="MainHeader-first">{datas.classname}</span><br />
-                            </div>
-                        )) : ''}
-                    </div>
-                    
+                    <span className="MainHeader-first">SN 스터디카페 입니다</span><br />
                     <span className="MainHeader-second">연성대학교 학생들을 위한 스터디카페 입니다.</span>
                 </div>
                 <div className="MainContent">
