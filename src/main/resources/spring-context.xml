@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+        <property value="oracle.jdbc.driver.OracleDriver" name="driverClassName" />
+        <property value="jdbc:oracle:thin:@localhost:1521:xe" name="url" />
+        <!-- 오라클 사용자 이름 -->
+        <property value="c##snake" name="username" />
+        <!-- 오라클 사용자 비밀번호 -->
+        <property value="123456" name="password" />
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation"
+                  value="classpath:mybatis/mybatis-config.xml" />
+        <property name="mapperLocations">
+            <list>
+                <value>classpath:mapper/*Mapper.xml</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory" />
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory" />
+    </bean>
+    <context:component-scan base-package="com.project.SnakeDev.controller"/>
+    <!-- 크론탭 설정에 -->
+    <task:scheduler id="jobScheduler" pool-size="10"/>
+    <task:annotation-driven scheduler="jobScheduler"/>
+</beans>
+
+        <!--        <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="SqlSessionFactory">-->
+        <!--            <property name="dataSource" ref="dataSource" />-->
+        <!--            <property value="classpath:/mybatis/mybatis-config.xml" name="configLocation" />-->
+        <!--            <property value="classpath:/mapper/*Mapper.xml" name="mapperLocations" />-->
+        <!--        </bean>-->
+
+        <!--        <mybatis-spring:scan base-package="com.project.SnakeProject.mapper" />-->
