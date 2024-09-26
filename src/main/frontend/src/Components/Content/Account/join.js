@@ -21,7 +21,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // width: 562,
+    width: 600,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     borderRadius: 6,
@@ -49,7 +49,11 @@ const BasicModal = (props) => {
                 .filter(([key, item]) => item.propTitle.includes(props.title))
                 .map(([key, item]) => (
                     <div key={key}>
-                        <input type={'button'} onClick={() => handleOpen(item)} value={item.MainTitle} />
+                        <input 
+                            type={'button'} 
+                            onClick={() => handleOpen(item)} 
+                            value={item.MainTitle} 
+                            style={{border: 0, backgroundColor: 'white', cursor: 'pointer', textDecoration: 'underline'}} />
                     </div>
                     )
                 )
@@ -67,7 +71,10 @@ const BasicModal = (props) => {
                         </div>
                         <div className="modal-join-title-section">
                             {selectedItem.content.map((contentitem, index) => (
-                                <span className="modal-join-title" key={index}>{contentitem.subTitle}</span>
+                                <div key={index}>
+                                    <span className="modal-join-title">{contentitem.subTitle}</span><br />
+                                    <span className="modal-join-content">{contentitem.subcontent}</span>
+                                </div> 
                             ))}
                         </div>
                         <div className="modal-join-button-section">

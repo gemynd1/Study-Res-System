@@ -276,3 +276,60 @@
     font-size: 26px;
     color: #000000;
 }
+
+.MuiBox-root div.modal-join-header {
+    /* position: relative; */
+    display: flex;
+    align-items: center;
+    width: 600px;
+    height: 60px;
+    background: #268B5F;
+    border-radius: 20px 20px 0px 0px;
+}
+
+.MuiBox-root div.modal-join-header span.modal-join-header-title {
+    /* position: absolute; */
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 18px;
+    color: #FFFFFF;
+    margin-left: 6%;
+}
+
+.MuiBox-root div.modal-join-title-section {
+    position: relative;
+    /* display: flex; */
+    align-items: center;
+    /* width: 600px; */
+    height: 500px;
+    background: #FFFFFF;
+    border-radius: 0px 0px 20px 20px;
+    overflow: scroll;
+    padding: 10px;
+}
+
+.MuiBox-root div.modal-join-button-section {
+    display: flex;
+    width: 600px;
+    /* height: 58px; */
+    /* margin-top: 15px; */
+    /* margin-bottom: 15px; */
+    border-radius: 0px 0px 20px 20px;
+    background-color: #FFD600;
+}
+
+.MuiBox-root div.modal-join-button-section div.modal-join-active-button {
+    width: 600px;
+    height: 60px;
+    /* float: right; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MuiBox-root div.modal-join-button-section div.modal-join-active-button span.modal-active-text {
+    font-weight: 400;
+    font-size: 18px;
+    /* line-height: 22px; */
+    color: #000000;
+}
