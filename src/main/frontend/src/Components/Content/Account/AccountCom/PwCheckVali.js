@@ -1,16 +1,23 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
-const IdVali = (props) => {
+const PwCheckVali = (props) => {
     const [value, setValue] = useState(props.value ?? '');
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setValue(props.value ?? '');
+    }, [props.value]);
+
     const onChange = (e) => {
         const newValue = e.target.value;
         setValue(newValue);
         
         let hasError = false;
-        props.validators.forEach((rule) => {
+        const validators = props.validators();
+        validators.forEach((rule) => {
             if (!hasError) {
                 if (!rule.fn(newValue)) {
+                    // console.log(rule.fn)
                     setError(rule.message);
                     hasError = true;
                 }
@@ -22,26 +29,26 @@ const IdVali = (props) => {
             // props.onInput(newValue)
             props.onInput?.(newValue);
             console.log("성공" + newValue);
+            // console.log(value);
         } else {
+            // console.log(value);
             console.log("실패" + newValue);
+            
         }
-
-        // id 체크 여부 기능 넣어야함
     }
 
     return (
         <>
             <input
-                type="text"
-                name="id"
+                type="password"
+                name="pwcheck"
                 value={value}
                 onChange={onChange}
-                placeholder="아이디"
-                required
+                placeholder="비밀번호 확인"
             />
             <span style={{color: 'red', fontSize: '12px', display: 'block'}}>{error}</span>
         </>
     )
 }
 
-export default IdVali;
+export default PwCheckVali;

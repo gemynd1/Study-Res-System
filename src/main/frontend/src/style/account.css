@@ -81,11 +81,13 @@
 }
 
 .loginSec .loginMain .loginContent .form-content .pwFind {
-    display: flex;
+    float: right;
+    margin-right: 60px;
 }
 
 .loginSec .loginMain .loginContent .form-content .pwFind a {
-    margin: 0 70px 0 auto;
+    margin: 0 10px 0 auto;
+    /* float: left; */
     text-decoration: none;
     color: #000000;
 }
