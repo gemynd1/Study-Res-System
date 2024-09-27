@@ -124,7 +124,7 @@ div.board-page div.board-menubar a.writeButton div.writeButton-1 {
 div.board-page div.board-category-1 {
     position: relative;
     width: 1120px;
-    height: 688px;
+    height: auto;
     margin-left: 123px;
     margin-top: 58px;
 }
@@ -136,9 +136,12 @@ div.board-page div.board-category-1 div {
 div.board-page div.board-category-1 div.board-category-1-background {
     position: relative;
     width: 1120px;
-    height: 688px;
+    height: auto;
     background: #D9D9D9;
     border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 div.board-page div.board-category-1 div.board-category-1-headerbar {
@@ -180,13 +183,20 @@ div.board-page div.board-category-1 div.board-category-1-background div.board-ca
 }
 
 div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content {
-    margin-top: 72px;
-    margin-left: 15px;
+    margin-top: 15px;
     width: 1090px;
     height: 136px;
     background: #FFFFFF;
     border-radius: 30px;
-    position: absolute;
+    position: relative;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content:nth-of-type(2) {
+    margin-top: 72px;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content:last-child {
+    margin-bottom: 15px;
 }
 
 div.board-page div.board-category-1 div.board-category-1-background .board-category-1-content p.board-category-1-content-title {
@@ -300,7 +310,11 @@ div.board-page div.board-category-1 div.board-category-1-background div.moreButt
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 300px auto 0 auto;
+    margin: 100px auto 30px auto;
+}
+
+div.board-page div.board-category-1 div.board-category-1-background div.moreButton div.moreButton-section {
+    cursor: pointer;
 }
 
 div.board-page div.board-category-1 div.board-category-1-background div.moreButton div.moreButton-section span.moreButton-text {

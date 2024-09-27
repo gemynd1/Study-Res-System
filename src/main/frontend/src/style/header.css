@@ -540,6 +540,7 @@ header div.chat-section div.chat-background {
     bottom: 0;
     width: 524px;
     height: auto;
+    display: none;
 }
 
 header div.chat-section div.chat-background:nth-of-type(2) {
