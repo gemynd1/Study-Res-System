@@ -273,7 +273,7 @@ const Header = () => {
                                 </div>
                                 ))}
 
-                                <div className="group-message-content">
+                                {/* <div className="group-message-content">
                                     <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />
                                     <div className="text-group">
                                         <span className="groupName-text">(123) 백지민, 김지민....</span>
@@ -288,7 +288,7 @@ const Header = () => {
                                         <p className="message-content">오늘은 무슨 공부할껀가요?</p>
                                     </div>
                                     <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
+                                </div> */}
                             </div>
 
                         </div>

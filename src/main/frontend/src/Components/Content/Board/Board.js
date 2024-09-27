@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../../style/board.css";
 import { Link } from "react-router-dom";
 
@@ -7,6 +7,19 @@ const contentClick = (url) => {
 }
 
 const Board = () => {
+    const [boardContents, setBoardContents] = useState([
+        {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        {id:2, category:1, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        {id:3, category:1, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        {id:4, category:1, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        {id:5, category:1, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:6, category:2, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:7, category:2, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:8, category:2, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:9, category:2, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:10, category:2, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+    ]);
+
     return (
         <>
             <div className="ilovecode">
@@ -44,7 +57,25 @@ const Board = () => {
                                     <span className="board-category-1-headerbar-btn-text">더보기</span>
                                 </Link>
                             </div>
-                            <div className="board-category-1-content" onClick={() => contentClick("/board/post/1")}>
+                            {boardContents.map((content) => (
+                                <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
+                                    <p className="board-category-1-content-title">{content.title}</p>
+                                    <p className="board-category-1-content-detail">{content.detail}</p>
+                                    <div className="board-category-1-content-info">
+                                        <div className="board-category-1-content-info-dday">
+                                            <span className="board-category-1-content-info-dday-text">D-DAY</span>
+                                        </div>
+                                        <p className="board-category-1-content-info-date">{content.date}</p>
+                                        <p className="board-category-1-content-info-address">{content.address}</p>
+                                    </div>
+                                    <div className="board-category-1-content-info2">
+                                        <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
+                                        <p className="board-category-1-content-info2-count">{content.group}</p>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* <div className="board-category-1-content" onClick={() => contentClick("/board/post/1")}>
                                 <p className="board-category-1-content-title">이 글의 제목입니다.</p>
                                 <p className="board-category-1-content-detail">이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.</p>
                                 <div className="board-category-1-content-info">
@@ -58,7 +89,7 @@ const Board = () => {
                                     <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
                                     <p className="board-category-1-content-info2-count">1 / 5 명 (최소 2명)</p>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
