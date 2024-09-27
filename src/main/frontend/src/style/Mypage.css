@@ -66,7 +66,7 @@
     height: 58px;
     font-style: normal;
     font-weight: 700;
-    font-size: 48px;
+    font-size: 35px;
     line-height: 58px;
     color: #000000;
     margin-left: 50px;
@@ -107,7 +107,7 @@
     height: 29px;
     font-style: normal;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 29px;
     color: #000000;
     margin-left: 60px;
@@ -117,8 +117,8 @@
 }
 
 .AccountInput3 {
-    width: 595px;
-    height: 80px;
+    width: 500px;
+    height: 60px;
     margin-left: 238px;
     margin-top: 35px;
     background: #D9D9D9;
@@ -129,8 +129,8 @@
 }
 
 .AccountInput4 {
-    width: 595px;
-    height: 80px;
+    width: 500px;
+    height: 60px;
     margin-left: 238px;
     /*margin-top: 35px;*/
     background: #D9D9D9;
@@ -152,10 +152,10 @@
     position: absolute;
 
     /*width: 89px;*/
-    height: 39px;
+    /*height: 39px;*/
     font-style: normal;
     font-weight: 600;
-    font-size: 32px;
+    font-size: 19px;
 
     line-height: 39px;
     color: #000000;
@@ -163,6 +163,8 @@
 
 .AccountInputID {
     display: flex;
+    justify-content: center;
+    margin-right: 170px;
 }
 
 .AccountInputID2 {
@@ -187,8 +189,8 @@
 
 
 .AccountExist {
-    width: 595px;
-    height: 79px;
+    width: 500px;
+    height: 60px;
     border: none;
     font-size: 27px;
 }
@@ -321,15 +323,20 @@
     font-size: 20px;
     line-height: 24px;
     color: #000000;
-    margin-left: 33px;
+    margin-left: 45px;
 }
 
 .passwordIcon {
     position: absolute;
     width: 48px;
     height: 48px;
-    margin-left: 550px;
+    margin-left: 456px;
     margin-top: 15px;
+}
+
+.AccountExist::placeholder {
+    font-size: 18px;
+
 }
 
 /* 마이페이지 Update css*/
@@ -366,14 +373,15 @@
 .MypageMenu {
     height: 1100px;
     box-sizing: border-box;
-    width: 19%;
+    width: 17%;
     float: left;
     border-right: 1px solid #000000;
+    margin-left: 150px;
 }
 
 .menuText {
     margin-left: 20px;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 400;
     color: black;
 }
@@ -383,24 +391,20 @@
     background: #75BDFF;
 }
 
-.UpdateBody {
-    box-sizing: border-box;
-    width: 80%;
-    float: right;
-}
+
 
 .UpdateBodyText {
     margin: 40px auto auto 40px;
 }
 
-.UpdateText {
-    height: 58px;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 48px;
-    line-height: 58px;
-    color: #000000;
-}
+/*.UpdateText {*/
+/*    height: 58px;*/
+/*    font-style: normal;*/
+/*    font-weight: 700;*/
+/*    font-size: 48px;*/
+/*    line-height: 58px;*/
+/*    color: #000000;*/
+/*}*/
 
 .exitMember {
     display: flex;
@@ -417,7 +421,7 @@
 
 .exitMember2 {
     margin-left: 10px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .MemberInfo {
@@ -499,12 +503,12 @@
 /* 작성한 글 확인 css*/
 .AllText{
     margin: 45px auto 40px 40px;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 500;
 }
 
 .table-container {
-    width: 90%;
+    width: 83%;
     height: 300px;
     text-align: center;
     font-size: 18px;
@@ -532,6 +536,10 @@
 
 .table-container td {
     border-bottom: 1px solid #e5e5e5;
+}
+
+.table-container tbody tr:hover {
+    background: #f0f0f0;
 }
 
 
@@ -609,7 +617,7 @@
     height: 77px;
     font-style: normal;
     font-weight: 700;
-    font-size: 50px;
+    font-size: 35px;
     line-height: 77px;
     color: #000000;
 }
@@ -637,7 +645,7 @@
     border-bottom: 2px solid #75BDFF;
     font-style: normal;
     font-weight: 700;
-    font-size: 36px;
+    font-size: 30px;
     line-height: 44px;
 }
 
@@ -651,7 +659,7 @@
 
     font-style: normal;
     font-weight: 700;
-    font-size: 36px;
+    font-size: 30px;
     line-height: 44px;
 }
 
@@ -718,21 +726,21 @@
 }
 
 .AddTime {
-    width: 60%;
+    width: 55%;
     float: right;
     /*display: flex;*/
     /*align-items: center;*/
 }
 
 .AddTime img {
-    width: 79px;
-    height: 64px;
+    width: 75px;
+    height: 60px;
 }
 
 .AddTime span {
     font-style: normal;
     font-weight: 700;
-    font-size: 32px;
+    font-size: 26px;
     line-height: 39px;
     color: #000000;
 }
@@ -744,7 +752,7 @@
 }
 
 .AddTimeText {
-    margin: 30px auto auto 80px;
+    margin: 10px auto auto 20px;
 }
 
 .AddTimeText span{
@@ -756,7 +764,7 @@
 }
 
 .AddStudyTime {
-    width: 651px;
+    width: 550px;
     display: flex;
     justify-content: space-between;
 
@@ -816,7 +824,7 @@
 .Payment {
     font-style: normal;
     font-weight: 600;
-    font-size: 30px;
+    font-size: 25px;
     line-height: 77px;
     color: #000000;
     margin: auto 150px auto 110px;
@@ -862,7 +870,7 @@
 
 .MemberBox3 {
     width: 300px;
-    font-size: 25px;
+    font-size: 19px;
     margin-top: 7%;
     font-weight: 500;
     color: black;
@@ -870,7 +878,7 @@
 
 .MemberBox2 {
     font-weight: bold;
-    font-size: 35px;
+    font-size: 25px;
     margin-top: 10%;
     color: black;
 }
@@ -907,7 +915,7 @@
 .DeleteBtn2 button {
     background-color: white;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 19px;
     color: #CCCCCC;
     border: none;
 }
@@ -919,7 +927,7 @@
 .DeleteBtn1 button{
     background-color: #FF5B5B;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 19px;
     color: #EFEFEF;
     border: none;
 }
@@ -968,7 +976,7 @@
 }
 
 .PaymentText1 {
-    font-size: 30px;
+    font-size: 22px;
     font-weight: 700;
     color: #738272;
 }
@@ -1005,11 +1013,6 @@
     border-right: 1px solid #000000;
 }
 
-.menuText {
-    margin-left: 20px;
-    font-size: 32px;
-    font-weight: 400;
-}
 
 .selectMenu {
     background: #75BDFF;
@@ -1017,7 +1020,7 @@
 
 .UpdateBody {
     box-sizing: border-box;
-    width: 80%;
+    width: 70%;
     float: right;
 }
 
@@ -1026,10 +1029,10 @@
 }
 
 .UpdateText {
-    height: 58px;
+    /*height: 58px;*/
     font-style: normal;
     font-weight: 700;
-    font-size: 48px;
+    font-size: 35px;
     line-height: 58px;
     color: #000000;
 }
@@ -1056,7 +1059,7 @@
     height: 44px;
     font-style: normal;
     font-weight: 700;
-    font-size: 36px;
+    font-size: 25px;
     line-height: 44px;
     color: #000000;
 }
@@ -1076,7 +1079,7 @@
 .Inputspan span {
     height: 29px;
     font-style: normal;
-    font-size: 24px;
+    font-size: 19px;
     line-height: 29px;
     color: #000000;
     font-weight: bold;
@@ -1106,7 +1109,7 @@
     background: #FFCFBB;
     width: 213px;
     height: 37px;
-    margin: 40px auto auto 400px;
+    margin: 40px auto auto 350px;
 }
 
 .saveCheck button {
@@ -1129,11 +1132,11 @@
 }
 
 /* 작성한 글 확인 css*/
-.AllText{
-    margin: 45px auto 40px 40px;
-    font-size: 28px;
-    font-weight: 500;
-}
+/*.AllText{*/
+/*    margin: 45px auto 40px 40px;*/
+/*    font-size: 28px;*/
+/*    font-weight: 500;*/
+/*}*/
 
 .writeBox {
     display: flex;
@@ -1146,18 +1149,18 @@
     text-align: center;
 }
 
-.table-container {
-    width: 90%;
-    height: 300px;
-    text-align: center;
-    font-size: 18px;
+/*.table-container {*/
+/*    width: 83%;*/
+/*    height: 300px;*/
+/*    text-align: center;*/
+/*    font-size: 18px;*/
 
-    border: 1px #a39485 solid;
-    box-shadow: 0 2px 5px rgba(0,0,0,.25);
-    border-collapse: collapse;
-    border-radius: 5px;
-    overflow: hidden;
-}
+/*    border: 1px #a39485 solid;*/
+/*    box-shadow: 0 2px 5px rgba(0,0,0,.25);*/
+/*    border-collapse: collapse;*/
+/*    border-radius: 5px;*/
+/*    overflow: hidden;*/
+/*}*/
 
 .table-container th {
     border-width: 1px 0 3px 0;

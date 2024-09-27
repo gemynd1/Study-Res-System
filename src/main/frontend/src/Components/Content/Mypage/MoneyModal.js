@@ -21,7 +21,7 @@ const MoneyModal = ({ open, onClose, amount, Name }) => {
                             <img src="/img/icon/home.png" alt="홈" style={{width: "30px", height: "30px", marginLeft: "15px"}} />
                         </Link>
                         <span className="Payment">결제방법</span>
-                        <img src="/img/icon/close.png" alt="닫기" style={{width: "30px", height: "30px"}} onClick={onClose}/>
+                        <img src="/img/icon/close.png" alt="닫기" style={{width: "30px", height: "30px", marginLeft: "30px"}} onClick={onClose}/>
                     </div>
                     <div className="AllCredit">
                         <span className="PaymentText">상품명</span>
