@@ -14,6 +14,8 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { styled, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import dayjs from "dayjs";
 import { Modal, Box, Typography } from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 function PaymentModal({
   open,
@@ -197,16 +199,24 @@ function BasicButtons2({
   selectedTimes,
   totalPrice,
   count,
-  selectedDate, // 부모 컴포넌트에서 전달받은 selectedDate
+  selectedDate,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isButtonReadonly, setIsButtonReadonly] = useState(true); // 읽기 전용 상태 관리
+  // const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : ""; // 문자열로 변환
 
-  // 시간을 범위로 변환하는 함수
   const formatTimeRange = (times) => {
-    if (times.length >= 2) {
-      const start = Math.min(...times); // 가장 작은 시간
-      const end = Math.max(...times); // 가장 큰 시간
-      const totalHours = end - start + 1; // 선택된 총 시간 계산
+    if (times.length === 1) {
+      const start = times[0];
+      return {
+        timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
+          start + 1
+        ).padStart(2, "0")}:00 (총 1시간)`,
+      };
+    } else if (times.length >= 2) {
+      const start = Math.min(...times);
+      const end = Math.max(...times);
+      const totalHours = end - start + 1;
       return {
         timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
           end + 1
@@ -216,41 +226,56 @@ function BasicButtons2({
     return { timeRange: "", totalHours: 0 };
   };
 
-  // 모달 열기 핸들러
-  const handleOpenModal = () => setIsModalOpen(true);
+  const handleOpenModal = () => {
+    if (!isButtonReadonly) {
+      setIsModalOpen(true); // 읽기 전용 상태가 아니면 모달 열기
+    }
+  };
+
   const handleCloseModal = () => setIsModalOpen(false);
 
   const roomTitle = "스터디룸 A";
-  const { timeRange, totalHours } = formatTimeRange(selectedTimes); // 변환된 시간 범위와 총 시간
+  const { timeRange, totalHours } = formatTimeRange(selectedTimes);
 
-  // selectedDate가 dayjs 객체라면 형식을 변환하여 사용
-  const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : "";
+  // selectedTimes와 selectedDate가 변경될 때마다 버튼 상태 업데이트
+  useEffect(() => {
+    if (selectedTimes.length > 0 && selectedDate) {
+      setIsButtonReadonly(false); // 둘 다 선택되었을 때 읽기 전용 해제
+    } else {
+      setIsButtonReadonly(true); // 선택되지 않으면 읽기 전용 상태 유지
+    }
+  }, [selectedTimes, selectedDate]);
 
   return (
     <>
       <Button
         variant="contained"
         sx={{
-          backgroundColor: backgroundColor || "#7EE9BB",
+          backgroundColor: isButtonReadonly
+            ? "#d3d3d3"
+            : backgroundColor || "#7EE9BB",
           fontWeight: "bold",
-          width: width || "92px",
+          width: width || "192px",
           height: height || "74px",
           fontSize: fontSize || "1.25rem",
           padding: padding || "12px 24px",
           margin: margin || "2px 2px",
           color: color || "#000000",
+          cursor: isButtonReadonly ? "not-allowed" : "pointer", // 클릭 불가시 커서 모양 변경
         }}
-        onClick={handleOpenModal}
+        onClick={handleOpenModal} // 모달 열기
       >
         {text}
       </Button>
+
+      {/* 모달 컴포넌트 */}
       <PaymentModal
         open={isModalOpen}
         onClose={handleCloseModal}
         roomTitle={roomTitle}
-        date={formattedDate} // 날짜를 형식화해서 전달
-        time={timeRange} // 변환된 시간 범위를 전달
-        totalHours={totalHours} // 총 선택된 시간을 전달
+        date={selectedDate ? selectedDate.format("YYYY-MM-DD") : ""}
+        time={timeRange}
+        totalHours={totalHours}
         people={count}
         totalPrice={totalPrice}
       />
@@ -353,9 +378,14 @@ function TimeSelector({ selectedTimes, onTimeChange }) {
 const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
-  const [count, setCount] = useState(3); // 초기값 3
-  const [selectedValue, setSelectedValue] = useState("1000"); // 초기 값 설정
+  const [count, setCount] = useState(3);
+  const [selectedValue, setSelectedValue] = useState("1000");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isTimeChoiceSelected, setIsTimeChoiceSelected] = useState(false);
+
+  const handleRadioChange = (event) => {
+    setIsTimeChoiceSelected(event.target.value === "timeChoice");
+  };
 
   const totalPrice = selectedTimes.length * count * selectedValue;
 
@@ -403,44 +433,55 @@ const TeamDetail = () => {
             </h4>
           </div>
         </div>
-        <div className="teamDetail__main-review">
-          <div className="teamDetail__main-review-profileIcon">
-            <img
-              className="profile"
-              src="/img/icon/profile.png"
-              alt="Profile"
-            />
-          </div>
-          <div className="teamDetail__main-review-wrap">
-            <div className="teamDetail__main-review-header">
-              <h2 className="teamDetail__main-review-name">김지민</h2>
 
-              <ControlledRating />
+        <div className="flex fd-c ai-c p-r">
+          <div className="teamDetail__main-review">
+            <div className="teamDetail__main-review-profileIcon">
+              <img
+                className="profile"
+                src="/img/icon/profile.png"
+                alt="Profile"
+              />
             </div>
-            <h4 className="teamDetail__main-content-text-title">
-              안양역 스터디룸 괜찮네요.
-            </h4>
-            <div className="teamDetail__main-review-photo">
-              <img
-                className="photos"
-                src="/img/icon/곧마감.png"
-                alt="star"
-              ></img>
-              <img
-                className="photos"
-                src="/img/icon/곧마감.png"
-                alt="star"
-              ></img>
-              <img
-                className="photos"
-                src="/img/icon/곧마감.png"
-                alt="star"
-              ></img>
+            <div className="teamDetail__main-review-wrap">
+              <div className="teamDetail__main-review-header">
+                <h2 className="teamDetail__main-review-name">김지민</h2>
+
+                <ControlledRating />
+              </div>
+              <h4 className="teamDetail__main-content-text-title">
+                안양역 스터디룸 괜찮네요.
+              </h4>
+              <h5>2024.09.27 00:00:00</h5>
+              <div className="teamDetail__main-review-photo">
+                <img
+                  className="photos"
+                  src="/img/icon/곧마감.png"
+                  alt="star"
+                ></img>
+                <img
+                  className="photos"
+                  src="/img/icon/곧마감.png"
+                  alt="star"
+                ></img>
+                <img
+                  className="photos"
+                  src="/img/icon/곧마감.png"
+                  alt="star"
+                ></img>
+              </div>
+              <h2 className="teamDetail__main-review-name host">호스트</h2>
+              <h4 className="teamDetail__side-content-text-title">
+                다음에 또 들려주세요!
+              </h4>
+              <h5>2024.09.27 00:00:00</h5>
+              <div className="teamDetail__side-header-line black" />
             </div>
-            <h2 className="teamDetail__main-review-name host">호스트</h2>
-            <h4 className="teamDetail__side-content-text-title">
-              다음에 또 들려주세요!
-            </h4>
+          </div>
+          <div className="p-r b-80">
+            <Stack spacing={2}>
+              <Pagination count={5} />
+            </Stack>
           </div>
         </div>
       </div>
@@ -487,51 +528,68 @@ const TeamDetail = () => {
             <div className="teamDetail__side-header-line" />
           </div>
           <div className="teamDetail__side-radio">
-            <FormControlLabel control={<Radio />} label="시간단위 예약하기" />
-          </div>
-          <div className="teamDetail__side-calendar">
-            <BasicDateCalendar
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
+            <FormControlLabel
+              value="timeChoice"
+              control={<Radio onChange={handleRadioChange} />}
+              label="시간단위 예약하기"
             />
           </div>
-          <div className="teamDetail__side-legend">
-            <div className="teamDetail__side-legend-wrap">
-              <div className="teamDetail__side-legend-boxColor1"></div>
-              <div className="teamDetail___side-legned-title">오늘</div>
-            </div>
-            <div className="teamDetail__side-legend-wrap">
-              <div className="teamDetail__side-legend-boxColor2"></div>
-              <div className="teamDetail___side-legned-title">예약불가</div>
-            </div>
-            <div className="teamDetail__side-legend-wrap">
-              <div className="teamDetail__side-legend-boxColor3"></div>
-              <div className="teamDetail___side-legned-title">선택</div>
-            </div>
-          </div>
-          <div className="teamDetail__side-header">
-            <h3 className="teamDetail__side-content-text-text">시간선택</h3>
-            <div className="teamDetail__side-header-line" />
-          </div>
-          <TimeSelector
-            selectedTimes={selectedTimes}
-            onTimeChange={setSelectedTimes}
-          />
-          <div className="teamDetail__side-legend">
-            <div className="teamDetail__side-legend-wrap">
-              <div className="teamDetail__side-legend-boxColor1"></div>
-              <div className="teamDetail___side-legned-title">예약가능</div>
-            </div>
-            <div className="teamDetail__side-legend-wrap">
-              <div className="teamDetail__side-legend-boxColor2"></div>
-              <div className="teamDetail___side-legned-title">예약불가</div>
-            </div>
-            <div className="teamDetail__side-legend-wrap">
-              <div className="teamDetail__side-legend-boxColor3"></div>
-              <div className="teamDetail___side-legned-title">선택</div>
-            </div>
-          </div>
-
+          {isTimeChoiceSelected && (
+            <>
+              <div className="teamDetail__side-calendar">
+                <BasicDateCalendar
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                />
+              </div>
+              <div className="teamDetail__side-legend">
+                <div className="teamDetail__side-legend-wrap">
+                  <div className="teamDetail__side-legend-boxColor1"></div>
+                  <div className="teamDetail___side-legned-title">오늘</div>
+                </div>
+                <div className="teamDetail__side-legend-wrap">
+                  <div className="teamDetail__side-legend-boxColor2"></div>
+                  <div className="teamDetail___side-legned-title">예약불가</div>
+                </div>
+                <div className="teamDetail__side-legend-wrap">
+                  <div className="teamDetail__side-legend-boxColor3"></div>
+                  <div className="teamDetail___side-legned-title">선택</div>
+                </div>
+              </div>
+              {selectedDate && (
+                <>
+                  <div className="teamDetail__side-header">
+                    <h3 className="teamDetail__side-content-text-text">
+                      시간선택
+                    </h3>
+                    <div className="teamDetail__side-header-line" />
+                  </div>
+                  <TimeSelector
+                    selectedTimes={selectedTimes}
+                    onTimeChange={setSelectedTimes}
+                  />
+                  <div className="teamDetail__side-legend">
+                    <div className="teamDetail__side-legend-wrap">
+                      <div className="teamDetail__side-legend-boxColor1"></div>
+                      <div className="teamDetail___side-legned-title">
+                        예약가능
+                      </div>
+                    </div>
+                    <div className="teamDetail__side-legend-wrap">
+                      <div className="teamDetail__side-legend-boxColor2"></div>
+                      <div className="teamDetail___side-legned-title">
+                        예약불가
+                      </div>
+                    </div>
+                    <div className="teamDetail__side-legend-wrap">
+                      <div className="teamDetail__side-legend-boxColor3"></div>
+                      <div className="teamDetail___side-legned-title">선택</div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
           <div className="teamDetail__side-header">
             <h3 className="teamDetail__side-content-text-text">총예약인원</h3>
             <div className="teamDetail__side-header-line" />
