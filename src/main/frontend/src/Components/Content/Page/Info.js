@@ -108,7 +108,7 @@ const Info = () => {
             <div className="InfoBanner">
                 <div className="InfoBannerLogo">
                     <div className="InfoBannerLogo1">
-                        <img src='/img/icon/logo.png' align="로고" style={{ width: "95px", height: "77px"}}/>
+                        <img src='/img/icon/logo.png' align="로고" style={{ width: "90px", height: "72px"}}/>
                         <span>SN 스터디</span>
                     </div>
                 </div>
@@ -122,7 +122,7 @@ const Info = () => {
                         <div className="InfoDetail">
                             <div className="InfoDetail1">
                                 <img src='/img/icon/coffee.png' align="커피"
-                                     style={{width: "40px", height: "40px", margin: "5px 10px 0 0"}}/>
+                                     style={{width: "30px", height: "30px", margin: "10px 10px 0 0"}}/>
                                 <span>SN 스터디는 24시간 무인 시스템으로 운영되며</span>
                             </div>
                             <div className="InfoDetail2">

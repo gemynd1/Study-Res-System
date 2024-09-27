@@ -77,13 +77,13 @@ const Mypage = () => {
                     </div>
                     <div className="AccountInput">
                         <img src="/img/icon/logo.png" className="logo" alt="/"/>
-                        <span className="editText">고객문의 / 완료건수</span>
+                        <span className="editText">고객문의 / 고객센터</span>
                     </div>
                     <div className="MypageSelect">
                         <div className="circleBox">
                             <div className="circle">
                                 <Link to='/CustomerHelp/CustomerWrite'>
-                                <img src='/img/icon/customerWrite.png' alt="문의하기" style={{ width: "70px", height: "70px"}} />
+                                <img src='/img/icon/customerWrite.png' alt="문의하기" style={{ width: "60px", height: "60px"}} />
                                 {/*<span className="Inquiry">1</span>*/}
                                 </Link>
                             </div>
@@ -92,16 +92,18 @@ const Mypage = () => {
                         <div className="circleBox">
                             <div className="circle">
                                 <Link to='/CustomerHelp/CustomerDetail'>
-                                <img src='/img/icon/customerHistory.png' alt="문의내역" style={{ width: "70px", height: "70px"}} />
+                                <img src='/img/icon/customerHistory.png' alt="문의내역" style={{ width: "60px", height: "60px"}} />
                                 </Link>
                             </div>
                             <span className="InquiryText2">문의내역</span>
                         </div>
                         <div className="circleBox">
                             <div className="circle">
-                                <span className="Inquiry">1</span>
+                                <Link to='/CustomerHelp/CustomerService'>
+                                <img src='/img/icon/call(black).png' alt="고객센터" style={{ width: "60px", height : "60px"}}/>
+                                </Link>
                             </div>
-                            <span className="InquiryText3">문의 완료 건</span>
+                            <span className="InquiryText3">고객센터</span>
                         </div>
                     </div>
                 </div>
