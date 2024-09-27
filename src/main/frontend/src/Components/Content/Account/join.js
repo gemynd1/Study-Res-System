@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect, cloneElement} from "react";
+import axios from "axios";
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -10,7 +11,6 @@ import PhoneVali from "./AccountCom/PhoneVali";
 import IdVali from "./AccountCom/IdVali";
 // import PwVali from "./AccountCom/PwVali";
 // import PwCheckVali from "./AccountCom/PwCheckVali";
-
 
 const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
@@ -92,7 +92,6 @@ const BasicModal = (props) => {
 const Join = () => {
     const isNumeric = (input) => /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4}$/.test(input); // 전화번호 정규식
     const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
-    // const isPwNumeric = (input) => /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/.test(input); // 비밀번호 정규식, 영문 숫자 특수기호 조합 8자리 이상
 
     // input 체크
     const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwcheck : ''});
@@ -104,20 +103,22 @@ const Join = () => {
     const [agreement, setAgreement] = useState({isAgree1: false, isAgree2: false, isAgree3: false});
 
     // 우편번호 API
-    const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: ''});
+    const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
     const [popup, setPopup] = useState(false);
 
     // 우편번호
     const handleComplete = (data) => {
         setPopup(!popup);
     }
-
+    
     const handleInput = (e) => {
         setEnroll_company({
             ...enroll_company,
             [e.target.name]:e.target.value,
         });
     }
+
+    // 회원가입 input
     const handleInput2 = (e) => {
         setauthObj({
             ...authObj,
@@ -154,13 +155,10 @@ const Join = () => {
             ...authObj,
             pwcheck : passwordcheckcurrent,
         })
-        // console.log(authObj.pw)
-        // console.log(passwordcheckcurrent)
         if(authObj.pw === passwordcheckcurrent) {
             setPasswordConfirmMessage(null)
             setIsPasswordConfirm(true)
         } else {
-            // console.log(authObj.pwcheck)
             setPasswordConfirmMessage("비밀번호가 일치하지 않습니다.")
             setIsPasswordConfirm(false)
         }
@@ -196,6 +194,19 @@ const Join = () => {
     const handlekakaLogin = () => {
         window.location.href = kakaoURL;
     }
+
+    // 회원가입 backend
+    const [hello, setHello] = useState([]);
+    const baseUrl = "http://localhost:8099";
+    
+    useEffect(() => {
+        axios.get(baseUrl + '/api/main')
+            .then((res) => {
+                console.log(res.data);
+                setHello(res.data)
+            })
+            .catch(error => console.log(error))
+    }, []); 
     
     return (
         <>
@@ -226,6 +237,8 @@ const Join = () => {
                             {popup && <PostCodePopup company={enroll_company} setcompany={setEnroll_company} />}
                             <div class="addInput">
                                 <input type="text" name="address" placeholder="도로명 주소" onChange={handleInput} value={enroll_company.address} readOnly />
+                                <input type="hidden" name="latitude" value={enroll_company.latitude} />
+                                <input type="hidden" name="longitude" value={enroll_company.longitude} />
                             </div>
                             <div class="detailAddInput">
                                 <input
