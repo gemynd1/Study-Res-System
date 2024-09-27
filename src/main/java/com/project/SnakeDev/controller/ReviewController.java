@@ -1,4 +1,4 @@
-package com.project.SnakeDev.Controller;
+package com.project.SnakeDev.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
