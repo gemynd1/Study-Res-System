@@ -1,10 +1,8 @@
-package com.project.SnakeDev.mapper;
+package com.project.SnakeDev.service;
 
 import com.project.SnakeDev.vo.AuthVo;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface AuthMapper {
+public interface AuthService {
     int InsertJoin(AuthVo authVo);
     int InsertMemberAddress(AuthVo authVo);
 }
