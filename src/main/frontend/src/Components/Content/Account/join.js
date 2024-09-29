@@ -94,7 +94,7 @@ const Join = () => {
     const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
 
     // input 체크
-    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwcheck : ''});
+    const [authObj, setauthObj] = useState({nickname : '김태랑', phonenumber : '01022487244', id : 'musenet', pw : 'muse0116!@', pwcheck : 'muse0116!@'});
     const [isPassword, setIsPassword] = useState(false)
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false)
     const [PasswordMessage, setPasswordMessage] = useState('');
@@ -103,7 +103,7 @@ const Join = () => {
     const [agreement, setAgreement] = useState({isAgree1: false, isAgree2: false, isAgree3: false});
 
     // 우편번호 API
-    const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
+    const [enroll_company, setEnroll_company] = useState({address : '경기 안산시 단원구 선삼로3길 19-1 (선부동)', zonecode: '15212', detailedAddress: '302호', latitude : '37.343855129673', longitude : '126.811122958859'});
     const [popup, setPopup] = useState(false);
 
     // 우편번호
@@ -196,17 +196,44 @@ const Join = () => {
     }
 
     // 회원가입 backend
-    const [hello, setHello] = useState([]);
     const baseUrl = "http://localhost:8099";
+    const [memberRandom, setMemberRandom] = useState(null);
+
+    const onSubmit = (event) => {
+        let random = null;
+        random = Math.floor(100000 + Math.random() * 900000);
+        setMemberRandom(random);
+
+        event.preventDefault();
+        const qs = require('qs');
+        
+        axios.post(baseUrl + '/api/join',
+            qs.stringify({
+                "MIdx" : Number(random),
+                "MemberName" : authObj.nickname,
+                "MemberId" : authObj.id,
+                "MemberPw" : authObj.pw,
+                "MemberPhone" : authObj.phonenumber,
+                "MZonecode" : enroll_company.zonecode,
+                "MAaddress" : enroll_company.address,
+                "MDetailaddress" : enroll_company.detailedAddress,
+                "MAlatitude" : enroll_company.latitude,
+                "MAlongitude" : enroll_company.longitude
+            }),
+            {
+                headers: {
+                    'Content-Type': 'application/json', // 반드시 JSON으로 설정
+                }
+            }
+        )
+        .then(response => {
+            console.log(response.data); // 응답 출력
+        })
+        .catch(error => {
+            console.log(error); // 응답 출력
+        })
+    }
     
-    useEffect(() => {
-        axios.get(baseUrl + '/api/main')
-            .then((res) => {
-                console.log(res.data);
-                setHello(res.data)
-            })
-            .catch(error => console.log(error))
-    }, []); 
     
     return (
         <>
@@ -226,7 +253,7 @@ const Join = () => {
                             </div>
                             <hr className="line2" />    
                         </div>
-                        <form className="form-content"> 
+                        <form className="form-content" onSubmit={onSubmit}> 
                             <div className="nickInput">
                                 <input type="text" name="nickname" placeholder="닉네임" onChange={handleInput2} value={authObj.nickname} required />
                             </div>
@@ -386,7 +413,7 @@ const Join = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <input type="submit" className="joinbtn" value={"회원가입"} />
+                            <button type="submit" className="joinbtn" value={"회원가입"}></button>
                         </form>
                     </div>
                     <div className="joinImg">

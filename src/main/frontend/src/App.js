@@ -57,33 +57,27 @@ function AppContent() {
           <Route path='/board' element={<Board />} />
           <Route path='/review' element={<Review />} />
 
+          <Route path='/CustomerHelp/customerService' element={<CustomerService />} />
+          <Route path='/CustomerHelp/customerWrite' element={<CustomerWrite />} />
+          <Route path='/CustomerHelp/customerDetail' element={<CustomerDetail /> } />
 
+          <Route path="/board" element={<Board />} />
+          <Route path="/board/category/*" element={<BoardCategory />} />
+          <Route path="/board/post/*" element={<Post />} />
+          <Route path="/board/postWrite" element={<PostWrite />} />
+          <Route path="/board/postRewrite/*" element={<PostRewrite />} />
 
+          <Route path="/login" element={<Login />} />
+          <Route path="/join" element={<Join />} />
 
-        <Route path='/CustomerHelp/customerService' element={<CustomerService />} />
-        <Route path='/CustomerHelp/customerWrite' element={<CustomerWrite />} />
-        <Route path='/CustomerHelp/customerDetail' element={<CustomerDetail /> } />
-
-
-
-        <Route path="/board" element={<Board />} />
-        <Route path="/board/category/*" element={<BoardCategory />} />
-        <Route path="/board/post/*" element={<Post />} />
-        <Route path="/board/postWrite" element={<PostWrite />} />
-        <Route path="/board/postRewrite/*" element={<PostRewrite />} />
-
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/join" element={<Join />} />
-
-        {/* mypage 따로 나눌수 있음 git merge */}
-        <Route path="/mypage/*" element={<Mypage />} />
-        <Route path="/mypage/mypageAccount" element={<MypageAccount />} />
-        <Route path="/mypage/mypageUpdate" element={<MypageUpdate />} />
-        <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
-        <Route path="/mypage/mypageReview" element={<MypageReview />} />
-        <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
-        <Route path="/teamdetail" element={<TeamDetail />} />
+          {/* mypage 따로 나눌수 있음 git merge */}
+          <Route path="/mypage/*" element={<Mypage />} />
+          <Route path="/mypage/mypageAccount" element={<MypageAccount />} />
+          <Route path="/mypage/mypageUpdate" element={<MypageUpdate />} />
+          <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
+          <Route path="/mypage/mypageReview" element={<MypageReview />} />
+          <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
+          <Route path="/teamdetail" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
     </>

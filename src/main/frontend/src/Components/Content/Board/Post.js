@@ -63,7 +63,6 @@ function FadeMenu() {
         </div>
     );
 }
-
 // 댓글 페이지네이션
 function BasicPagination() {
     return (

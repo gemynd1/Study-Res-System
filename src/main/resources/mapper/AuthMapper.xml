@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.project.SnakeDev.mapper.AuthMapper">
+    <insert id="InsertJoin" parameterType="map">
+        INSERT INTO Tbl_Member (MIdx, MemberName, MemberId, MemberPw, MemberPhone, MRegDate)
+        VALUES (
+                    #{MIdx, jdbcType=INTEGER},
+                    #{MemberName, jdbcType=VARCHAR},
+                    #{MemberId, jdbcType=VARCHAR},
+                    #{MemberPw, jdbcType=VARCHAR},
+                    #{MemberPhone, jdbcType=VARCHAR},
+                    sysdate
+               )
+    </insert>
+
+    <insert id="InsertMemberAddress" parameterType="map">
+        INSERT INTO Tbl_MemberAddress (MIdx, MZonecode, MAaddress, MDetailaddress, MAlatitude, MAlongitude)
+        VALUES (
+                   #{MIdx},
+                   #{MZonecode},
+                   #{MAaddress},
+                   #{MDetailaddress},
+                   #{MAlatitude},
+                   #{MAlongitude}
+               )
+    </insert>
+
+
+    <!--    <insert id="InsertJoin" parameterType="com.project.SnakeDev.vo.AuthVo">-->
+<!--        INSERT INTO tbl_member (MIdx, MemberName, MemberId, MemberPw, MemberPhone, MregDate)-->
+<!--        VALUES (#{MIdx}, #{MemberName}, #{MemberId}, #{MemberPw}, #{MemberPhone}, sysdate)-->
+<!--    </insert>-->
+
+<!--    <insert id="InsertMemberAddress" parameterType="com.project.SnakeDev.vo.AuthVo">-->
+<!--        INSERT INTO tbl_memberaddress (MIdx, MZonecode, MAaddress, MDetailaddress, MAlatitude, MAlongitude)-->
+<!--        VALUES (#{MIdx}, #{MZonecode}, #{MAaddress}, #{MDetailaddress}, #{MAlatitude}, #{MAlongitude})-->
+<!--    </insert>-->
+</mapper>
