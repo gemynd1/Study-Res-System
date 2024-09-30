@@ -19,6 +19,7 @@ import java.util.Objects;
 public class AuthController {
     @Autowired
     AuthService authService;
+
     @PostMapping(value = "/join")
     public ResponseEntity<String> join(@RequestBody Map<String, Object> data) {
         try {

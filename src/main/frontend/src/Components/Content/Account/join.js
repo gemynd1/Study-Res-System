@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect, cloneElement} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Box from '@mui/material/Box';
@@ -14,7 +15,7 @@ import IdVali from "./AccountCom/IdVali";
 
 const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
-const kakaoURL = 'https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code';
+const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
 
 const style = {
     position: 'absolute',
@@ -94,7 +95,7 @@ const Join = () => {
     const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
 
     // input 체크
-    const [authObj, setauthObj] = useState({nickname : '김태랑', phonenumber : '01022487244', id : 'musenet', pw : 'muse0116!@', pwcheck : 'muse0116!@'});
+    const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwcheck : ''});
     const [isPassword, setIsPassword] = useState(false)
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(false)
     const [PasswordMessage, setPasswordMessage] = useState('');
@@ -103,7 +104,7 @@ const Join = () => {
     const [agreement, setAgreement] = useState({isAgree1: false, isAgree2: false, isAgree3: false});
 
     // 우편번호 API
-    const [enroll_company, setEnroll_company] = useState({address : '경기 안산시 단원구 선삼로3길 19-1 (선부동)', zonecode: '15212', detailedAddress: '302호', latitude : '37.343855129673', longitude : '126.811122958859'});
+    const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
     const [popup, setPopup] = useState(false);
 
     // 우편번호
@@ -197,6 +198,7 @@ const Join = () => {
 
     // 회원가입 backend
     const baseUrl = "http://localhost:8099";
+    const navigate = useNavigate();
     const [memberRandom, setMemberRandom] = useState(null);
 
     const onSubmit = (event) => {
@@ -208,7 +210,7 @@ const Join = () => {
         const qs = require('qs');
         
         axios.post(baseUrl + '/api/join',
-            qs.stringify({
+            {
                 "MIdx" : Number(random),
                 "MemberName" : authObj.nickname,
                 "MemberId" : authObj.id,
@@ -217,9 +219,9 @@ const Join = () => {
                 "MZonecode" : enroll_company.zonecode,
                 "MAaddress" : enroll_company.address,
                 "MDetailaddress" : enroll_company.detailedAddress,
-                "MAlatitude" : enroll_company.latitude,
-                "MAlongitude" : enroll_company.longitude
-            }),
+                "MAlatitude" : parseFloat(enroll_company.latitude),
+                "MAlongitude" : parseFloat(enroll_company.longitude)
+            },
             {
                 headers: {
                     'Content-Type': 'application/json', // 반드시 JSON으로 설정
@@ -227,6 +229,8 @@ const Join = () => {
             }
         )
         .then(response => {
+            alert("회원가입이 완료되었습니다.");
+            navigate("/login");
             console.log(response.data); // 응답 출력
         })
         .catch(error => {
@@ -257,20 +261,20 @@ const Join = () => {
                             <div className="nickInput">
                                 <input type="text" name="nickname" placeholder="닉네임" onChange={handleInput2} value={authObj.nickname} required />
                             </div>
-                            <div class="postInput">
+                            <div className="postInput">
                                 <input type="text" name="zonecode" placeholder="우편번호" onChange={handleInput} value={enroll_company.zonecode} readOnly />
                                 <button type="button" className="postBtn" onClick={handleComplete}>우편번호 찾기</button>
                             </div>
                             {popup && <PostCodePopup company={enroll_company} setcompany={setEnroll_company} />}
-                            <div class="addInput">
+                            <div className="addInput">
                                 <input type="text" name="address" placeholder="도로명 주소" onChange={handleInput} value={enroll_company.address} readOnly />
                                 <input type="hidden" name="latitude" value={enroll_company.latitude} />
                                 <input type="hidden" name="longitude" value={enroll_company.longitude} />
                             </div>
-                            <div class="detailAddInput">
+                            <div className="detailAddInput">
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     name="detailedAddress"
                                     placeholder="상세 주소"
                                     value={enroll_company.detailedAddress}
@@ -279,6 +283,8 @@ const Join = () => {
                             </div>
                             <div className="phoneInput">
                                 <PhoneVali
+                                    phone={authObj}
+                                    setPhone={setauthObj}
                                     value={authObj.phonenumber}
                                     onInput={handleInput2.phonenumber}
                                     onChange={handleInput2}
@@ -301,6 +307,8 @@ const Join = () => {
                             </div>
                             <div className="idInput">
                                 <IdVali
+                                    id={authObj}
+                                    setId={setauthObj}
                                     value={authObj.id}
                                     onInput={handleInput2.id}
                                     onChange={handleInput2}
@@ -413,7 +421,7 @@ const Join = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <button type="submit" className="joinbtn" value={"회원가입"}></button>
+                            <input type="submit" className="joinbtn" value={"회원가입"} />
                         </form>
                     </div>
                     <div className="joinImg">

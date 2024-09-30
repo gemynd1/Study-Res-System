@@ -22,9 +22,18 @@ const IdVali = (props) => {
             // props.onInput(newValue)
             props.onInput?.(newValue);
             console.log("성공" + newValue);
+            
+            props.setId({
+                ...props.id,
+                id:newValue
+            })
+            return true;
         } else {
             console.log("실패" + newValue);
+            return false;
         }
+
+        
 
         // id 체크 여부 기능 넣어야함
     }
