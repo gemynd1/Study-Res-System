@@ -3,6 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
     <typeAliases>
 <!--        <typeAlias alias="MemberVo" type="com.project.SnakeProject.vo.MemberVo"></typeAlias>-->
 <!--        <typeAlias alias="CommunityVo" type="com.project.SnakeProject.vo.CommunityVo"></typeAlias>-->
@@ -21,4 +24,5 @@
     <mappers>
         <package name="com.project.SnakeDev.mapper"/>
     </mappers>
+
 </configuration>

@@ -48,6 +48,10 @@ const PhoneVali = (props) => {
             setError(null);
             props.onInput?.(result);
             // console.log("성공" + result);
+            props.setPhone({
+                ...props.phone,
+                phonenumber:newValue
+            })
             return true;
         } else {
             // console.log("실패" + result);

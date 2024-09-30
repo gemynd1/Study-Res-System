@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "webpack-dev-server": "^5.1.0"
   },
   "options": {
@@ -62,6 +63,6 @@
       "localhost",
       ".localhost"
     ],
-    "proxy": "https://localhost:8099"
+    "proxy": "http://localhost:8099"
   }
 }

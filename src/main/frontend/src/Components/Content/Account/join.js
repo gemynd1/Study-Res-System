@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect, cloneElement} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Box from '@mui/material/Box';
@@ -14,7 +15,7 @@ import IdVali from "./AccountCom/IdVali";
 
 const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
-const kakaoURL = 'https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code';
+const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
 
 const style = {
     position: 'absolute',
@@ -196,17 +197,47 @@ const Join = () => {
     }
 
     // 회원가입 backend
-    const [hello, setHello] = useState([]);
     const baseUrl = "http://localhost:8099";
+    const navigate = useNavigate();
+    const [memberRandom, setMemberRandom] = useState(null);
+
+    const onSubmit = (event) => {
+        let random = null;
+        random = Math.floor(100000 + Math.random() * 900000);
+        setMemberRandom(random);
+
+        event.preventDefault();
+        const qs = require('qs');
+        
+        axios.post(baseUrl + '/api/join',
+            {
+                "MIdx" : Number(random),
+                "MemberName" : authObj.nickname,
+                "MemberId" : authObj.id,
+                "MemberPw" : authObj.pw,
+                "MemberPhone" : authObj.phonenumber,
+                "MZonecode" : enroll_company.zonecode,
+                "MAaddress" : enroll_company.address,
+                "MDetailaddress" : enroll_company.detailedAddress,
+                "MAlatitude" : parseFloat(enroll_company.latitude),
+                "MAlongitude" : parseFloat(enroll_company.longitude)
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json', // 반드시 JSON으로 설정
+                }
+            }
+        )
+        .then(response => {
+            alert("회원가입이 완료되었습니다.");
+            navigate("/login");
+            console.log(response.data); // 응답 출력
+        })
+        .catch(error => {
+            console.log(error); // 응답 출력
+        })
+    }
     
-    useEffect(() => {
-        axios.get(baseUrl + '/api/main')
-            .then((res) => {
-                console.log(res.data);
-                setHello(res.data)
-            })
-            .catch(error => console.log(error))
-    }, []); 
     
     return (
         <>
@@ -226,24 +257,24 @@ const Join = () => {
                             </div>
                             <hr className="line2" />    
                         </div>
-                        <form className="form-content"> 
+                        <form className="form-content" onSubmit={onSubmit}> 
                             <div className="nickInput">
                                 <input type="text" name="nickname" placeholder="닉네임" onChange={handleInput2} value={authObj.nickname} required />
                             </div>
-                            <div class="postInput">
+                            <div className="postInput">
                                 <input type="text" name="zonecode" placeholder="우편번호" onChange={handleInput} value={enroll_company.zonecode} readOnly />
                                 <button type="button" className="postBtn" onClick={handleComplete}>우편번호 찾기</button>
                             </div>
                             {popup && <PostCodePopup company={enroll_company} setcompany={setEnroll_company} />}
-                            <div class="addInput">
+                            <div className="addInput">
                                 <input type="text" name="address" placeholder="도로명 주소" onChange={handleInput} value={enroll_company.address} readOnly />
                                 <input type="hidden" name="latitude" value={enroll_company.latitude} />
                                 <input type="hidden" name="longitude" value={enroll_company.longitude} />
                             </div>
-                            <div class="detailAddInput">
+                            <div className="detailAddInput">
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     name="detailedAddress"
                                     placeholder="상세 주소"
                                     value={enroll_company.detailedAddress}
@@ -252,6 +283,8 @@ const Join = () => {
                             </div>
                             <div className="phoneInput">
                                 <PhoneVali
+                                    phone={authObj}
+                                    setPhone={setauthObj}
                                     value={authObj.phonenumber}
                                     onInput={handleInput2.phonenumber}
                                     onChange={handleInput2}
@@ -274,6 +307,8 @@ const Join = () => {
                             </div>
                             <div className="idInput">
                                 <IdVali
+                                    id={authObj}
+                                    setId={setauthObj}
                                     value={authObj.id}
                                     onInput={handleInput2.id}
                                     onChange={handleInput2}

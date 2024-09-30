@@ -78,9 +78,8 @@ const Main = () => {
 
     const modules = [Autoplay];
 
-    // db 테스트
-    // const [hello, setHello] = useState([]);
-    // const baseUrl = "http://localhost:8099";
+    const [hello, setHello] = useState([]);
+    const baseUrl = "http://localhost:8099";
     
     // useEffect(() => {
     //     axios.get(baseUrl + '/api/main')
@@ -89,7 +88,7 @@ const Main = () => {
     //             setHello(res.data)
     //         })
     //         .catch(error => console.log(error))
-    // }, []); 
+    // }, []);
 
     return(
         <>
@@ -103,7 +102,7 @@ const Main = () => {
                             </div>
                         )) : ''}
                     </div> */}
-                    <span className="MainHeader-first">SN 스터디카페 입니다</span><br />
+                    <span className="MainHeader-first">SN 스터디카페입니다.</span><br />
                     <span className="MainHeader-second">연성대학교 학생들을 위한 스터디카페 입니다.</span>
                 </div>
                 <div className="MainContent">
