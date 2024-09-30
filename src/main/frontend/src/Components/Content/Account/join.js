@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect, cloneElement} from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Box from '@mui/material/Box';
@@ -96,8 +96,9 @@ const Join = () => {
 
     // input 체크
     const [authObj, setauthObj] = useState({nickname : '', phonenumber : '', id : '', pw : '', pwcheck : ''});
-    const [isPassword, setIsPassword] = useState(false)
-    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false)
+    const [isIdCheck, setIsIdCheck] = useState(false);
+    const [isPassword, setIsPassword] = useState(false);
+    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
     const [PasswordMessage, setPasswordMessage] = useState('');
     const [PasswordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const [allAgreed, setAllAgreed] = useState(false);
@@ -200,42 +201,44 @@ const Join = () => {
     const baseUrl = "http://localhost:8099";
     const navigate = useNavigate();
     const [memberRandom, setMemberRandom] = useState(null);
-
+    
     const onSubmit = (event) => {
         let random = null;
-        random = Math.floor(100000 + Math.random() * 900000);
+        random = Math.floor(10000000 + Math.random() * 99999999);
         setMemberRandom(random);
 
         event.preventDefault();
-        const qs = require('qs');
-        
-        axios.post(baseUrl + '/api/join',
-            {
-                "MIdx" : Number(random),
-                "MemberName" : authObj.nickname,
-                "MemberId" : authObj.id,
-                "MemberPw" : authObj.pw,
-                "MemberPhone" : authObj.phonenumber,
-                "MZonecode" : enroll_company.zonecode,
-                "MAaddress" : enroll_company.address,
-                "MDetailaddress" : enroll_company.detailedAddress,
-                "MAlatitude" : parseFloat(enroll_company.latitude),
-                "MAlongitude" : parseFloat(enroll_company.longitude)
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json', // 반드시 JSON으로 설정
+        if(isPasswordConfirm === true && isIdCheck === true && isPassword === true) {
+            axios.post(baseUrl + '/api/join',
+                {
+                    "MIdx" : Number(random),
+                    "MemberName" : authObj.nickname,
+                    "MemberId" : authObj.id,
+                    "MemberPw" : authObj.pw,
+                    "MemberPhone" : authObj.phonenumber,
+                    "MZonecode" : enroll_company.zonecode,
+                    "MAaddress" : enroll_company.address,
+                    "MDetailaddress" : enroll_company.detailedAddress,
+                    "MAlatitude" : parseFloat(enroll_company.latitude),
+                    "MAlongitude" : parseFloat(enroll_company.longitude)
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json', // 반드시 JSON으로 설정
+                    }
                 }
-            }
-        )
-        .then(response => {
-            alert("회원가입이 완료되었습니다.");
-            navigate("/login");
-            console.log(response.data); // 응답 출력
-        })
-        .catch(error => {
-            console.log(error); // 응답 출력
-        })
+            )
+            .then(response => {
+                alert("회원가입이 완료되었습니다. 로그인 후 이용해주세요.");
+                navigate("/login");
+                console.log(response.data); // 응답 출력
+            })
+            .catch(error => {
+                console.log(error); // 응답 출력
+            })
+        } else {
+            alert("회원가입에 실패하였습니다.");
+        }
     }
     
     
@@ -308,6 +311,7 @@ const Join = () => {
                             <div className="idInput">
                                 <IdVali
                                     id={authObj}
+                                    setCheck={setIsIdCheck}
                                     setId={setauthObj}
                                     value={authObj.id}
                                     onInput={handleInput2.id}
@@ -425,7 +429,9 @@ const Join = () => {
                         </form>
                     </div>
                     <div className="joinImg">
-                        <img src="/img/snlogo.png" alt="snlogo" className="logo" />
+                        <Link to="/">
+                            <img src="/img/snlogo.png" alt="snlogo" className="logo" />
+                        </Link>
                     </div>
                 </div>
             </section>

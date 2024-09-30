@@ -26,16 +26,12 @@ public class AuthController {
             AuthVo authVo = VOMapper.mapToVO(data, AuthVo.class);
             System.out.println(authVo.toString());
             if(authService.InsertJoin(authVo) > 0) {
-                System.out.println("ok");
                 if(authService.InsertMemberAddress(authVo) > 0) {
-                    System.out.println("ok");
                     return ResponseEntity.ok("ok");
                 } else {
-                    System.out.println("no");
                     return ResponseEntity.badRequest().body("no");
                 }
             } else {
-                System.out.println("no");
                 return ResponseEntity.badRequest().body("no");
             }
         }
@@ -45,4 +41,38 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/idcheck")
+    public ResponseEntity<Object> idcheck(@RequestParam("newValue") String id) {
+        System.out.println(id);
+        boolean result = false;
+        try {
+            if(authService.IdCheck(id)) {
+                // 중복값 있을 때
+                result = true;
+                return ResponseEntity.ok(result);
+            } else {
+                // 중복값 없을 때
+                result = false;
+                return ResponseEntity.ok(result);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace(); // 오류를 콘솔에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<Object> login(
+            @RequestParam("id") String MemberId,
+            @RequestParam("pw") String MemberPw) {
+        System.out.println(MemberId);
+        System.out.println(MemberPw);
+        String MemberName = authService.login(MemberId, MemberPw);
+        if(MemberName != null) {
+            return ResponseEntity.ok(MemberName);
+        } else {
+            return ResponseEntity.ok("로그인에 실패하였습니다.");
+        }
+    }
 }
