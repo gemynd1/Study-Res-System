@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import '../../../style/post.css';
 
@@ -180,7 +180,46 @@ const TheaterLocation = () => {
     );
   };
 
+//   Mui-selected 찾아야함
+//   nav.pagination navigation
+const pageNationData = () => {
+    const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
+    console.log(currentPage);
+}
+
+
+
 const Post = () => {
+
+    // useEffect(() => {
+    //     const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
+    //     console.log(currentPage);
+    // }, []);
+
+    // const pageNationButton = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button')
+    // pageNationButton.addEventListener('click', pageNationData);
+
+    useEffect(() => {
+        const pageNationButton = document.querySelectorAll('nav.MuiPagination-root ul.MuiPagination-ul li button');
+        const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
+        console.log(currentPage)
+        
+        if (pageNationButton) {
+            pageNationButton.forEach(button => {
+                button.addEventListener('click', pageNationData);
+            })
+        }
+
+        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+        return () => {
+            if (pageNationButton) {
+                pageNationButton.forEach(button => {
+                    button.addEventListener('click', pageNationData);
+                })
+            }
+        };
+    }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행되도록 합니다.
+
     return (
         <>
             <div className="post">

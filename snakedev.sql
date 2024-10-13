@@ -1,0 +1,525 @@
+-- 기존에 있던 테이블들 지우는 sql
+--DROP TABLE "TBL_MEMBER" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_COMMUNITY_CATEGORY" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_COMMUNITY" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_COMMUNITY_COMMENT" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYCAFE" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYCAFEIMG" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYININFO" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYINPARE" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYGINFO" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYREVIEW" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYGIMG" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYGPARE" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_MEMBERININFO" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_TOGETHERSTUDY" CASCADE CONSTRAINTS;
+--DROP TABLE "TBL_STUDYGORDER" CASCADE CONSTRAINTS;
+
+
+CREATE TABLE Tbl_Member (
+	MIdx	int		NOT NULL,
+	MemberName	varchar(255)		NOT NULL,
+	MemberId	varchar(255)		NOT NULL,
+	MemberPw	varchar(255)		NOT NULL,
+	MemberPhone	varchar(255)		NOT NULL,
+	MRegDate	date		NOT NULL,
+	MUseTime	int		NULL,
+	MStartinDate	date		NULL,
+	MEndinDate	date		NULL
+);
+
+CREATE TABLE Tbl_OutMember (
+	Key	VARCHAR(255)		NOT NULL,
+	Field	VARCHAR(255)		NULL,
+	Field2	VARCHAR(255)		NULL,
+	Field3	VARCHAR(255)		NULL,
+	Field4	VARCHAR(255)		NULL,
+	Field8	VARCHAR(255)		NULL
+);
+
+CREATE TABLE Tbl_Community_Category (
+	ComCateIdx	int		NOT NULL,
+	ComCateName	varchar(255)		NULL,
+	ComCateUseState	varchar(5)		NULL
+);
+
+CREATE TABLE Tbl_Community (
+	ComIdx	int		NOT NULL,
+	ComCateIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	ComTitle	varchar(255)		NULL,
+	ComContent	varchar(255)		NULL,
+	ComRegDate	date		NULL,
+	ComDelDate	date		NULL,
+	ComUpDate	date		NULL,
+	ComintoDate	int		NULL,
+	ComToCount	int		NULL,
+	ComStartDate	date		NULL,
+	ComEndDate	date		NULL,
+	ComPlace	varchar(255)		NULL,
+	ComZipcode	varchar(255)		NULL,
+	ComAddress	varchar(255)		NULL,
+	ComReportCount	int		NULL
+);
+
+CREATE TABLE Tbl_Community_Comment (
+	CCIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	ComIdx	int		NOT NULL,
+	CCRefNum	int		NULL,
+	CCNum	int		NULL,
+	CCGroupNum	int		NULL,
+	CCContent	varchar(255)		NULL,
+	CCRegDate	date		NULL,
+	CCUpDate	date		NULL,
+	CCDelDate	date		NULL,
+	CCReportCount	int		NULL
+);
+
+CREATE TABLE Tbl_StudyCafe (
+	SCIdx	int		NOT NULL,
+	SCName	varchar(255)		NULL,
+	SCPhone	varchar(255)		NULL,
+	SCEmail	varchar(255)		NULL,
+	SCManageTime	Date		NULL,
+	SCLastTime	Date		NULL
+);
+
+CREATE TABLE Tbl_Admin (
+	Key	VARCHAR(255)		NOT NULL,
+	Field	VARCHAR(255)		NULL,
+	Field2	VARCHAR(255)		NULL,
+	Field3	VARCHAR(255)		NULL,
+	Field4	VARCHAR(255)		NULL,
+	Field5	VARCHAR(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyCafeImg (
+	SCImgIdx	int		NOT NULL,
+	SCIdx	int		NOT NULL,
+	SCImg	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyInInfo (
+	SeatNum	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	SCIdx	int		NOT NULL,
+	SIINum	int		NULL,
+	SeatUseState	varchar(5)		NULL
+);
+
+CREATE TABLE Tbl_StudyInPare (
+	SIPIdx	int		NOT NULL,
+	SCIdx	int		NOT NULL,
+	SIPName	varchar(255)		NULL,
+	SIPPrice	int		NULL
+);
+
+CREATE TABLE Tbl_StudyGInfo (
+	SGIIdx	int		NOT NULL,
+	SCIdx	int		NOT NULL,
+	SGINum	int		NULL,
+	SGIUseState	varchar(255)		NULL,
+	SGIContent	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyReview (
+	SRIdx	int		NOT NULL,
+	SGIIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	SRcontent	varchar(255)		NULL,
+	SRStar	int		NULL,
+	SRRegDate	date		NULL,
+	SRDelDate	date		NULL,
+	SRUpDate	date		NULL
+);
+
+CREATE TABLE Tbl_StudyGImg (
+	SGImgIdx	int		NOT NULL,
+	SGIIdx	int		NOT NULL,
+	SGImg	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyGPare (
+	SGPIdx	int		NOT NULL,
+	SGIIdx	int		NOT NULL,
+	SGPName	varchar(255)		NULL,
+	SGPPrice	int		NULL
+);
+
+CREATE TABLE Tbl_TogetherStudy (
+	MIdx	int		NOT NULL,
+	ComIdx	int		NOT NULL
+);
+
+CREATE TABLE Tbl_StudyGOrder (
+	SGONum	int		NULL,
+	SGIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	TSGOPIdx2	int		NOT NULL,
+	SGORegDate	date		NULL,
+	SGOStartDate	date		NULL,
+	SGOEndDate	date		NULL,
+	SGOtotal	int		NULL
+);
+
+CREATE TABLE Tbl_StudyReviewImg (
+	SRIImgIdx	int		NOT NULL,
+	SRIdx	int		NOT NULL,
+	SRIImg	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_Member_Alarm (
+	MAIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	MATitle	varchar(255)		NULL,
+	MAContent	varchar(255)		NULL,
+	MADate	date		NULL
+);
+
+CREATE TABLE Tbl_MemberAddress (
+	MIdx	int		NOT NULL,
+	MZonecode	varchar(255)		NULL,
+	MAaddress	varchar(255)		NULL,
+	MDetailaddress	varchar(255)		NULL,
+	MAlatitude	number		NULL,
+	MAlongitude	number		NULL
+);
+
+CREATE TABLE Tbl_MemberLog (
+	MLogIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	MLogCateIdx	int		NOT NULL,
+	MLogTime	Date		NULL,
+	MLogContent	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_Log_Category (
+	MLogCateIdx	int		NOT NULL,
+	MLogCC	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyOrderPay (
+	TSOPIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	TSOPMethod	varchar(255)		NULL,
+	TSOPPrice	int		NULL,
+	TSOPStatus	varchar(255)		NULL,
+	TSOPDate	date		NULL,
+	TSOPDivi	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyOrderCanPay (
+	TSOCPIdx	int		NOT NULL,
+	TSOPIdx	int		NOT NULL,
+	TSOCPPrice	int		NULL,
+	TSOCPStatus	varchar(255)		NULL,
+	TSOCPDate	date		NULL
+);
+
+CREATE TABLE Tbl_StudyReviewLike (
+	TSRLidx	int		NOT NULL,
+	SRIdx	int		NOT NULL,
+	MIdx	int		NOT NULL
+);
+
+CREATE TABLE Tbl_StudyReviewComment (
+	TSRCIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	SRIdx	int		NOT NULL,
+	TSRCContent	varchar(255)		NULL,
+	TSRCPIdx	int		NULL
+);
+
+CREATE TABLE Tbl_StudyReviewCommentlike (
+	TSRCLIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	TSRCIdx	int		NOT NULL
+);
+
+CREATE TABLE Tbl_StudyHasTag (
+	TSHTIdx	int		NOT NULL,
+	SRIdx	int		NOT NULL,
+	TSHTLIdx	int		NOT NULL
+);
+
+CREATE TABLE Tbl_StudyHasTagList (
+	TSHTLIdx	int		NOT NULL,
+	TSHTLContent	varchar(255)		NULL
+);
+
+CREATE TABLE Tbl_StudyReviewMemberTag (
+	TSRMTIdx	int		NOT NULL,
+	MIdx	int		NOT NULL,
+	TSRCIdx	int		NOT NULL
+);
+
+ALTER TABLE Tbl_Member ADD CONSTRAINT PK_TBL_MEMBER PRIMARY KEY (MIdx);
+ALTER TABLE Tbl_OutMember ADD CONSTRAINT PK_TBL_OUTMEMBER PRIMARY KEY (Key);
+ALTER TABLE Tbl_Community_Category ADD CONSTRAINT PK_TBL_COMMUNITY_CATEGORY PRIMARY KEY (ComCateIdx);
+ALTER TABLE Tbl_Community ADD CONSTRAINT PK_TBL_COMMUNITY PRIMARY KEY (ComIdx);
+ALTER TABLE Tbl_Community_Comment ADD CONSTRAINT PK_TBL_COMMUNITY_COMMENT PRIMARY KEY (CCIdx);
+ALTER TABLE Tbl_StudyCafe ADD CONSTRAINT PK_TBL_STUDYCAFE PRIMARY KEY (SCIdx);
+ALTER TABLE Tbl_Admin ADD CONSTRAINT PK_TBL_ADMIN PRIMARY KEY (Key);
+ALTER TABLE Tbl_StudyCafeImg ADD CONSTRAINT PK_TBL_STUDYCAFEIMG PRIMARY KEY (SCImgIdx);
+ALTER TABLE Tbl_StudyInInfo ADD CONSTRAINT PK_TBL_STUDYININFO PRIMARY KEY (SeatNum);
+ALTER TABLE Tbl_StudyInPare ADD CONSTRAINT PK_TBL_STUDYINPARE PRIMARY KEY (SIPIdx);
+ALTER TABLE Tbl_StudyGInfo ADD CONSTRAINT PK_TBL_STUDYGINFO PRIMARY KEY (SGIIdx);
+ALTER TABLE Tbl_StudyReview ADD CONSTRAINT PK_TBL_STUDYREVIEW PRIMARY KEY (SRIdx);
+ALTER TABLE Tbl_StudyGImg ADD CONSTRAINT PK_TBL_STUDYGIMG PRIMARY KEY (SGImgIdx);
+ALTER TABLE Tbl_StudyGPare ADD CONSTRAINT PK_TBL_STUDYGPARE PRIMARY KEY (SGPIdx);
+ALTER TABLE Tbl_TogetherStudy ADD CONSTRAINT PK_TBL_TOGETHERSTUDY PRIMARY KEY (MIdx,ComIdx);
+ALTER TABLE Tbl_StudyGOrder ADD CONSTRAINT PK_TBL_STUDYGORDER PRIMARY KEY (SGONum);
+ALTER TABLE Tbl_StudyReviewImg ADD CONSTRAINT PK_TBL_STUDYREVIEWIMG PRIMARY KEY (SRIImgIdx);
+ALTER TABLE Tbl_Member_Alarm ADD CONSTRAINT PK_TBL_MEMBER_ALARM PRIMARY KEY (MAIdx);
+ALTER TABLE Tbl_MemberAddress ADD CONSTRAINT PK_TBL_MEMBERADDRESS PRIMARY KEY (MIdx);
+ALTER TABLE Tbl_MemberLog ADD CONSTRAINT PK_TBL_MEMBERLOG PRIMARY KEY (MLogIdx);
+ALTER TABLE Tbl_Log_Category ADD CONSTRAINT PK_TBL_LOG_CATEGORY PRIMARY KEY (MLogCateIdx);
+ALTER TABLE Tbl_StudyOrderPay ADD CONSTRAINT PK_TBL_STUDYORDERPAY PRIMARY KEY (TSOPIdx);
+ALTER TABLE Tbl_StudyOrderCanPay ADD CONSTRAINT PK_TBL_STUDYORDERCANPAY PRIMARY KEY (TSOCPIdx);
+ALTER TABLE Tbl_StudyReviewLike ADD CONSTRAINT PK_TBL_STUDYREVIEWLIKE PRIMARY KEY (TSRLidx);
+ALTER TABLE Tbl_StudyReviewComment ADD CONSTRAINT PK_TBL_STUDYREVIEWCOMMENT PRIMARY KEY (TSRCIdx);
+ALTER TABLE Tbl_StudyReviewCommentlike ADD CONSTRAINT PK_TBL_STUDYREVIEWCOMMENTLIKE PRIMARY KEY (TSRCLIdx);
+ALTER TABLE Tbl_StudyHasTag ADD CONSTRAINT PK_TBL_STUDYHASTAG PRIMARY KEY (TSHTIdx);
+ALTER TABLE Tbl_StudyHasTagList ADD CONSTRAINT PK_TBL_STUDYHASTAGLIST PRIMARY KEY (TSHTLIdx);
+ALTER TABLE Tbl_StudyReviewMemberTag ADD CONSTRAINT PK_TBL_STUDYREVIEWMEMBERTAG PRIMARY KEY (TSRMTIdx);
+
+ALTER TABLE Tbl_Community ADD CONSTRAINT FK_Tbl_Community_Category_TO_Tbl_Community_1 FOREIGN KEY (ComCateIdx) REFERENCES Tbl_Community_Category (ComCateIdx);
+ALTER TABLE Tbl_Community ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_Community_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_Community_Comment ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_Community_Comment_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_Community_Comment ADD CONSTRAINT FK_Tbl_Community_TO_Tbl_Community_Comment_1 FOREIGN KEY (ComIdx) REFERENCES Tbl_Community (ComIdx);
+ALTER TABLE Tbl_StudyCafeImg ADD CONSTRAINT FK_Tbl_StudyCafe_TO_Tbl_StudyCafeImg_1 FOREIGN KEY (SCIdx) REFERENCES Tbl_StudyCafe (SCIdx);
+ALTER TABLE Tbl_StudyInInfo ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyInInfo_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyInInfo ADD CONSTRAINT FK_Tbl_StudyCafe_TO_Tbl_StudyInInfo_1 FOREIGN KEY (SCIdx) REFERENCES Tbl_StudyCafe (SCIdx);
+ALTER TABLE Tbl_StudyInPare ADD CONSTRAINT FK_Tbl_StudyCafe_TO_Tbl_StudyInPare_1 FOREIGN KEY (SCIdx) REFERENCES Tbl_StudyCafe (SCIdx);
+ALTER TABLE Tbl_StudyGInfo ADD CONSTRAINT FK_Tbl_StudyCafe_TO_Tbl_StudyGInfo_1 FOREIGN KEY (SCIdx) REFERENCES Tbl_StudyCafe (SCIdx);
+ALTER TABLE Tbl_StudyReview ADD CONSTRAINT FK_Tbl_StudyGInfo_TO_Tbl_StudyReview_1 FOREIGN KEY (SGIIdx) REFERENCES Tbl_StudyGInfo (SGIIdx);
+ALTER TABLE Tbl_StudyReview ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyReview_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyGImg ADD CONSTRAINT FK_Tbl_StudyGInfo_TO_Tbl_StudyGImg_1 FOREIGN KEY (SGIIdx) REFERENCES Tbl_StudyGInfo (SGIIdx);
+ALTER TABLE Tbl_StudyGPare ADD CONSTRAINT FK_Tbl_StudyGInfo_TO_Tbl_StudyGPare_1 FOREIGN KEY (SGIIdx) REFERENCES Tbl_StudyGInfo (SGIIdx);
+ALTER TABLE Tbl_TogetherStudy ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_TogetherStudy_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_TogetherStudy ADD CONSTRAINT FK_Tbl_Community_TO_Tbl_TogetherStudy_1 FOREIGN KEY (ComIdx) REFERENCES Tbl_Community (ComIdx);
+ALTER TABLE Tbl_StudyGOrder ADD CONSTRAINT FK_Tbl_StudyGInfo_TO_Tbl_StudyGOrder_1 FOREIGN KEY (SGIdx) REFERENCES Tbl_StudyGInfo (SGIIdx);
+ALTER TABLE Tbl_StudyGOrder ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyGOrder_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyGOrder ADD CONSTRAINT FK_Tbl_StudyOrderPay_TO_Tbl_StudyGOrder_1 FOREIGN KEY (TSGOPIdx2) REFERENCES Tbl_StudyOrderPay (TSOPIdx);
+ALTER TABLE Tbl_StudyReviewImg ADD CONSTRAINT FK_Tbl_StudyReview_TO_Tbl_StudyReviewImg_1 FOREIGN KEY (SRIdx) REFERENCES Tbl_StudyReview (SRIdx);
+ALTER TABLE Tbl_Member_Alarm ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_Member_Alarm_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_MemberAddress ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_MemberAddress_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_MemberLog ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_MemberLog_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_MemberLog ADD CONSTRAINT FK_Tbl_Log_Category_TO_Tbl_MemberLog_1 FOREIGN KEY (MLogIdx) REFERENCES Tbl_Log_Category (MLogCateIdx);
+ALTER TABLE Tbl_StudyOrderPay ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyOrderPay_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyOrderCanPay ADD CONSTRAINT FK_Tbl_StudyOrderPay_TO_Tbl_StudyOrderCanPay_1 FOREIGN KEY (TSOPIdx) REFERENCES Tbl_StudyOrderPay (TSOPIdx);
+ALTER TABLE Tbl_StudyReviewLike ADD CONSTRAINT FK_Tbl_StudyReview_TO_Tbl_StudyReviewLike_1 FOREIGN KEY (SRIdx) REFERENCES Tbl_StudyReview (SRIdx);
+ALTER TABLE Tbl_StudyReviewLike ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyReviewLike_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyReviewComment ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyReviewComment_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyReviewComment ADD CONSTRAINT FK_Tbl_StudyReview_TO_Tbl_StudyReviewComment_1 FOREIGN KEY (SRIdx) REFERENCES Tbl_StudyReview (SRIdx);
+ALTER TABLE Tbl_StudyReviewCommentlike ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyReviewCommentlike_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyReviewCommentlike ADD CONSTRAINT FK_Tbl_StudyReviewComment_TO_Tbl_StudyReviewCommentlike_1 FOREIGN KEY (TSRCIdx) REFERENCES Tbl_StudyReviewComment (TSRCIdx);
+ALTER TABLE Tbl_StudyHasTag ADD CONSTRAINT FK_Tbl_StudyReview_TO_Tbl_studyHasTag_1 FOREIGN KEY (SRIdx) REFERENCES Tbl_StudyReview (SRIdx);
+ALTER TABLE Tbl_StudyHasTag ADD CONSTRAINT FK_Tbl_StudyHasTagList_TO_Tbl_studyHasTag_1 FOREIGN KEY (TSHTLIdx) REFERENCES Tbl_StudyHasTagList (TSHTLIdx);
+ALTER TABLE Tbl_StudyReviewMemberTag ADD CONSTRAINT FK_Tbl_Member_TO_Tbl_StudyReviewMemberTag_1 FOREIGN KEY (MIdx) REFERENCES Tbl_Member (MIdx);
+ALTER TABLE Tbl_StudyReviewMemberTag ADD CONSTRAINT FK_Tbl_StudyReviewComment_TO_Tbl_StudyReviewMemberTag_1 FOREIGN KEY (TSRCIdx) REFERENCES Tbl_StudyReviewComment (TSRCIdx);
+
+
+
+
+-- sequence
+-- Tbl_Member_Alarm , MAIdx
+CREATE SEQUENCE c##snake2.MAlarm_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_MemberLog, MLogIdx
+CREATE SEQUENCE c##snake2.MLog_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_Community, ComIdx
+CREATE SEQUENCE c##snake2.Community_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_Community_Comment, CCIdx
+CREATE SEQUENCE c##snake2.ComComment_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_Community_Category, ComCateIdx
+CREATE SEQUENCE c##snake2.ComCategory_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyInInfo, SeatNum
+CREATE SEQUENCE c##snake2.SIInfo_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyInPare, SIPIdx
+CREATE SEQUENCE c##snake2.SInpare_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyCafe, SCIdx
+CREATE SEQUENCE c##snake2.StudyCafe_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyCafeImg, SCImgIdx
+CREATE SEQUENCE c##snake2.SCafeImg_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyGInfo, SGIIdx
+CREATE SEQUENCE c##snake2.SGInfo_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyGPare, SGPIdx
+CREATE SEQUENCE c##snake2.SGPare_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyGImg, SGImgIdx
+CREATE SEQUENCE c##snake2.SGImg_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyReview, SRIdx
+CREATE SEQUENCE c##snake2.SReview_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyReviewComment, TSRCIdx
+CREATE SEQUENCE c##snake2.SRComment_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyReviewCommentlike, TSRCLIdx
+CREATE SEQUENCE c##snake2.SRCommentLike_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyReviewMemberTag, TSRMIdx
+CREATE SEQUENCE c##snake2.SRMemberTag_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyHasTag, TSHTIdx
+CREATE SEQUENCE c##snake2.SHasTag_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyHasTagList, TSHTLIdx
+CREATE SEQUENCE c##snake2.SHasTagList_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyReviewLike, TSRLidx
+CREATE SEQUENCE c##snake2.SRLike_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
+
+-- Tbl_StudyReviewImg, SRIImgIdx
+CREATE SEQUENCE c##snake2.ComCom_seq
+   INCREMENT BY 1
+   START WITH 1
+   MINVALUE 1
+   MAXVALUE 9999
+   NOCYCLE
+   NOCACHE
+   NOORDER;
