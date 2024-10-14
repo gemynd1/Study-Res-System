@@ -4,11 +4,12 @@ import {Link, useActionData, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { Paragliding } from "@mui/icons-material";
 
-const K_REST_API_KEY = process.env.REACT_APP_K_REST_API_KEY;
-const K_REDIRECT_URI = 'http://localhost:3000/oatuh';
-const kakaoURL = 'https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code';
-
 const Login = () => {
+    const K_REST_API_KEY = process.env.REACT_APP_KAKAO_LOGIN_KEY;
+    const K_REDIRECT_URI = 'http://localhost:3000/oauth';
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
+    const access_token_uri = 'https://kauth.kakao.com/oauth/token';
+
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
 
@@ -27,9 +28,18 @@ const Login = () => {
             }
         )
         .then(response => {
-            alert(response.data + "님 환영합니다.");
-            navigate("/");
-            console.log(response.data); // 응답 출력
+            if(response.data === false) {
+                alert("아이디가 없습니다. 로그인 후 이용해주세요.");
+                return false;
+            } else {
+                sessionStorage.setItem("id", response.data['id']);
+                sessionStorage.setItem("name", response.data['name']);
+
+                alert(response.data['name'] + "님 환영합니다.");
+                navigate("/");
+                // navigate("/", {state : {userData : response.data}});
+            }
+            
         })
         .catch(error => {
             console.log(error); // 응답 출력

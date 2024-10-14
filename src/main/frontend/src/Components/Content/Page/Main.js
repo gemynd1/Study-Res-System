@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../../style/Main.css"
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
@@ -36,6 +37,8 @@ function useCountNum(end, start = 0, duration = 2000) {
 }
 
 const Main = () => {
+    const location = useLocation();
+    const {id = '', name = ''} = location.state?.userData || {}; 
     const [comma, setComma] = useState(0);
     const [startAnimation, setStartAnimation] = useState(false);
     const sectionRef = useRef(null);
@@ -103,6 +106,7 @@ const Main = () => {
                         )) : ''}
                     </div> */}
                     <span className="MainHeader-first">SN 스터디카페입니다.</span><br />
+                    {/* <span className="MainHeader-first">{sessionStorage.getItem('name')}</span><br /> */}
                     <span className="MainHeader-second">연성대학교 학생들을 위한 스터디카페 입니다.</span>
                 </div>
                 <div className="MainContent">
