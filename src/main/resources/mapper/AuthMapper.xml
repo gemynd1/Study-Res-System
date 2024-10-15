@@ -25,6 +25,14 @@
                )
     </insert>
 
+    <select id="IdCheck" resultType="java.lang.Boolean" parameterType="string">
+        select count(*) from tbl_member where MemberId = #{MemberId}
+    </select>
+
+    <select id="login" resultType="String">
+        select MemberName from tbl_member where MemberId = #{MemberId} and MemberPw = #{MemberPw}
+    </select>
+
 
     <!--    <insert id="InsertJoin" parameterType="com.project.SnakeDev.vo.AuthVo">-->
 <!--        INSERT INTO tbl_member (MIdx, MemberName, MemberId, MemberPw, MemberPhone, MregDate)-->

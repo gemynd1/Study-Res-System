@@ -26,8 +26,8 @@ const Board = () => {
                 <div className="board-page">
                     <div className="board-menubar">
                         <div className="category-section">
-                            <Link to="/board/category/곧마감" className="category1 category">
-                                <img src="/img/icon/곧마감(circle).png" alt="곧마감" className="category1-image"/>
+                            <Link to="/board/category/deadline" className="category1 category">
+                                <img src="/img/icon/deadline(circle).png" alt="deadline" className="category1-image"/>
                                 <div className="category1-title">곧 마감!</div>
                             </Link>
                             <Link to="/board/category/new" className="category2 category">
@@ -51,9 +51,9 @@ const Board = () => {
                     <div className="board-category-1">
                         <div className="board-category-1-background">
                             <div className="board-category-1-headerbar">
-                                <img src="/img/icon/곧마감.png" alt="곧마감" className="board-category-1-headerbar-img"></img>
+                                <img src="/img/icon/deadline.png" alt="deadline" className="board-category-1-headerbar-img"></img>
                                 <p className="board-category-1-headerbar-title">시작이 얼마남지 않은 모임을 확인해보세요! </p>
-                                <Link to="/board/category/곧마감" className="board-category-1-headerbar-btn">
+                                <Link to="/board/category/deadline" className="board-category-1-headerbar-btn">
                                     <span className="board-category-1-headerbar-btn-text">더보기</span>
                                 </Link>
                             </div>

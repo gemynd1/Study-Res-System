@@ -1,12 +1,31 @@
 import {React, useState} from "react";
 import "../../style/header.css";
-// import "../../style/reset.css"
-import { Link, Outlet } from "react-router-dom";
+import axios from "axios";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
+    const location = useLocation();
+    const {id = '', name = ''} = location.state?.userData || {}; 
+    const navigate = useNavigate();
     const [active_index, setActive_index] = useState(null);
     const [active_message_index, setActive_message_index] = useState(0);
- 
+
+    const logoutHandle = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:8099/api/logout")
+        .then(response => {
+            if(response.data === true) {
+                console.log(response.data);
+                sessionStorage.clear();
+                alert("로그아웃 되었습니다.");
+                navigate("/");
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
     const index_choice = (index) => {
         if(active_index === index) {
             setActive_index(null);
@@ -105,51 +124,56 @@ const Header = () => {
                             <Link to="/review">리뷰</Link>
                         </li>
                     </ul>
-                    {/* <ul className="menuList2-fail"> 
-                        <li><img src="/img/icon/bell.png" alt="bell" className="bell" /></li>
-                        <li><img src="/img/icon/chat.png" alt="chat" className="chat" /></li>
-                        <li>
-                            <Link to="/login" style={{ textDecoration: 'none' }}>
-                                <div className="menuList2-login">
-                                    <img src="/img/icon/login.png" alt="login" className="login" />
-                                    <span>로그인</span>
-                                </div>
-                            </Link>
-                        </li>
-                        <li className="menuList2-box"></li>
-                        <li>
-                            <Link to="/join" style={{ textDecoration: 'none' }}>
-                                <div className="menuList2-join">
-                                    <img src="/img/icon/join.png" alt="join" className="join" />
-                                    <span>회원가입</span>
-                                </div>
-                            </Link>
-                        </li>
-                    </ul> */}
-                    <ul className="menuList2-sucs"> 
-                        <li>
-                            <img src="/img/icon/bell.png" alt="bell" className={active_index === 0 ? "bell active" : "bell"} onClick={() => {index_choice(0)}} />
-                        </li>
-                        <li>
-                            <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
-                        </li>
-                        <li>
-                            <Link to="/mypage" style={{ textDecoration: 'none' }}>
-                                <div className="menuList2-mypage">
-                                    <img src="/img/icon/mypage.png" alt="Main" className="mypage" />
-                                    <span>마이페이지</span>
-                                </div>
-                            </Link>
-                            
-                        </li>
-                        <li className="menuList2-box"></li>
-                        <li>
-                            <div className="menuList2-logout">
-                                <img src="/img/icon/logout.png" alt="logout" className="logout" />
-                                <span>로그아웃</span>
-                            </div>
-                        </li>
-                    </ul>
+                    {sessionStorage.getItem('id') === null ? (
+                        <ul className="menuList2-fail"> 
+                            <li><img src="/img/icon/bell.png" alt="bell" className="bell" /></li>
+                            <li><img src="/img/icon/chat.png" alt="chat" className="chat" /></li>
+                            <li>
+                                <Link to="/login" style={{ textDecoration: 'none' }}>
+                                    <div className="menuList2-login">
+                                        <img src="/img/icon/login.png" alt="login" className="login" />
+                                        <span>로그인</span>
+                                    </div>
+                                </Link>
+                            </li>
+                            <li className="menuList2-box"></li>
+                            <li>
+                                <Link to="/join" style={{ textDecoration: 'none' }}>
+                                    <div className="menuList2-join">
+                                        <img src="/img/icon/join.png" alt="join" className="join" />
+                                        <span>회원가입</span>
+                                    </div>
+                                </Link>
+                            </li>
+                        </ul>
+                    ) : (
+                        <ul className="menuList2-sucs"> 
+                            <li>
+                                <img src="/img/icon/bell.png" alt="bell" className={active_index === 0 ? "bell active" : "bell"} onClick={() => {index_choice(0)}} />
+                            </li>
+                            <li>
+                                <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
+                            </li>
+                            <li>
+                                <Link to="/mypage" style={{ textDecoration: 'none' }}>
+                                    <div className="menuList2-mypage">
+                                        <img src="/img/icon/mypage.png" alt="Main" className="mypage" />
+                                        <span>마이페이지</span>
+                                    </div>
+                                </Link>
+                                
+                            </li>
+                            <li className="menuList2-box"></li>
+                            <li>
+                                <Link onClick={logoutHandle} style={{ textDecoration: 'none' }}>
+                                    <div className="menuList2-logout">
+                                        <img src="/img/icon/logout.png" alt="logout" className="logout" />
+                                        <span>로그아웃</span>
+                                    </div>
+                                </Link>
+                            </li>
+                        </ul>
+                    )}
                 </div>
 
                 <div className="test" style={{display: active_index === 0 ? "block" : "none"}}>
