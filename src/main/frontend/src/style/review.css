@@ -1,0 +1,138 @@
+.flex {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  align-content: flex-start;
+}
+.color {
+  color: #7c5454;
+}
+.review-card p,
+span {
+  color: black; /* 텍스트 색상을 검정색으로 설정 */
+}
+.review-card.study-room {
+  color: black; /* 텍스트 색상을 검정색으로 설정 */
+  background-color: #f7f7f7;
+}
+.box {
+  box-sizing: border-box;
+}
+.review__page {
+  width: auto;
+  height: auto;
+  background-color: white;
+  position: relative;
+}
+
+/* 검색창 스타일 */
+.review__page__main {
+  width: 1284px;
+  height: 85px;
+  margin: auto;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 42px;
+}
+
+.review__page__main input {
+  width: 300px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.review__page__main button {
+  height: 40px;
+  padding: 10px 20px;
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 리뷰 그리드 */
+.review__page__main__wrap {
+  width: 1304px;
+  margin: auto;
+  background-color: transparent;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* 리뷰 카드 */
+.review-card {
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+}
+
+.review-card-image {
+  width: 100%;
+  height: 156px;
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 96%;
+  margin-top: 8px;
+  margin-left: 5px;
+}
+.review-rating {
+  font-size: 1.2em;
+}
+
+.study-room {
+  background-color: #222;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.review-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+}
+
+.likes-comments {
+  display: flex;
+  gap: 10px;
+}
+
+/* 더보기 버튼 */
+.more-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.yellow-star {
+  color: gold; /* 노란색 (금색) */
+  font-size: 1.2em; /* 별의 크기 조정 */
+}
