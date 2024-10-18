@@ -155,7 +155,7 @@ const Header = () => {
                                 <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
                             </li>
                             <li>
-                                <Link to="/mypage" style={{ textDecoration: 'none' }}>
+                                <Link to="/mypage/mypageAccount" style={{ textDecoration: 'none' }}>
                                     <div className="menuList2-mypage">
                                         <img src="/img/icon/mypage.png" alt="Main" className="mypage" />
                                         <span>마이페이지</span>

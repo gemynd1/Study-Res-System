@@ -1,14 +1,11 @@
 package com.project.SnakeDev.vo;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @AllArgsConstructor
-public class AuthVo {
+public class MypageVo {
     private Integer MIdx;
     private Integer MUseTime;
     private String MemberName;
@@ -23,61 +20,15 @@ public class AuthVo {
     private Date MRegDate;
     private Date MStartinDate;
     private Date MEndinDate;
-//    String nickname, id, pw, phonenumber, address, zonecode, detailedAddress, latitude, longitude;
-//    Date MRegDate, MStartinDate, MEndinDate;
 
-
-    public AuthVo() {
-    }
-
-    public AuthVo(Integer MIdx, String memberId, String memberPw, String memberPhone, String MAaddress, String MDetailaddress) {
-        this.MIdx = MIdx;
-        MemberId = memberId;
-        MemberPw = memberPw;
-        MemberPhone = memberPhone;
-        this.MAaddress = MAaddress;
-        this.MDetailaddress = MDetailaddress;
-    }
-
-    public AuthVo(String memberId, String memberPw) {
-        MemberId = memberId;
-        MemberPw = memberPw;
-    }
-
-    public AuthVo(Integer MIdx, String memberId, String memberPw) {
-        this.MIdx = MIdx;
-        MemberId = memberId;
-        MemberPw = memberPw;
-    }
-
-    public AuthVo(Integer MIdx, String memberName, String memberId, String memberPw, String memberPhone) {
-        this.MIdx = MIdx;
-        MemberName = memberName;
-        MemberId = memberId;
-        MemberPw = memberPw;
-        MemberPhone = memberPhone;
-    }
-
-    public AuthVo(Integer MIdx, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {
-        this.MIdx = MIdx;
-        this.MAaddress = MAaddress;
-        this.MZonecode = MZonecode;
-        this.MDetailaddress = MDetailaddress;
-        this.MAlatitude = MAlatitude;
-        this.MAlongitude = MAlongitude;
-    }
-
-    public AuthVo(Integer MIdx, String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {
+    public MypageVo(Integer MIdx, String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MDetailaddress) {
         this.MIdx = MIdx;
         MemberName = memberName;
         MemberId = memberId;
         MemberPw = memberPw;
         MemberPhone = memberPhone;
         this.MAaddress = MAaddress;
-        this.MZonecode = MZonecode;
         this.MDetailaddress = MDetailaddress;
-        this.MAlatitude = MAlatitude;
-        this.MAlongitude = MAlongitude;
     }
 
     public Integer getMIdx() {
@@ -194,7 +145,7 @@ public class AuthVo {
 
     @Override
     public String toString() {
-        return "AuthVo{" +
+        return "MypageVo{" +
                 "MIdx=" + MIdx +
                 ", MemberName='" + MemberName + '\'' +
                 ", MemberId='" + MemberId + '\'' +
