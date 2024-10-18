@@ -26,7 +26,7 @@
     </insert>
 
     <select id="IdCheck" resultType="java.lang.Boolean" parameterType="string">
-        select count(*) from tbl_member where MemberId = #{MemberId}
+        select count(*) from tbl_member where MemberId = #{MmemberId}
     </select>
 
     <select id="login" resultType="String">

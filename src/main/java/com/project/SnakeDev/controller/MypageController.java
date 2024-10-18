@@ -1,39 +1,48 @@
 package com.project.SnakeDev.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.project.SnakeDev.service.MypageService;
+import com.project.SnakeDev.vo.AuthVo;
+import com.project.SnakeDev.vo.MypageVo;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+import java.util.ArrayList;
+import java.util.List;
+
+
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api")
 public class MypageController {
-    @RequestMapping("/api/mypage")
-    public String mypage() {
-        return "마이페이지입니다.";
-    }
+    @Autowired
+    MypageService mypageService;
 
-    @RequestMapping("/api/mypage/mypageAccount")
-    public String mypageAccount() {
-        return "마이페이지 비밀번호 확인 페이지입니다.";
-    }
+    @GetMapping("/mypage/mypageAccount")
+    public ResponseEntity<Object> mypage(
+            @RequestParam("id") String MemberId,
+            @RequestParam("pw") String MemberPw,
+            HttpServletRequest request) {
+        AuthVo userInfo = mypageService.getUserInfo(MemberId);
 
-    @RequestMapping("/api/mypage/mypageUpdate")
-    public String mypageUpdate() {
-        return "마이페이지 개인정보 수정 페이지입니다.";
-    }
+        if (userInfo != null && userInfo.getMemberPw().equals(MemberPw)) {
+            // 사용자 정보를 리스트에 저장합니다.
+            List<Object> userInfoList = new ArrayList<>();
+            userInfoList.add(userInfo.getMemberId());
+            userInfoList.add(userInfo.getMemberPw());
+            userInfoList.add(userInfo.getMemberName());
+            userInfoList.add(userInfo.getMemberPhone());
+            userInfoList.add(userInfo.getMAaddress());
+            userInfoList.add(userInfo.getMDetailaddress());
 
-    @RequestMapping("/api/mypage/mypageBoard")
-    public String mypageBoard() {
-        return "마이페이지 개인이 작성한 글 확인 페이지입니다.";
-    }
 
-    @RequestMapping("/api/mypage/mypageReview")
-    public String mypageReview() {
-        return "마이페이지 리뷰페이지입니다.";
-    }
-
-    @RequestMapping("/api/mypage/mypageAdd")
-    public String mypageAdd() {
-        return "마이페이지 시간충전 페이지입니다.";
+            // 리스트를 ResponseEntity에 담아서 반환합니다.
+            return ResponseEntity.ok(userInfoList);
+        } else {
+            // 아이디 또는 비밀번호가 일치하지 않을 경우, 401 Unauthorized 상태를 반환합니다.
+            return ResponseEntity.status(401).body("아이디나 비밀번호 오류");
+        }
     }
 }
