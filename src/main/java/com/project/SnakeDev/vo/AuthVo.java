@@ -26,7 +26,6 @@ public class AuthVo {
 //    String nickname, id, pw, phonenumber, address, zonecode, detailedAddress, latitude, longitude;
 //    Date MRegDate, MStartinDate, MEndinDate;
 
-
     public AuthVo() {
     }
 

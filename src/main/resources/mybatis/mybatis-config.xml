@@ -12,8 +12,8 @@
 <!--        <typeAlias alias="CommunityCategoryVo" type="com.project.SnakeProject.vo.CommunityCategoryVo"></typeAlias>-->
 <!--        <typeAlias alias="CommunityCommentVo" type="com.project.SnakeProject.vo.CommunityCommentVo"></typeAlias>-->
 
-<!--        <typeAlias alias="StudyGInfoVo" type="com.project.SnakeProject.vo.StudyGInfoVo"></typeAlias>-->
-<!--        <typeAlias alias="StudyGImgVo" type="com.project.SnakeProject.vo.StudyGImgVo"></typeAlias>-->
+        <typeAlias alias="StudyGInfoVo" type="com.project.SnakeDev.vo.StudyGInfoVo"></typeAlias>
+        <typeAlias alias="StudyGImgVo" type="com.project.SnakeDev.vo.StudyGImgVo"></typeAlias>
 <!--        <typeAlias alias="StudyGPareVo" type="com.project.SnakeProject.vo.StudyGPareVo"></typeAlias>-->
 <!--        <typeAlias alias="StudyGOrderVo" type="com.project.SnakeProject.vo.StudyGOrderVo"></typeAlias>-->
 

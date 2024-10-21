@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import {React, useEffect, useState} from "react";
 import "../../style/header.css";
 import axios from "axios";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -10,21 +10,44 @@ const Header = () => {
     const [active_index, setActive_index] = useState(null);
     const [active_message_index, setActive_message_index] = useState(0);
 
+    useEffect(() => {
+        const checkSession = () => {
+            axios
+            .get("http://localhost:8099/api/session-status")
+            .then(response => {
+                if(response.data != 200) {
+                    logoutHandle();    
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                logoutHandle();
+            })
+        }
+        
+
+        const interval = setInterval(checkSession, 10 * 60 * 1000); // 10분
+        return () => clearInterval(interval);
+    })
+
     const logoutHandle = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         axios.post("http://localhost:8099/api/logout")
         .then(response => {
             if(response.data === true) {
-                console.log(response.data);
+                // console.log(response.data);
                 sessionStorage.clear();
                 alert("로그아웃 되었습니다.");
-                navigate("/");
+                // navigate("/");
+                window.location.reload();
             }
         })
         .catch(error => {
             console.log(error);
         })
     }
+
+    
 
     const index_choice = (index) => {
         if(active_index === index) {

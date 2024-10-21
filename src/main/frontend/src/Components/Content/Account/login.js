@@ -34,10 +34,11 @@ const Login = () => {
             } else {
                 sessionStorage.setItem("id", response.data['id']);
                 sessionStorage.setItem("name", response.data['name']);
+                console.log(response.data.sessionTimeout);
 
                 alert(response.data['name'] + "님 환영합니다.");
                 navigate("/");
-                // navigate("/", {state : {userData : response.data}});
+                window.location.reload();
             }
             
         })

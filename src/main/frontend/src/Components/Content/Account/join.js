@@ -10,8 +10,6 @@ import JsonData from "../../../db/join.json";
 import PostCodePopup from "./AccountCom/PostCodePopup";
 import PhoneVali from "./AccountCom/PhoneVali";
 import IdVali from "./AccountCom/IdVali";
-// import PwVali from "./AccountCom/PwVali";
-// import PwCheckVali from "./AccountCom/PwCheckVali";
 
 const K_REST_API_KEY = process.env.REACT_APP_KAKAO_LOGIN_KEY;
 const K_REDIRECT_URI = 'http://localhost:3000/oauth';
@@ -50,7 +48,7 @@ const BasicModal = (props) => {
             {Object.entries(JsonData)
                 .filter(([key, item]) => item.propTitle.includes(props.title))
                 .map(([key, item]) => (
-                    <div key={key}>
+                    <div key={"filter" + key}>
                         <input 
                             type={'button'} 
                             onClick={() => handleOpen(item)} 
@@ -73,7 +71,7 @@ const BasicModal = (props) => {
                         </div>
                         <div className="modal-join-title-section">
                             {selectedItem.content.map((contentitem, index) => (
-                                <div key={index}>
+                                <div key={"join" +index}>
                                     <span className="modal-join-title">{contentitem.subTitle}</span><br />
                                     <span className="modal-join-content">{contentitem.subcontent}</span>
                                 </div> 
@@ -232,7 +230,8 @@ const Join = () => {
             .then(response => {
                 alert("회원가입이 완료되었습니다. 로그인 후 이용해주세요.");
                 navigate("/login");
-                console.log(response.data); // 응답 출력
+                window.location.reload();
+                // console.log(response.data); // 응답 출력
             })
             .catch(error => {
                 console.log(error); // 응답 출력
@@ -241,7 +240,6 @@ const Join = () => {
             alert("회원가입에 실패하였습니다.");
         }
     }
-    
     
     return (
         <>
