@@ -107,7 +107,37 @@ h2 {
   margin-bottom: 36px;
 }
 .teamDetail__main-content-title-option_list {
-  width: 763px;
+  width: 761px;
+  background: #ffffff;
+  border-radius: 6px;
+}
+.teamDetail__main-content-title-option_list .navarea {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0;
+}
+.teamDetail__main-content-title-option_list .navarea li {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 0;
+  list-style: none;
+  font-size: 24px;
+  position: relative;
+  font-weight: 550;
+  color: #000000;
+}
+.teamDetail__main-content-title-option_list .navarea li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 50%;
+  width: 2px;
+  background-color: blueviolet;
 }
 .teamDetail__main-review {
   background-color: #ffffff;

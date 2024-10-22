@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import {Link, useNavigate} from "react-router-dom";
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,16 +18,8 @@ import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-// 예약 최종 확인 모델
-function PaymentModal({
-  open,
-  onClose,
-  roomTitle,
-  date,
-  time,
-  people,
-  totalPrice,
-}) {
+// 예약 최종 확인 모델 여기서 데이터 처리
+const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ ...modalStyle }}>
@@ -67,7 +60,7 @@ const modalStyle = {
 };
 
 // 슬라이드 이동 버튼
-function MyButtons({ swiper }) {
+const MyButtons = ({ swiper }) => {
   return (
     <div className="moveButton">
       <div onClick={() => swiper.slidePrev()}>
@@ -89,7 +82,7 @@ function MyButtons({ swiper }) {
 }
 
 // 별점 추가 - 이 부분은 리뷰 페이지에서 작성한 별점 수를 보여주면됨.
-function ControlledRating() {
+const ControlledRating = () => {
   const [value, setValue] = useState(0);
 
   return (
@@ -106,7 +99,7 @@ function ControlledRating() {
 }
 
 // 가격 선택
-function RadioButtonsGroup({ selectedValue, setSelectedValue }) {
+const RadioButtonsGroup = ({ selectedValue, setSelectedValue }) => {
   const handleChange = (event) => {
     setSelectedValue(event.target.value); // 선택된 값 업데이트
   };
@@ -135,7 +128,7 @@ function RadioButtonsGroup({ selectedValue, setSelectedValue }) {
 }
 
 // 시간 단위 예약하기 버튼 클릭하면 보여주는 캘릭더 컴포넌트
-function BasicDateCalendar({ selectedDate, setSelectedDate }) {
+const BasicDateCalendar = ({ selectedDate, setSelectedDate }) => {
   // const [selectedDate, setSelectedDate] = useState(null);
 
   const disablePastDates = (date) => {
@@ -165,17 +158,7 @@ function BasicDateCalendar({ selectedDate, setSelectedDate }) {
 }
 
 // 버튼 커마한거
-function BasicButtons({
-  text,
-  width,
-  height,
-  fontSize,
-  padding,
-  margin,
-  backgroundColor,
-  color,
-  onClick,
-}) {
+const BasicButtons = ({text, width, height, fontSize, padding, margin, backgroundColor, color, onClick}) => {
   return (
     <Button
       variant="contained"
@@ -197,24 +180,16 @@ function BasicButtons({
 }
 
 // 예약가능 버튼
-function BasicButtons2({
-  text,
-  width,
-  height,
-  fontSize,
-  padding,
-  margin,
-  backgroundColor,
-  color,
-  selectedTimes,
-  totalPrice,
-  count,
-  selectedDate,
-}) {
+const BasicButtons2 = ({
+  text, width, height, fontSize, padding, margin, backgroundColor, 
+  color, selectedTimes, totalPrice, count, selectedDate
+}) => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isButtonReadonly, setIsButtonReadonly] = useState(true); // 읽기 전용 상태 관리
   // const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : ""; // 문자열로 변환
 
+  // 시간 총 몇시간인지
   const formatTimeRange = (times) => {
     if (times.length === 1) {
       const start = times[0];
@@ -228,6 +203,7 @@ function BasicButtons2({
       const end = Math.max(...times);
       const totalHours = end - start + 1;
       return {
+        // 00:00 ~ 01:00 (총1시간)
         timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
           end + 1
         ).padStart(2, "0")}:00 (총 ${totalHours}시간)`,
@@ -249,11 +225,11 @@ function BasicButtons2({
 
   // selectedTimes와 selectedDate가 변경될 때마다 버튼 상태 업데이트
   useEffect(() => {
-    if (selectedTimes.length > 0 && selectedDate) {
-      setIsButtonReadonly(false); // 둘 다 선택되었을 때 읽기 전용 해제
-    } else {
-      setIsButtonReadonly(true); // 선택되지 않으면 읽기 전용 상태 유지
-    }
+      if (selectedTimes.length > 0 && selectedDate) {
+        setIsButtonReadonly(false); // 둘 다 선택되었을 때 읽기 전용 해제
+      } else {
+        setIsButtonReadonly(true); // 선택되지 않으면 읽기 전용 상태 유지
+      }
   }, [selectedTimes, selectedDate]);
 
   return (
@@ -293,7 +269,7 @@ function BasicButtons2({
   );
 }
 
-function TeamDetailButtons({ count, setCount }) {
+const TeamDetailButtons = ({ count, setCount }) => {
   // const [count, setCount] = useState(3); // 초기값은 3
 
   const handleIncrement = () => {
@@ -336,7 +312,8 @@ function TeamDetailButtons({ count, setCount }) {
   );
 }
 
-function TimeSelector({ selectedTimes, onTimeChange }) {
+// 0:00~23:00 시간 선택해주는 부분
+const TimeSelector = ({ selectedTimes, onTimeChange }) => {
   const handleChange = (event, newSelectedTimes) => {
     if (newSelectedTimes.length <= 2) {
       if (newSelectedTimes.length === 2) {
@@ -362,7 +339,7 @@ function TimeSelector({ selectedTimes, onTimeChange }) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   return (
-    <div>
+    <>
       <ToggleButtonGroup
         value={selectedTimes}
         onChange={handleChange}
@@ -370,6 +347,7 @@ function TimeSelector({ selectedTimes, onTimeChange }) {
         size="small"
         className="toggleButtonGroup"
       >
+        {/* 여기서 데이터를 가져와서 예약이 완료된 시간타임이 있으면 unselect 처리 */}
         {hours.map((hour) => (
           <ToggleButton
             key={hour}
@@ -381,7 +359,7 @@ function TimeSelector({ selectedTimes, onTimeChange }) {
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
-    </div>
+    </>
   );
 }
 
@@ -398,6 +376,32 @@ const TeamDetail = () => {
   };
 
   const totalPrice = selectedTimes.length * count * selectedValue;
+
+  const content1Ref = useRef(null);
+  const content2Ref = useRef(null);
+  const content3Ref = useRef(null);
+  const content4Ref = useRef(null);
+  const content5Ref = useRef(null);
+  const content6Ref = useRef(null);
+
+  const onContent1Click = () => {
+    content1Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+  const onContent2Click = () => {
+    content2Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+  const onContent3Click = () => {
+    content3Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+  const onContent4Click = () => {
+    content4Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+  const onContent5Click = () => {
+    content5Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }
+  const onContent6Click = () => {
+    content6Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }
 
   return (
     <div className="teamDetail">
@@ -435,85 +439,99 @@ const TeamDetail = () => {
           {/* <h4 className="teamDetail__main-content-title-option"> */}
             <div className="teamDetail__main-content-title-option_list">
               <ul className="navarea">
-                <li className="selected">
-                  공간소개
-                </li>
-                <li>
-                  시설안내
-                </li>
-                <li>
-                  유의사항
-                </li>
-                <li>
-                  환불정책
-                </li>
-                <li>
-                  Q&A
-                </li>
-                <li className="end">
-                  이용후기
-                </li>
+                <li onClick={onContent1Click}>공간소개</li>
+                <li onClick={onContent2Click}>시설안내</li>
+                <li onClick={onContent3Click}>유의사항</li>
+                <li onClick={onContent4Click}>환불정책</li>
+                <li onClick={onContent5Click}>Q&A</li>
+                <li onClick={onContent6Click}>이용후기</li>
               </ul>
             </div>
             {/* 공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기 */}
           {/* </h4> */}
           <div className="teamDetail__main-header-line" />
-          <div className="teamDetail__main-content-text">
+          <div className="teamDetail__main-content-text" ref={content1Ref}>
             <h3 className="teamDetail__main-content-text-title">공간소개</h3>
             <h4 className="teamDetail__main-content-text-text">
               안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
             </h4>
           </div>
-        </div>
-
-        <div className="flex fd-c ai-c p-r">
-          <div className="teamDetail__main-review">
-            <div className="teamDetail__main-review-profileIcon">
-              <img
-                className="profile"
-                src="/img/icon/profile.png"
-                alt="Profile"
-              />
-            </div>
-            <div className="teamDetail__main-review-wrap">
-              <div className="teamDetail__main-review-header">
-                <h2 className="teamDetail__main-review-name">김지민</h2>
-
-                <ControlledRating />
-              </div>
-              <h4 className="teamDetail__main-content-text-title">
-                안양역 스터디룸 괜찮네요.
-              </h4>
-              <h5>2024.09.27 00:00:00</h5>
-              <div className="teamDetail__main-review-photo">
-                <img
-                  className="photos"
-                  src="/img/icon/곧마감.png"
-                  alt="star"
-                ></img>
-                <img
-                  className="photos"
-                  src="/img/icon/곧마감.png"
-                  alt="star"
-                ></img>
-                <img
-                  className="photos"
-                  src="/img/icon/곧마감.png"
-                  alt="star"
-                ></img>
-              </div>
-              <h2 className="teamDetail__main-review-name host">호스트</h2>
-              <h4 className="teamDetail__side-content-text-title">
-                다음에 또 들려주세요!
-              </h4>
-              <h5>2024.09.27 00:00:00</h5>
-              <div className="teamDetail__side-header-line black" />
-            </div>
+          <div className="teamDetail__main-content-text" ref={content2Ref}>
+            <h3 className="teamDetail__main-content-text-title">시설안내</h3>
+            <h4 className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </h4>
           </div>
-          <div className="p-r b-80">
-            <Stack spacing={2}>
-              <Pagination count={5} />
-            </Stack>
+            <div className="teamDetail__main-content-text" ref={content3Ref}>
+            <h3 className="teamDetail__main-content-text-title">유의사항</h3>
+            <h4 className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </h4>
+          </div>
+          <div className="teamDetail__main-content-text" ref={content4Ref}>
+            <h3 className="teamDetail__main-content-text-title">환불정책</h3>
+            <h4 className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </h4>
+          </div>
+          <div className="teamDetail__main-content-text" ref={content5Ref}>
+            <h3 className="teamDetail__main-content-text-title">Q&A</h3>
+            <h4 className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </h4>
+          </div>
+          <div className="teamDetail__main-content-text" ref={content6Ref}>
+            <h3 className="teamDetail__main-content-text-title">이용후기</h3>
+            <div className="flex fd-c ai-c p-r">
+              <div className="teamDetail__main-review">
+                <div className="teamDetail__main-review-profileIcon">
+                  <img
+                    className="profile"
+                    src="/img/icon/profile.png"
+                    alt="Profile"
+                  />
+                </div>
+                <div className="teamDetail__main-review-wrap">
+                  <div className="teamDetail__main-review-header">
+                    <h2 className="teamDetail__main-review-name">김지민</h2>
+
+                    <ControlledRating />
+                  </div>
+                  <h4 className="teamDetail__main-content-text-title">
+                    안양역 스터디룸 괜찮네요.
+                  </h4>
+                  <h5>2024.09.27 00:00:00</h5>
+                  <div className="teamDetail__main-review-photo">
+                    <img
+                      className="photos"
+                      src="/img/icon/곧마감.png"
+                      alt="star"
+                    ></img>
+                    <img
+                      className="photos"
+                      src="/img/icon/곧마감.png"
+                      alt="star"
+                    ></img>
+                    <img
+                      className="photos"
+                      src="/img/icon/곧마감.png"
+                      alt="star"
+                    ></img>
+                  </div>
+                  <h2 className="teamDetail__main-review-name host">호스트</h2>
+                  <h4 className="teamDetail__side-content-text-title">
+                    다음에 또 들려주세요!
+                  </h4>
+                  <h5>2024.09.27 00:00:00</h5>
+                  <div className="teamDetail__side-header-line black" />
+                </div>
+              </div>
+              <div className="p-r b-80">
+                <Stack spacing={2}>
+                  <Pagination count={5} />
+                </Stack>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -567,6 +585,7 @@ const TeamDetail = () => {
             />
           </div>
           {isTimeChoiceSelected && (
+            // 날짜 나옴
             <>
               <div className="teamDetail__side-calendar">
                 <BasicDateCalendar
@@ -589,6 +608,7 @@ const TeamDetail = () => {
                 </div>
               </div>
               {selectedDate && (
+                // 시간 나옴
                 <>
                   <div className="teamDetail__side-header">
                     <h3 className="teamDetail__side-content-text-text">
