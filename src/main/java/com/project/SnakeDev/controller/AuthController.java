@@ -28,7 +28,7 @@ public class AuthController {
     public ResponseEntity<String> join(@RequestBody Map<String, Object> data) {
         try {
             AuthVo authVo = VOMapper.mapToVO(data, AuthVo.class);
-            System.out.println(authVo.toString());
+//            System.out.println(authVo.toString());
             if(authService.InsertJoin(authVo) > 0) {
                 if(authService.InsertMemberAddress(authVo) > 0) {
                     return ResponseEntity.ok("ok");

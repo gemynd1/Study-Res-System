@@ -17,6 +17,7 @@ import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
+// 예약 최종 확인 모델
 function PaymentModal({
   open,
   onClose,
@@ -34,6 +35,7 @@ function PaymentModal({
         <Typography>시간: {time}</Typography>
         <Typography>인원: {people}명</Typography>
         <Typography>총 가격: {totalPrice}원</Typography>
+        {/* 결제 툴 추가 해야함. */}
         <Box
           sx={{
             display: "flex",
@@ -64,6 +66,7 @@ const modalStyle = {
   p: 4,
 };
 
+// 슬라이드 이동 버튼
 function MyButtons({ swiper }) {
   return (
     <div className="moveButton">
@@ -84,6 +87,8 @@ function MyButtons({ swiper }) {
     </div>
   );
 }
+
+// 별점 추가 - 이 부분은 리뷰 페이지에서 작성한 별점 수를 보여주면됨.
 function ControlledRating() {
   const [value, setValue] = useState(0);
 
@@ -99,6 +104,8 @@ function ControlledRating() {
     </div>
   );
 }
+
+// 가격 선택
 function RadioButtonsGroup({ selectedValue, setSelectedValue }) {
   const handleChange = (event) => {
     setSelectedValue(event.target.value); // 선택된 값 업데이트
@@ -117,16 +124,17 @@ function RadioButtonsGroup({ selectedValue, setSelectedValue }) {
           control={<Radio />}
           label="1000원/시간(인)"
         />
-        <FormControlLabel
+        {/* <FormControlLabel
           value="2000"
           control={<Radio />}
           label="2000원/시간(인)"
-        />
+        /> */}
       </RadioGroup>
     </FormControl>
   );
 }
 
+// 시간 단위 예약하기 버튼 클릭하면 보여주는 캘릭더 컴포넌트
 function BasicDateCalendar({ selectedDate, setSelectedDate }) {
   // const [selectedDate, setSelectedDate] = useState(null);
 
@@ -156,6 +164,7 @@ function BasicDateCalendar({ selectedDate, setSelectedDate }) {
   );
 }
 
+// 버튼 커마한거
 function BasicButtons({
   text,
   width,
@@ -171,7 +180,7 @@ function BasicButtons({
     <Button
       variant="contained"
       sx={{
-        backgroundColor: backgroundColor || "#7EE9BB",
+        backgroundColor: backgroundColor || "#ffffff",
         fontWeight: "bold",
         width: width || "92px",
         height: height || "74px",
@@ -187,6 +196,7 @@ function BasicButtons({
   );
 }
 
+// 예약가능 버튼
 function BasicButtons2({
   text,
   width,
@@ -422,9 +432,31 @@ const TeamDetail = () => {
           <h1 className="teamDetail__main-content-title">
             세미나, 클래스, 스터디 모임 등
           </h1>
-          <h4 className="teamDetail__main-content-title-option">
-            공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기
-          </h4>
+          {/* <h4 className="teamDetail__main-content-title-option"> */}
+            <div className="teamDetail__main-content-title-option_list">
+              <ul className="navarea">
+                <li className="selected">
+                  공간소개
+                </li>
+                <li>
+                  시설안내
+                </li>
+                <li>
+                  유의사항
+                </li>
+                <li>
+                  환불정책
+                </li>
+                <li>
+                  Q&A
+                </li>
+                <li className="end">
+                  이용후기
+                </li>
+              </ul>
+            </div>
+            {/* 공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기 */}
+          {/* </h4> */}
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text">
             <h3 className="teamDetail__main-content-text-title">공간소개</h3>

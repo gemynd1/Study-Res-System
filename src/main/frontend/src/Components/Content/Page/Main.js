@@ -138,8 +138,12 @@ const Main = () => {
 
     useEffect(() => {
         axios
-            .all([axios.get(baseUrl + '/api/studygInfo'), axios.get(baseUrl + '/api/studyininfo')], {
-                headers : { 'Content-Type': 'application/json' }
+            .all([
+                axios.get(baseUrl + '/api/studygInfo'), 
+                axios.get(baseUrl + '/api/studyininfo')], 
+                {
+                    headers : { 'Content-Type': 'application/json' 
+                }
             })
             .then(
                 axios.spread((res1, res2) => {
@@ -206,47 +210,43 @@ const Main = () => {
                     </h1>
                 </div>
                 <Swiper
-                    slidesPerView={3} // 한번에 보여지는 slide 개수
+                    slidesPerView={4.5} // 한번에 보여지는 slide 개수
                     spaceBetween={35} // slide간의 간격
                     loopedSlides={2}
                     loop={true}
                     centeredSlides={true}
+                    modules={modules}
                     autoplay={{
                         delay: 3500,
                         disableOnInteraction: false,
                     }}
-                    breakpoints={{ // 반응형 구현
-                        1200: {
-                            centeredSlides:true,
-                            slidesPerView: 4.5,
-                        }, // width 값이 1200이 넘을때 실행
-                    }}
-                    modules={modules}
+                    // breakpoints={{ // 반응형 구현
+                    //     1200: {
+                    //         centeredSlides:true,
+                    //         slidesPerView: 4.5,
+                    //     }, // width 값이 1200이 넘을때 실행
+                    // }}
                     className={'mySwiper sec2-swiper'}
                 >
-                    <div>
-                        {StudyGInfo ? StudyGInfo.map((datas) => (
-                            <div key={"studyginfo" + datas.sginum}>
-                                <SwiperSlide>
-                                    <Link to="/">
-                                        <div className="img-box">
-                                            <img src={datas.studyGImgVo.sgimg} alt="room1" />
-                                        </div>
-                                        <div className="txt-box">
-                                            <h4>
-                                                {datas.sgicontent2}
-                                            </h4>
-                                            <dl>
-                                                <dt>
-                                                    {datas.sgicontent1}
-                                                </dt>
-                                            </dl>
-                                        </div>
-                                    </Link>
-                                </SwiperSlide>
-                            </div>
-                        )) : ''}
-                    </div>
+                    {StudyGInfo ? StudyGInfo.map((datas) => (
+                        <SwiperSlide key={"studyginfo" + datas.sginum}>
+                            <Link to={`/teamdetail/${datas.sginum}`} state={{data: datas.sginum}}>
+                                <div className="img-box">
+                                    <img src={datas.studyGImgVo.sgimg} alt="room1" />
+                                </div>
+                                <div className="txt-box">
+                                    <h4>
+                                        {datas.sgicontent2}
+                                    </h4>
+                                    <dl>
+                                        <dt>
+                                            {datas.sgicontent1}
+                                        </dt>
+                                    </dl>
+                                </div>
+                            </Link>
+                        </SwiperSlide>
+                    )) : ''}
                     {/* <SwiperSlide>
                         <Link to="/">
                             <div className="img-box">

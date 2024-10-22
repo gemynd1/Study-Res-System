@@ -10,26 +10,29 @@ const Header = () => {
     const [active_index, setActive_index] = useState(null);
     const [active_message_index, setActive_message_index] = useState(0);
 
+    
     useEffect(() => {
-        const checkSession = () => {
-            axios
-            .get("http://localhost:8099/api/session-status")
-            .then(response => {
-                if(response.data != 200) {
-                    logoutHandle();    
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                logoutHandle();
-            })
+        if(sessionStorage.getItem("id") != null) {
+            const checkSession = () => {
+                axios
+                .get("http://localhost:8099/api/session-status")
+                .then(response => {
+                    if(response.data != 200) {
+                        logoutHandle();    
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    logoutHandle();
+                })
+            }
+            
+    
+            const interval = setInterval(checkSession, 10 * 60 * 1000); // 10분
+            return () => clearInterval(interval);
         }
-        
-
-        const interval = setInterval(checkSession, 10 * 60 * 1000); // 10분
-        return () => clearInterval(interval);
     })
-
+    
     const logoutHandle = (e) => {
         // e.preventDefault();
         axios.post("http://localhost:8099/api/logout")

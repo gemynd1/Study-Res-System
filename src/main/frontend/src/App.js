@@ -77,7 +77,8 @@ function AppContent() {
           <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
           <Route path="/mypage/mypageReview" element={<MypageReview />} />
           <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
-          <Route path="/teamdetail" element={<TeamDetail />} />
+
+          <Route path="/teamdetail/*" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
     </>
