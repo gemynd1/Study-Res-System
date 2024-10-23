@@ -159,9 +159,9 @@
     display: flex;
     justify-content: center;
     padding: 15px 10px;
-    width: 25.2%;
+    width: 22.2%;
     margin: 0 auto 30px auto;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .MainSection3 .showcase > li {
@@ -198,8 +198,8 @@
 
 .MainSection3 .seatContainer .seat {
     background-color: #444451;
-    width: 70px;
-    height: 60px;
+    width: 60px;
+    height: 50px;
     margin: 6px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -236,4 +236,62 @@
     width: 15px;
     height: 15px;
     padding: 5px;
+}
+
+/* modal */
+.MuiBox-root div.modal-seat-header {
+    /* position: relative; */
+    display: flex;
+    align-items: center;
+    width: 400px;
+    height: 60px;
+    background-color: rgb(111, 234, 246);
+    border-radius: 20px 20px 0px 0px;
+}
+
+.MuiBox-root div.modal-seat-header span.modal-seat-header-title {
+    /* position: absolute; */
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 18px;
+    color: #FFFFFF;
+    margin-left: 6%;
+}
+
+.MuiBox-root div.modal-seat-title-section {
+    position: relative;
+    /* display: flex; */
+    align-items: center;
+    /* width: 600px; */
+    height: 300px;
+    background: #FFFFFF;
+    border-radius: 0px 0px 20px 20px;
+    /* overflow: scroll; */
+    padding: 10px;
+}
+
+.MuiBox-root div.modal-seat-button-section {
+    display: flex;
+    width: 400px;
+    /* height: 58px; */
+    /* margin-top: 15px; */
+    /* margin-bottom: 15px; */
+    border-radius: 0px 0px 20px 20px;
+    background-color: #FFD600;
+}
+
+.MuiBox-root div.modal-seat-button-section div.modal-seat-active-button {
+    width: 400px;
+    height: 60px;
+    /* float: right; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MuiBox-root div.modal-seat-button-section div.modal-seat-active-button span.modal-active-text {
+    font-weight: 400;
+    font-size: 18px;
+    /* line-height: 22px; */
+    color: #000000;
 }

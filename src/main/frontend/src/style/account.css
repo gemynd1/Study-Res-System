@@ -1,7 +1,7 @@
 /* login */
 .loginSec {
     min-height: 100vh;
-    background-color: #D9D9D9;
+    background-color: #f6f6f6;
     text-align: center;
 }
 
@@ -109,7 +109,7 @@
 /* join */
 .joinSec {
     min-height: 100vh;
-    background-color: #D9D9D9;
+    background-color: #f6f6f6;
     text-align: center;
 }
 

@@ -28,7 +28,7 @@ public class AuthController {
     public ResponseEntity<String> join(@RequestBody Map<String, Object> data) {
         try {
             AuthVo authVo = VOMapper.mapToVO(data, AuthVo.class);
-            System.out.println(authVo.toString());
+//            System.out.println(authVo.toString());
             if(authService.InsertJoin(authVo) > 0) {
                 if(authService.InsertMemberAddress(authVo) > 0) {
                     return ResponseEntity.ok("ok");
@@ -74,6 +74,7 @@ public class AuthController {
             HttpSession session) {
 
         session = request.getSession();
+//        session.setMaxInactiveInterval(10);
         String MemberName = authService.login(MemberId, MemberPw);
         Map<String, String> sessionInfo = new HashMap<>();
         if(MemberName != null) {
@@ -87,6 +88,14 @@ public class AuthController {
         } else {
             return ResponseEntity.ok(false);
         }
+    }
+
+    @GetMapping("/session-status")
+    public ResponseEntity<String> getSessionStatus(HttpSession session) {
+        if(session == null || session.getAttribute("id") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("session 만료");
+        }
+        return ResponseEntity.ok("session 있음");
     }
 
     @PostMapping("/logout")

@@ -1,12 +1,26 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import "../../../style/Main.css"
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+
 import "swiper/css";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    borderRadius: 6,
+    boxShadow: 24,
+}
 
 // 숫자 자동으로 올려주는 함수들
 function easeOutExpo(t) {
@@ -36,16 +50,59 @@ function useCountNum(end, start = 0, duration = 2000) {
     return count;
 }
 
+const BasicModal = ({ open, handleClose, selectedItem }) => {
+    // console.log(selectedItem)
+    return (
+        <div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <div className="modal-seat-header">
+                        <span className="modal-seat-header-title">{selectedItem}</span>
+                    </div>
+                    <div className="modal-seat-title-section">
+                            <div>
+                                <span className="modal-seat-title">{selectedItem}</span><br />
+                                <span className="modal-seat-content">{selectedItem}</span>
+                            </div> 
+                    </div>
+                    <div className="modal-seat-button-section">
+                        <div onClick={handleClose} className="modal-seat-active-button">
+                            <span className="modal-active-text">확인</span>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+        </div>
+    )  
+}
+
 const Main = () => {
-    const location = useLocation();
-    const {id = '', name = ''} = location.state?.userData || {}; 
-    const [comma, setComma] = useState(0);
     const [startAnimation, setStartAnimation] = useState(false);
     const sectionRef = useRef(null);
 
     const monthlyUsers = useCountNum(startAnimation ? 5000 : 0, 0, 2000);
     const totalUsers = useCountNum(startAnimation ? 100000 : 0, 0, 2000);
     const satisfaction = useCountNum(startAnimation ? 100 : 0, 0, 2000);
+
+    const [StudyGInfo, setStudyGInfo] = useState([]); // 스터디룸 정보
+    const [StudyInInfo, setStudyInInfo] = useState([]); // 개인좌석 정보
+    const baseUrl = "http://localhost:8099";
+
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedSeat, setSelectedSeat] = useState(null);
+    
+    const [seatCount, setSeatCount] = useState({
+        seatCount1 : 0,
+        seatCount2 : 0,    
+        seatCount3 : 0,
+    });
+
+    const modules = [Autoplay];
 
     // 숫자에 콤마 찍어주는 함수들
     const addComma = (price) => {
@@ -62,9 +119,9 @@ const Main = () => {
         
                 // 컴포넌트가 화면에 진입할 때 (화면 하단에 도달하거나, 화면에서 벗어났다가 다시 보일 때)
                 if (sectionTop < windowHeight && sectionBottom > 0) {
-                setStartAnimation(true); // 애니메이션 시작
+                    setStartAnimation(true); // 애니메이션 시작
                 } else {
-                setStartAnimation(false); // 다시 스크롤하면 애니메이션 리셋
+                    setStartAnimation(false); // 다시 스크롤하면 애니메이션 리셋
                 }
             }
         };
@@ -79,32 +136,51 @@ const Main = () => {
         };
     }, []);
 
-    const modules = [Autoplay];
+    useEffect(() => {
+        axios
+            .all([
+                axios.get(baseUrl + '/api/studygInfo'), 
+                axios.get(baseUrl + '/api/studyininfo')], 
+                {
+                    headers : { 'Content-Type': 'application/json' 
+                }
+            })
+            .then(
+                axios.spread((res1, res2) => {
+                    setStudyGInfo(res1.data);
+                    setStudyInInfo(res2.data);
+                    setTimeout(() => {
+                        const seats = document.querySelectorAll('.seat');
+                        const seatSelect = document.querySelectorAll('.selectedSeat');
+                        
+                        setSeatCount(prevState => ({
+                            ...prevState,
+                            seatCount1 : seats.length,
+                            seatCount2 : seatSelect.length,    
+                            seatCount3 : seats.length - seatSelect.length,
+                        }));
+                    }, 10)
+                })
+            )
+            .catch(error => console.log(error))
+    }, []);
 
-    const [hello, setHello] = useState([]);
-    const baseUrl = "http://localhost:8099";
-    
-    // useEffect(() => {
-    //     axios.get(baseUrl + '/api/main')
-    //         .then((res) => {
-    //             console.log(res.data);
-    //             setHello(res.data)
-    //         })
-    //         .catch(error => console.log(error))
-    // }, []);
+    // 모달 열기
+    const handleOpenModal = (item) => {
+        setSelectedSeat(item);
+        setOpenModal(true);
+    }
+
+    // 모달 닫기
+    const handleCloseModal = () => {
+        setOpenModal(false);    
+        setSelectedSeat(null);  
+    };
 
     return(
         <>
-            
             <section className="MainSection1" ref={sectionRef}>
                 <div className="MainHeader">
-                    {/* <div>
-                        {hello ? hello.map((datas) => (
-                            <div key={datas.classidx}>
-                                <span className="MainHeader-first">{datas.classname}</span><br />
-                            </div>
-                        )) : ''}
-                    </div> */}
                     <span className="MainHeader-first">SN 스터디카페입니다.</span><br />
                     {/* <span className="MainHeader-first">{sessionStorage.getItem('name')}</span><br /> */}
                     <span className="MainHeader-second">연성대학교 학생들을 위한 스터디카페 입니다.</span>
@@ -134,28 +210,47 @@ const Main = () => {
                     </h1>
                 </div>
                 <Swiper
-                    slidesPerView={3} // 한번에 보여지는 slide 개수
+                    slidesPerView={4.5} // 한번에 보여지는 slide 개수
                     spaceBetween={35} // slide간의 간격
                     loopedSlides={2}
                     loop={true}
                     centeredSlides={true}
+                    modules={modules}
                     autoplay={{
                         delay: 3500,
                         disableOnInteraction: false,
                     }}
-                    breakpoints={{ // 반응형 구현
-                        1200: {
-                            centeredSlides:true,
-                            slidesPerView: 4.5,
-                        }, // width 값이 1200이 넘을때 실행
-                    }}
-                    modules={modules}
+                    // breakpoints={{ // 반응형 구현
+                    //     1200: {
+                    //         centeredSlides:true,
+                    //         slidesPerView: 4.5,
+                    //     }, // width 값이 1200이 넘을때 실행
+                    // }}
                     className={'mySwiper sec2-swiper'}
                 >
-                    <SwiperSlide>
+                    {StudyGInfo ? StudyGInfo.map((datas) => (
+                        <SwiperSlide key={"studyginfo" + datas.sginum}>
+                            <Link to={`/teamdetail/${datas.sginum}`} state={{data: datas.sginum}}>
+                                <div className="img-box">
+                                    <img src={datas.studyGImgVo.sgimg} alt="room1" />
+                                </div>
+                                <div className="txt-box">
+                                    <h4>
+                                        {datas.sgicontent2}
+                                    </h4>
+                                    <dl>
+                                        <dt>
+                                            {datas.sgicontent1}
+                                        </dt>
+                                    </dl>
+                                </div>
+                            </Link>
+                        </SwiperSlide>
+                    )) : ''}
+                    {/* <SwiperSlide>
                         <Link to="/">
                             <div className="img-box">
-                                <img src="/img/room/study room1-1.png" alt="room1" />
+                                <img src="/img/room/study room0-1.png" alt="room1" />
                             </div>
                             <div className="txt-box">
                                 <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
@@ -169,74 +264,7 @@ const Main = () => {
                             </div>
                         </Link>
                     </SwiperSlide>
-                    <SwiperSlide>
-                        <Link to="/">
-                            <div className="img-box">
-                                <img src="/img/room/study room1-1.png" alt="room1" />
-                            </div>
-                            <div className="txt-box">
-                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                    업무에 집중할 수 있도록 돕습니다.
-                                </h4>
-                                <dl>
-                                    <dt>금성방</dt>
-                                </dl>
-                            </div>
-                        </Link>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Link to="/">
-                            <div className="img-box">
-                                <img src="/img/room/study room1-1.png" alt="room1" />
-                            </div>
-                            <div className="txt-box">
-                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                    업무에 집중할 수 있도록 돕습니다.
-                                </h4>
-                                <dl>
-                                    <dt>지구방</dt>
-                                </dl>
-                            </div>
-                        </Link>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Link to="/">
-                            <div className="img-box">
-                                <img src="/img/room/study room1-1.png" alt="room1" />
-                            </div>
-                            <div className="txt-box">
-                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                    업무에 집중할 수 있도록 돕습니다.
-                                </h4>
-                                <dl>
-                                    <dt>화성방</dt>
-                                </dl>
-                            </div>
-                        </Link>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Link to="/">
-                            <div className="img-box">
-                                <img src="/img/room/study room1-1.png" alt="room1" />
-                            </div>
-                            <div className="txt-box">
-                                <h4>스터디룸은 학습이나 작업을 위한 전용 공간으로, 
-                                    개별이나 그룹으로 사용될 수 있는 공간입니다. 
-                                    주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 
-                                    업무에 집중할 수 있도록 돕습니다.
-                                </h4>
-                                <dl>
-                                    <dt>달방</dt>
-                                </dl>
-                            </div>
-                        </Link>
-                    </SwiperSlide>
+                    */}
                 </Swiper>
             </section>
             <section className="MainSection3">
@@ -257,7 +285,59 @@ const Main = () => {
                         </li>
                     </ul>
                     <div className="seatContainer">
-                        <div className="row">
+                        {StudyInInfo.map((studyininfogroup, groupIndex) => (
+                            <div key={"group" + groupIndex} className="row">
+                                {studyininfogroup.map((studyininfo, infoIndex) => (
+                                    studyininfo.seatUseState === "N" ? 
+                                        <React.Fragment key={"info" + infoIndex}>
+                                            <span 
+                                                className="seat" 
+                                                id={"seat" + studyininfo.siinum}
+                                                onClick={() => 
+                                                    sessionStorage.getItem("id") === null ? '' : handleOpenModal(studyininfo.siinum)
+                                                } 
+                                            />
+                                        </React.Fragment>
+                                    :
+                                        <React.Fragment key={"info"  + infoIndex}>
+                                            <span className="seat selectedSeat" id={"seat" + studyininfo.siinum} />
+                                            <input type="hidden" value={studyininfo.seatStartTime ? studyininfo.seatStartTime : ""} />
+                                            <input type="hidden" value={studyininfo.seatEndTime ? studyininfo.seatEndTime : ""} />
+                                        </React.Fragment>
+                                ))}
+                            </div>
+                        ))}
+                    {/* {StudyInInfo.map((studyininfogroup, groupIndex) => {
+                    console.log(`group-${groupIndex}`);
+                    return (
+                        <div key={`group-${groupIndex}`} className="row">
+                            {studyininfogroup.map((studyininfo, infoIndex) => {
+                                const key = `group-${groupIndex}-seat-${studyininfo.siinum}`;
+                                console.log(key);
+                                return studyininfo.seatUseState === "N" ? (
+                                    <React.Fragment key={key}>
+                                        <span 
+                                            className="seat" 
+                                            id={"seat" + studyininfo.siinum}
+                                            onClick={() => 
+                                                sessionStorage.getItem("id") === null ? '' : handleOpenModal(studyininfo.siinum)
+                                            } 
+                                        />
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment key={`${key}-selected`}>
+                                        <span className="seat selectedSeat" id={"seat" + studyininfo.siinum} />
+                                        <input type="hidden" value={studyininfo.seatStartTime ? studyininfo.seatStartTime : ""} />
+                                        <input type="hidden" value={studyininfo.seatEndTime ? studyininfo.seatEndTime : ""} />
+                                    </React.Fragment>
+                                );
+                            })}
+                        </div>
+                    );
+                })} */}
+                        
+
+                        {/* <div className="row">
                             <span className="seat selectedSeat" id="seat1"></span>
                             <span className="seat" id="seat2"></span>
                             <span className="seat selectedSeat" id="seat3"></span>
@@ -265,54 +345,21 @@ const Main = () => {
                             <span className="seat" id="seat5"></span>
                             <span className="seat" id="seat6"></span>
                         </div>
-                        <div className="row">
-                            <span className="seat" id="seat7"></span>
-                            <span className="seat" id="seat8"></span>
-                            <span className="seat" id="seat9"></span>
-                            <span className="seat" id="seat10"></span>
-                            <span className="seat" id="seat11"></span>
-                            <span className="seat" id="seat12"></span>
-                        </div>
-                        <div className="row">
-                            <span className="seat" id="seat13"></span>
-                            <span className="seat" id="seat14"></span>
-                            <span className="seat" id="seat15"></span>
-                            <span className="seat" id="seat16"></span>
-                            <span className="seat" id="seat17"></span>
-                            <span className="seat" id="seat18"></span>
-                        </div>
-                        <div className="row">
-                            <span className="seat" id="seat19"></span>
-                            <span className="seat" id="seat20"></span>
-                            <span className="seat" id="seat21"></span>
-                            <span className="seat" id="seat22"></span>
-                            <span className="seat" id="seat23"></span>
-                            <span className="seat" id="seat24"></span>
-                        </div>
-                        <div className="row">
-                            <span className="seat" id="seat25"></span>
-                            <span className="seat" id="seat26"></span>
-                            <span className="seat" id="seat27"></span>
-                            <span className="seat" id="seat28"></span>
-                            <span className="seat" id="seat29"></span>
-                            <span className="seat" id="seat30"></span>
-                        </div>
-                        <div className="row">
-                            <span className="seat" id="seat31"></span>
-                            <span className="seat" id="seat32"></span>
-                            <span className="seat" id="seat33"></span>
-                            <span className="seat" id="seat34"></span>
-                            <span className="seat" id="seat35"></span>
-                            <span className="seat" id="seat36"></span>
-                        </div>
+                        */}
                     </div>
                 </div>
                 <p className="text">
-                    <img src="/img/icon/arrow.png" /> 총 좌석 <span id="totalcount">&nbsp; 3</span>&nbsp;
-                    <img src="/img/icon/arrow.png" /> 사용 중 <span id="usecount">&nbsp; 4</span>&nbsp;
-                    <img src="/img/icon/arrow.png" /> 남은 자리 <span id="leftcount">&nbsp; 5</span>
+                    <img src={'/img/icon/arrow.png'} /> 총 좌석 <span id="totalcount">&nbsp; {seatCount.seatCount1 > 0 ? seatCount.seatCount1 : "로딩 중..."}</span>&nbsp;
+                    <img src={"/img/icon/arrow.png"} /> 사용 중 <span id="usecount">&nbsp; {seatCount.seatCount2}</span>&nbsp;
+                    <img src={"/img/icon/arrow.png"} /> 남은 자리 <span id="leftcount">&nbsp; {seatCount.seatCount3}</span>
                 </p>
             </section>
+            {/* 모달 컴포넌트 */}
+            <BasicModal 
+                open={openModal} 
+                handleClose={handleCloseModal} 
+                seatInfo={selectedSeat}
+            />
         </>
     )
 }
