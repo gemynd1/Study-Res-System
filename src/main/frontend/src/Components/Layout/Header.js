@@ -41,7 +41,7 @@ const Header = () => {
                 // console.log(response.data);
                 sessionStorage.clear();
                 alert("로그아웃 되었습니다.");
-                // navigate("/");
+                navigate("/");
                 window.location.reload();
             }
         })

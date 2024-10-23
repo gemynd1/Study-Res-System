@@ -377,30 +377,55 @@ const TeamDetail = () => {
 
   const totalPrice = selectedTimes.length * count * selectedValue;
 
-  const content1Ref = useRef(null);
-  const content2Ref = useRef(null);
-  const content3Ref = useRef(null);
-  const content4Ref = useRef(null);
-  const content5Ref = useRef(null);
-  const content6Ref = useRef(null);
+  const contentRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ]
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  const onContent1Click = () => {
-    content1Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = contentRefs.findIndex(
+            (ref) => ref.current === entry.target
+          );
+
+          if (entry.isIntersecting) {  
+            setActiveIndex(index);
+          } else if(activeIndex === index){
+            setActiveIndex(null);
+          }
+        });
+      },
+      { threshold: 0.5 } // 50% 이상 보이면 활성화
+    );
+
+    contentRefs.forEach((ref) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => {
+      contentRefs.forEach((ref) => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      });
+    };
+  }, [contentRefs]);
+
+  const onContentClick = (index) => {
+    contentRefs[index]?.current?.scrollIntoView({behavior: 'smooth'});
+    setActiveIndex(index);
   }
-  const onContent2Click = () => {
-    content2Ref.current?.scrollIntoView({ behavior: 'smooth' });
-  }
-  const onContent3Click = () => {
-    content3Ref.current?.scrollIntoView({ behavior: 'smooth' });
-  }
-  const onContent4Click = () => {
-    content4Ref.current?.scrollIntoView({ behavior: 'smooth' });
-  }
-  const onContent5Click = () => {
-    content5Ref.current?.scrollIntoView({ behavior: 'smooth' });
-  }
-  const onContent6Click = () => {
-    content6Ref.current?.scrollIntoView({ behavior: 'smooth' });
+  const getSelectColor = (index) => {
+    return index === activeIndex ? 'yellow' : 'white';
   }
 
   return (
@@ -434,54 +459,170 @@ const TeamDetail = () => {
         </div>
         <div className="teamDetail__main-content">
           <h1 className="teamDetail__main-content-title">
-            세미나, 클래스, 스터디 모임 등
+            간단한 소개 글 안녕하세요 여기는 수성방입니다.
           </h1>
           {/* <h4 className="teamDetail__main-content-title-option"> */}
             <div className="teamDetail__main-content-title-option_list">
               <ul className="navarea">
-                <li onClick={onContent1Click}>공간소개</li>
-                <li onClick={onContent2Click}>시설안내</li>
-                <li onClick={onContent3Click}>유의사항</li>
-                <li onClick={onContent4Click}>환불정책</li>
-                <li onClick={onContent5Click}>Q&A</li>
-                <li onClick={onContent6Click}>이용후기</li>
+                <li onClick={() => onContentClick(0)} style={{backgroundColor : getSelectColor(0)}}>공간소개</li>
+                <li onClick={() => onContentClick(1)} style={{backgroundColor : getSelectColor(1)}}>시설안내</li>
+                <li onClick={() => onContentClick(2)} style={{backgroundColor : getSelectColor(2)}}>유의사항</li>
+                <li onClick={() => onContentClick(3)} style={{backgroundColor : getSelectColor(3)}}>환불정책</li>
+                <li onClick={() => onContentClick(4)} style={{backgroundColor : getSelectColor(4)}}>Q&A</li>
+                <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>이용후기</li>
               </ul>
             </div>
             {/* 공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기 */}
           {/* </h4> */}
+          {/* <div className="teamDetail__main-header-line" /> */}
+          <div className="teamDetail__main-content-text" ref={contentRefs[0]}>
+            <div className="teamDetail__main-content-text-title">공간소개</div>
+            <div className="teamDetail__main-content-text-text">
+            <p>이 공간이 여러분의 아지트가 되길! 🧼✨&nbsp;</p>
+
+<p style="text-align: center;">깨끗함 속에서 어제보다 더 따뜻한 오늘을 채워보세요.</p>
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </div>
+          </div>
           <div className="teamDetail__main-header-line" />
-          <div className="teamDetail__main-content-text" ref={content1Ref}>
-            <h3 className="teamDetail__main-content-text-title">공간소개</h3>
-            <h4 className="teamDetail__main-content-text-text">
+          <div className="teamDetail__main-content-text" ref={contentRefs[1]}>
+            <div className="teamDetail__main-content-text-title">시설안내</div>
+            <div className="teamDetail__main-content-text-text">
               안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-            </h4>
-          </div>
-          <div className="teamDetail__main-content-text" ref={content2Ref}>
-            <h3 className="teamDetail__main-content-text-title">시설안내</h3>
-            <h4 className="teamDetail__main-content-text-text">
               안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-            </h4>
-          </div>
-            <div className="teamDetail__main-content-text" ref={content3Ref}>
-            <h3 className="teamDetail__main-content-text-title">유의사항</h3>
-            <h4 className="teamDetail__main-content-text-text">
               안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-            </h4>
-          </div>
-          <div className="teamDetail__main-content-text" ref={content4Ref}>
-            <h3 className="teamDetail__main-content-text-title">환불정책</h3>
-            <h4 className="teamDetail__main-content-text-text">
               안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-            </h4>
-          </div>
-          <div className="teamDetail__main-content-text" ref={content5Ref}>
-            <h3 className="teamDetail__main-content-text-title">Q&A</h3>
-            <h4 className="teamDetail__main-content-text-text">
               안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-            </h4>
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </div>
           </div>
-          <div className="teamDetail__main-content-text" ref={content6Ref}>
-            <h3 className="teamDetail__main-content-text-title">이용후기</h3>
+          <div className="teamDetail__main-header-line" />
+          <div className="teamDetail__main-content-text" ref={contentRefs[2]}>
+            <div className="teamDetail__main-content-text-title">유의사항</div>
+            <div className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </div>
+          </div>
+          <div className="teamDetail__main-header-line" />
+          <div className="teamDetail__main-content-text" ref={contentRefs[3]}>
+            <div className="teamDetail__main-content-text-title">환불정책</div>
+            <div className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </div>
+          </div>
+          <div className="teamDetail__main-header-line" />
+          <div className="teamDetail__main-content-text" ref={contentRefs[4]}>
+            <div className="teamDetail__main-content-text-title">Q&A</div>
+            <div className="teamDetail__main-content-text-text">
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+            </div>
+          </div>
+          <div className="teamDetail__main-header-line" />
+          <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
+            <div className="teamDetail__main-content-text-title">이용후기</div>
             <div className="flex fd-c ai-c p-r">
               <div className="teamDetail__main-review">
                 <div className="teamDetail__main-review-profileIcon">

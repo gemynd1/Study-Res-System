@@ -106,16 +106,25 @@ h2 {
   width: 761px;
   margin-bottom: 36px;
 }
+.teamDetail__main-content-title {
+  padding-bottom: 25px;
+}
 .teamDetail__main-content-title-option_list {
+  position: sticky;
+  top: 0;
   width: 761px;
   background: #ffffff;
-  border-radius: 6px;
+  /* border-radius: 10px; */
+  margin-bottom: 70px;
+
 }
 .teamDetail__main-content-title-option_list .navarea {
   display: flex;
   width: 100%;
   justify-content: space-between;
   padding: 0;
+  /* border-radius: 10px; */
+  border-bottom: 2px solid blueviolet;
 }
 .teamDetail__main-content-title-option_list .navarea li {
   flex: 1;
@@ -139,6 +148,21 @@ h2 {
   width: 2px;
   background-color: blueviolet;
 }
+.teamDetail__main-content-text {
+  scroll-margin-top: 80px;
+}
+.teamDetail__main-content-text-title {
+  font-size: 35px;
+  font-weight: 550;
+  padding: 15px;
+}
+.teamDetail__main-content-text-text {
+  font-size: 20px;
+  font-weight: 300;
+  padding: 25px;
+}
+
+
 .teamDetail__main-review {
   background-color: #ffffff;
   width: 761px;

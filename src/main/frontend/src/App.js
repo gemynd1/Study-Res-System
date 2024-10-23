@@ -30,8 +30,19 @@ import CustomerService from "./Components/Content/CustomerHelp/CustomerService";
 import TeamDetail from "./Components/Content/Page/teamdetail";
 import CustomerWrite from "./Components/Content/CustomerHelp/CustomerWrite";
 import CustomerDetail from "./Components/Content/CustomerHelp/CustomerDetail";
+import Template_Create from "./Components/template/Template_Create";
+import Template_Editor from "./Components/template/Template_Editor";
 
 // import './App.css';
+const ScrollToTop  = () => {
+  const {pathname} = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0,0);
+  }, [pathname]);
+
+  return null;
+}
 
 function AppContent() {
   const [hello, setHello] = useState("");
@@ -51,6 +62,7 @@ function AppContent() {
     <>
 
         {!hideHeaderLogin && <Header />}
+        <ScrollToTop  />
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/info' element={<Info />} />
@@ -81,6 +93,11 @@ function AppContent() {
           <Route path="/teamdetail/*" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
+
+      <Routes>
+        <Route path="/create" element={<Template_Create />} />
+        <Route path="/editor" element={<Template_Editor />} />
+      </Routes>
     </>
   );
 }
