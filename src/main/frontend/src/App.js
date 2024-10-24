@@ -30,7 +30,8 @@ import CustomerService from "./Components/Content/CustomerHelp/CustomerService";
 import TeamDetail from "./Components/Content/Page/teamdetail";
 import CustomerWrite from "./Components/Content/CustomerHelp/CustomerWrite";
 import CustomerDetail from "./Components/Content/CustomerHelp/CustomerDetail";
-
+import ReviewWrite from "./Components/Content/Review/ReviewWrite";
+import ReviewDetail from "./Components/Content/Review/ReviewDetail";
 // import './App.css';
 
 function AppContent() {
@@ -49,35 +50,43 @@ function AppContent() {
 
   return (
     <>
+      {!hideHeaderLogin && <Header />}
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/info" element={<Info />} />
+        <Route path="/board" element={<Board />} />
+        <Route path="/review" element={<Review />} />
+        <Route path="/review/:id" element={<ReviewDetail/>} />
 
-        {!hideHeaderLogin && <Header />}
-        <Routes>
-          <Route path='/' element={<Main />} />
-          <Route path='/info' element={<Info />} />
-          <Route path='/board' element={<Board />} />
-          <Route path='/review' element={<Review />} />
+        <Route
+          path="/CustomerHelp/customerService"
+          element={<CustomerService />}
+        />
+        <Route path="/CustomerHelp/customerWrite" element={<CustomerWrite />} />
+        <Route
+          path="/CustomerHelp/customerDetail"
+          element={<CustomerDetail />}
+        />
 
-          <Route path='/CustomerHelp/customerService' element={<CustomerService />} />
-          <Route path='/CustomerHelp/customerWrite' element={<CustomerWrite />} />
-          <Route path='/CustomerHelp/customerDetail' element={<CustomerDetail /> } />
+        <Route path="/board" element={<Board />} />
+        <Route path="/board/category/*" element={<BoardCategory />} />
+        <Route path="/board/post/*" element={<Post />} />
+        <Route path="/board/postWrite" element={<PostWrite />} />
+        <Route path="/board/postRewrite/*" element={<PostRewrite />} />
 
-          <Route path="/board" element={<Board />} />
-          <Route path="/board/category/*" element={<BoardCategory />} />
-          <Route path="/board/post/*" element={<Post />} />
-          <Route path="/board/postWrite" element={<PostWrite />} />
-          <Route path="/board/postRewrite/*" element={<PostRewrite />} />
+        <Route path="/review/post" element={<ReviewWrite />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/join" element={<Join />} />
 
-          {/* mypage 따로 나눌수 있음 git merge */}
-          <Route path="/mypage/*" element={<Mypage />} />
-          <Route path="/mypage/mypageAccount" element={<MypageAccount />} />
-          <Route path="/mypage/mypageUpdate" element={<MypageUpdate />} />
-          <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
-          <Route path="/mypage/mypageReview" element={<MypageReview />} />
-          <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
-          <Route path="/teamdetail" element={<TeamDetail />} />
+        {/* mypage 따로 나눌수 있음 git merge */}
+        <Route path="/mypage/*" element={<Mypage />} />
+        <Route path="/mypage/mypageAccount" element={<MypageAccount />} />
+        <Route path="/mypage/mypageUpdate" element={<MypageUpdate />} />
+        <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
+        <Route path="/mypage/mypageReview" element={<MypageReview />} />
+        <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
+        <Route path="/teamdetail" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
     </>
