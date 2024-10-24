@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../../../style/postRewrite.css';
+import { Link } from "react-router-dom";
 
 
 // 텍스트 ui import
@@ -41,9 +42,14 @@ import {
   numberInputClasses,
 } from '@mui/base/Unstable_NumberInput';
 
-
 // daum postcode api import
 import DaumPostcode from "react-daum-postcode";
+
+// swiper import
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
 
 
 // input ui component
@@ -412,6 +418,12 @@ const PostRewrite = () => {
     setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.id !== Number(id)));
   }
 
+  const [studyRoomInfos, setStudyRoomInfos] = useState([
+    {id: 1, name: '스터디룸1'},
+    {id: 2, name: '스터디룸2'},
+    {id: 3, name: '스터디룸3'}
+  ]);
+
   // useEffect(() => {
   //   const script = document.createElement('script');
   //   script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -507,8 +519,41 @@ const PostRewrite = () => {
                                 {/* <input type="text" id="sample6_extraAddress" placeholder="참고항목" /> */}
                             </div>
                         </div>
-                     </div>) }
-                    {RadioValue === '스터디룸' && (<div className="meetingPoint-studyroom">스터디룸</div>) }
+                     </div>)}
+                    {RadioValue === '스터디룸' && 
+                    (<div className="meetingPoint-studyroom">
+                        {/* <Swiper
+                            slidesPerView={3} // 한번에 보여지는 slide 개수
+                            spaceBetween={35} // slide간의 간격
+                            loopedSlides={2}
+                            loop={true}
+                            centeredSlides={true}
+                            autoplay={{
+                                delay: 3500,
+                                disableOnInteraction: false,
+                            }}
+                            breakpoints={{ // 반응형 구현
+                                1200: {
+                                    centeredSlides:true,
+                                    slidesPerView: 4.5,
+                                }, // width 값이 1200이 넘을때 실행
+                            }}
+                            modules={modules}
+                            className={'mySwiper sec2-swiper'}
+                        >Navigation */}
+                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postRewrite">
+
+                            {studyRoomInfos.map((studyRoomInfo) => (
+                                <SwiperSlide>
+                                    <div className="studyroom">
+                                        <img src={`/img/room/study room${studyRoomInfo.id}-1.png`} alt={`room${studyRoomInfo.id}`} />
+                                        <div>{studyRoomInfo.name}</div>
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+
+                        </Swiper>
+                     </div>)}
 
                     <div className="startdate-section">
                         <div className="startdate">
