@@ -17,6 +17,7 @@
     "axios": "^1.7.7",
     "bfj": "^8.0.0",
     "ckeditor5-custom-build": "file:ckeditor5",
+    "ckeditor5-custom-project": "file:ckeditor5-builder-43.2.0",
     "dayjs": "^1.11.13",
     "frontend": "file:",
     "fs-extra": "^11.2.0",
@@ -57,7 +58,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.25.9",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.25.9",
+    "@babel/preset-react": "^7.25.9",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "babel-loader": "^9.2.1",
     "webpack-dev-server": "^5.1.0"
   },
   "options": {
@@ -66,5 +72,9 @@
       ".localhost"
     ],
     "proxy": "http://localhost:8099"
-  }
+  },
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ]
 }

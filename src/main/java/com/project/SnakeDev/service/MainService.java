@@ -8,4 +8,5 @@ import java.util.List;
 public interface MainService {
     public List<StudyGInfoVo> ViewStudyGInfo();
     public List<StudyInInfoVo> ViewStudyInInfo();
+    public List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum);
 }

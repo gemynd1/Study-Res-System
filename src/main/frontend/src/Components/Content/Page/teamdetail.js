@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import axios from 'axios';
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,6 +18,7 @@ import dayjs from "dayjs";
 import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { Slideshow } from "@mui/icons-material";
 
 // 예약 최종 확인 모델 여기서 데이터 처리
 const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
@@ -113,9 +115,9 @@ const RadioButtonsGroup = ({ selectedValue, setSelectedValue }) => {
         onChange={handleChange} // 변경 시 상태 업데이트
       >
         <FormControlLabel
-          value="1000"
+          value={selectedValue}
           control={<Radio />}
-          label="1000원/시간(인)"
+          label={`${selectedValue}/시간(인)`}
         />
         {/* <FormControlLabel
           value="2000"
@@ -367,24 +369,36 @@ const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [count, setCount] = useState(3);
-  const [selectedValue, setSelectedValue] = useState("1000");
+  const [selectedValue, setSelectedValue] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [isTimeChoiceSelected, setIsTimeChoiceSelected] = useState(false);
+  const {sgiId} = useParams(); // 파라미터 저장
+  // console.log(params.sgiId);
 
+  const [htmlcontentdata, sethtmlcontentdata] = useState(
+    {
+      SGINum : '',
+      SGIUseState : '',
+      SGIContent1 : '',
+      SGIContent2 : '',
+      SGIContent3 : ``,
+      SGIContent4 : ``,
+      SGIContent5 : ``,
+      SGIContent6 : ``,
+      SGIIdx : '',
+      SGPPrice : '',
+    }
+  );
+
+  const [ImgContent, setImgContent] = useState([]);
+  
   const handleRadioChange = (event) => {
     setIsTimeChoiceSelected(event.target.value === "timeChoice");
   };
 
   const totalPrice = selectedTimes.length * count * selectedValue;
 
-  const contentRefs = [
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-  ]
+  const contentRefs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)]
   const [activeIndex, setActiveIndex] = useState(null);
 
   useEffect(() => {
@@ -402,7 +416,7 @@ const TeamDetail = () => {
           }
         });
       },
-      { threshold: 0.5 } // 50% 이상 보이면 활성화
+      { threshold: 0.8 } // 50% 이상 보이면 활성화
     );
 
     contentRefs.forEach((ref) => {
@@ -420,6 +434,44 @@ const TeamDetail = () => {
     };
   }, [contentRefs]);
 
+  useEffect(() => {
+    axios.get('http://localhost:8099/api/studygInfoDetail', 
+    {
+      params: {
+        sgiId
+      },
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => {
+      console.log(res.data);
+      const Img = res.data['studyGImg'];
+      const data = res.data['studyGInfoVo'];
+      
+      sethtmlcontentdata((prevState) => ({
+        ...prevState,
+        SGINum : data.sginum,
+        SGIUseState : data.sgiuseState,
+        SGIContent1 : data.sgicontent1,
+        SGIContent2 : data.sgicontent2,
+        SGIContent3 : data.sgicontent3,
+        SGIContent4 : data.sgicontent4,
+        SGIContent5 : data.sgicontent5,
+        SGIContent6 : data.sgicontent6,
+        SGIIdx : data.studyGPareVo.sgiidx
+      }))
+      setImgContent(Img);
+      setSelectedValue(data.studyGPareVo.sgpprice);
+    })
+    .catch(error => {
+      console.log(error);
+      return false;
+    })
+  }, []);
+
+  useEffect(() => {
+    console.log('Updated htmlcontentdata:', htmlcontentdata, ImgContent, selectedValue);
+  }, [htmlcontentdata, ImgContent, selectedValue]);
+
   const onContentClick = (index) => {
     contentRefs[index]?.current?.scrollIntoView({behavior: 'smooth'});
     setActiveIndex(index);
@@ -432,194 +484,79 @@ const TeamDetail = () => {
     <div className="teamDetail">
       <div className="teamDetail__main">
         <div className="teamDetail__main-header">
-          <h1 className="teamDetail__main-content-title">안양역 스터디룸</h1>
+          <h1 className="teamDetail__main-content-title">{htmlcontentdata.SGIContent1}</h1>
           <h4 className="teamDetail__main-content-title-option">
-            스터디 최적의 공간
+            
           </h4>
         </div>
         <div className="teamDetail__main-image">
           <MyButtons swiper={swiper} />
           <Swiper
-            navigation={true}
+            navigation={ImgContent.length > 1}
             modules={[Navigation]}
             className="mySwiper"
             pagenation={{ clickable: true }}
             onSwiper={setSwiper}
           >
-            <SwiperSlide>Slide 1</SwiperSlide>
-            <SwiperSlide>Slide 2</SwiperSlide>
-            <SwiperSlide>Slide 3</SwiperSlide>
-            <SwiperSlide>Slide 4</SwiperSlide>
-            <SwiperSlide>Slide 5</SwiperSlide>
-            <SwiperSlide>Slide 6</SwiperSlide>
-            <SwiperSlide>Slide 7</SwiperSlide>
-            <SwiperSlide>Slide 8</SwiperSlide>
-            <SwiperSlide>Slide 9</SwiperSlide>
+            {/* <SwiperSlide>Slide 1</SwiperSlide> */}
+            {ImgContent.map((item, index) => (
+              <SwiperSlide key={index}>
+                <img src={item} alt={`Slide ${index}`} />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
         <div className="teamDetail__main-content">
-          <h1 className="teamDetail__main-content-title">
-            간단한 소개 글 안녕하세요 여기는 수성방입니다.
-          </h1>
-          {/* <h4 className="teamDetail__main-content-title-option"> */}
-            <div className="teamDetail__main-content-title-option_list">
-              <ul className="navarea">
-                <li onClick={() => onContentClick(0)} style={{backgroundColor : getSelectColor(0)}}>공간소개</li>
-                <li onClick={() => onContentClick(1)} style={{backgroundColor : getSelectColor(1)}}>시설안내</li>
-                <li onClick={() => onContentClick(2)} style={{backgroundColor : getSelectColor(2)}}>유의사항</li>
-                <li onClick={() => onContentClick(3)} style={{backgroundColor : getSelectColor(3)}}>환불정책</li>
-                <li onClick={() => onContentClick(4)} style={{backgroundColor : getSelectColor(4)}}>Q&A</li>
-                <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>이용후기</li>
-              </ul>
-            </div>
+          <h3 className="teamDetail__main-content-title">
+            {htmlcontentdata.SGIContent2}
+          </h3>
+          <div className="teamDetail__main-content-title-option_list">
+            <ul className="navarea">
+              <li onClick={() => onContentClick(0)} style={{backgroundColor : getSelectColor(0)}}>공간소개</li>
+              <li onClick={() => onContentClick(1)} style={{backgroundColor : getSelectColor(1)}}>시설안내</li>
+              <li onClick={() => onContentClick(2)} style={{backgroundColor : getSelectColor(2)}}>유의사항</li>
+              <li onClick={() => onContentClick(3)} style={{backgroundColor : getSelectColor(3)}}>환불정책</li>
+              {/* <li onClick={() => onContentClick(4)} style={{backgroundColor : getSelectColor(4)}}>Q&A</li> */}
+              <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>이용후기</li>
+            </ul>
+          </div>
             {/* 공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기 */}
-          {/* </h4> */}
+              {/* 안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "} */}
           {/* <div className="teamDetail__main-header-line" /> */}
           <div className="teamDetail__main-content-text" ref={contentRefs[0]}>
             <div className="teamDetail__main-content-text-title">공간소개</div>
             <div className="teamDetail__main-content-text-text">
-            <p>이 공간이 여러분의 아지트가 되길! 🧼✨&nbsp;</p>
-
-<p style="text-align: center;">깨끗함 속에서 어제보다 더 따뜻한 오늘을 채워보세요.</p>
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent3}} />
             </div>
           </div>
-          <div className="teamDetail__main-header-line" />
+          
           <div className="teamDetail__main-content-text" ref={contentRefs[1]}>
+            <div className="teamDetail__main-header-line" />
             <div className="teamDetail__main-content-text-title">시설안내</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent4}} />
             </div>
           </div>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[2]}>
             <div className="teamDetail__main-content-text-title">유의사항</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent5}} />
             </div>
           </div>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[3]}>
             <div className="teamDetail__main-content-text-title">환불정책</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent6}} />
             </div>
           </div>
-          <div className="teamDetail__main-header-line" />
+          {/* <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[4]}>
             <div className="teamDetail__main-content-text-title">Q&A</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
             </div>
-          </div>
+          </div> */}
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
             <div className="teamDetail__main-content-text-title">이용후기</div>
@@ -673,7 +610,7 @@ const TeamDetail = () => {
                 </Stack>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
       </div>
       <div className="teamDetail__side&buttons">
@@ -688,7 +625,9 @@ const TeamDetail = () => {
               setSelectedValue={setSelectedValue}
             />
           </div>
-          <div className="teamDetail__side-image"></div>
+          <div className="teamDetail__side-image">
+            {/* 이미지 들어가야함. */}
+          </div>
           <div className="teamDetail__side-description">
             <div className="flex">
               <h3 className="teamDetail__side-content-text-text">공간유형</h3>

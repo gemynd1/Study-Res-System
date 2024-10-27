@@ -10,4 +10,5 @@ import java.util.List;
 public interface MainMapper {
     List<StudyGInfoVo> ViewStudyGInfo();
     List<StudyInInfoVo> ViewStudyInInfo();
+    List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum);
 }

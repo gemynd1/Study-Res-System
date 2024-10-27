@@ -3,6 +3,7 @@ package com.project.SnakeDev.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.AuthService;
+import com.project.SnakeDev.service.Impl.AuthServiceImpl;
 import com.project.SnakeDev.vo.AuthVo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,7 +23,7 @@ import java.util.Objects;
 @RequestMapping("/api")
 public class AuthController {
     @Autowired
-    AuthService authService;
+    AuthServiceImpl authService;
 
     @PostMapping(value = "/join")
     public ResponseEntity<String> join(@RequestBody Map<String, Object> data) {
