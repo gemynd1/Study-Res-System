@@ -45,7 +45,6 @@ const ScrollToTop  = () => {
 }
 
 function AppContent() {
-  const [hello, setHello] = useState("");
   const location = useLocation();
   const hideHeaderLogin =
     location.pathname === "/login" || location.pathname === "/join";

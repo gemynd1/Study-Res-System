@@ -19,9 +19,77 @@ import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Slideshow } from "@mui/icons-material";
+import { loadPaymentWidget, PaymentWidgetInstance } from "@tosspayments/payment-widget-sdk";
+import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+// import { nanoid } from nanoid;
+const { nanoid } = require('nanoid');
+
+// const clintKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+// const customerKey = nanoid();
+
+const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+// const clientKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
+
+const customerKey = "ll-yw-PKw-5_SU3JBZJvL";
 
 // 예약 최종 확인 모델 여기서 데이터 처리
 const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
+  const [amount, setAmount] = useState({
+    currency: "KRW",
+    value: 30000,
+  });
+  const [ready, setReady] = useState(false);
+  const [widgets, setWidgets] = useState(null);
+  const [isRendered, setIsRendered] = useState(false);
+  
+  useEffect(() => {
+    async function fetchPaymentWidgets() {
+      try {
+        // ------  결제위젯 초기화 ------
+        const tossPayments = await loadTossPayments(clientKey);
+        // 회원 결제
+        const widgets = tossPayments.widgets({
+          customerKey,
+        });
+        // 비회원 결제
+        // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
+        setWidgets(widgets);
+        setIsRendered(false); // 새로고침 시 초기화
+      } catch (error) {
+        console.error("Error loading Toss Payments widgets:", error);
+      }
+    }
+    fetchPaymentWidgets();
+  }, [clientKey, customerKey]);
+  
+  useEffect(() => {
+    async function renderPaymentWidgets() {
+      if (!widgets || isRendered) {
+        return;
+      }
+      // ------ 주문의 결제 금액 설정 ------
+      await widgets.setAmount(amount);
+  
+      await Promise.all([
+        // ------  결제 UI 렌더링 ------
+        widgets.renderPaymentMethods({
+          selector: "#payment-method",
+          variantKey: "DEFAULT",
+        }),
+        // ------  이용약관 UI 렌더링 ------
+        widgets.renderAgreement({
+          selector: "#agreement",
+          variantKey: "AGREEMENT",
+        }),
+      ]);
+  
+      setReady(true);
+      setIsRendered(true);
+    }
+  
+    renderPaymentWidgets();
+  }, [widgets, ready, isRendered]);
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ ...modalStyle }}>
@@ -30,8 +98,37 @@ const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
         <Typography>시간: {time}</Typography>
         <Typography>인원: {people}명</Typography>
         <Typography>총 가격: {totalPrice}원</Typography>
+        <div className="title">결제방법</div>
+        <div id="payment-method" />
+        <div id="agreement" />
+        <button
+          className="button"
+          disabled={!ready}
+          onClick={async () => {
+            try {
+              // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+              // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+              // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+              await widgets.requestPayment({
+                orderId: "D5leH2uyZ9Id5xWq9i_XH",
+                orderName: "토스 티셔츠 외 2건",
+                successUrl: window.location.origin + "/success",
+                failUrl: window.location.origin + "/fail",
+                customerEmail: "customer123@gmail.com",
+                customerName: "김토스",
+                customerMobilePhone: "01012341234",
+              });
+            } catch (error) {
+              // 에러 처리하기
+              console.error(error);
+            }
+          }}
+        >
+          결제하기
+        </button>
+        {/* <button id="payment-button" onClick={handlePaymentRequest}>결제하기</button> */}
         {/* 결제 툴 추가 해야함. */}
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "flex-end",
@@ -44,7 +141,7 @@ const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
           <Button variant="contained" color="primary">
             예약
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Modal>
   );
@@ -55,7 +152,7 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -115,7 +212,8 @@ const RadioButtonsGroup = ({ selectedValue, setSelectedValue }) => {
         onChange={handleChange} // 변경 시 상태 업데이트
       >
         <FormControlLabel
-          value={selectedValue}
+          // value={selectedValue}
+          value="1000"
           control={<Radio />}
           label={`${selectedValue}/시간(인)`}
         />
