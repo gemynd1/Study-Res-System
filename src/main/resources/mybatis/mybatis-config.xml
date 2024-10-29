@@ -8,7 +8,7 @@
     </settings>
     <typeAliases>
 <!--        <typeAlias alias="MemberVo" type="com.project.SnakeProject.vo.MemberVo"></typeAlias>-->
-<!--        <typeAlias alias="CommunityVo" type="com.project.SnakeProject.vo.CommunityVo"></typeAlias>-->
+        <typeAlias alias="CommunityVo" type="com.project.SnakeDev.vo.CommunityVo"/>
 <!--        <typeAlias alias="CommunityCategoryVo" type="com.project.SnakeProject.vo.CommunityCategoryVo"></typeAlias>-->
 <!--        <typeAlias alias="CommunityCommentVo" type="com.project.SnakeProject.vo.CommunityCommentVo"></typeAlias>-->
 
