@@ -24,84 +24,95 @@ import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 // import { nanoid } from nanoid;
 const { nanoid } = require('nanoid');
 
-// const clintKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-// const customerKey = nanoid();
-
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 // const clientKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
-
 const customerKey = "ll-yw-PKw-5_SU3JBZJvL";
 
 // 예약 최종 확인 모델 여기서 데이터 처리
-const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
-  const [amount, setAmount] = useState({
-    currency: "KRW",
-    value: 30000,
-  });
+const PaymentModal = ({
+  open, onClose, roomTitle, roomnum, date, 
+  start, end, time, people, totalPrice}) => {
+
+  const price = totalPrice;
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
-  const [isRendered, setIsRendered] = useState(false);
   
   useEffect(() => {
-    async function fetchPaymentWidgets() {
-      try {
-        // ------  결제위젯 초기화 ------
-        const tossPayments = await loadTossPayments(clientKey);
-        // 회원 결제
-        const widgets = tossPayments.widgets({
-          customerKey,
-        });
-        // 비회원 결제
-        // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
-        setWidgets(widgets);
-        setIsRendered(false); // 새로고침 시 초기화
-      } catch (error) {
-        console.error("Error loading Toss Payments widgets:", error);
+    if(open) {
+      const fetchPaymentWidgets = async () => {
+        try {
+          // ------  결제위젯 초기화 ------
+          const tossPayments = await loadTossPayments(clientKey);
+          // 회원 결제
+          const widgets = tossPayments.widgets({
+            customerKey,
+          });
+          // 비회원 결제
+          // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
+          setWidgets(widgets);
+        } catch (error) {
+          console.error("Error loading Toss Payments widgets:", error);
+        }
       }
+      fetchPaymentWidgets();
     }
-    fetchPaymentWidgets();
-  }, [clientKey, customerKey]);
+  }, [clientKey, customerKey, open]);
   
   useEffect(() => {
-    async function renderPaymentWidgets() {
-      if (!widgets || isRendered) {
-        return;
-      }
-      // ------ 주문의 결제 금액 설정 ------
-      await widgets.setAmount(amount);
-  
-      await Promise.all([
-        // ------  결제 UI 렌더링 ------
-        widgets.renderPaymentMethods({
-          selector: "#payment-method",
-          variantKey: "DEFAULT",
-        }),
-        // ------  이용약관 UI 렌더링 ------
-        widgets.renderAgreement({
-          selector: "#agreement",
-          variantKey: "AGREEMENT",
-        }),
-      ]);
-  
-      setReady(true);
-      setIsRendered(true);
+    const renderPaymentWidgets = async () => {
+      if (!widgets || !open) return;
+      setTimeout(async () => {
+        // ------ 주문의 결제 금액 설정 ------
+        await widgets.setAmount({
+          currency: "KRW",
+          value: Number(price),
+        });
+        try {
+          await Promise.all([
+            // ------ 결제 UI 렌더링 ------
+            widgets.renderPaymentMethods({
+              selector: "#payment-method",
+              variantKey: "DEFAULT",
+            }),
+            // ------ 이용약관 UI 렌더링 ------
+            widgets.renderAgreement({
+              selector: "#agreement",
+              variantKey: "AGREEMENT",
+            }),
+          ]);
+
+          setReady(true);
+        } catch (error) {
+          console.error("Error rendering payment widgets:", error);
+        }
+      }, 100);
     }
   
     renderPaymentWidgets();
-  }, [widgets, ready, isRendered]);
+  }, [widgets, open]);
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ ...modalStyle }}>
+        <div className="OrderTitle"
+          style={{ 
+            fontSize: "30px", fontWeight: "600", color: "#000000", marginBottom: "30px",
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          }}
+        >예약 정보</div>
         <Typography variant="h6">{roomTitle}</Typography>
         <Typography>날짜: {date}</Typography>
         <Typography>시간: {time}</Typography>
         <Typography>인원: {people}명</Typography>
         <Typography>총 가격: {totalPrice}원</Typography>
-        <div className="title">결제방법</div>
-        <div id="payment-method" />
+        <div className="title" style={{ fontSize: "24px", fontWeight: "600", color: "#000000", marginTop: "20px" }}>결제방법</div>
+        <div id="payment-method" style={{ width: "100%" }} />
         <div id="agreement" />
         <button
+          style={{
+            marginTop: "20px", width: "100%" , height: "60px", fontSize: "1.25rem", padding: "12px 24px", 
+            margin: "2px 2px", color: "white", backgroundColor: "#3065AC", borderRadius: "3px", border:"none" 
+          }}
           className="button"
           disabled={!ready}
           onClick={async () => {
@@ -110,13 +121,13 @@ const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
               // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
               // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
               await widgets.requestPayment({
-                orderId: "D5leH2uyZ9Id5xWq9i_XH",
-                orderName: "토스 티셔츠 외 2건",
-                successUrl: window.location.origin + "/success",
-                failUrl: window.location.origin + "/fail",
-                customerEmail: "customer123@gmail.com",
-                customerName: "김토스",
-                customerMobilePhone: "01012341234",
+                orderId: nanoid(),
+                orderName: "방이름",
+                successUrl: window.location.origin + `/success?roomTitle=${roomTitle}&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&OrderType=GroupOrder&MemberId=${sessionStorage.getItem("id")}`,
+                failUrl: window.location.origin + `/fail?roomTitle=${roomTitle}&roomnum=${roomnum}`,
+                // customerEmail: "taerangkim0116@gmail.com",
+                customerName: `${sessionStorage.getItem("name")}`,
+                customerMobilePhone: "01022487244",
               });
             } catch (error) {
               // 에러 처리하기
@@ -124,7 +135,7 @@ const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
             }
           }}
         >
-          결제하기
+          예약하기
         </button>
         {/* <button id="payment-button" onClick={handlePaymentRequest}>결제하기</button> */}
         {/* 결제 툴 추가 해야함. */}
@@ -212,8 +223,8 @@ const RadioButtonsGroup = ({ selectedValue, setSelectedValue }) => {
         onChange={handleChange} // 변경 시 상태 업데이트
       >
         <FormControlLabel
-          // value={selectedValue}
-          value="1000"
+          value={selectedValue}
+          // value="1000"
           control={<Radio />}
           label={`${selectedValue}/시간(인)`}
         />
@@ -282,9 +293,11 @@ const BasicButtons = ({text, width, height, fontSize, padding, margin, backgroun
 // 예약가능 버튼
 const BasicButtons2 = ({
   text, width, height, fontSize, padding, margin, backgroundColor, 
-  color, selectedTimes, totalPrice, count, selectedDate
+  color, selectedTimes, totalPrice, count, selectedDate, roomOrderTitle, sginum
 }) => {
   const navigate = useNavigate();
+  const roomTitle= roomOrderTitle;
+  const roomnum = sginum;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isButtonReadonly, setIsButtonReadonly] = useState(true); // 읽기 전용 상태 관리
   // const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : ""; // 문자열로 변환
@@ -297,6 +310,9 @@ const BasicButtons2 = ({
         timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
           start + 1
         ).padStart(2, "0")}:00 (총 1시간)`,
+        totalHours: 1,
+        start,
+        end: start + 1,
       };
     } else if (times.length >= 2) {
       const start = Math.min(...times);
@@ -307,9 +323,12 @@ const BasicButtons2 = ({
         timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
           end + 1
         ).padStart(2, "0")}:00 (총 ${totalHours}시간)`,
+        totalHours,
+        start,
+        end,
       };
     }
-    return { timeRange: "", totalHours: 0 };
+    return { timeRange: "", totalHours: 0, start: 0, end: 0};
   };
 
   const handleOpenModal = () => {
@@ -319,9 +338,7 @@ const BasicButtons2 = ({
   };
 
   const handleCloseModal = () => setIsModalOpen(false);
-
-  const roomTitle = "스터디룸 A";
-  const { timeRange, totalHours } = formatTimeRange(selectedTimes);
+  const { timeRange, totalHours, start, end } = formatTimeRange(selectedTimes);
 
   // selectedTimes와 selectedDate가 변경될 때마다 버튼 상태 업데이트
   useEffect(() => {
@@ -359,7 +376,10 @@ const BasicButtons2 = ({
         open={isModalOpen}
         onClose={handleCloseModal}
         roomTitle={roomTitle}
+        roomnum={roomnum}
         date={selectedDate ? selectedDate.format("YYYY-MM-DD") : ""}
+        start={start}
+        end={end}
         time={timeRange}
         totalHours={totalHours}
         people={count}
@@ -466,7 +486,7 @@ const TimeSelector = ({ selectedTimes, onTimeChange }) => {
 const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(4);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [isTimeChoiceSelected, setIsTimeChoiceSelected] = useState(false);
@@ -846,6 +866,8 @@ const TeamDetail = () => {
             totalPrice={totalPrice}
             count={count}
             selectedDate={selectedDate}
+            roomOrderTitle={htmlcontentdata.SGIContent1}
+            sginum={htmlcontentdata.SGINum}
           />
         </div>
       </div>
