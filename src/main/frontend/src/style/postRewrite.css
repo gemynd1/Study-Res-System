@@ -363,8 +363,8 @@ div.postRewrite-section div.meetingPoint-detailaddress {
 
 div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background {
     padding-top: 5%;
-    margin-right: 30%;
-    margin-left: 30%;
+    margin-right: 25%;
+    margin-left: 25%;
     background: #B1B1B1;
     border-radius: 20px;
     display: flex;
@@ -399,6 +399,30 @@ div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-backgro
 
 div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test {
     padding-bottom: 10%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.first-line input {
+    font-size: 20px;
+    margin-bottom: 1%;
+    margin-right: 2%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.first-line button {
+    font-size: 20px;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.second-line input {
+    font-size: 20px;
+    margin-bottom: 1%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.third-line input {
+    font-size: 20px;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div div {
+    position: absolute;
+    z-index: 9;
 }
 
 div.postRewrite-section div.meetingPoint-studyroom {

@@ -51,6 +51,8 @@ import "swiper/css";
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 
+// daum postcode import
+import PostCodePopup from "../Account/AccountCom/PostCodePopup";
 
 // input ui component
 function BasicTextFields({label}) {
@@ -436,6 +438,20 @@ const PostRewrite = () => {
   //   };
   // }, []);
 
+  const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
+  const [popup, setPopup] = useState(false);
+
+  const handleComplete = (data) => {
+      setPopup(!popup);
+  }
+
+  const handleInput = (e) => {
+    setEnroll_company({
+        ...enroll_company,
+        [e.target.name]:e.target.value,
+    });
+}
+
     return (
         <>
             <div className="ilovecode">
@@ -511,36 +527,38 @@ const PostRewrite = () => {
                                 <span className="kakaomap-text">카카오맵으로 찾아보기</span>
                             </div>
                             <div className="test">
-                                <input type="text" id="sample6_postcode" placeholder="우편번호" />
+                                {/* <input type="text" id="sample6_postcode" placeholder="우편번호" /> */}
                                 {/* <input type="button" onclick={sample6_execDaumPostcode} value="우편번호 찾기" /><br/> */}
-                                <input type="button" value="우편번호 찾기" /><br/>
-                                <input type="text" id="sample6_address" placeholder="주소" /><br/>
-                                <input type="text" id="sample6_detailAddress" placeholder="상세주소" />
+                                {/* <input type="button" value="우편번호 찾기" /><br/> */}
+                                {/* <input type="text" id="sample6_address" placeholder="주소" /><br/>
+                                <input type="text" id="sample6_detailAddress" placeholder="상세주소" /> */}
                                 {/* <input type="text" id="sample6_extraAddress" placeholder="참고항목" /> */}
+                                <div className="first-line">
+                                    <input type="text" name="zonecode" placeholder="우편번호" onChange={handleInput} value={enroll_company.zonecode} readOnly />
+                                    <button type="button" className="postBtn" onClick={handleComplete}>우편번호 찾기</button>
+                                </div>
+                                {popup && <PostCodePopup company={enroll_company} setcompany={setEnroll_company} />}
+                                <div className="second-line">
+                                    <input type="text" name="address" placeholder="도로명 주소" size="40" onChange={handleInput} value={enroll_company.address} readOnly />
+                                    <input type="hidden" name="latitude" value={enroll_company.latitude} />
+                                    <input type="hidden" name="longitude" value={enroll_company.longitude} />
+                                </div>
+                                <div className="third-line">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="detailedAddress"
+                                        placeholder="상세 주소"
+                                        size="40"
+                                        value={enroll_company.detailedAddress}
+                                        onChange={handleInput}
+                                    />
+                                </div>
                             </div>
                         </div>
                      </div>)}
                     {RadioValue === '스터디룸' && 
                     (<div className="meetingPoint-studyroom">
-                        {/* <Swiper
-                            slidesPerView={3} // 한번에 보여지는 slide 개수
-                            spaceBetween={35} // slide간의 간격
-                            loopedSlides={2}
-                            loop={true}
-                            centeredSlides={true}
-                            autoplay={{
-                                delay: 3500,
-                                disableOnInteraction: false,
-                            }}
-                            breakpoints={{ // 반응형 구현
-                                1200: {
-                                    centeredSlides:true,
-                                    slidesPerView: 4.5,
-                                }, // width 값이 1200이 넘을때 실행
-                            }}
-                            modules={modules}
-                            className={'mySwiper sec2-swiper'}
-                        >Navigation */}
                         <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postRewrite">
 
                             {studyRoomInfos.map((studyRoomInfo) => (
