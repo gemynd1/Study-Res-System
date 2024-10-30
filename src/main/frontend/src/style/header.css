@@ -153,7 +153,7 @@ header.header div.menu ul.menuList2-fail li img.chat:hover {
     /* height: 4.63vh; */
     height: 5vh;
     /* padding: 0.10vw; */
-
+    border: none;
     display: flex;
     justify-content: center;
     align-items: center;
