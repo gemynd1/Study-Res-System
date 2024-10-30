@@ -392,14 +392,14 @@ const BasicButtons2 = ({
 const TeamDetailButtons = ({ count, setCount, start, end }) => {
   // const [count, setCount] = useState(3); // 초기값은 3
   const handleIncrement = () => {
-    if (count < Number) {
-      setCount(count + 1);
+    if (count < end) {
+      setCount(Number(count) + 1);
     }
   };
 
   const handleDecrement = () => {
     if (count > start) {
-      setCount(count - 1);
+      setCount(Number(count) - 1);
     }
   };
 
