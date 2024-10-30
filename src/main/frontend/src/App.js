@@ -30,6 +30,8 @@ import CustomerService from "./Components/Content/CustomerHelp/CustomerService";
 import TeamDetail from "./Components/Content/Page/teamdetail";
 import CustomerWrite from "./Components/Content/CustomerHelp/CustomerWrite";
 import CustomerDetail from "./Components/Content/CustomerHelp/CustomerDetail";
+import ReviewWrite from "./Components/Content/Review/ReviewWrite";
+import ReviewDetail from "./Components/Content/Review/ReviewDetail";
 import Template_Create from "./Components/template/Template_Create";
 import Template_Editor from "./Components/template/Template_Editor";
 
@@ -45,7 +47,6 @@ const ScrollToTop  = () => {
 }
 
 function AppContent() {
-  const [hello, setHello] = useState("");
   const location = useLocation();
   const hideHeaderLogin =
     location.pathname === "/login" || location.pathname === "/join";
@@ -60,27 +61,34 @@ function AppContent() {
 
   return (
     <>
+      {!hideHeaderLogin && <Header />}
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/info" element={<Info />} />
+        <Route path="/board" element={<Board />} />
+        <Route path="/review" element={<Review />} />
+        <Route path="/review/:id" element={<ReviewDetail/>} />
 
-        {!hideHeaderLogin && <Header />}
-        <ScrollToTop  />
-        <Routes>
-          <Route path='/' element={<Main />} />
-          <Route path='/info' element={<Info />} />
-          <Route path='/board' element={<Board />} />
-          <Route path='/review' element={<Review />} />
+        <Route
+          path="/CustomerHelp/customerService"
+          element={<CustomerService />}
+        />
+        <Route path="/CustomerHelp/customerWrite" element={<CustomerWrite />} />
+        <Route
+          path="/CustomerHelp/customerDetail"
+          element={<CustomerDetail />}
+        />
 
-          <Route path='/CustomerHelp/customerService' element={<CustomerService />} />
-          <Route path='/CustomerHelp/customerWrite' element={<CustomerWrite />} />
-          <Route path='/CustomerHelp/customerDetail' element={<CustomerDetail /> } />
+        <Route path="/board" element={<Board />} />
+        <Route path="/board/category/*" element={<BoardCategory />} />
+        <Route path="/board/post/*" element={<Post />} />
+        <Route path="/board/postWrite" element={<PostWrite />} />
+        <Route path="/board/postRewrite/*" element={<PostRewrite />} />
 
-          <Route path="/board" element={<Board />} />
-          <Route path="/board/category/*" element={<BoardCategory />} />
-          <Route path="/board/post/*" element={<Post />} />
-          <Route path="/board/postWrite" element={<PostWrite />} />
-          <Route path="/board/postRewrite/*" element={<PostRewrite />} />
+        <Route path="/review/post" element={<ReviewWrite />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/join" element={<Join />} />
 
           {/* mypage 따로 나눌수 있음 git merge */}
           <Route path="/mypage/*" element={<Mypage />} />
@@ -90,7 +98,8 @@ function AppContent() {
           <Route path="/mypage/mypageReview" element={<MypageReview />} />
           <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
 
-          <Route path="/teamdetail/*" element={<TeamDetail />} />
+          <Route  path="/teamdetail" />
+          <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
 
