@@ -52,9 +52,6 @@ const Header = () => {
         })
     }
 
-<<<<<<< HEAD
-
-
     const handleClick = () => {
         if(sessionStorage.getItem("loginState") === "true") {
             navigate('/mypage')
@@ -81,11 +78,6 @@ const Header = () => {
     //             console.log(error);
     //         })
     // }
-
-
-=======
-    
->>>>>>> b3f02021d1440cb15192f69e46de2fc0698cff0d
 
     const index_choice = (index) => {
         if(active_index === index) {
