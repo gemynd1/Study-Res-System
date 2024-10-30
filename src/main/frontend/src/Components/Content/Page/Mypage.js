@@ -10,10 +10,6 @@ const Mypage = () => {
     const navigate = useNavigate();
     const [MypageData, setMypageData] = useState('');
 
-    const onClick = () => {
-        navigate('/mypage/mypageAccount')
-    }
-
 
     useEffect(() => {
         axios.get('/api/mypage')

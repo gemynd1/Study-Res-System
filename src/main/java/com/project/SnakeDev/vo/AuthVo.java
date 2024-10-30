@@ -29,6 +29,33 @@ public class AuthVo {
     public AuthVo() {
     }
 
+    public AuthVo(String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {
+        MemberName = memberName;
+        MemberId = memberId;
+        MemberPw = memberPw;
+        MemberPhone = memberPhone;
+        this.MAaddress = MAaddress;
+        this.MZonecode = MZonecode;
+        this.MDetailaddress = MDetailaddress;
+        this.MAlatitude = MAlatitude;
+        this.MAlongitude = MAlongitude;
+    }
+
+    public AuthVo(String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {
+        this.MAaddress = MAaddress;
+        this.MZonecode = MZonecode;
+        this.MDetailaddress = MDetailaddress;
+        this.MAlatitude = MAlatitude;
+        this.MAlongitude = MAlongitude;
+    }
+
+    public AuthVo(String memberName, String memberId, String memberPw, String memberPhone) {
+        MemberName = memberName;
+        MemberId = memberId;
+        MemberPw = memberPw;
+        MemberPhone = memberPhone;
+    }
+
     public AuthVo(Integer MIdx, String memberId, String memberPw, String memberPhone, String MAaddress, String MDetailaddress) {
         this.MIdx = MIdx;
         MemberId = memberId;

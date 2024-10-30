@@ -9,32 +9,58 @@ const MypageAccount = () => {
     const navigate = useNavigate();
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [detailAddress, setDetailAddress] = useState('');
+    const [phone, setPhone] = useState('');
+
     const [userInfo, setUserInfo] = useState([]);
 
     const onSubmit = (e) => {
         e.preventDefault();
         axios.get("http://localhost:8099/api/mypage/mypageAccount", {
-            params: { id, pw },
-            headers: { 'Content-Type': 'application/json' },
+            params: { id, pw},
+            headers: { 'Content-Type': 'application/json'},
             withCredentials: true
         })
             .then(response => {
-                if (response.status === false) {
-                    alert('아이디 또는 비밀번호가 맞지 않습니다.');
-                    return false;
-                } else {
-                    sessionStorage.setItem("id", response.data['id']);
-                    sessionStorage.setItem("pw", response.data['pw']);
-                    console.log(response)
-                    alert('성공')
-                    navigate('/mypage');
-                }
+                // setUserInfo(response.data);
+                sessionStorage.setItem("loginState", response.data);
+                alert('성공')
+                navigate('/mypage');
+                console.log(response.data);
             })
             .catch(error => {
-                alert('아이디 또는 비밀번호가 일치하지 않습니다.')
-            });
-    };
-
+                console.log(error);
+                alert('아이디 또는 비밀번호가 맞지 않습니다.')
+            })
+    }
+    //     e.preventDefault();
+    //     axios.get("http://localhost:8099/api/mypage/mypageAccount", {
+    //         params: { id, pw, name, address, detailAddress, phone },
+    //         headers: { 'Content-Type': 'application/json' },
+    //         withCredentials: true
+    //     })
+    //         .then(response => {
+    //             if (response.data.success) {
+    //                 alert('아이디 또는 비밀번호가 맞지 않습니다.');
+    //                 return false;
+    //             } else {
+    //                 sessionStorage.setItem("id", response.data['id']);
+    //                 sessionStorage.setItem("pw", response.data['pw']);
+    //                 sessionStorage.setItem("name", response.data['name']);
+    //                 sessionStorage.setItem("address", response.data['address']);
+    //                 sessionStorage.setItem("detailAddress", response.data['detailAddress']);
+    //                 sessionStorage.setItem("phone", response.data['phone']);
+    //                 console.log(response)
+    //                 alert('성공')
+    //                 navigate('/mypage');
+    //             }
+    //         })
+    //         .catch(error => {
+    //             alert('아이디 또는 비밀번호가 일치하지 않습니다.')
+    //         });
+    // };
 
 
     useEffect(() => {
@@ -80,11 +106,11 @@ const MypageAccount = () => {
 
             <div className="AccountBody">
                 <div className="editPersonal">
-                    <span className="AccountText">개인정보수정</span>
+                    <span className="AccountText">마이페이지</span>
                 </div>
                 <div className="AccountInput">
                     <img src="/img/icon/logo.png" className="logo" alt="/"/>
-                    <span className="editText">개인정보수정</span>
+                    <span className="editText">마이페이지</span>
                 </div>
                 <div className="AccountInput2">
                     <span className="editText2">회원님의 개인정보는 본인 동의 없이 절대 공개되지 않습니다.</span>
@@ -99,7 +125,6 @@ const MypageAccount = () => {
                             <div className="AccountInputID2">
                                 <input
                                     className="AccountExist"
-                                    value={id}
                                     onChange={(e) => setId(e.target.value)}
                                 />
                             </div>
@@ -113,7 +138,6 @@ const MypageAccount = () => {
                                     type={pwType.type}
                                     className="AccountExist"
                                     placeholder="비밀번호를 입력해주세요."
-                                    value={pw}
                                     onChange={(e) => setPw(e.target.value)}
                                 />
                                 <span onClick={handlePassWordType}>

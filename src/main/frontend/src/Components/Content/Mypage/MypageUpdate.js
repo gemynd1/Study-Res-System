@@ -2,23 +2,110 @@ import React, {useEffect, useState} from "react";
 import {BrowserRouter, Link, Outlet, Route, Routes, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import MemberDeleteModal from "./MemberDeleteModal";
+import PostCodePopup from "../Account/AccountCom/PostCodePopup";
 
 const MypageUpdate = () => {
-    const [MypageUpdate, setMypageUpdate] = useState('')
+    const [MypageUpdate, setMypageUpdate] = useState('');
+    const [EditedValues, setEditedValues] = useState({});
     const navigate = useNavigate();
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
+    // 우편번호 API
+    const [enroll_company, setEnroll_company] = useState(
+        {
+            address : '',
+            zonecode: '',
+            detailedAddress: '',
+            latitude : '',
+            longitude : ''});
+    const [popup, setPopup] = useState(false);
 
     const MemberOpenModal = () => {
         setMemberModalOpen(true);
     }
 
+    const [userInfo, setUserInfo] = useState([]);
+
+    const [id, setId] = useState(sessionStorage.getItem("id"));
+    const [pw, setPw] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [detailAddress, setDetailAddress] = useState('');
+    const [phone, setPhone] = useState('');
+
+
     useEffect(() => {
-        axios.get('/api/mypage/mypageUpdate')
-            .then((res) => {
-                setMypageUpdate(res.data);
+        if(sessionStorage.getItem("loginState") === "true") {
+            axios.get("http://localhost:8099/api/mypage/mypageUpdate", {
+                params: { id },
+                headers: { 'Content-Type': 'application/json'},
+                withCredentials: true
             })
-            .catch(error => console.log(error))
+                .then(response => {
+                    const data = response.data;
+                    console.log(data);
+                    setUserInfo(response.data);
+                    setEnroll_company((prevState) => ({
+                        ...prevState,
+                        address: data.maaddress,
+                        detailedAddress: data.mdetailaddress,
+                        zonecode: data.mzonecode,
+                        latitude: data.malatitude,
+                        longitude: data.malongitude
+                    }))
+                    // console.log(userInfo);
+                    console.log(enroll_company);
+                })
+                .catch(error => {
+                    console.error(error)
+                    // alert('데이터 못가져옴')
+                })
+        } else {
+            alert('account로 이동')
+        }
     }, []);
+
+    const handleUpdate = (e) => {
+        e.preventDefault();
+
+        axios.post("http://localhost:8099/api/update",
+            {
+                    "memberId": userInfo.memberId,
+                    "memberName": userInfo.memberName,
+                    "memberPhone": userInfo.memberPhone,
+                    "memberPw": userInfo.memberPw,
+                    "maaddress": enroll_company.address,
+                    "mdetailaddress": enroll_company.detailedAddress,
+                    "mzonecode": enroll_company.zonecode,
+                    "malatitude": parseFloat(enroll_company.latitude),
+                    "malongitude": parseFloat(enroll_company.longitude)
+                    },
+            {
+                        header : {'Content-Type' : 'application/json'}
+                    }
+            )
+            .then(response => {
+                // console.log("수정", response.data);
+                alert('회원정보가 수정되었습니다.');
+                navigate('/mypage');
+            })
+            .catch(error => {
+                console.error('에러발생',error);
+            })
+    }
+
+    const handleInputChange = (e) => {
+        setUserInfo({
+            ...userInfo,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleInput = (e) => {
+        setEnroll_company({
+            ...enroll_company,
+            [e.target.name]: e.target.value,
+        });
+    }
 
     useEffect(() => {
         if (MemberModalOpen) {
@@ -47,6 +134,13 @@ const MypageUpdate = () => {
         type: "password",
         visible: false,
     })
+
+
+
+    // 우편번호
+    const handleComplete = (data) => {
+        setPopup(!popup);
+    }
 
     const handlePassWordType = (e) => {
         setpwType(() => {
@@ -126,82 +220,141 @@ const MypageUpdate = () => {
                     </Link>
                 </div>
 
-                <div className="UpdateBody">
-                    <div className="UpdateBodyText">
-                        <span className="UpdateText">개인정보수정</span>
-                        <p>회원님께서 입력하신 정보입니다. <br/>
-                            수정을 원하시면 저장버튼을 눌러주세요.</p>
-                        <div className="MemberInfoBox">
-                            <span className="MemberInfo">회원정보</span>
-                        </div>
-                        <div className="UpdateInputBox">
-                            <div className="Inputspan">
-                                <span>닉네임</span>
+
+                <form onSubmit={handleUpdate}>
+                    <div className="UpdateBody">
+                        <div className="UpdateBodyText">
+                            <span className="UpdateText">개인정보수정</span>
+                            <p>회원님께서 입력하신 정보입니다. <br/>
+                                수정을 원하시면 저장버튼을 눌러주세요.</p>
+                            <div className="MemberInfoBox">
+                                <span className="MemberInfo">회원정보</span>
                             </div>
-                            <div className="UpdateInput">
-                                <input type="text" placeholder="닉네임"/>
+                            <div className="UpdateInputBox">
+                                <div className="Inputspan">
+                                    <span>닉네임</span>
+                                </div>
+                                <div className="UpdateInput">
+                                    <input
+                                        type="text"
+                                        placeholder="닉네임"
+                                        id="memberName"
+                                        name="memberName"
+                                        value={userInfo.memberName}
+                                        onChange={handleInputChange}
+                                        />
+                                </div>
                             </div>
-                        </div>
-                        <div className="UpdateInputBox">
-                            <div className="Inputspan">
-                                <span>아이디</span>
+                            <div className="UpdateInputBox">
+                                <div className="Inputspan">
+                                    <span>아이디</span>
+                                </div>
+                                <div className="UpdateInput">
+                                    <input
+                                        type="text"
+                                        value={userInfo.memberId}
+                                        readOnly
+                                        />
+                                </div>
                             </div>
-                            <div className="UpdateInput">
-                                <input type="text"/>
+                            <div className="UpdateInputBox">
+                                <div className="Inputspan">
+                                    <span>비밀번호 변경</span>
+                                </div>
+                                <div className="UpdateInput">
+                                    <input
+                                        type={pwType.type}
+                                        placeholder="현재 비밀번호"
+                                        value={userInfo.memberPw}
+                                        id="memberPw"
+                                        name="memberPw"
+                                        onChange={handleInputChange}
+                                        />
+                                    <span onClick={handlePassWordType}>
+                                    {pwType.visible ? (
+                                            <img src="/img/icon/password.png" alt="비밀번호 보기" className="UpdatepasswordIcon"/>)
+                                        :
+                                        (<img src="/img/icon/seepassword.png" alt="비밀번호 숨기기" className="UpdatepasswordIcon"/>
+                                        )}
+                                </span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="UpdateInputBox">
-                            <div className="Inputspan">
-                                <span>비밀번호</span>
+                            {/*<div className="UpdateInputBox">*/}
+                            {/*    <div className="Inputspan">*/}
+                            {/*        <span>비밀번호 변경</span>*/}
+                            {/*    </div>*/}
+                            {/*    <div className="UpdateInput">*/}
+                            {/*        <input*/}
+                            {/*            type={pwType2.type}*/}
+                            {/*            placeholder="새 비밀번호"*/}
+                            {/*            id="memberNewPw"*/}
+                            {/*            onChange={(e) => handleInputChnage('memberNewPw', e.target.value)}*/}
+                            {/*            />*/}
+                            {/*        <span onClick={handlePassWordType2}>*/}
+                            {/*        {pwType2.visible ? (*/}
+                            {/*                <img src="/img/icon/password.png" alt="비밀번호 보기" className="UpdatepasswordIcon"/>)*/}
+                            {/*            :*/}
+                            {/*            (<img src="/img/icon/seepassword.png" alt="비밀번호 숨기기" className="UpdatepasswordIcon"/>*/}
+                            {/*            )}*/}
+                            {/*    </span>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            <div className="UpdateInputBox1">
+                                <div className="Inputspan">
+                                    <span>주소</span>
+                                </div>
+                                <div className="UpdateInput">
+                                    <div className="postInput">
+                                        <button type="button" className="postBtn" onClick={handleComplete}>우편번호 찾기
+                                        </button>
+                                        <input className="postInputbox" type="text" name="zonecode" id="zonecode" placeholder="우편번호"
+                                               onChange={handleInput}
+                                               value={enroll_company.zonecode} readOnly/>
+                                    </div>
+                                    {popup && <PostCodePopup company={enroll_company} setcompany={setEnroll_company}/>}
+                                    <input
+                                        // className="addressInput"
+                                        type="text"
+                                        placeholder="주소"
+                                        value={enroll_company.address}
+                                        name="address"
+                                        id="address"
+                                        onChange={handleInput}
+                                        // onChange={(e) => handleInputChnage('MAaddress', e.target.value)}
+                                    />
+                                    <input type="hidden" id="latitude" name="latitude" value={enroll_company.latitude} />
+                                    <input type="hidden" id="longitude" name="longitude" value={enroll_company.longitude} />
+                                    <input
+                                        className="addressInput"
+                                        type="text"
+                                        placeholder="상세주소"
+                                        id="MDetailaddress"
+                                        name="detailedAddress"
+                                        value={enroll_company.detailedAddress}
+                                        onChange={handleInput}
+                                    />
+                                </div>
                             </div>
-                            <div className="UpdateInput">
-                                <input type={pwType.type} placeholder="현재 비밀번호"/>
-                                <span onClick={handlePassWordType}>
-                                {pwType.visible ? (
-                                        <img src="/img/icon/password.png" alt="비밀번호 보기" className="UpdatepasswordIcon"/>)
-                                    :
-                                    (<img src="/img/icon/seepassword.png" alt="비밀번호 숨기기" className="UpdatepasswordIcon"/>
-                                    )}
-                            </span>
+                            <div className="UpdateInputBox">
+                                <div className="Inputspan">
+                                    <span>전화번호</span>
+                                </div>
+                                <div className="UpdateInput">
+                                <input
+                                        type="text"
+                                        value={userInfo.memberPhone}
+                                        id="memberPhone"
+                                        onChange={(e) => handleInputChange('memberPhone', e.target.value)}
+                                        />
+                                </div>
                             </div>
-                        </div>
-                        <div className="UpdateInputBox">
-                            <div className="Inputspan">
-                                <span>비밀번호 변경</span>
+                            <div className="saveCheck">
+                                <img src="/img/icon/check.png" alt="변경사항저장" className="check"/>
+                                <button type="submit">변경사항 저장</button>
                             </div>
-                            <div className="UpdateInput">
-                                <input type={pwType2.type} placeholder="새 비밀번호"/>
-                                <span onClick={handlePassWordType2}>
-                                {pwType2.visible ? (
-                                        <img src="/img/icon/password.png" alt="비밀번호 보기" className="UpdatepasswordIcon"/>)
-                                    :
-                                    (<img src="/img/icon/seepassword.png" alt="비밀번호 숨기기" className="UpdatepasswordIcon"/>
-                                    )}
-                            </span>
-                            </div>
-                        </div>
-                        <div className="UpdateInputBox">
-                            <div className="Inputspan">
-                                <span>주소</span>
-                            </div>
-                            <div className="UpdateInput">
-                                <input type="text" placeholder="주소"/>
-                            </div>
-                        </div>
-                        <div className="UpdateInputBox">
-                            <div className="Inputspan">
-                                <span>전화번호</span>
-                            </div>
-                            <div className="UpdateInput">
-                                <input type="text" placeholder="010-1234-5678"/>
-                            </div>
-                        </div>
-                        <div className="saveCheck">
-                            <img src="/img/icon/check.png" alt="변경사항저장" className="check"/>
-                            <button onClick={navigateBtn}>변경사항 저장</button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <MemberDeleteModal
                 open={MemberModalOpen}
