@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.project.SnakeDev.mapper.MypageMapper">
+
+    <select id="getUserInfo" resultType="com.project.SnakeDev.vo.AuthVo">
+        SELECT *
+        FROM tbl_member
+        WHERE MemberId = #{memberId} and MemberPw = #{memberPw}
+    </select>
+
+    <select id="getMemberInfo" resultType="com.project.SnakeDev.vo.AuthVo">
+        select
+            tm.membername as MemberName,
+            tm.memberid as MemberId,
+            tm.memberpw as MemberPw,
+            tm.memberphone as MemberPhone,
+            tma.maaddress as MAaddress,
+            tma.mdetailaddress as MDetailaddress,
+            tma.mzonecode as MZoneCode,
+            tma.malatitude as Malatitude,
+            tma.malongitude as Malongitude
+
+        from tbl_member tm
+                 inner join tbl_memberaddress tma on tm.midx = tma.midx
+        where tm.memberid = #{memberId}
+    </select>
+
+<!--    <update id="updateInfo" parameterType="com.project.SnakeDev.vo.AuthVo">-->
+<!--        merge into tbl_member m-->
+<!--            using tbl_memberaddress a-->
+<!--            on (m.midx = a.midx)-->
+<!--            when matched then-->
+<!--                update set-->
+<!--                    m.membername = #{memberName},-->
+<!--                    m.memberid = #{memberId},-->
+<!--                    m.memberpw = #{memberPw},-->
+<!--                    m.memberphone = #{memberPhone},-->
+<!--                    a.maaddress = #{MAaddress},-->
+<!--                    a.mdetailaddress = #{MDetailaddress}-->
+<!--        where m.memberid = #{memberId}-->
+<!--    </update>-->
+
+    <update id="updateMemberInfo" parameterType="com.project.SnakeDev.vo.AuthVo">
+        update tbl_member
+        set
+            membername = #{memberName},
+            memberpw = #{memberPw},
+            memberphone = #{memberPhone}
+        where memberid = #{memberId}
+    </update>
+
+    <update id="updateMemberAddress" parameterType="com.project.SnakeDev.vo.AuthVo">
+        update tbl_memberaddress
+        set
+            maaddress = #{MAaddress},
+            mdetailaddress = #{MDetailaddress},
+            mzonecode = #{MZonecode},
+            malatitude = #{MAlatitude},
+            malongitude = #{MAlongitude}
+        where midx = (select midx from tbl_member where memberid = #{memberId})
+    </update>
+
+
+
+
+    <select id="getUpdateInfo" resultType="com.project.SnakeDev.vo.AuthVo">
+        SELECT * FROM tbl_member WHERE MemberId = #{memberId}
+    </select>
+</mapper>

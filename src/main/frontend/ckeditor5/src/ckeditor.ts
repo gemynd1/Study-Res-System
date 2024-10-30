@@ -30,7 +30,17 @@ import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import { Table, TableToolbar } from '@ckeditor/ckeditor5-table';
 import { TextTransformation } from '@ckeditor/ckeditor5-typing';
 
+import { Alignment } from '@ckeditor/ckeditor5-alignment';
+import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
+import { Font, FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
+import { Highlight } from '@ckeditor/ckeditor5-highlight';
+import { TodoList } from '@ckeditor/ckeditor5-list';
+import { Strikethrough, Subscript, Superscript } from '@ckeditor/ckeditor5-basic-styles';
+
+
 import { Style } from '@ckeditor/ckeditor5-style';
+
+
 
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
@@ -63,8 +73,21 @@ class Editor extends ClassicEditor {
 		TableToolbar,
 		TextTransformation,
 		Style,
-		FullPage
+		FullPage,
+		Alignment,
+		CodeBlock,
+		Font,
+		FontBackgroundColor,
+		FontColor,
+		FontFamily,
+		FontSize,
+		Highlight,
+		TodoList,
+		Strikethrough,
+		Subscript,
+		Superscript
 	];
+	
 
 	public static override defaultConfig = {
 		toolbar: {
@@ -75,22 +98,27 @@ class Editor extends ClassicEditor {
 				'sourceEditing',
 				'|',
 				'heading',
-				'|',
 				'bold',
 				'italic',
+				'strikethrough',
+				'subscript',
+				'superscript',
+				'highlight',
+				'fontFamily',
+				'fontSize',
+				'fontColor',
+				'fontBackgroundColor',
+				'|',
+				'alignment',
 				'link',
 				'bulletedList',
 				'numberedList',
-				// '|',
-				// 'outdent',
-				// 'indent',
+				'todoList',
 				'|',
 				'imageUpload',
 				'blockQuote',
 				'insertTable',
-				// 'mediaEmbed',
-				// 'htmlEmbed',
-				// 'style'
+				'codeBlock'
 			]
 		},
 		language: 'ko',
@@ -120,8 +148,8 @@ class Editor extends ClassicEditor {
 				'mergeTableCells'
 			]
 		},
-		
 	};
+	
 }
 
 export default Editor;

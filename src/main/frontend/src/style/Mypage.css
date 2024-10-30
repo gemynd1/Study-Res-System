@@ -362,7 +362,7 @@
 
 .MypageUpdate {
     width: 100%;
-    height: 770px;
+    height: 850px;
 }
 
 .MypageUpdate2 {
@@ -445,6 +445,13 @@
     display: flex;
 }
 
+.UpdateInputBox1 {
+    width: 66%;
+    height: 170px;
+    margin-top: 30px;
+    display: flex;
+}
+
 .Inputspan span {
     height: 29px;
     font-style: normal;
@@ -463,12 +470,7 @@
 .UpdateInput input {
     width: 500px;
     height: 42px;
-    border: 1px solid #000000;
-}
-
-.UpdateInput {
-    margin-left: 47px;
-    display: flex;
+    /*border: 1px solid #000000;*/
 }
 
 .saveCheck {
@@ -995,11 +997,6 @@
     margin: 100px auto auto 12%;
 }
 
-.MypageUpdate {
-    width: 100%;
-    height: 770px;
-}
-
 .MypageUpdate2 {
     width: 100%;
     height: 1100px;
@@ -1070,12 +1067,6 @@
     margin-top: 20px;
 }
 
-.UpdateInputBox {
-    width: 66%;
-    margin-top: 30px;
-    display: flex;
-}
-
 .Inputspan span {
     height: 29px;
     font-style: normal;
@@ -1094,12 +1085,12 @@
 .UpdateInput input {
     width: 500px;
     height: 42px;
-    border: 1px solid #000000;
+    /*border: 1px solid #000000;*/
 }
 
 .UpdateInput {
-    margin-left: 47px;
-    display: flex;
+    margin-left: 200px;
+    /*display: flex;*/
 }
 
 .saveCheck {
@@ -1128,8 +1119,19 @@
     position: absolute;
     width: 38px;
     height: 38px;
-    margin: 4px auto auto 460px;
+    margin: -41px auto auto 460px
 }
+.addressInput {
+    margin-top: 5px;
+}
+
+/*.postInputbox {*/
+
+/*}*/
+
+/*.postInput {*/
+/*    display: flex;*/
+/*}*/
 
 /* 작성한 글 확인 css*/
 /*.AllText{*/

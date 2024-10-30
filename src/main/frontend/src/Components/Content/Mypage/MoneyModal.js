@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import '../../../style/Mypage.css';
 import {Link} from "react-router-dom";
 
 const MoneyModal = ({ open, onClose, amount, Name }) => {
+
     if (!open) return null;
 
     const handleOverlayClick = (e) => {

@@ -220,12 +220,12 @@ const Main = () => {
                         delay: 3500,
                         disableOnInteraction: false,
                     }}
-                    // breakpoints={{ // 반응형 구현
-                    //     1200: {
-                    //         centeredSlides:true,
-                    //         slidesPerView: 4.5,
-                    //     }, // width 값이 1200이 넘을때 실행
-                    // }}
+                    breakpoints={{ // 반응형 구현
+                        1200: {
+                            centeredSlides:true,
+                            slidesPerView: 4.5,
+                        }, // width 값이 1200이 넘을때 실행
+                    }}
                     className={'mySwiper sec2-swiper'}
                 >
                     {StudyGInfo ? StudyGInfo.map((datas) => (

@@ -25,4 +25,10 @@ public class MainServiceImpl implements MainService {
     public List<StudyInInfoVo> ViewStudyInInfo() {
         return mainMapper.ViewStudyInInfo();
     }
+
+    @Override
+    @Transactional
+    public List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum) {
+        return mainMapper.ViewStudyGInfoDetail(sginum);
+    }
 }
