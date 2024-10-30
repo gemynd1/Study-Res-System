@@ -1,14 +1,16 @@
-import {React, useState} from "react";
+import {React, useEffect, useState} from "react";
 import "../../style/header.css";
 import axios from "axios";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
     const location = useLocation();
-    const {id = '', name = ''} = location.state?.userData || {}; 
+    const [id, setId] = useState('');
+    const [pw, setPw] = useState('');
     const navigate = useNavigate();
     const [active_index, setActive_index] = useState(null);
     const [active_message_index, setActive_message_index] = useState(0);
+    const [userInfo, setUserInfo] = useState([]);
 
     const logoutHandle = (e) => {
         e.preventDefault();
@@ -25,6 +27,37 @@ const Header = () => {
             console.log(error);
         })
     }
+
+
+
+    const handleClick = () => {
+        if(sessionStorage.getItem("loginState") === "true") {
+            navigate('/mypage')
+        } else {
+            navigate('/mypage/mypageAccount')
+        }
+    }
+    //
+    // const handleClick = () => {
+    //     axios.get("http://localhost:8099/api/mypage/mypageAccount", {
+    //         params: { id, pw },
+    //         headers: { 'Content-Type': 'application/json'},
+    //         withCredentials: true
+    //     })
+    //         .then(response => {
+    //             setUserInfo(response.data);
+    //             if (response.data.success) {
+    //                 navigate('/mypage/mypageAccount');
+    //             } else {
+    //                 navigate('/mypage');
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         })
+    // }
+
+
 
     const index_choice = (index) => {
         if(active_index === index) {
@@ -155,12 +188,12 @@ const Header = () => {
                                 <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
                             </li>
                             <li>
-                                <Link to="/mypage/mypageAccount" style={{ textDecoration: 'none' }}>
-                                    <div className="menuList2-mypage">
+                                {/*<Link to="/mypage/mypageAccount" style={{ textDecoration: 'none' }}>*/}
+                                    <button onClick={handleClick} className="menuList2-mypage">
                                         <img src="/img/icon/mypage.png" alt="Main" className="mypage" />
                                         <span>마이페이지</span>
-                                    </div>
-                                </Link>
+                                    </button>
+                                {/*</Link>*/}
                                 
                             </li>
                             <li className="menuList2-box"></li>
