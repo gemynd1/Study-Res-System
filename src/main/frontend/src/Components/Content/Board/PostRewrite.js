@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../../../style/postRewrite.css';
+import { Link } from "react-router-dom";
 
 
 // 텍스트 ui import
@@ -41,10 +42,17 @@ import {
   numberInputClasses,
 } from '@mui/base/Unstable_NumberInput';
 
-
 // daum postcode api import
 import DaumPostcode from "react-daum-postcode";
 
+// swiper import
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+
+// daum postcode import
+import PostCodePopup from "../Account/AccountCom/PostCodePopup";
 
 // input ui component
 function BasicTextFields({label}) {
@@ -412,6 +420,12 @@ const PostRewrite = () => {
     setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.id !== Number(id)));
   }
 
+  const [studyRoomInfos, setStudyRoomInfos] = useState([
+    {id: 1, name: '스터디룸1'},
+    {id: 2, name: '스터디룸2'},
+    {id: 3, name: '스터디룸3'}
+  ]);
+
   // useEffect(() => {
   //   const script = document.createElement('script');
   //   script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -423,6 +437,20 @@ const PostRewrite = () => {
   //     document.body.removeChild(script);
   //   };
   // }, []);
+
+  const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
+  const [popup, setPopup] = useState(false);
+
+  const handleComplete = (data) => {
+      setPopup(!popup);
+  }
+
+  const handleInput = (e) => {
+    setEnroll_company({
+        ...enroll_company,
+        [e.target.name]:e.target.value,
+    });
+}
 
     return (
         <>
@@ -499,16 +527,51 @@ const PostRewrite = () => {
                                 <span className="kakaomap-text">카카오맵으로 찾아보기</span>
                             </div>
                             <div className="test">
-                                <input type="text" id="sample6_postcode" placeholder="우편번호" />
+                                {/* <input type="text" id="sample6_postcode" placeholder="우편번호" /> */}
                                 {/* <input type="button" onclick={sample6_execDaumPostcode} value="우편번호 찾기" /><br/> */}
-                                <input type="button" value="우편번호 찾기" /><br/>
-                                <input type="text" id="sample6_address" placeholder="주소" /><br/>
-                                <input type="text" id="sample6_detailAddress" placeholder="상세주소" />
+                                {/* <input type="button" value="우편번호 찾기" /><br/> */}
+                                {/* <input type="text" id="sample6_address" placeholder="주소" /><br/>
+                                <input type="text" id="sample6_detailAddress" placeholder="상세주소" /> */}
                                 {/* <input type="text" id="sample6_extraAddress" placeholder="참고항목" /> */}
+                                <div className="first-line">
+                                    <input type="text" name="zonecode" placeholder="우편번호" onChange={handleInput} value={enroll_company.zonecode} readOnly />
+                                    <button type="button" className="postBtn" onClick={handleComplete}>우편번호 찾기</button>
+                                </div>
+                                {popup && <PostCodePopup company={enroll_company} setcompany={setEnroll_company} />}
+                                <div className="second-line">
+                                    <input type="text" name="address" placeholder="도로명 주소" size="40" onChange={handleInput} value={enroll_company.address} readOnly />
+                                    <input type="hidden" name="latitude" value={enroll_company.latitude} />
+                                    <input type="hidden" name="longitude" value={enroll_company.longitude} />
+                                </div>
+                                <div className="third-line">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="detailedAddress"
+                                        placeholder="상세 주소"
+                                        size="40"
+                                        value={enroll_company.detailedAddress}
+                                        onChange={handleInput}
+                                    />
+                                </div>
                             </div>
                         </div>
-                     </div>) }
-                    {RadioValue === '스터디룸' && (<div className="meetingPoint-studyroom">스터디룸</div>) }
+                     </div>)}
+                    {RadioValue === '스터디룸' && 
+                    (<div className="meetingPoint-studyroom">
+                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postRewrite">
+
+                            {studyRoomInfos.map((studyRoomInfo) => (
+                                <SwiperSlide>
+                                    <div className="studyroom">
+                                        <img src={`/img/room/study room${studyRoomInfo.id}-1.png`} alt={`room${studyRoomInfo.id}`} />
+                                        <div>{studyRoomInfo.name}</div>
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+
+                        </Swiper>
+                     </div>)}
 
                     <div className="startdate-section">
                         <div className="startdate">

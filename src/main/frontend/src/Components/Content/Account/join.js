@@ -10,8 +10,6 @@ import JsonData from "../../../db/join.json";
 import PostCodePopup from "./AccountCom/PostCodePopup";
 import PhoneVali from "./AccountCom/PhoneVali";
 import IdVali from "./AccountCom/IdVali";
-// import PwVali from "./AccountCom/PwVali";
-// import PwCheckVali from "./AccountCom/PwCheckVali";
 
 const K_REST_API_KEY = process.env.REACT_APP_KAKAO_LOGIN_KEY;
 const K_REDIRECT_URI = "http://localhost:3000/oauth";

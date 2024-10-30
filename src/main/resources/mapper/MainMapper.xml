@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.project.SnakeDev.mapper.MainMapper">
+    <resultMap id="StudyGImgVo" type="com.project.SnakeDev.vo.StudyGImgVo">
+        <constructor>
+            <arg column="SGImg" javaType="String" />
+        </constructor>
+    </resultMap>
+    <resultMap id="StudyGInfoVo" type="com.project.SnakeDev.vo.StudyGInfoVo">
+        <result column="SGINum" property="SGINum" />
+        <result column="SGIContent1" property="SGIContent1" />
+        <result column="SGIContent2" property="SGIContent2" />
+        <collection property="studyGImgVo" resultMap="StudyGImgVo" />
+    </resultMap>
+    <select id="ViewStudyGInfo" resultMap="StudyGInfoVo">
+        select sgi.SGINum as SGINum ,
+               sgi.SGIContent1 as SGIContent1,
+               sgi.SGIContent2 as SGIContent2,
+               (select rs.sgimg
+                from
+                    (
+                        select
+                            a.*,
+                            row_number() over (partition by SGIIdx order by SGImg) as rn
+                        from tbl_studygimg a
+                        where a.sgiidx = sgi.sgiidx
+                    ) rs
+                where rs.rn = 1
+               ) as SGImg
+        from Tbl_studyGinfo sgi
+    </select>
+    <select id="ViewStudyInInfo" resultType="com.project.SnakeDev.vo.StudyInInfoVo">
+        SELECT * FROM Tbl_StudyInInfo
+    </select>
+</mapper>

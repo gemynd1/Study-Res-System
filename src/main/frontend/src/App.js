@@ -32,7 +32,19 @@ import CustomerWrite from "./Components/Content/CustomerHelp/CustomerWrite";
 import CustomerDetail from "./Components/Content/CustomerHelp/CustomerDetail";
 import ReviewWrite from "./Components/Content/Review/ReviewWrite";
 import ReviewDetail from "./Components/Content/Review/ReviewDetail";
+import Template_Create from "./Components/template/Template_Create";
+import Template_Editor from "./Components/template/Template_Editor";
+
 // import './App.css';
+const ScrollToTop  = () => {
+  const {pathname} = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0,0);
+  }, [pathname]);
+
+  return null;
+}
 
 function AppContent() {
   const [hello, setHello] = useState("");
@@ -79,16 +91,22 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
 
-        {/* mypage 따로 나눌수 있음 git merge */}
-        <Route path="/mypage/*" element={<Mypage />} />
-        <Route path="/mypage/mypageAccount" element={<MypageAccount />} />
-        <Route path="/mypage/mypageUpdate" element={<MypageUpdate />} />
-        <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
-        <Route path="/mypage/mypageReview" element={<MypageReview />} />
-        <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
-        <Route path="/teamdetail" element={<TeamDetail />} />
+          {/* mypage 따로 나눌수 있음 git merge */}
+          <Route path="/mypage/*" element={<Mypage />} />
+          <Route path="/mypage/mypageAccount" element={<MypageAccount />} />
+          <Route path="/mypage/mypageUpdate" element={<MypageUpdate />} />
+          <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
+          <Route path="/mypage/mypageReview" element={<MypageReview />} />
+          <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
+
+          <Route path="/teamdetail/*" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
+
+      <Routes>
+        <Route path="/create" element={<Template_Create />} />
+        <Route path="/editor" element={<Template_Editor />} />
+      </Routes>
     </>
   );
 }
