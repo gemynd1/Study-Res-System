@@ -47,7 +47,6 @@ const ScrollToTop  = () => {
 }
 
 function AppContent() {
-  const [hello, setHello] = useState("");
   const location = useLocation();
   const hideHeaderLogin =
     location.pathname === "/login" || location.pathname === "/join";
@@ -99,7 +98,8 @@ function AppContent() {
           <Route path="/mypage/mypageReview" element={<MypageReview />} />
           <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
 
-          <Route path="/teamdetail/*" element={<TeamDetail />} />
+          <Route  path="/teamdetail" />
+          <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
 

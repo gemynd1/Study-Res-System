@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="com.project.SnakeDev.mapper.MainMapper">
+    <!--  룸 모든 정보 보여줄때 사진 보여주기 위한 resultMap(한장의 사진)  -->
     <resultMap id="StudyGImgVo" type="com.project.SnakeDev.vo.StudyGImgVo">
         <constructor>
             <arg column="SGImg" javaType="String" />
+        </constructor>
+    </resultMap>
+    <!--  룸 상세 정보 보여줄 때 룸의 대한 가격 정보 보여주기 위한 resultMap  -->
+    <resultMap id="StudyGPareVo" type="com.project.SnakeDev.vo.StudyGPareVo">
+        <constructor>
+            <arg column="SGIIdx" javaType="java.lang.Integer" />
+            <arg column="SGPPrice" javaType="java.lang.Integer" />
         </constructor>
     </resultMap>
     <resultMap id="StudyGInfoVo" type="com.project.SnakeDev.vo.StudyGInfoVo">
@@ -11,6 +19,18 @@
         <result column="SGIContent1" property="SGIContent1" />
         <result column="SGIContent2" property="SGIContent2" />
         <collection property="studyGImgVo" resultMap="StudyGImgVo" />
+    </resultMap>
+    <resultMap id="StudyGInfoVo2" type="com.project.SnakeDev.vo.StudyGInfoVo">
+        <result column="SGINum" property="SGINum" />
+        <result column="SGIUseState" property="SGIUseState" />
+        <result column="SGIContent1" property="SGIContent1" />
+        <result column="SGIContent2" property="SGIContent2" />
+        <result column="SGIContent3" property="SGIContent3" />
+        <result column="SGIContent4" property="SGIContent4" />
+        <result column="SGIContent5" property="SGIContent5" />
+        <result column="SGIContent6" property="SGIContent6" />
+        <collection property="studyGImgVo" resultMap="StudyGImgVo" />
+        <collection property="studyGPareVo" resultMap="StudyGPareVo" />
     </resultMap>
     <select id="ViewStudyGInfo" resultMap="StudyGInfoVo">
         select sgi.SGINum as SGINum ,
@@ -31,5 +51,34 @@
     </select>
     <select id="ViewStudyInInfo" resultType="com.project.SnakeDev.vo.StudyInInfoVo">
         SELECT * FROM Tbl_StudyInInfo
+    </select>
+    <select id="ViewStudyGInfoDetail" resultMap="StudyGInfoVo2">
+        select sgi.SGINum,
+               sgi.SGIUseState,
+               sgi.SGIContent1,
+               sgi.SGIContent2,
+               TO_CHAR(sgi.sgicontent3) sgicontent3,
+               TO_CHAR(sgi.SGIContent4) sgicontent4,
+               TO_CHAR(sgi.SGIContent5) sgicontent5,
+               TO_CHAR(sgi.SGIContent6) sgicontent6,
+               sgp.SGIIdx,
+               sgp.SGPPrice,
+               LISTAGG(sgimg.SGImg, ', ') WITHIN GROUP (ORDER BY sgimg.SGImg) AS SGImg
+        from Tbl_studyGinfo sgi
+            LEFT JOIN Tbl_StudyGPare sgp ON sgi.SGIIdx = sgp.SGIIdx
+            INNER JOIN Tbl_studyGImg sgimg ON sgi.SGIIdx = sgimg.SGIIdx
+        where sgi.SGIIdx = #{sginum}
+        group by
+            sgi.sginum,
+            sgi.sgiusestate,
+            sgi.sgicontent1,
+            sgi.sgicontent2,
+            TO_CHAR(sgi.sgicontent3),
+            TO_CHAR(sgi.SGIContent4),
+            TO_CHAR(sgi.SGIContent5),
+            TO_CHAR(sgi.SGIContent6),
+            sgp.sgiidx,
+            sgp.sgpprice,
+            sgimg.sgimg
     </select>
 </mapper>

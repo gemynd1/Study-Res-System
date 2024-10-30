@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import axios from 'axios';
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,19 +18,128 @@ import dayjs from "dayjs";
 import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { Slideshow } from "@mui/icons-material";
+import { loadPaymentWidget, PaymentWidgetInstance } from "@tosspayments/payment-widget-sdk";
+import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+// import { nanoid } from nanoid;
+const { nanoid } = require('nanoid');
+
+const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+// const clientKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
+const customerKey = "ll-yw-PKw-5_SU3JBZJvL";
 
 // 예약 최종 확인 모델 여기서 데이터 처리
-const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
+const PaymentModal = ({
+  open, onClose, roomTitle, roomnum, date, 
+  start, end, time, people, totalPrice}) => {
+
+  const price = totalPrice;
+  const [ready, setReady] = useState(false);
+  const [widgets, setWidgets] = useState(null);
+  
+  useEffect(() => {
+    if(open) {
+      const fetchPaymentWidgets = async () => {
+        try {
+          // ------  결제위젯 초기화 ------
+          const tossPayments = await loadTossPayments(clientKey);
+          // 회원 결제
+          const widgets = tossPayments.widgets({
+            customerKey,
+          });
+          // 비회원 결제
+          // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
+          setWidgets(widgets);
+        } catch (error) {
+          console.error("Error loading Toss Payments widgets:", error);
+        }
+      }
+      fetchPaymentWidgets();
+    }
+  }, [clientKey, customerKey, open]);
+  
+  useEffect(() => {
+    const renderPaymentWidgets = async () => {
+      if (!widgets || !open) return;
+      setTimeout(async () => {
+        // ------ 주문의 결제 금액 설정 ------
+        await widgets.setAmount({
+          currency: "KRW",
+          value: Number(price),
+        });
+        try {
+          await Promise.all([
+            // ------ 결제 UI 렌더링 ------
+            widgets.renderPaymentMethods({
+              selector: "#payment-method",
+              variantKey: "DEFAULT",
+            }),
+            // ------ 이용약관 UI 렌더링 ------
+            widgets.renderAgreement({
+              selector: "#agreement",
+              variantKey: "AGREEMENT",
+            }),
+          ]);
+
+          setReady(true);
+        } catch (error) {
+          console.error("Error rendering payment widgets:", error);
+        }
+      }, 100);
+    }
+  
+    renderPaymentWidgets();
+  }, [widgets, open]);
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={{ ...modalStyle }}>
+        <div className="OrderTitle"
+          style={{ 
+            fontSize: "30px", fontWeight: "600", color: "#000000", marginBottom: "30px",
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          }}
+        >예약 정보</div>
         <Typography variant="h6">{roomTitle}</Typography>
         <Typography>날짜: {date}</Typography>
         <Typography>시간: {time}</Typography>
         <Typography>인원: {people}명</Typography>
         <Typography>총 가격: {totalPrice}원</Typography>
+        <div className="title" style={{ fontSize: "24px", fontWeight: "600", color: "#000000", marginTop: "20px" }}>결제방법</div>
+        <div id="payment-method" style={{ width: "100%" }} />
+        <div id="agreement" />
+        <button
+          style={{
+            marginTop: "20px", width: "100%" , height: "60px", fontSize: "1.25rem", padding: "12px 24px", 
+            margin: "2px 2px", color: "white", backgroundColor: "#3065AC", borderRadius: "3px", border:"none" 
+          }}
+          className="button"
+          disabled={!ready}
+          onClick={async () => {
+            try {
+              // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+              // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+              // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+              await widgets.requestPayment({
+                orderId: nanoid(),
+                orderName: "방이름",
+                successUrl: window.location.origin + `/success?roomTitle=${roomTitle}&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&OrderType=GroupOrder&MemberId=${sessionStorage.getItem("id")}`,
+                failUrl: window.location.origin + `/fail?roomTitle=${roomTitle}&roomnum=${roomnum}`,
+                // customerEmail: "taerangkim0116@gmail.com",
+                customerName: `${sessionStorage.getItem("name")}`,
+                customerMobilePhone: "01022487244",
+              });
+            } catch (error) {
+              // 에러 처리하기
+              console.error(error);
+            }
+          }}
+        >
+          예약하기
+        </button>
+        {/* <button id="payment-button" onClick={handlePaymentRequest}>결제하기</button> */}
         {/* 결제 툴 추가 해야함. */}
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "flex-end",
@@ -42,7 +152,7 @@ const PaymentModal = ({open,onClose,roomTitle,date,time,people,totalPrice}) => {
           <Button variant="contained" color="primary">
             예약
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Modal>
   );
@@ -53,7 +163,7 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -113,9 +223,10 @@ const RadioButtonsGroup = ({ selectedValue, setSelectedValue }) => {
         onChange={handleChange} // 변경 시 상태 업데이트
       >
         <FormControlLabel
-          value="1000"
+          value={selectedValue}
+          // value="1000"
           control={<Radio />}
-          label="1000원/시간(인)"
+          label={`${selectedValue}/시간(인)`}
         />
         {/* <FormControlLabel
           value="2000"
@@ -182,9 +293,11 @@ const BasicButtons = ({text, width, height, fontSize, padding, margin, backgroun
 // 예약가능 버튼
 const BasicButtons2 = ({
   text, width, height, fontSize, padding, margin, backgroundColor, 
-  color, selectedTimes, totalPrice, count, selectedDate
+  color, selectedTimes, totalPrice, count, selectedDate, roomOrderTitle, sginum
 }) => {
   const navigate = useNavigate();
+  const roomTitle= roomOrderTitle;
+  const roomnum = sginum;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isButtonReadonly, setIsButtonReadonly] = useState(true); // 읽기 전용 상태 관리
   // const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : ""; // 문자열로 변환
@@ -197,6 +310,9 @@ const BasicButtons2 = ({
         timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
           start + 1
         ).padStart(2, "0")}:00 (총 1시간)`,
+        totalHours: 1,
+        start,
+        end: start + 1,
       };
     } else if (times.length >= 2) {
       const start = Math.min(...times);
@@ -207,9 +323,12 @@ const BasicButtons2 = ({
         timeRange: `${String(start).padStart(2, "0")}:00 ~ ${String(
           end + 1
         ).padStart(2, "0")}:00 (총 ${totalHours}시간)`,
+        totalHours,
+        start,
+        end,
       };
     }
-    return { timeRange: "", totalHours: 0 };
+    return { timeRange: "", totalHours: 0, start: 0, end: 0};
   };
 
   const handleOpenModal = () => {
@@ -219,9 +338,7 @@ const BasicButtons2 = ({
   };
 
   const handleCloseModal = () => setIsModalOpen(false);
-
-  const roomTitle = "스터디룸 A";
-  const { timeRange, totalHours } = formatTimeRange(selectedTimes);
+  const { timeRange, totalHours, start, end } = formatTimeRange(selectedTimes);
 
   // selectedTimes와 selectedDate가 변경될 때마다 버튼 상태 업데이트
   useEffect(() => {
@@ -259,7 +376,10 @@ const BasicButtons2 = ({
         open={isModalOpen}
         onClose={handleCloseModal}
         roomTitle={roomTitle}
+        roomnum={roomnum}
         date={selectedDate ? selectedDate.format("YYYY-MM-DD") : ""}
+        start={start}
+        end={end}
         time={timeRange}
         totalHours={totalHours}
         people={count}
@@ -366,25 +486,37 @@ const TimeSelector = ({ selectedTimes, onTimeChange }) => {
 const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
-  const [count, setCount] = useState(3);
-  const [selectedValue, setSelectedValue] = useState("1000");
+  const [count, setCount] = useState(4);
+  const [selectedValue, setSelectedValue] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [isTimeChoiceSelected, setIsTimeChoiceSelected] = useState(false);
+  const {sgiId} = useParams(); // 파라미터 저장
+  // console.log(params.sgiId);
 
+  const [htmlcontentdata, sethtmlcontentdata] = useState(
+    {
+      SGINum : '',
+      SGIUseState : '',
+      SGIContent1 : '',
+      SGIContent2 : '',
+      SGIContent3 : ``,
+      SGIContent4 : ``,
+      SGIContent5 : ``,
+      SGIContent6 : ``,
+      SGIIdx : '',
+      SGPPrice : '',
+    }
+  );
+
+  const [ImgContent, setImgContent] = useState([]);
+  
   const handleRadioChange = (event) => {
     setIsTimeChoiceSelected(event.target.value === "timeChoice");
   };
 
   const totalPrice = selectedTimes.length * count * selectedValue;
 
-  const contentRefs = [
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-  ]
+  const contentRefs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)]
   const [activeIndex, setActiveIndex] = useState(null);
 
   useEffect(() => {
@@ -402,7 +534,7 @@ const TeamDetail = () => {
           }
         });
       },
-      { threshold: 0.5 } // 50% 이상 보이면 활성화
+      { threshold: 0.8 } // 50% 이상 보이면 활성화
     );
 
     contentRefs.forEach((ref) => {
@@ -420,6 +552,44 @@ const TeamDetail = () => {
     };
   }, [contentRefs]);
 
+  useEffect(() => {
+    axios.get('http://localhost:8099/api/studygInfoDetail', 
+    {
+      params: {
+        sgiId
+      },
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => {
+      console.log(res.data);
+      const Img = res.data['studyGImg'];
+      const data = res.data['studyGInfoVo'];
+      
+      sethtmlcontentdata((prevState) => ({
+        ...prevState,
+        SGINum : data.sginum,
+        SGIUseState : data.sgiuseState,
+        SGIContent1 : data.sgicontent1,
+        SGIContent2 : data.sgicontent2,
+        SGIContent3 : data.sgicontent3,
+        SGIContent4 : data.sgicontent4,
+        SGIContent5 : data.sgicontent5,
+        SGIContent6 : data.sgicontent6,
+        SGIIdx : data.studyGPareVo.sgiidx
+      }))
+      setImgContent(Img);
+      setSelectedValue(data.studyGPareVo.sgpprice);
+    })
+    .catch(error => {
+      console.log(error);
+      return false;
+    })
+  }, []);
+
+  useEffect(() => {
+    console.log('Updated htmlcontentdata:', htmlcontentdata, ImgContent, selectedValue);
+  }, [htmlcontentdata, ImgContent, selectedValue]);
+
   const onContentClick = (index) => {
     contentRefs[index]?.current?.scrollIntoView({behavior: 'smooth'});
     setActiveIndex(index);
@@ -432,194 +602,79 @@ const TeamDetail = () => {
     <div className="teamDetail">
       <div className="teamDetail__main">
         <div className="teamDetail__main-header">
-          <h1 className="teamDetail__main-content-title">안양역 스터디룸</h1>
+          <h1 className="teamDetail__main-content-title">{htmlcontentdata.SGIContent1}</h1>
           <h4 className="teamDetail__main-content-title-option">
-            스터디 최적의 공간
+            
           </h4>
         </div>
         <div className="teamDetail__main-image">
           <MyButtons swiper={swiper} />
           <Swiper
-            navigation={true}
+            navigation={ImgContent.length > 1}
             modules={[Navigation]}
             className="mySwiper"
             pagenation={{ clickable: true }}
             onSwiper={setSwiper}
           >
-            <SwiperSlide>Slide 1</SwiperSlide>
-            <SwiperSlide>Slide 2</SwiperSlide>
-            <SwiperSlide>Slide 3</SwiperSlide>
-            <SwiperSlide>Slide 4</SwiperSlide>
-            <SwiperSlide>Slide 5</SwiperSlide>
-            <SwiperSlide>Slide 6</SwiperSlide>
-            <SwiperSlide>Slide 7</SwiperSlide>
-            <SwiperSlide>Slide 8</SwiperSlide>
-            <SwiperSlide>Slide 9</SwiperSlide>
+            {/* <SwiperSlide>Slide 1</SwiperSlide> */}
+            {ImgContent.map((item, index) => (
+              <SwiperSlide key={index}>
+                <img src={item} alt={`Slide ${index}`} />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
         <div className="teamDetail__main-content">
-          <h1 className="teamDetail__main-content-title">
-            간단한 소개 글 안녕하세요 여기는 수성방입니다.
-          </h1>
-          {/* <h4 className="teamDetail__main-content-title-option"> */}
-            <div className="teamDetail__main-content-title-option_list">
-              <ul className="navarea">
-                <li onClick={() => onContentClick(0)} style={{backgroundColor : getSelectColor(0)}}>공간소개</li>
-                <li onClick={() => onContentClick(1)} style={{backgroundColor : getSelectColor(1)}}>시설안내</li>
-                <li onClick={() => onContentClick(2)} style={{backgroundColor : getSelectColor(2)}}>유의사항</li>
-                <li onClick={() => onContentClick(3)} style={{backgroundColor : getSelectColor(3)}}>환불정책</li>
-                <li onClick={() => onContentClick(4)} style={{backgroundColor : getSelectColor(4)}}>Q&A</li>
-                <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>이용후기</li>
-              </ul>
-            </div>
+          <h3 className="teamDetail__main-content-title">
+            {htmlcontentdata.SGIContent2}
+          </h3>
+          <div className="teamDetail__main-content-title-option_list">
+            <ul className="navarea">
+              <li onClick={() => onContentClick(0)} style={{backgroundColor : getSelectColor(0)}}>공간소개</li>
+              <li onClick={() => onContentClick(1)} style={{backgroundColor : getSelectColor(1)}}>시설안내</li>
+              <li onClick={() => onContentClick(2)} style={{backgroundColor : getSelectColor(2)}}>유의사항</li>
+              <li onClick={() => onContentClick(3)} style={{backgroundColor : getSelectColor(3)}}>환불정책</li>
+              {/* <li onClick={() => onContentClick(4)} style={{backgroundColor : getSelectColor(4)}}>Q&A</li> */}
+              <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>이용후기</li>
+            </ul>
+          </div>
             {/* 공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기 */}
-          {/* </h4> */}
+              {/* 안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "} */}
           {/* <div className="teamDetail__main-header-line" /> */}
           <div className="teamDetail__main-content-text" ref={contentRefs[0]}>
             <div className="teamDetail__main-content-text-title">공간소개</div>
             <div className="teamDetail__main-content-text-text">
-            <p>이 공간이 여러분의 아지트가 되길! 🧼✨&nbsp;</p>
-
-<p style="text-align: center;">깨끗함 속에서 어제보다 더 따뜻한 오늘을 채워보세요.</p>
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent3}} />
             </div>
           </div>
-          <div className="teamDetail__main-header-line" />
+          
           <div className="teamDetail__main-content-text" ref={contentRefs[1]}>
+            <div className="teamDetail__main-header-line" />
             <div className="teamDetail__main-content-text-title">시설안내</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent4}} />
             </div>
           </div>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[2]}>
             <div className="teamDetail__main-content-text-title">유의사항</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent5}} />
             </div>
           </div>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[3]}>
             <div className="teamDetail__main-content-text-title">환불정책</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent6}} />
             </div>
           </div>
-          <div className="teamDetail__main-header-line" />
+          {/* <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[4]}>
             <div className="teamDetail__main-content-text-title">Q&A</div>
             <div className="teamDetail__main-content-text-text">
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
-              안양역 스터디룸입니다.! <br /> 안영역에서 인기 있는 스터디룸!{" "}
             </div>
-          </div>
+          </div> */}
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
             <div className="teamDetail__main-content-text-title">이용후기</div>
@@ -673,7 +728,7 @@ const TeamDetail = () => {
                 </Stack>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
       </div>
       <div className="teamDetail__side&buttons">
@@ -688,7 +743,9 @@ const TeamDetail = () => {
               setSelectedValue={setSelectedValue}
             />
           </div>
-          <div className="teamDetail__side-image"></div>
+          <div className="teamDetail__side-image">
+            {/* 이미지 들어가야함. */}
+          </div>
           <div className="teamDetail__side-description">
             <div className="flex">
               <h3 className="teamDetail__side-content-text-text">공간유형</h3>
@@ -809,6 +866,8 @@ const TeamDetail = () => {
             totalPrice={totalPrice}
             count={count}
             selectedDate={selectedDate}
+            roomOrderTitle={htmlcontentdata.SGIContent1}
+            sginum={htmlcontentdata.SGINum}
           />
         </div>
       </div>

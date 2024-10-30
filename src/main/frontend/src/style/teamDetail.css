@@ -28,7 +28,7 @@ h2 {
 .teamDetail__main-header-line {
   border: 1px solid gray;
   margin: 5px 0;
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 .teamDetail__side-header-line {
   /* border: 1px solid #fffdfd; */

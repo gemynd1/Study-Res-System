@@ -14,7 +14,7 @@ const Header = () => {
 
     
     useEffect(() => {
-        if(sessionStorage.getItem("id") != null) {
+        if(sessionStorage.getItem("id") != null && sessionStorage.getItem("id") !== "musenet") {
             const checkSession = () => {
                 axios
                 .get("http://localhost:8099/api/session-status")
