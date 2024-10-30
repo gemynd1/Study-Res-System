@@ -25,10 +25,16 @@
         <result column="SGIUseState" property="SGIUseState" />
         <result column="SGIContent1" property="SGIContent1" />
         <result column="SGIContent2" property="SGIContent2" />
-        <result column="SGIContent3" property="SGIContent3" />
-        <result column="SGIContent4" property="SGIContent4" />
-        <result column="SGIContent5" property="SGIContent5" />
-        <result column="SGIContent6" property="SGIContent6" />
+        <result column="SGIDContent1" property="SGIDContent1" />
+        <result column="SGIDContent2" property="SGIDContent2" />
+        <result column="SGIDContent3" property="SGIDContent3" />
+        <result column="SGIDContent4" property="SGIDContent4" />
+        <result column="SGIDContent5" property="SGIDContent5" />
+        <result column="SGIDContent6" property="SGIDContent6" />
+        <result column="SGIDContent7" property="SGIDContent7" />
+        <result column="SGIDContent8" property="SGIDContent8" />
+        <result column="SGIDContent9" property="SGIDContent9" />
+        <result column="SGIDContent10" property="SGIDContent10" />
         <collection property="studyGImgVo" resultMap="StudyGImgVo" />
         <collection property="studyGPareVo" resultMap="StudyGPareVo" />
     </resultMap>
@@ -57,14 +63,21 @@
                sgi.SGIUseState,
                sgi.SGIContent1,
                sgi.SGIContent2,
-               TO_CHAR(sgi.sgicontent3) sgicontent3,
-               TO_CHAR(sgi.SGIContent4) sgicontent4,
-               TO_CHAR(sgi.SGIContent5) sgicontent5,
-               TO_CHAR(sgi.SGIContent6) sgicontent6,
+               TO_CHAR(sgid.sgidcontent1) sgidcontent1,
+               TO_CHAR(sgid.SGIdContent2) sgidcontent2,
+               TO_CHAR(sgid.SGIdContent3) sgidcontent3,
+               TO_CHAR(sgid.SGIdContent4) sgidcontent4,
+               sgid.sgidcontent5,
+               sgid.sgidcontent6,
+               sgid.sgidcontent7,
+               sgid.sgidcontent8,
+               sgid.sgidcontent9,
+               sgid.sgidcontent10,
                sgp.SGIIdx,
                sgp.SGPPrice,
                LISTAGG(sgimg.SGImg, ', ') WITHIN GROUP (ORDER BY sgimg.SGImg) AS SGImg
         from Tbl_studyGinfo sgi
+            inner join tbl_studyginfodetail sgid on sgi.sgiidx = sgid.sgiidx
             LEFT JOIN Tbl_StudyGPare sgp ON sgi.SGIIdx = sgp.SGIIdx
             INNER JOIN Tbl_studyGImg sgimg ON sgi.SGIIdx = sgimg.SGIIdx
         where sgi.SGIIdx = #{sginum}
@@ -73,10 +86,16 @@
             sgi.sgiusestate,
             sgi.sgicontent1,
             sgi.sgicontent2,
-            TO_CHAR(sgi.sgicontent3),
-            TO_CHAR(sgi.SGIContent4),
-            TO_CHAR(sgi.SGIContent5),
-            TO_CHAR(sgi.SGIContent6),
+            TO_CHAR(sgid.sgidcontent1),
+            TO_CHAR(sgid.SGIdContent2),
+            TO_CHAR(sgid.SGIdContent3),
+            TO_CHAR(sgid.SGIdContent4),
+            sgid.sgidcontent5,
+            sgid.sgidcontent6,
+            sgid.sgidcontent7,
+            sgid.sgidcontent8,
+            sgid.sgidcontent9,
+            sgid.sgidcontent10,
             sgp.sgiidx,
             sgp.sgpprice,
             sgimg.sgimg

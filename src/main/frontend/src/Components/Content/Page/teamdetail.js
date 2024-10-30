@@ -389,20 +389,21 @@ const BasicButtons2 = ({
   );
 }
 
-const TeamDetailButtons = ({ count, setCount }) => {
+const TeamDetailButtons = ({ count, setCount, start, end }) => {
   // const [count, setCount] = useState(3); // 초기값은 3
-
   const handleIncrement = () => {
-    if (count < 10) {
+    if (count < Number) {
       setCount(count + 1);
     }
   };
 
   const handleDecrement = () => {
-    if (count > 1) {
+    if (count > start) {
       setCount(count - 1);
     }
   };
+
+  console.log(start, end)
 
   return (
     <div className="teamDetail__side-buttons-wrap">
@@ -486,29 +487,33 @@ const TimeSelector = ({ selectedTimes, onTimeChange }) => {
 const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(0);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [isTimeChoiceSelected, setIsTimeChoiceSelected] = useState(false);
   const {sgiId} = useParams(); // 파라미터 저장
-  // console.log(params.sgiId);
-
+  const [ImgContent, setImgContent] = useState([]);
   const [htmlcontentdata, sethtmlcontentdata] = useState(
     {
       SGINum : '',
       SGIUseState : '',
       SGIContent1 : '',
       SGIContent2 : '',
-      SGIContent3 : ``,
-      SGIContent4 : ``,
-      SGIContent5 : ``,
-      SGIContent6 : ``,
+      SGIDContent1 : ``,
+      SGIDContent2 : ``,
+      SGIDContent3 : ``,
+      SGIDContent4 : ``,
+      SGIDContent5 : '',
+      SGIDContent6 : '',
+      SGIDContent7 : '',
+      SGIDContent8 : '',
+      SGIDContent9 : 0,
+      SGIDContent10 : 0,
       SGIIdx : '',
       SGPPrice : '',
     }
   );
-
-  const [ImgContent, setImgContent] = useState([]);
+  
   
   const handleRadioChange = (event) => {
     setIsTimeChoiceSelected(event.target.value === "timeChoice");
@@ -571,12 +576,19 @@ const TeamDetail = () => {
         SGIUseState : data.sgiuseState,
         SGIContent1 : data.sgicontent1,
         SGIContent2 : data.sgicontent2,
-        SGIContent3 : data.sgicontent3,
-        SGIContent4 : data.sgicontent4,
-        SGIContent5 : data.sgicontent5,
-        SGIContent6 : data.sgicontent6,
+        SGIDContent1 : data.sgidcontent1,
+        SGIDContent2 : data.sgidcontent2,
+        SGIDContent3 : data.sgidcontent3,
+        SGIDContent4 : data.sgidcontent4,
+        SGIDContent5 : data.sgidcontent5,
+        SGIDContent6 : data.sgidcontent6,
+        SGIDContent7 : data.sgidcontent7,
+        SGIDContent8 : data.sgidcontent8,
+        SGIDContent9 : Number(data.sgidcontent9),
+        SGIDContent10 : Number(data.sgidcontent10),
         SGIIdx : data.studyGPareVo.sgiidx
       }))
+      setCount(data.sgidcontent9);
       setImgContent(Img);
       setSelectedValue(data.studyGPareVo.sgpprice);
     })
@@ -644,7 +656,7 @@ const TeamDetail = () => {
           <div className="teamDetail__main-content-text" ref={contentRefs[0]}>
             <div className="teamDetail__main-content-text-title">공간소개</div>
             <div className="teamDetail__main-content-text-text">
-              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent3}} />
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIDContent1}} />
             </div>
           </div>
           
@@ -652,21 +664,21 @@ const TeamDetail = () => {
             <div className="teamDetail__main-header-line" />
             <div className="teamDetail__main-content-text-title">시설안내</div>
             <div className="teamDetail__main-content-text-text">
-              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent4}} />
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIDContent2}} />
             </div>
           </div>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[2]}>
             <div className="teamDetail__main-content-text-title">유의사항</div>
             <div className="teamDetail__main-content-text-text">
-              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent5}} />
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIDContent3}} />
             </div>
           </div>
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[3]}>
             <div className="teamDetail__main-content-text-title">환불정책</div>
             <div className="teamDetail__main-content-text-text">
-              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIContent6}} />
+              <div dangerouslySetInnerHTML={{__html: htmlcontentdata.SGIDContent4}} />
             </div>
           </div>
           {/* <div className="teamDetail__main-header-line" />
@@ -749,28 +761,23 @@ const TeamDetail = () => {
           <div className="teamDetail__side-description">
             <div className="flex">
               <h3 className="teamDetail__side-content-text-text">공간유형</h3>
-              <h4 className="teamDetail__side-content-text-text2">
-                회의룸 파티룸 스터디룸 강의실
-              </h4>
+              <h4 className="teamDetail__side-content-text-text2">{htmlcontentdata.SGIDContent5}</h4>
             </div>
             <div className="teamDetail__side-header-line" />
             <div className="flex">
               <h3 className="teamDetail__side-content-text-text">공간면적</h3>
-              <h4 className="teamDetail__side-content-text-text2">22평</h4>
+              <h4 className="teamDetail__side-content-text-text2">{htmlcontentdata.SGIDContent6}</h4>
             </div>
             <div className="teamDetail__side-header-line" />
 
             <div className="flex">
               <h3 className="teamDetail__side-content-text-text">예약시간</h3>
-              <h4 className="teamDetail__side-content-text-text2">
-                최소 2시간부터
-              </h4>
+              <h4 className="teamDetail__side-content-text-text2">{htmlcontentdata.SGIDContent7}</h4>
             </div>
             <div className="teamDetail__side-header-line" />
             <div className="flex">
               <h3 className="teamDetail__side-content-text-text">수용인원</h3>
-              <h4 className="teamDetail__side-content-text-text2">
-                최소4명 ~ 최대 10명
+              <h4 className="teamDetail__side-content-text-text2">{htmlcontentdata.SGIDContent8}
               </h4>
             </div>
             <div className="teamDetail__side-header-line" />
@@ -844,7 +851,12 @@ const TeamDetail = () => {
             <h3 className="teamDetail__side-content-text-text">총예약인원</h3>
             <div className="teamDetail__side-header-line" />
           </div>
-          <TeamDetailButtons count={count} setCount={setCount} />
+          <TeamDetailButtons 
+            count={count} 
+            setCount={setCount} 
+            start={htmlcontentdata.SGIDContent9} 
+            end={htmlcontentdata.SGIDContent10} 
+          />
           <div className="teamDetail__side-header">
             <h3 className="teamDetail__side-content-text-text">공간사용료</h3>
             <div className="teamDetail__side-header-line" />
