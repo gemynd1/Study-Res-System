@@ -1,0 +1,133 @@
+.my-h3 {
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.review__detail__underline {
+  border-bottom: 1px solid #000; /* 밑줄 굵기와 색상을 지정 */
+  margin-top: 10px; /* 상단 여백 추가 */
+}
+
+.review__detail--main{
+  width: 1220px;
+  height: auto;
+  margin: auto;
+  box-sizing: border-box;
+  margin-top: 200px;
+  background-color: aqua;
+}
+.reivew__detail__reivew{
+  padding: 76px 120px;
+}
+.profile-flex{
+  display: flex;
+}
+.review-hedaer-flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.review__detail__write__host-header-name{
+  color: red;
+}
+.review__detail__write__host-header-name2{
+  color: red;
+}
+.reivew__detail__reveiw--profile-name{
+  margin: 0 !important;
+}
+.review__detail__review--content{
+  margin-top: 16px;
+}
+.review__detail__reivew-wrap--img{
+  display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 48px;
+}
+
+.review__detail_review--img{
+  width: 300px;
+  height: 250px;
+}
+
+.review__detail__reivew--date{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+.review__detail__write__guest-tag-flex{
+  display: flex;
+}
+.mr8{
+  margin-right: 8px;
+  color: rgb(55, 16, 146);
+}
+/* .review__detail__write__comment-to-tag{
+  display: flex;
+} */
+
+.review__detail__write{
+  padding: 20px 60px;
+}
+.write--flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review__detail__comment{
+  padding: 60px;
+}
+.review__detail__write__host-content-flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review__detail__wirte__liek--flex{
+  display: flex;
+  margin-right: 24px;
+}
+
+.review__detail__write--flex{
+  display: flex;
+  align-items: center;
+}
+
+.review__detail__write__comment{
+
+  border: solid 1px;
+  color: rgb(0, 0, 0);
+  padding: 3px;
+  /* margin-right: 100px; */
+  /* opacity: 0.5; */
+}
+
+
+
+
+
+
+
+
+.review__detail__comment--write{
+  padding: 0 60px;
+}
+
+
+.review__detail__comment{
+  padding: 60px;
+}
+.review-input{
+  height: 50px;
+  width: 1000px;
+}
+.review-button{
+  padding: 16px;
+  margin-left: 29px;
+}
+.review__detail__comment-input{
+  display: flex;
+}

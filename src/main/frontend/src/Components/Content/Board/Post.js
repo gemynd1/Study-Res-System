@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import '../../../style/post.css';
 
@@ -64,6 +64,7 @@ function FadeMenu() {
     );
 }
 // 댓글 페이지네이션
+// props로 페이지네이션의 총 페이지 수를 받아와서 사용해야함.
 function BasicPagination() {
     return (
     <Pagination count={10} />
@@ -180,11 +181,11 @@ const TheaterLocation = () => {
     );
   };
 
-//   Mui-selected 찾아야함
-//   nav.pagination navigation
-const pageNationData = () => {
-    const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
-    console.log(currentPage);
+
+const pageNationData = (event) => {
+    const clickedElement = event.target;
+    console.log(clickedElement);
+    // clickedElement의 값을 사용해서 db에서 댓글에 대한 데이터를 select해오면 됨.
 }
 
 
@@ -219,6 +220,11 @@ const Post = () => {
             }
         };
     }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행되도록 합니다.
+
+    const [commentData, setCommentData] = useState([
+        {id:1, author:"김지민", refnum:1, num:1, groupNum:1, content:"111안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?", date:"2024-09-05 21:49:17"},
+        {id:2, author:"백지민", refnum:2, num:2, groupNum:1, content:"222네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능 합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.", date:"2024-09-05 21:49:17"},
+    ]);
 
     return (
         <>
@@ -318,56 +324,33 @@ const Post = () => {
                         <BasicModal />
                         {/* <span className="QandA-button-text">질문 작성하기</span> */}
                     </div>
+
                     <div className="post-comment-main">
-                        <div className="post-question">
-                            <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
-                            <div className="comment-text">
-                                <span className="comment-author-name">김지민</span>
-                                <p className="comment-detail">
-                                안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
-                                안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
-                                안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?
-                                </p>
-                                <span className="comment-loaddate">2024-09-05 21:49:17</span>
-                            </div>
+                        {commentData.map((comment) => (
+                            comment.refnum === 1 ? (
+                                <div className="post-question">
+                                    <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
+                                    <div className="comment-text">
+                                        <span className="comment-author-name">{comment.author}</span>
+                                        <p className="comment-detail">{comment.content}</p>
+                                        <span className="comment-loaddate">{comment.date}</span>
+                                    </div>
 
-                            <FadeMenu />
+                                    <FadeMenu />
 
-                            {/* <img src="/img/icon/seemore.png" alt="seemoreicon" className="comment-seemore" />
-                            <div className="comment-seemore-detail">
-                                <img src="/img/icon/report.png" alt="reporticon" className="comment-report-icon" />
-                                <span className="comment-report-text">신고</span>
-                            </div> */}
-                        </div>
-
-                        <div className="post-reply">
-                            <b className="post-reply-author">호스트의 답글</b>
-                            <p className="reply-detail">
-                            네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북
-                            사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능
-                            합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.
-                            </p>
-                            <span className="reply-loaddate">2024-09-05 21:49:17</span>
-                            {/* <img src="/img/icon/seemore.png" alt="seemoreicon" className="comment-seemore" /> */}
-                            {/* <div className="comment-seemore-detail">
-                                <img src="/img/icon/report.png" alt="reporticon" className="comment-report-icon" />
-                                <span className="comment-report-text">신고</span>
-                            </div> */}
-                        </div>
+                                </div>
+                            ) : comment.refnum === 2 ? (
+                                <div className="post-reply">
+                                    <b className="post-reply-author">호스트의 답글</b>
+                                    <p className="reply-detail">{comment.content}</p>
+                                    <span className="reply-loaddate">{comment.date}</span>
+                                </div>
+                            ) : null
+                        ))}
                     </div>
 
+                    {/* props로 페이지네이션의 총 페이지 수를 넘겨서 사용해야함. */}
                     <BasicPagination />
-                    {/* <div className="post-comment-footer">
-                        <img src="/img/icon/beforePage.png" alt="beforepageicon" className="before-page" />
-                        <img src="/img/icon/beforeNum.png" alt="beforenumicon" className="before-num" />
-                        <div className="page-num-section">
-                            <span className="page-num">1</span>
-                            <span className="page-num">2</span>
-                            <span className="page-num">3</span>
-                        </div>
-                        <img src="/img/icon/nextNum.png" alt="nextnumicon" className="next-num" />
-                        <img src="/img/icon/nextPage.png" alt="nextpageicon" className="next-page" />
-                    </div> */}
 
                 </div>
 

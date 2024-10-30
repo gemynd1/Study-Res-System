@@ -48,49 +48,80 @@ const Board = () => {
                             {/* <div className="writeButton-2"></div> */}
                         </Link>
                     </div>
-                    <div className="board-category-1">
-                        <div className="board-category-1-background">
-                            <div className="board-category-1-headerbar">
-                                <img src="/img/icon/deadline.png" alt="deadline" className="board-category-1-headerbar-img"></img>
-                                <p className="board-category-1-headerbar-title">시작이 얼마남지 않은 모임을 확인해보세요! </p>
-                                <Link to="/board/category/deadline" className="board-category-1-headerbar-btn">
-                                    <span className="board-category-1-headerbar-btn-text">더보기</span>
-                                </Link>
-                            </div>
-                            {boardContents.map((content) => (
-                                <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
-                                    <p className="board-category-1-content-title">{content.title}</p>
-                                    <p className="board-category-1-content-detail">{content.detail}</p>
+                    <div className="board-section">
+                        <div className="board-category-1">
+                            <div className="board-category-1-background">
+                                <div className="board-category-1-headerbar">
+                                    <img src="/img/icon/deadline.png" alt="deadline" className="board-category-1-headerbar-img"></img>
+                                    <p className="board-category-1-headerbar-title">시작이 얼마남지 않은 모임을 확인해보세요! </p>
+                                    <Link to="/board/category/deadline" className="board-category-1-headerbar-btn">
+                                        <span className="board-category-1-headerbar-btn-text">더보기</span>
+                                    </Link>
+                                </div>
+                                {boardContents.map((content) => (
+                                    <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
+                                        <p className="board-category-1-content-title">{content.title}</p>
+                                        <p className="board-category-1-content-detail">{content.detail}</p>
+                                        <div className="board-category-1-content-info">
+                                            <div className="board-category-1-content-info-dday">
+                                                <span className="board-category-1-content-info-dday-text">D-DAY</span>
+                                            </div>
+                                            <p className="board-category-1-content-info-date">{content.date}</p>
+                                            <p className="board-category-1-content-info-address">{content.address}</p>
+                                        </div>
+                                        <div className="board-category-1-content-info2">
+                                            <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
+                                            <p className="board-category-1-content-info2-count">{content.group}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                                {/* <div className="board-category-1-content" onClick={() => contentClick("/board/post/1")}>
+                                    <p className="board-category-1-content-title">이 글의 제목입니다.</p>
+                                    <p className="board-category-1-content-detail">이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.</p>
                                     <div className="board-category-1-content-info">
                                         <div className="board-category-1-content-info-dday">
                                             <span className="board-category-1-content-info-dday-text">D-DAY</span>
                                         </div>
-                                        <p className="board-category-1-content-info-date">{content.date}</p>
-                                        <p className="board-category-1-content-info-address">{content.address}</p>
+                                        <p className="board-category-1-content-info-date">2024년 09월 05일 AM 12:00</p>
+                                        <p className="board-category-1-content-info-address">장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)</p>
                                     </div>
                                     <div className="board-category-1-content-info2">
                                         <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
-                                        <p className="board-category-1-content-info2-count">{content.group}</p>
+                                        <p className="board-category-1-content-info2-count">1 / 5 명 (최소 2명)</p>
                                     </div>
-                                </div>
-                            ))}
-
-                            {/* <div className="board-category-1-content" onClick={() => contentClick("/board/post/1")}>
-                                <p className="board-category-1-content-title">이 글의 제목입니다.</p>
-                                <p className="board-category-1-content-detail">이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.</p>
-                                <div className="board-category-1-content-info">
-                                    <div className="board-category-1-content-info-dday">
-                                        <span className="board-category-1-content-info-dday-text">D-DAY</span>
-                                    </div>
-                                    <p className="board-category-1-content-info-date">2024년 09월 05일 AM 12:00</p>
-                                    <p className="board-category-1-content-info-address">장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)</p>
-                                </div>
-                                <div className="board-category-1-content-info2">
-                                    <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
-                                    <p className="board-category-1-content-info2-count">1 / 5 명 (최소 2명)</p>
-                                </div>
-                            </div> */}
+                                </div> */}
+                            </div>
                         </div>
+
+                        <div className="board-category-2">
+                            <div className="board-category-2-background">
+                                <div className="board-category-2-headerbar">
+                                    <img src="/img/icon/new.png" alt="new" className="board-category-2-headerbar-img"></img>
+                                    <p className="board-category-2-headerbar-title">새롭게 만들어진 모임을 확인해보세요! </p>
+                                    <Link to="/board/category/new" className="board-category-2-headerbar-btn">
+                                        <span className="board-category-2-headerbar-btn-text">더보기</span>
+                                    </Link>
+                                </div>
+                                {boardContents.map((content) => (
+                                    <div className="board-category-2-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
+                                        <p className="board-category-2-content-title">{content.title}</p>
+                                        <p className="board-category-2-content-detail">{content.detail}</p>
+                                        <div className="board-category-2-content-info">
+                                            <div className="board-category-2-content-info-dday">
+                                                <span className="board-category-2-content-info-dday-text">D-DAY</span>
+                                            </div>
+                                            <p className="board-category-2-content-info-date">{content.date}</p>
+                                            <p className="board-category-2-content-info-address">{content.address}</p>
+                                        </div>
+                                        <div className="board-category-2-content-info2">
+                                            <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-2-content-info2-group" />
+                                            <p className="board-category-2-content-info2-count">{content.group}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

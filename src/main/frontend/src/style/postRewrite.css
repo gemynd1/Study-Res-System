@@ -363,8 +363,8 @@ div.postRewrite-section div.meetingPoint-detailaddress {
 
 div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background {
     padding-top: 5%;
-    margin-right: 30%;
-    margin-left: 30%;
+    margin-right: 25%;
+    margin-left: 25%;
     background: #B1B1B1;
     border-radius: 20px;
     display: flex;
@@ -400,6 +400,78 @@ div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-backgro
 div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test {
     padding-bottom: 10%;
 }
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.first-line input {
+    font-size: 20px;
+    margin-bottom: 1%;
+    margin-right: 2%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.first-line button {
+    font-size: 20px;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.second-line input {
+    font-size: 20px;
+    margin-bottom: 1%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.third-line input {
+    font-size: 20px;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div div {
+    position: absolute;
+    z-index: 9;
+}
+
+div.postRewrite-section div.meetingPoint-studyroom {
+    margin-bottom: 3%;
+}
+
+.swiper {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.swiper-slide {
+    text-align: center !important;
+    font-size: 18px !important;
+    background: #D9D9D9 !important;
+
+    /* Center slide text vertically */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.swiper-slide img {
+    display: block !important;
+    width: 1000px !important;
+    height: 550px !important;
+    object-fit: cover !important;
+}
+
+/* div.postRewrite-section div.meetingPoint-studyroom div.mySwiper_postRewrite {
+    width: 100%;
+    height: 100%;
+}
+
+div.postRewrite-section div.meetingPoint-studyroom div.mySwiper_postRewrite div.swiper-wrapper {
+    text-align: center;
+    font-size: 18px;
+    background: #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.postRewrite-section div.meetingPoint-studyroom swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+} */
 
 div.postRewrite-section div.startdate-section {
     display: flex;

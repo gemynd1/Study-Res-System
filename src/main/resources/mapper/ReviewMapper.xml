@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.project.SnakeDev.mapper.ReviewMapper">
+
+    <select id="findMidxByUserName" resultType="int" >
+        SELECT MIDX FROM TBL_MEMBER WHERE MEMBERNAME = #{userName}
+    </select>
+
+    <insert id="insertReview" useGeneratedKeys="true" keyProperty="srIdx">
+        INSERT INTO TBL_STUDYREVIEW (SGIIDX, MIDX, SRCONTENT, SRSTAR, SRREGDATE)
+        VALUES (#{sgiIdx}, #{midx}, #{srContent}, #{srStar}, NOW())
+    </insert>
+
+    <insert id="insertReviewImage">
+        INSERT INTO TBL_STUDYREVIEWIMG (SRIIDX, SRIIMG)
+        VALUES (#{srIdx}, #{fileName})
+    </insert>
+
+    <select id="findTagIdByContent" resultType="Integer">
+        SELECT TSHTLIDX FROM TBL_STUDYHASTAGLIST WHERE TSHTLCONTENT = #{tagContent}
+    </select>
+
+    <insert id="insertTag" useGeneratedKeys="true" keyProperty="tagId">
+        INSERT INTO TBL_STUDYHASTAGLIST (TSHTLCONTENT)
+        VALUES (#{tagContent})
+    </insert>
+
+    <insert id="insertReviewTag">
+        INSERT INTO TBL_STUDYHASTAG (SRIDX, TSHTLIDX)
+        VALUES (#{srIdx}, #{tagId})
+    </insert>
+
+    <select id="findById" resultType="com.project.SnakeDev.vo.ReviewVo">
+        SELECT * FROM TBL_STUDYREVIEW WHERE SRIDX = #{id}
+    </select>
+
+</mapper>
