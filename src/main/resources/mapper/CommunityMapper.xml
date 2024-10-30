@@ -3,7 +3,19 @@
 <mapper namespace="com.project.SnakeDev.mapper.CommunityMapper">
 
     <select id="ViewCommunity" resultType="com.project.SnakeDev.vo.CommunityVo">
-        select * from tbl_community
+        SELECT 
+            c.*, 
+            COUNT(ts.COMIDX) AS GroupCount
+        FROM 
+            tbl_community c
+        LEFT JOIN 
+            tbl_TogetherStudy ts 
+        ON 
+            c.COMIDX = ts.COMIDX
+        GROUP BY 
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+        ORDER BY 
+            c.COMIDX
     </select>
 
 </mapper>

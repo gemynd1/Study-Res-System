@@ -16,6 +16,8 @@ const Board = () => {
         // {id:5, category:1, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
     ]);
 
+    const [boardCategorys, setBoardCategory] = useState([]);
+
     useEffect(() => {
         axios.get("http://localhost:8099/api/board", 
             {
@@ -30,6 +32,8 @@ const Board = () => {
             console.log(error); // 응답 출력
         });
     }, []);
+
+    console.log(boardContents);
 
     return (
         <>
@@ -70,21 +74,23 @@ const Board = () => {
                                     </Link>
                                 </div>
                                 {boardContents.map((content) => (
-                                    <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.comIdx}`)}>
-                                        <p className="board-category-1-content-title">{content.comTitle}</p>
-                                        <p className="board-category-1-content-detail">{content.comContent}</p>
-                                        <div className="board-category-1-content-info">
-                                            <div className="board-category-1-content-info-dday">
-                                                <span className="board-category-1-content-info-dday-text">D-DAY</span>
+                                    content.comCateIdx === 1 ? (
+                                            <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.comIdx}`)}>
+                                                <p className="board-category-1-content-title">{content.comTitle}</p>
+                                                <p className="board-category-1-content-detail">{content.comContent}</p>
+                                                <div className="board-category-1-content-info">
+                                                    <div className="board-category-1-content-info-dday">
+                                                        <span className="board-category-1-content-info-dday-text">D-DAY</span>
+                                                    </div>
+                                                    <p className="board-category-1-content-info-date">{content.comStartDate}</p>
+                                                    <p className="board-category-1-content-info-address">{content.comAddress}</p>
+                                                </div>
+                                                <div className="board-category-1-content-info2">
+                                                    <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
+                                                    <p className="board-category-1-content-info2-count">{content.groupCount + 1} / {content.comToCount}</p>
+                                                </div>
                                             </div>
-                                            <p className="board-category-1-content-info-date">{content.comStartDate}</p>
-                                            <p className="board-category-1-content-info-address">{content.comAddress}</p>
-                                        </div>
-                                        <div className="board-category-1-content-info2">
-                                            <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
-                                            <p className="board-category-1-content-info2-count">{content.comToCount}</p>
-                                        </div>
-                                    </div>
+                                    ) : null
                                 ))}
                                 {/* <div className="board-category-1-content" onClick={() => contentClick("/board/post/1")}>
                                     <p className="board-category-1-content-title">이 글의 제목입니다.</p>
@@ -114,21 +120,23 @@ const Board = () => {
                                     </Link>
                                 </div>
                                 {boardContents.map((content) => (
-                                    <div className="board-category-2-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
-                                        <p className="board-category-2-content-title">{content.title}</p>
-                                        <p className="board-category-2-content-detail">{content.detail}</p>
-                                        <div className="board-category-2-content-info">
-                                            <div className="board-category-2-content-info-dday">
-                                                <span className="board-category-2-content-info-dday-text">D-DAY</span>
+                                    content.comCateIdx === 2 ? (
+                                        <div className="board-category-2-content" onClick={() => contentClick(`/board/post/${content.comIdx}`)}>
+                                            <p className="board-category-2-content-title">{content.comTitle}</p>
+                                            <p className="board-category-2-content-detail">{content.comContent}</p>
+                                            <div className="board-category-2-content-info">
+                                                <div className="board-category-2-content-info-dday">
+                                                    <span className="board-category-2-content-info-dday-text">D-DAY</span>
+                                                </div>
+                                                <p className="board-category-2-content-info-date">{content.comStartDate}</p>
+                                                <p className="board-category-2-content-info-address">{content.comAddress}</p>
                                             </div>
-                                            <p className="board-category-2-content-info-date">{content.date}</p>
-                                            <p className="board-category-2-content-info-address">{content.address}</p>
+                                            <div className="board-category-2-content-info2">
+                                                <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-2-content-info2-group" />
+                                                <p className="board-category-2-content-info2-count">{content.groupCount + 1} / {content.comToCount}</p>
+                                            </div>
                                         </div>
-                                        <div className="board-category-2-content-info2">
-                                            <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-2-content-info2-group" />
-                                            <p className="board-category-2-content-info2-count">{content.group}</p>
-                                        </div>
-                                    </div>
+                                    ) : null
                                 ))}
                             </div>
                         </div>

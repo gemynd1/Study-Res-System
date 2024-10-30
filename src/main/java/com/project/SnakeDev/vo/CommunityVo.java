@@ -8,10 +8,14 @@ public class CommunityVo {
     private int ComReportCount;
     private String ComGroupName;
 
+    private int GroupCount;
+
+    // 기본생성자
     public CommunityVo() {
 
     }
 
+    // community테이블의 기본값만을 사용할때의 vo
     public CommunityVo(int comIdx, int comCateIdx, int MIdx, String comTitle, String comContent, String comRegDate, String comDelDate, String comUpDate, int comintoDate, int comToCount, String comStartDate, String comEndDate, String comPlace, String comZipcode, String comAddress, int comReportCount, String comGroupName) {
         ComIdx = comIdx;
         ComCateIdx = comCateIdx;
@@ -30,6 +34,28 @@ public class CommunityVo {
         ComAddress = comAddress;
         ComReportCount = comReportCount;
         ComGroupName = comGroupName;
+    }
+
+    // community테이블과 groupcount테이블과 조인했을때 사용되는 vo
+    public CommunityVo(int comIdx, int comCateIdx, int MIdx, String comTitle, String comContent, String comRegDate, String comDelDate, String comUpDate, int comintoDate, int comToCount, String comStartDate, String comEndDate, String comPlace, String comZipcode, String comAddress, int comReportCount, String comGroupName, int groupCount) {
+        ComIdx = comIdx;
+        ComCateIdx = comCateIdx;
+        this.MIdx = MIdx;
+        ComTitle = comTitle;
+        ComContent = comContent;
+        ComRegDate = comRegDate;
+        ComDelDate = comDelDate;
+        ComUpDate = comUpDate;
+        ComintoDate = comintoDate;
+        ComToCount = comToCount;
+        ComStartDate = comStartDate;
+        ComEndDate = comEndDate;
+        ComPlace = comPlace;
+        ComZipcode = comZipcode;
+        ComAddress = comAddress;
+        ComReportCount = comReportCount;
+        ComGroupName = comGroupName;
+        GroupCount = groupCount;
     }
 
     public int getComIdx() {
@@ -166,5 +192,13 @@ public class CommunityVo {
 
     public void setComGroupName(String comGroupName) {
         ComGroupName = comGroupName;
+    }
+
+    public int getGroupCount() {
+        return GroupCount;
+    }
+
+    public void setGroupCount(int groupCount) {
+        GroupCount = groupCount;
     }
 }
