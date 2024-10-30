@@ -19,12 +19,12 @@ public class testController {
     @Autowired
     private BoardService boardService;
 
-    @RequestMapping(value = "/main")
-    public List<BoardVo> test(Model model){
+//    @RequestMapping(value = "/test")
+//    public List<BoardVo> test(Model model){
 //        List<BoardVo> tables = new ArrayList<>();
 //        tables.addAll(boardService.viewAll());
 //
 //        model.addAttribute("viewAll", tables);
-        return boardService.viewAll();
-    }
+//        return boardService.viewAll();
+//    }
 }

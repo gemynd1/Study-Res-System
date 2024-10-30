@@ -28,19 +28,21 @@
         <constructor-arg ref="sqlSessionFactory" />
     </bean>
 
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg ref="sqlSessionFactory" />
-    </bean>
+<!--    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">-->
+<!--        <constructor-arg ref="sqlSessionFactory" />-->
+<!--    </bean>-->
+
     <context:component-scan base-package="com.project.SnakeDev.controller"/>
     <!-- 크론탭 설정에 -->
     <task:scheduler id="jobScheduler" pool-size="10"/>
     <task:annotation-driven scheduler="jobScheduler"/>
+
+
 </beans>
+<!--<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="SqlSessionFactory">-->
+<!--<property name="dataSource" ref="dataSource" />-->
+<!--<property value="classpath:/mybatis/mybatis-config.xml" name="configLocation" />-->
+<!--<property value="classpath:/mapper/*Mapper.xml" name="mapperLocations" />-->
+<!--</bean>-->
 
-        <!--        <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="SqlSessionFactory">-->
-        <!--            <property name="dataSource" ref="dataSource" />-->
-        <!--            <property value="classpath:/mybatis/mybatis-config.xml" name="configLocation" />-->
-        <!--            <property value="classpath:/mapper/*Mapper.xml" name="mapperLocations" />-->
-        <!--        </bean>-->
-
-        <!--        <mybatis-spring:scan base-package="com.project.SnakeProject.mapper" />-->
+<!--<mybatis-spring:scan base-package="com.project.SnakeDev.mapper" />-->

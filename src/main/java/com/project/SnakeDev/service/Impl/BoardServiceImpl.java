@@ -13,8 +13,8 @@ public class BoardServiceImpl implements BoardService {
     @Autowired
     private BoardMapper mapper;
 
-    @Override
-    public List<BoardVo> viewAll() {
-        return mapper.viewAll();
-    }
+//    @Override
+//    public List<BoardVo> viewAll() {
+//        return mapper.viewAll();
+//    }
 }

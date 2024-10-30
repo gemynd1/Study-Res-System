@@ -287,6 +287,10 @@ div.postRewrite-section div.meetingPoint-section div.MuiFormControl-root {
     width: 714px;
 }
 
+div.postRewrite-section div.meetingPoint-studyroom {
+    margin-bottom: 3%;
+}
+
 div.postRewrite-section div.meetingPoint-detailaddress {
     margin-bottom: 10%;
 }
@@ -329,6 +333,30 @@ div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-backgro
 
 div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test {
     padding-bottom: 10%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.first-line input {
+    font-size: 20px;
+    margin-bottom: 1%;
+    margin-right: 2%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.first-line button {
+    font-size: 20px;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.second-line input {
+    font-size: 20px;
+    margin-bottom: 1%;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div.third-line input {
+    font-size: 20px;
+}
+
+div.postRewrite-section div.meetingPoint-detailaddress div.detailaddress-background div.test div div {
+    position: absolute;
+    z-index: 9;
 }
 
 div.postRewrite-section div.startdate-section {

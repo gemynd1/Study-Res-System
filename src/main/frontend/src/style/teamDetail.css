@@ -26,28 +26,32 @@ h2 {
 }
 
 .teamDetail__main-header-line {
-  border: 1px solid #fffdfd;
+  border: 1px solid gray;
   margin: 5px 0;
   opacity: 0.5;
 }
 .teamDetail__side-header-line {
-  border: 1px solid #fffdfd;
+  /* border: 1px solid #fffdfd; */
+  border : 1px solid gray;
   margin: 10px 0;
   opacity: 0.5;
 }
 
 .teamDetail {
+  background-color: #f6f6f6;
   display: flex;
   flex-direction: row;
-  /* background-color: gray; */
-  width: 1440px;
+  flex-wrap: wrap;
+  width: 100%;
+  /* width: 1440px; */
   height: 100%;
   margin: 0 auto;
-  box-sizing: border-box;
+  justify-content: center;
+  /* box-sizing: border-box; */
 }
 
 .teamDetail__main {
-  background-color: #d9d9d9;
+  /* background-color: #f6f6f6; */
   width: 867px;
   height: 100%;
   display: flex;
@@ -102,6 +106,63 @@ h2 {
   width: 761px;
   margin-bottom: 36px;
 }
+.teamDetail__main-content-title {
+  padding-bottom: 25px;
+}
+.teamDetail__main-content-title-option_list {
+  position: sticky;
+  top: 0;
+  width: 761px;
+  background: #ffffff;
+  /* border-radius: 10px; */
+  margin-bottom: 70px;
+
+}
+.teamDetail__main-content-title-option_list .navarea {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0;
+  /* border-radius: 10px; */
+  border-bottom: 2px solid blueviolet;
+}
+.teamDetail__main-content-title-option_list .navarea li {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 0;
+  list-style: none;
+  font-size: 24px;
+  position: relative;
+  font-weight: 550;
+  color: #000000;
+}
+.teamDetail__main-content-title-option_list .navarea li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 50%;
+  width: 2px;
+  background-color: blueviolet;
+}
+.teamDetail__main-content-text {
+  scroll-margin-top: 80px;
+}
+.teamDetail__main-content-text-title {
+  font-size: 35px;
+  font-weight: 550;
+  padding: 15px;
+}
+.teamDetail__main-content-text-text {
+  font-size: 20px;
+  font-weight: 300;
+  padding: 25px;
+}
+
+
 .teamDetail__main-review {
   background-color: #ffffff;
   width: 761px;
@@ -141,7 +202,8 @@ h2 {
   width: 168px;
 }
 .teamDetail__side {
-  background-color: #d9d9d9;
+  border: 1px solid blueviolet;
+  background-color: #fffdfd;
   margin-left: 35px;
   width: 538px;
   /* height: 1400px; */

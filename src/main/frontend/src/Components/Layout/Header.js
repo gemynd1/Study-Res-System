@@ -12,15 +12,39 @@ const Header = () => {
     const [active_message_index, setActive_message_index] = useState(0);
     const [userInfo, setUserInfo] = useState([]);
 
+    
+    useEffect(() => {
+        if(sessionStorage.getItem("id") != null) {
+            const checkSession = () => {
+                axios
+                .get("http://localhost:8099/api/session-status")
+                .then(response => {
+                    if(response.data != 200) {
+                        logoutHandle();    
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    logoutHandle();
+                })
+            }
+            
+    
+            const interval = setInterval(checkSession, 10 * 60 * 1000); // 10분
+            return () => clearInterval(interval);
+        }
+    })
+    
     const logoutHandle = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         axios.post("http://localhost:8099/api/logout")
         .then(response => {
             if(response.data === true) {
-                console.log(response.data);
+                // console.log(response.data);
                 sessionStorage.clear();
                 alert("로그아웃 되었습니다.");
                 navigate("/");
+                window.location.reload();
             }
         })
         .catch(error => {
@@ -28,6 +52,7 @@ const Header = () => {
         })
     }
 
+<<<<<<< HEAD
 
 
     const handleClick = () => {
@@ -58,6 +83,9 @@ const Header = () => {
     // }
 
 
+=======
+    
+>>>>>>> b3f02021d1440cb15192f69e46de2fc0698cff0d
 
     const index_choice = (index) => {
         if(active_index === index) {
