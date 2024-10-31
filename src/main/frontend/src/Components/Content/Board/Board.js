@@ -8,6 +8,7 @@ const contentClick = (url) => {
 }
 
 const Board = () => {
+    // 게시글을 담아두는 state
     const [boardContents, setBoardContents] = useState([
         // {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
         // {id:2, category:1, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
@@ -16,24 +17,31 @@ const Board = () => {
         // {id:5, category:1, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
     ]);
 
+    // 카테고리를 담어두는 state
     const [boardCategorys, setBoardCategory] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8099/api/board", 
-            {
+        axios.all([
+            axios.get("http://localhost:8099/api/board/category", {
                 headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
-            }
+            }),
+            axios.get("http://localhost:8099/api/board", {
+                headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
+            })
+        ])
+        .then(
+            axios.spread((res1, res2) => {
+                setBoardCategory(res1.data);
+                setBoardContents(res2.data);
+            })
         )
-        .then(response => {
-            setBoardContents(response.data);
-        })
         .catch(error => {
             // 오류 처리
             console.log(error); // 응답 출력
         });
     }, []);
 
-    console.log(boardContents);
+    // console.log(boardCategorys);
 
     return (
         <>
@@ -41,26 +49,27 @@ const Board = () => {
                 <div className="board-page">
                     <div className="board-menubar">
                         <div className="category-section">
-                            <Link to="/board/category/deadline" className="category1 category">
-                                <img src="/img/icon/deadline(circle).png" alt="deadline" className="category1-image"/>
-                                <div className="category1-title">곧 마감!</div>
-                            </Link>
-                            <Link to="/board/category/new" className="category2 category">
-                                <img src="/img/icon/new(circle).png" alt="new" className="category2-image"/>
-                                <div className="category2-title">NEW!</div>
-                            </Link>
-                            <Link to="/board/category/programming" className="category3 category">
-                                <img src="/img/icon/programming(circle).png" alt="programming" className="category3-image"/>
-                                <div className="category3-title">프로그래밍</div>
-                            </Link>
-                            <Link to="/board/category/programming" className="category4 category">
-                                <img src="/img/icon/programming(circle).png" alt="programming" className="category4-image"/>
-                                <div className="category4-title">영어</div>
-                            </Link>
+                            {boardCategorys.map((category) => (
+                                category.comcateidx === 1 ? (
+                                    <Link to="/board/category/deadline" className="category1 category">
+                                        <img src="/img/icon/deadline(circle).png" alt="deadline" className="category1-image"/>
+                                        <div className="category1-title">{category.comcatename}</div>
+                                    </Link>
+                                ) : category.comcateidx === 2 ? (
+                                    <Link to="/board/category/new" className="category2 category">
+                                        <img src="/img/icon/new(circle).png" alt="new" className="category2-image"/>
+                                        <div className="category2-title">NEW!</div>
+                                    </Link>
+                                ) : category.comcateidx === 3 ? (
+                                    <Link to="/board/category/programming" className="category3 category">
+                                        <img src="/img/icon/programming(circle).png" alt="programming" className="category3-image"/>
+                                        <div className="category3-title">프로그래밍</div>
+                                    </Link>
+                                ) : null
+                            ))}
                         </div>
                         <Link to="/board/postWrite" className="writeButton">
                             <div className="writeButton-1">글쓰기</div>
-                            {/* <div className="writeButton-2"></div> */}
                         </Link>
                     </div>
                     <div className="board-section">

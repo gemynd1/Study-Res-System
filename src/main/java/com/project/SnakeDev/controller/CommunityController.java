@@ -25,4 +25,9 @@ public class CommunityController {
         return ResponseEntity.ok(communityService.ViewCommunity());
     }
 
+    @GetMapping("/board/category")
+    public ResponseEntity<Object> boardCategory() {
+        return ResponseEntity.ok(communityService.ViewCommunityCategory());
+    }
+
 }
