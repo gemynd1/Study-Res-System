@@ -34,6 +34,22 @@ const Header = () => {
             return () => clearInterval(interval);
         }
     })
+
+    // 알림에 대한 데이터가져오기
+    useEffect(() => {
+        axios.get("http://localhost:8099/api/notification", 
+            {
+                headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
+            }
+        )
+        .then(response => {
+            setNotifications(response.data);
+        })
+        .catch(error => {
+            // 오류 처리
+            console.log(error); // 응답 출력
+        });
+    }, []);
     
     const logoutHandle = (e) => {
         // e.preventDefault();
@@ -52,7 +68,6 @@ const Header = () => {
         })
     }
 
-<<<<<<< HEAD
 
 
     const handleClick = () => {
@@ -83,9 +98,6 @@ const Header = () => {
     // }
 
 
-=======
-    
->>>>>>> b3f02021d1440cb15192f69e46de2fc0698cff0d
 
     const index_choice = (index) => {
         if(active_index === index) {
@@ -101,11 +113,11 @@ const Header = () => {
 
     // notification에 대한 정보
     const [notifications, setNotifications] = useState([
-        {id: 1, content: "1김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        {id: 2, content: "2김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        {id: 3, content: "3김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        {id: 4, content: "4김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        {id: 5, content: "5김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"}
+        // {id: 1, content: "1김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        // {id: 2, content: "2김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        // {id: 3, content: "3김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        // {id: 4, content: "4김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
+        // {id: 5, content: "5김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"}
     ]);
 
     const del_notification = (event) => {

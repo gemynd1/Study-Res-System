@@ -26,7 +26,8 @@
     "@ckeditor/ckeditor5-paste-from-office": "39.0.1",
     "@ckeditor/ckeditor5-source-editing": "39.0.1",
     "@ckeditor/ckeditor5-table": "39.0.1",
-    "@ckeditor/ckeditor5-typing": "39.0.1"
+    "@ckeditor/ckeditor5-typing": "39.0.1",
+    "ckeditor5-custom-build": "file:"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-translations": "^32.1.2",
