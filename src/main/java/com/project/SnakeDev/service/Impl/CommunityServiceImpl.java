@@ -30,8 +30,8 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public List<CommunityVo> ViewPost(int int_comIdx) {
-        return communityMapper.ViewPost(int_comIdx);
+    public List<CommunityVo> ViewPost(String comIdx) {
+        return communityMapper.ViewPost(comIdx);
     }
 
 }

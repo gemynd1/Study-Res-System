@@ -43,7 +43,7 @@
         select * from tbl_community_category where comcateusestate = 'Y'
     </select>
 
-    <select id="ViewPost" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="int">
+    <select id="ViewPost" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
         SELECT
             c.*,
             COUNT(ts.COMIDX) AS GroupCount

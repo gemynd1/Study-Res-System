@@ -46,8 +46,7 @@ public class CommunityController {
 
     @GetMapping("/board/post")
     public ResponseEntity<Object> post(@RequestParam("comIdx") String comIdx) {
-        int int_comIdx = Integer.parseInt(comIdx);
-        return ResponseEntity.ok(communityService.ViewPost(int_comIdx));
+        return ResponseEntity.ok(communityService.ViewPost(comIdx));
     }
 
 }

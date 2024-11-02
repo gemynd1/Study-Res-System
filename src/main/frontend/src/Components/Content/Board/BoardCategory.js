@@ -49,7 +49,8 @@ const BoardCategory = () => {
             axios.get("http://localhost:8099/api/board/category", {
                 headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
             }),
-            axios.get(`http://localhost:8099/api/board/select/category?currentCategory=${currentCategoryValue}`, {
+            axios.get(`http://localhost:8099/api/board/select/category`, {
+                params : { currentCategory : currentCategoryValue },
                 headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
             })
         ])
