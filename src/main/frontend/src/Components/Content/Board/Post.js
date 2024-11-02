@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import '../../../style/post.css';
 
 // 댓글 더보기 버튼 import
@@ -191,6 +192,15 @@ const pageNationData = (event) => {
 
 
 const Post = () => {
+    // url에 담겨져 있는 parameter 값 가져오기
+    const { comIdx } = useParams();
+
+    const [commentData, setCommentData] = useState([
+        {id:1, author:"김지민", refnum:1, num:1, groupNum:1, content:"111안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?", date:"2024-09-05 21:49:17"},
+        {id:2, author:"백지민", refnum:2, num:2, groupNum:1, content:"222네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능 합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.", date:"2024-09-05 21:49:17"},
+    ]);
+
+    const [boardContents, setBoardContents] = useState([]);
 
     // useEffect(() => {
     //     const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
@@ -221,10 +231,25 @@ const Post = () => {
         };
     }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행되도록 합니다.
 
-    const [commentData, setCommentData] = useState([
-        {id:1, author:"김지민", refnum:1, num:1, groupNum:1, content:"111안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?", date:"2024-09-05 21:49:17"},
-        {id:2, author:"백지민", refnum:2, num:2, groupNum:1, content:"222네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능 합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.", date:"2024-09-05 21:49:17"},
-    ]);
+    useEffect(() => {
+        if (comIdx) {
+            axios.get(`http://localhost:8099/api/board/post`, {
+                params: { comIdx },
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                setBoardContents(response.data)
+            }).catch(error => {
+                console.log(error);
+            })
+        }else {
+            console.log("comIdx 값이 없습니다.");
+        }
+    }, [comIdx]);
+
+    console.log(123);
+    console.log(boardContents);
 
     return (
         <>
