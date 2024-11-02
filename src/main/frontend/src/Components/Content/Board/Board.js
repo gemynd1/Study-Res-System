@@ -84,7 +84,7 @@ const Board = () => {
                                 </div>
                                 {boardContents.map((content) => (
                                     content.comCateIdx === 1 ? (
-                                            <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.comIdx}`)}>
+                                            <div className="board-category-1-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
                                                 <p className="board-category-1-content-title">{content.comTitle}</p>
                                                 <p className="board-category-1-content-detail">{content.comContent}</p>
                                                 <div className="board-category-1-content-info">
@@ -130,7 +130,7 @@ const Board = () => {
                                 </div>
                                 {boardContents.map((content) => (
                                     content.comCateIdx === 2 ? (
-                                        <div className="board-category-2-content" onClick={() => contentClick(`/board/post/${content.comIdx}`)}>
+                                        <div className="board-category-2-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
                                             <p className="board-category-2-content-title">{content.comTitle}</p>
                                             <p className="board-category-2-content-detail">{content.comContent}</p>
                                             <div className="board-category-2-content-info">

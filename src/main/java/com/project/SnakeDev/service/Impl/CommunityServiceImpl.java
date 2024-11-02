@@ -24,4 +24,14 @@ public class CommunityServiceImpl implements CommunityService {
         return communityMapper.ViewCommunityCategory();
     }
 
+    @Override
+    public List<CommunityVo> ViewCurrentCommunity(String currentCategory) {
+        return communityMapper.ViewCurrentCommunity(currentCategory);
+    }
+
+    @Override
+    public List<CommunityVo> ViewPost(int int_comIdx) {
+        return communityMapper.ViewPost(int_comIdx);
+    }
+
 }
