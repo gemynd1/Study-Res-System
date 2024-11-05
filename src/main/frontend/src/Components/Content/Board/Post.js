@@ -248,6 +248,10 @@ const Post = () => {
 
     console.log(boardContents);
 
+    if (!boardContents) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
             <div className="post">
