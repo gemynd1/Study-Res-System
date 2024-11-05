@@ -13,13 +13,11 @@ import FormControl from "@mui/material/FormControl";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { styled, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { styled, TableCell, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import dayjs from "dayjs";
 import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { Slideshow } from "@mui/icons-material";
-import { loadPaymentWidget, PaymentWidgetInstance } from "@tosspayments/payment-widget-sdk";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 // import { nanoid } from nanoid;
 const { nanoid } = require('nanoid');
@@ -36,6 +34,17 @@ const PaymentModal = ({
   const price = totalPrice;
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
+
+  const requestData = [
+    { 
+      roomnum : roomnum, 
+      date : date, 
+      start : start, 
+      end : end,
+      memberId : sessionStorage.getItem("id"),
+      OrderType : "GroupOrder",
+    },
+  ]
   
   useEffect(() => {
     if(open) {
@@ -122,12 +131,11 @@ const PaymentModal = ({
               // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
               await widgets.requestPayment({
                 orderId: nanoid(),
-                orderName: "방이름",
-                successUrl: window.location.origin + `/success?roomTitle=${roomTitle}&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&OrderType=GroupOrder&MemberId=${sessionStorage.getItem("id")}`,
-                failUrl: window.location.origin + `/fail?roomTitle=${roomTitle}&roomnum=${roomnum}`,
-                // customerEmail: "taerangkim0116@gmail.com",
+                orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명) - ${totalPrice}원`,
                 customerName: `${sessionStorage.getItem("name")}`,
-                customerMobilePhone: "01022487244",
+                successUrl: window.location.origin + `/paysuccess`,
+                failUrl: window.location.origin + `/fail`,
+                
               });
             } catch (error) {
               // 에러 처리하기
@@ -332,7 +340,7 @@ const BasicButtons2 = ({
   };
 
   const handleOpenModal = () => {
-    if (!isButtonReadonly) {
+    if (!isButtonReadonly && sessionStorage.getItem("id")) {
       setIsModalOpen(true); // 읽기 전용 상태가 아니면 모달 열기
     }
   };
@@ -354,9 +362,7 @@ const BasicButtons2 = ({
       <Button
         variant="contained"
         sx={{
-          backgroundColor: isButtonReadonly
-            ? "#d3d3d3"
-            : backgroundColor || "#7EE9BB",
+          backgroundColor: isButtonReadonly || !sessionStorage.getItem("id") ? "#d3d3d3" : backgroundColor || "#7EE9BB",
           fontWeight: "bold",
           width: width || "192px",
           height: height || "74px",
@@ -514,7 +520,6 @@ const TeamDetail = () => {
     }
   );
   
-  
   const handleRadioChange = (event) => {
     setIsTimeChoiceSelected(event.target.value === "timeChoice");
   };
@@ -610,17 +615,40 @@ const TeamDetail = () => {
     return index === activeIndex ? 'yellow' : 'white';
   }
 
+  // 이미지 팝업창
+  const [ImgOpenModal, setImgOpenModal] = useState(false);
+  const [ImgModalContent, setImgModalContent] = useState([]);
+  const handleImgOpenModal = (ImgContent) => {  
+    // console.log(ImgContent)
+    setImgModalContent(ImgContent);
+    setImgOpenModal(true);
+  }
+
+  const handleImgCloseModal = () => {
+    setImgModalContent([]);
+    setImgOpenModal(false);
+  }
+
+  const ImgModalStyle = {
+    display: TableCell,
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+  }
+
   return (
     <div className="teamDetail">
       <div className="teamDetail__main">
         <div className="teamDetail__main-header">
           <h1 className="teamDetail__main-content-title">{htmlcontentdata.SGIContent1}</h1>
           <h4 className="teamDetail__main-content-title-option">
-            
+            {/* 태그 등등 */}
           </h4>
         </div>
         <div className="teamDetail__main-image">
-          <MyButtons swiper={swiper} />
+          {/* <MyButtons swiper={swiper} /> */}
           <Swiper
             navigation={ImgContent.length > 1}
             modules={[Navigation]}
@@ -756,6 +784,37 @@ const TeamDetail = () => {
             />
           </div>
           <div className="teamDetail__side-image">
+            <img src={ImgContent[0]} alt={`side-img`} onClick={() => handleImgOpenModal(ImgContent)} />
+            <div className="img-text">
+              <span>+{ImgContent.length}</span>
+            </div>
+            <Modal
+              open={ImgOpenModal}
+              onClose={handleImgCloseModal}
+              aria-labelledby="modal-title"
+              aria-describedby="modal-description"
+            >
+              
+              <Box style={ImgModalStyle}>
+                {/* <button onClick={handleImgCloseModal}>Close Modal</button> */}
+                <>
+                  <Swiper
+                    navigation={ImgContent.length > 1}
+                    modules={[Navigation]}
+                    className="teamDetail_modal_swiper"
+                    pagenation={{ clickable: true }}
+                    onSwiper={setSwiper}
+                  >
+                    {ImgModalContent.map((content, index) => (
+                      <SwiperSlide key={index}>
+                        <img src={content} alt={`side-img-${index}`}/>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                  
+                </>
+              </Box>
+            </Modal>
             {/* 이미지 들어가야함. */}
           </div>
           <div className="teamDetail__side-description">
