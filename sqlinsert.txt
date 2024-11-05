@@ -1,0 +1,81 @@
+-- studycafe
+insert into tbl_studycafe values ('1111', 'SN스터디', '010-1111-1111', 'snstudy@naver.com', sysdate, sysdate);
+
+-- 룸정보
+insert into tbl_studyginfo values (SGInfo_seq.nextval, 1111, 1, 'N', '수성방', '스터디룸은 학습이나 작업을 위한 전용 공간으로, 개별이나 그룹으로 사용될 수 있는 공간입니다. 주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 업무에 집중할 수 있도록 돕습니다.');
+insert into tbl_studyginfo values (SGInfo_seq.nextval, 1111, 2, 'N', '금성방', '스터디룸은 학습이나 작업을 위한 전용 공간으로, 개별이나 그룹으로 사용될 수 있는 공간입니다. 주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 업무에 집중할 수 있도록 돕습니다.');
+insert into tbl_studyginfo values (SGInfo_seq.nextval, 1111, 3, 'N', '지구방', '스터디룸은 학습이나 작업을 위한 전용 공간으로, 개별이나 그룹으로 사용될 수 있는 공간입니다. 주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 업무에 집중할 수 있도록 돕습니다.');
+insert into tbl_studyginfo values (SGInfo_seq.nextval, 1111, 4, 'N', '화성방', '스터디룸은 학습이나 작업을 위한 전용 공간으로, 개별이나 그룹으로 사용될 수 있는 공간입니다. 주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 업무에 집중할 수 있도록 돕습니다.');
+insert into tbl_studyginfo values (SGInfo_seq.nextval, 1111, 5, 'N', '달방', '스터디룸은 학습이나 작업을 위한 전용 공간으로, 개별이나 그룹으로 사용될 수 있는 공간입니다. 주로 조용하고 집중하기 좋은 환경을 제공하여 학업이나 업무에 집중할 수 있도록 돕습니다.');
+
+-- 룸 사진
+insert into tbl_studygimg values (SGImg_seq.nextval, 1, '/img/room/study room0-1.png');
+insert into tbl_studygimg values (SGImg_seq.nextval, 2, '/img/room/study room1-1.png');
+insert into tbl_studygimg values (SGImg_seq.nextval, 3, '/img/room/study room2-1.png');
+insert into tbl_studygimg values (SGImg_seq.nextval, 4, '/img/room/study room3-1.png');
+insert into tbl_studygimg values (SGImg_seq.nextval, 5, '/img/room/study room4-1.png');
+
+-- 개인좌석
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 1, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 2, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 3, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 4, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 5, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 6, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 7, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 8, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 9, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 10, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 11, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 12, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 13, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 14, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 15, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 16, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 17, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 18, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 19, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 20, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 21, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 22, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 23, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 24, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 25, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 26, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 27, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 28, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 29, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 30, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 31, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 32, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 33, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 34, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 35, 'N');
+insert into tbl_studyininfo (seatnum, scidx, siinum, seatusestate) values (SIInfo_seq.nextval, 1111, 36, 'N');
+
+-- 개인좌석 가격
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(당일권) 1시간', 1500);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(당일권) 2시간', 3000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(당일권) 4시간', 5000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(당일권) 6시간', 6000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(당일권) 9시간', 8000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(당일권) 12시간', 10000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(정기권) 30시간', 45000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(정기권) 50시간', 60000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(정기권) 100시간', 110000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(정기권) 4주이용권', 120000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(정기권) 8주이용권', 230000);
+insert into tbl_studyinpare values (SInpare_seq.nextval, 1111, '(정기권) 1년정기권', 800000);
+
+insert into tbl_studygpare values (SGPare_seq.nextval, 1, '시간 (인)', 1000);
+insert into tbl_studygpare values (SGPare_seq.nextval, 2, '시간 (인)', 2000);
+insert into tbl_studygpare values (SGPare_seq.nextval, 3, '시간 (인)', 3000);
+insert into tbl_studygpare values (SGPare_seq.nextval, 4, '시간 (인)', 4000);
+insert into tbl_studygpare values (SGPare_seq.nextval, 5, '시간 (인)', 5000);
+
+-- 날짜 기본값으로 수정
+alter table tbl_member modify mregdate date default sysdate;
+alter table tbl_studygorder modify sgoregdate date default sysdate;
+alter table tbl_community modify comregdate date default sysdate;
+alter table tbl_community_comment modify ccregdate date default sysdate;
+alter table tbl_studyreview modify srregdate date default sysdate;

@@ -12,5 +12,5 @@ public interface CommunityService {
 
     public List<CommunityVo> ViewCurrentCommunity(String currentCategory);
 
-    public List<CommunityVo> ViewPost(int int_comIdx);
+    public List<CommunityVo> ViewPost(String comIdx);
 }

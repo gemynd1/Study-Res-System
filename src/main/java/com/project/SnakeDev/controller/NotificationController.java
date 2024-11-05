@@ -18,8 +18,8 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @GetMapping("/notification")
-    public ResponseEntity<Object> notification(HttpServletRequest request, HttpSession session) {
-        session = request.getSession();
+    public ResponseEntity<Object> notification(HttpSession session) {
+
         String MemberId = (String) session.getAttribute("id");
         String MemberName = (String) session.getAttribute("name");
         System.out.println(MemberId);
