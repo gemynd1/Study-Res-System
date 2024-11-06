@@ -228,6 +228,8 @@ h2 {
   width: 361px;
   height: 200px;
   background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
 }
 .teamDetail__side-image img{
   width: 100%;
@@ -240,10 +242,23 @@ h2 {
   width: 30px;
   height: 25px;
   text-align: center;
-  top: 47.8%;
-  left: 81.6%;
+  top: 87.6%;
+  left: 92%;
   color: white;
   background-color: purple;
+}
+
+.teamDetail_modal_swiper {
+  width: 800px;
+  height: 800px;
+  /* background-color: #fff; */
+  /* text-align: center; */
+}
+
+.teamDetail_modal_swiper .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .teamDetail__side-content-text-text {

@@ -5,24 +5,35 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Button from '@mui/material/Button';
 import '../../style/Pay.css'; // 별도 스타일 파일
 import axios from 'axios';
-// import Loading from './Loading'
-import Header from '../Layout/Header';
-import Footer from '../Layout/Footer';
 
 const PaySuccess = () => {
     const [isConfirmed, setIsConfirmed] = useState(false);
     const location = useLocation();
     const [searchParams] = useSearchParams();
     const [loading, setLoading] = useState(true);
-    const [responseData, setResponseData] = useState(null);
-    const [paymentData, setPaymentData] = useState({
-        orderId : '',
-        orderName: '',
-        card: '',
-        amount: '',
-        provider: '',
-        method: '',
-    });
+    const [responseData, setResponseData] = useState([]);
+    
+    const [orderPayData, setOrderPayData] = useState({
+        TSOPIdx : '',
+        MIdx : '',
+        TSOPMethod : '',
+        TSOPPrice : '',
+        TSOPStatus : '',
+        TSOPDate : '',
+        TSOPDivi : '',
+    }) // 결제 성공 시 들어갈 내역 테이블
+    const [orderWaitData, setOrderWaitData] = useState({
+        SGONum : '',
+        SGIdx : '',
+        MIdx : '',
+        TSGOPIdx : '',
+        SGORegDate : '',
+        SGOStartDate : '',
+        SGOEndDate : '',
+        SGOtotal : '',
+    }) // 결제 성공 후 예약 내용 들어갈 테이블
+
+    const [orderState, setOrderState] = useState(false);
     
     const navigate = useNavigate();
 
@@ -52,36 +63,59 @@ const PaySuccess = () => {
                 const responseData = response.data;
                 if (responseData.error) {
                     throw new Error(responseData.error);
-                    setLoading(true);
                 }
-                
                 console.log('결제 승인 성공:', response.data);
                 return responseData;
             } catch (error) {
-                console.error('결제 승인 실패:', error.response ? error.response.data : error);
-                alert('결제 승인에 실패하였습니다.');
-                navigate('/PayFail');
-            } finally {
-                setLoading(false);
+                console.error('결제 승인 실패:', error);
+                alert("결제 실패하였습니다.");
+                navigate('/payfail');
+                return null;
             }
         };
         
-        if (requestData) {
-            approvePayment()
-                .then((data) => {
-                    setResponseData(data);
-                    alert("결제가 성공적으로 완료되었습니다.");
-                })
-                .catch((error) => {
-                    setLoading(false);
-                    console.error('결제 승인 실패:', error);
-                    alert('결제 승인에 실패하였습니다.');
-                    navigate(`/fail?code=${error.code}&message=${error.message}`);
-                });
+        approvePayment()
+            .then((data) => {
+                if(data) {
+                    setResponseData((prevState) => ({
+                        ...prevState,
+                        ...data
+                    }));
+                    setOrderState(true);
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('결제 승인 실패:', error);
+            });
+    }, [searchParams]);
+
+    useEffect(() => {
+        if(orderState) {
+            // 백엔드 저장
+            Promise.all([
+                axios.post('http://localhost:8099/api/OrderPay', orderPayData),
+                axios.post('http://localhost:8099/api/OrderWait', orderWaitData),
+            ])
+            .then(([res1, res2]) => {
+                console.log('첫번째 완', res1.data)
+                console.log('두번째 완', res2.data)
+
+                alert("결제가 성공적으로 완료되었습니다.");
+                setOrderState(false);
+                setResponseData(null);
+            })
+            .catch((error) => {
+                console.error('요청실패', error)
+            })
         }
-    }, [searchParams, navigate]);
-
-
+    },[orderState])
+    
+        
+            // 백엔드 저장
+            // axios.post("http://localhost:8099/api/orderPay")
+            // console.log("업데이트된 결제 데이터:", responseData);
+            // console.log("업데이트된 결제 데이터ㅇㅇ:", paymentData);
     // 홈으로 돌아가는 함수
     const handleReturnHome = () => {
         navigate('/');
@@ -89,7 +123,7 @@ const PaySuccess = () => {
 
     return (
         <>
-            {loading ? (
+            {loading || orderState ? (
                 <div style={{ 
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
                     width: '100%', margin: 'auto', paddingTop: '300px', paddingBottom: '300px'

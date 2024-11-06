@@ -133,10 +133,20 @@ const PaymentModal = ({
                 orderId: nanoid(),
                 orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명) - ${totalPrice}원`,
                 customerName: `${sessionStorage.getItem("name")}`,
-                successUrl: window.location.origin + `/paysuccess`,
+                successUrl: window.location.origin + `/paysuccess?ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}`,
                 failUrl: window.location.origin + `/fail`,
-                
               });
+
+              // const requestData = [
+              //   { 
+              //     roomnum : roomnum, 
+              //     date : date, 
+              //     start : start, 
+              //     end : end,
+              //     memberId : sessionStorage.getItem("id"),
+              //     OrderType : "GroupOrder",
+              //   },
+              // ]
             } catch (error) {
               // 에러 처리하기
               console.error(error);
@@ -630,12 +640,11 @@ const TeamDetail = () => {
   }
 
   const ImgModalStyle = {
-    display: TableCell,
-    position: 'fixed',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '50%',
+    width: 'auto',
   }
 
   return (
@@ -798,20 +807,27 @@ const TeamDetail = () => {
               <Box style={ImgModalStyle}>
                 {/* <button onClick={handleImgCloseModal}>Close Modal</button> */}
                 <>
-                  <Swiper
-                    navigation={ImgContent.length > 1}
-                    modules={[Navigation]}
-                    className="teamDetail_modal_swiper"
-                    pagenation={{ clickable: true }}
-                    onSwiper={setSwiper}
-                  >
-                    {ImgModalContent.map((content, index) => (
-                      <SwiperSlide key={index}>
+                  {ImgModalContent.length > 1 ? (
+                    <Swiper
+                      slidesPerView="auto"
+                      navigation={true}
+                      centeredSlides={true}
+                      modules={[Navigation]}
+                      className="teamDetail_modal_swiper"
+                      pagenation={{ clickable: true }}
+                      // onSwiper={setSwiper}
+                    >
+                      {ImgModalContent.map((content, index) => (
+                        <SwiperSlide key={index}>
+                          <img src={content} alt={`side-img-${index}`}/>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                  ) : (
+                    ImgModalContent.map((content, index) => (
                         <img src={content} alt={`side-img-${index}`}/>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                  
+                    ))
+                  )}
                 </>
               </Box>
             </Modal>
