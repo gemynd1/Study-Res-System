@@ -23,30 +23,48 @@ public class ReviewController {
     @PostMapping("/reviews")
     public ResponseEntity<String> createReview(
             @RequestParam Map<String, Object> requestParams,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
-        
-        int studyRoom = Integer.parseInt((String) requestParams.get("studyRoom"));
-        String content = (String) requestParams.get("content");
-        int rating = Integer.parseInt((String) requestParams.get("rating"));
-        String tags = (String) requestParams.getOrDefault("tags", null); // 태그가 없으면 null 처리
-        String userName = (String) requestParams.get("userName");
+            @RequestParam(value = "SRIIMG", required = false) List<MultipartFile> SRIIMG) {
+
+        int SGIIDX = Integer.parseInt((String) requestParams.get("SGIIDX"));
+        String SRCONTENT = (String) requestParams.get("SRCONTENT");
+        int SRSTAR = Integer.parseInt((String) requestParams.get("SRSTAR"));
+        String TSHTLCONTENT = (String) requestParams.getOrDefault("TSHTLCONTENT", null); // 태그가 없으면 null 처리
+        int MIDX = Integer.parseInt((String) requestParams.get("MIDX"));
+
 
         // 파일을 포함한 요청 파라미터를 ReviewService에 전달
-        reviewService.createReview(studyRoom, content, rating, tags, userName, images);
+        reviewService.createReview(SGIIDX, SRCONTENT, SRSTAR, TSHTLCONTENT, MIDX, SRIIMG);
         
         return ResponseEntity.ok("리뷰가 성공적으로 저장되었습니다.");
     }
-    @GetMapping("/reviews/member/{loggedInId}")
-    public ResponseEntity<Integer> getMemberIndex(@PathVariable String loggedInId) {
-        // loggedInId를 사용하여 MIDX를 가져오는 로직 추가
-        Integer memberIndex = reviewService.getMemberIndexByUserName(loggedInId);
+    
+    @GetMapping("/reviews/member/{memberName}")
+    public ResponseEntity<Integer> getMidxFromMemberName(@PathVariable String memberName) {
+        // memberName을 사용하여 MIDX를 가져오는 로직 추가
+        Integer MIDX = reviewService.getMidxFromMemberName(memberName);
         
-        if (memberIndex == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // MIDX를 찾을 수 없을 경우
+        if (MIDX == null) {
+            // MIDX를 찾을 수 없을 경우
+            // System.out.println("MIDX를 찾을 수 없습니다: " + memberName);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        
+        // 성공적으로 MIDX를 찾았을 때
+        // System.out.println("MIDX를 성공적으로 찾았습니다: " + MIDX);
+        return ResponseEntity.ok(MIDX);
+    }
 
-        return ResponseEntity.ok(memberIndex);
-}
+    @PostMapping("review/img")
+    public ResponseEntity<String> uploadImage(@RequestParam("SRIIMG") List<MultipartFile> SRIIMG, 
+        @RequestParam("SRIDX") Integer srIdx) {
+        reviewService.uploadImage(srIdx, SRIIMG);
+        return ResponseEntity.ok("이미지가 성공적으로 업로드되었습니다.");
+    }
 
+    // @GetMapping("/review/img")
+    // public ResponseEntity<List> getImageInfo(@PathVariable <List> imgInfo) {
+    //     Integer SRIIMGKDX = reviewService.getImgInfo(imgInfo)
+    //     return ResponseEntity.ok(imgInfo);
+    // }
 
 }

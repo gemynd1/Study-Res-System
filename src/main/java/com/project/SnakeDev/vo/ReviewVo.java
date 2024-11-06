@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor       // 기본 생성자 생성
+@AllArgsConstructor      // 모든 필드를 매개변수로 받는 생성자 생성
 public class ReviewVo {
     private Integer srIdx;       // 스터디룸 게시글 번호
     private Integer sgiIdx;      // 스터디룸 idx
@@ -17,8 +17,6 @@ public class ReviewVo {
     private Date srDelDate;      // 삭제일
     private Date srUpdate;       // 수정일
 
-    private List<String> images; // 이미지 파일명 리스트
-    private List<Integer> tags;  // 태그 ID 리스트
 
     // 필수 필드만 사용하는 생성자
     public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent) {
@@ -47,11 +45,11 @@ public class ReviewVo {
         this.sgiIdx = sgiIdx;
     }
 
-    public Integer getmIdx() {
+    public Integer getMIdx() {
         return mIdx;
     }
 
-    public void setmIdx(Integer mIdx) {
+    public void setMIdx(Integer mIdx) {
         this.mIdx = mIdx;
     }
 
@@ -95,22 +93,6 @@ public class ReviewVo {
         this.srUpdate = srUpdate;
     }
 
-    public List<String> getImages() {
-        return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
-
-    public List<Integer> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Integer> tags) {
-        this.tags = tags;
-    }
-
     @Override
     public String toString() {
         return "ReviewVo{" +
@@ -122,8 +104,16 @@ public class ReviewVo {
                 ", srRegDate=" + srRegDate +
                 ", srDelDate=" + srDelDate +
                 ", srUpdate=" + srUpdate +
-                ", images=" + images +
-                ", tags=" + tags +
+                // ", SRIIMG=" + SRIIMG +
+                // ", TSHTLCONTENT=" + TSHTLCONTENT +
                 '}';
     }
 }
+
+
+    // private Integer tshtlidx; //해시태그목록
+    // private String tshtlcontent; //내용
+    // private Integer tshtidx; //해시태그id
+
+    // private String tshtlContent;
+    // private 

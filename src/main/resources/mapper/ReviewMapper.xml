@@ -3,7 +3,7 @@
 <mapper namespace="com.project.SnakeDev.mapper.ReviewMapper">
 
     <select id="findMidxByUserName" resultType="int" >
-        SELECT MIDX FROM TBL_MEMBER WHERE MEMBERNAME = #{userName}
+        SELECT MIDX FROM TBL_MEMBER WHERE MEMBERNAME = #{memberName}
     </select>
 
     <insert id="insertReview" useGeneratedKeys="true" keyProperty="srIdx">
@@ -13,7 +13,7 @@
 
     <insert id="insertReviewImage">
         INSERT INTO TBL_STUDYREVIEWIMG (SRIIDX, SRIIMG)
-        VALUES (#{srIdx}, #{fileName})
+        VALUES (#{sriimgidx}, #{sriimg})
     </insert>
 
     <select id="findTagIdByContent" resultType="Integer">
@@ -33,5 +33,8 @@
     <select id="findById" resultType="com.project.SnakeDev.vo.ReviewVo">
         SELECT * FROM TBL_STUDYREVIEW WHERE SRIDX = #{id}
     </select>
+
+
+
 
 </mapper>

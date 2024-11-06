@@ -1,6 +1,7 @@
 package com.project.SnakeDev.mapper;
 
 import com.project.SnakeDev.vo.ReviewVo;
+import com.project.SnakeDev.vo.ReviewImg;
 import org.apache.ibatis.annotations.Mapper;
 
 // import java.util.List;
@@ -8,11 +9,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ReviewMapper {
 
-    Integer findMidxByUserName(String userName);
+    Integer findMidxByUserName(String memberName);
 
     void insertReview(ReviewVo reviewVo);
 
-    void insertReviewImage(Integer srIdx, String fileName);
+    void insertReviewImage(Integer sriimgidx, String sriimg);
 
     Integer findTagIdByContent(String tagContent);
     
@@ -23,5 +24,7 @@ public interface ReviewMapper {
     
     ReviewVo findById(Integer id);
 
-    
+    void insertReviewImg(ReviewImg reviewImg);
+
+
 }   

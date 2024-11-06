@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import axios from "axios";
 
 // 시각적으로 숨겨진 input 태그 스타일
 const VisuallyHiddenInput = (props) => (
@@ -216,65 +217,97 @@ const ReviewWrite = () => {
   const [rating, setRating] = useState('');
   const [tags, setTags] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [midx, setMidx] = useState(null);  // MIDX를 상태로 추가
+  const [sriImg, setSriImg] = useState([]); // 이미지를 배열안에 string으로 url 가져오기
+  const memberName = sessionStorage.getItem('name');
+
+  const requestMidx = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8099/api/reviews/member/${memberName}`, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.status !== 200) {
+        throw new Error('MIDX를 가져오는 데 실패했습니다.');
+      }
+      
+      return setMidx(response.data); // MIDX를 반환
+    } catch (error) {
+      console.error("Error fetching MIDX:", error);
+      alert(error.message);
+      return null;
+    }
+  };
+requestMidx();
+
+const requestSriImg = async () => {
+  try {
+    const response = await axios.get('http://localhost:8099/api/reviews/img', {
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (response.status !== 200) {
+      throw new Error('SriImg를 가져오는 데 실패했습니다.');
+    }
+        // 필요한 값들을 int형, int형, string형으로 추출
+        const int1 = parseInt(response.data.int1, 10);   // 첫 번째 int형
+        const int2 = parseInt(response.data.int2, 10);   // 두 번째 int형
+        const str = response.data.str;                    // string형
+    
+        return { int1, int2, str }; // 값 반환
+    // return setSriImg(response.data); // 
+  } catch (error) {
+    console.error("Error fetching SriImg:", error);
+    alert(error.message);
+    return null;
+  }
+};
+// requestSriImg();
 
   const handleCreate = async () => {
     if (!studyRoom || !content || !rating || tags.length === 0 || uploadedFiles.length === 0) {
       alert('모든 필드를 채워주세요.');
       return;
     }
-    
+
     const formData = new FormData();
-    formData.append('studyRoom', studyRoom);
-    formData.append('content', content);
-    formData.append('rating', rating);
-    formData.append('tags', JSON.stringify(tags));
-    
-    // Add files to formData
+    formData.append('SGIIDX', studyRoom);
+    formData.append('SRCONTENT', content);
+    formData.append('SRSTAR', rating);
+    formData.append('TSHTLCONTENT', JSON.stringify(tags));
+    formData.append('MIDX', midx); // MIDX 추가
+
+    // 파일 추가
     uploadedFiles.forEach((uploadedFile) => {
-      formData.append('images', uploadedFile.file); // All images are appended under the same key
+      formData.append('SRIIMG', uploadedFile.file.name);
     });
-    
-    const loggedInId = sessionStorage.getItem('name');
-  
-    // MIDX 조회
-    let memberIndex;
-    try {
-      const response = await fetch(`http://localhost:8099/api/reviews/member/${loggedInId}`,{
-        method: 'GET',
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error('MIDX를 가져오는 데 실패했습니다.');
-      }
-      memberIndex = await response.json();
-    } catch (error) {
-      alert(error.message);
-      return; // MIDX를 가져오지 못하면 함수 종료
+      // formData 확인 console
+  for (let [key, value] of formData.entries()) {
+    if (value instanceof File) {
+      console.log(`${key}: ${value.name} (${value.size} bytes)`); // Log file name and size
+    } else {
+      console.log(`${key}: ${value}`); // Log other form data
     }
-    
-    formData.append('memberIndex', memberIndex); // MIDX를 formData에 추가
-  
+  }
+  formData.entries()
     try {
-      const response = await fetch('http://localhost:8099/api/reviews', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (!response.ok) {
-        const errorMessage = await response.text(); // 서버에서 보내준 오류 메시지
-        console.error('Error:', response.status, errorMessage);
+      const response = await axios.post('http://localhost:8099/api/reviews', formData);
+      console.log('Response from server:', response.data);
+      
+      if (response.status !== 200) {
         throw new Error('서버에 데이터를 저장하는 데 실패했습니다.');
       }
-  
-      const result = await response.json();
+
       alert('리뷰가 성공적으로 저장되었습니다.');
-      console.log(result);
+      console.log(response.data);
     } catch (error) {
+      console.error("Error:", error.response ? error.response.status : error.message);
       alert(error.message);
     }
   };
 
   return (
+    
     <div className="post-setting">
       <div className="tes">
         <h2 className="Rpost-title">스터디룸</h2>
