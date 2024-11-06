@@ -50,6 +50,7 @@ public class MainController {
     public ResponseEntity<Map<String, Object>> studygInfoDetail(@RequestParam("sgiId") String sginum) {
         List<StudyGInfoVo> studyGInfoVoList = mainService.ViewStudyGInfoDetail(sginum);
         StudyGInfoVo studyGInfoVo = studyGInfoVoList.get(0);
+        System.out.println('s');
 
         String[] studyGImg = studyGInfoVo.getStudyGImgVo().getSGImg().split(",");
 
