@@ -23,10 +23,13 @@ public class AuthVo {
     private Date MRegDate;
     private Date MStartinDate;
     private Date MEndinDate;
-//    String nickname, id, pw, phonenumber, address, zonecode, detailedAddress, latitude, longitude;
-//    Date MRegDate, MStartinDate, MEndinDate;
 
     public AuthVo() {
+    }
+
+    // 결제 내역 및 예약 처리를 위한 memberid 가져옴
+    public AuthVo(String memberId) {
+        MemberId = memberId;
     }
 
     public AuthVo(String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {

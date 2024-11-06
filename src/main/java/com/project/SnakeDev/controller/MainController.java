@@ -1,11 +1,9 @@
 package com.project.SnakeDev.controller;
 
+import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.Impl.MainServiceImpl;
 import com.project.SnakeDev.service.MainService;
-import com.project.SnakeDev.vo.PaymentRequest;
-import com.project.SnakeDev.vo.StudyGImgVo;
-import com.project.SnakeDev.vo.StudyGInfoVo;
-import com.project.SnakeDev.vo.StudyInInfoVo;
+import com.project.SnakeDev.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -62,6 +60,41 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
+    // 결제 승인 내역 DB저장
+    @PostMapping("/OrderPay")
+    public ResponseEntity<Object> OrderPay(@RequestBody Map<String, Object> data) {
+        try {
+            StudyOrderPayVo studyOrderPayVo = VOMapper.mapToVO(data, StudyOrderPayVo.class);
+            System.out.println(studyOrderPayVo);
+            if(mainService.InsertOrderPay(studyOrderPayVo) > 0) {
+                return ResponseEntity.ok("ok");
+            } else {
+                return ResponseEntity.badRequest().body("no");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
+    // 결제 승인 후 최종 예약 내역 DB저장
+    @PostMapping("/OrderWait")
+    public ResponseEntity<Object> OrderWait(@RequestBody Map<String, Object> data) {
+        try {
+            StudyGOrderVo studyGOrderVo = VOMapper.mapToVO(data, StudyGOrderVo.class);
+            System.out.println(studyGOrderVo);
+            if(mainService.InsertGOrderWait(studyGOrderVo) > 0) {
+                return ResponseEntity.ok("ok");
+            } else {
+                return ResponseEntity.badRequest().body("no");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
+    // 토스 결제 승인
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String WIDGET_SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
 //    private static final String API_SECRET_KEY = "test_sk_PBal2vxj81jDkAK1R7gy35RQgOAN";

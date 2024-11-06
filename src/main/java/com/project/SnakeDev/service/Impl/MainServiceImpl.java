@@ -3,7 +3,9 @@ package com.project.SnakeDev.service.Impl;
 import com.project.SnakeDev.mapper.MainMapper;
 import com.project.SnakeDev.service.MainService;
 import com.project.SnakeDev.vo.StudyGInfoVo;
+import com.project.SnakeDev.vo.StudyGOrderVo;
 import com.project.SnakeDev.vo.StudyInInfoVo;
+import com.project.SnakeDev.vo.StudyOrderPayVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +32,17 @@ public class MainServiceImpl implements MainService {
     @Transactional
     public List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum) {
         return mainMapper.ViewStudyGInfoDetail(sginum);
+    }
+
+    @Override
+    @Transactional
+    public int InsertOrderPay(StudyOrderPayVo studyOrderPayVo) {
+        return mainMapper.InsertOrderPay(studyOrderPayVo);
+    }
+
+    @Override
+    @Transactional
+    public int InsertGOrderWait(StudyGOrderVo studyGOrderVo) {
+        return mainMapper.InsertGOrderWait(studyGOrderVo);
     }
 }

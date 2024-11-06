@@ -12,37 +12,27 @@ const PaySuccess = () => {
     const [searchParams] = useSearchParams();
     const [loading, setLoading] = useState(true);
     const [responseData, setResponseData] = useState([]);
-    
     const [orderPayData, setOrderPayData] = useState({
         TSOPIdx : '',
-        MIdx : '',
         TSOPMethod : '',
         TSOPPrice : '',
         TSOPStatus : '',
-        TSOPDate : '',
         TSOPDivi : '',
     }) // 결제 성공 시 들어갈 내역 테이블
     const [orderWaitData, setOrderWaitData] = useState({
         SGONum : '',
         SGIdx : '',
-        MIdx : '',
         TSGOPIdx : '',
-        SGORegDate : '',
         SGOStartDate : '',
         SGOEndDate : '',
         SGOtotal : '',
     }) // 결제 성공 후 예약 내용 들어갈 테이블
-
     const [orderState, setOrderState] = useState(false);
-    
+    const [orderRandom, setOrderRandom] = useState(null);
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        // const params = new URLSearchParams(location.search);
-        // const paymentKey = params.get('paymentKey');
-        // const orderId = params.get('orderId');
-        // const amount = params.get('amount');
-
         const requestData = {
             orderId : searchParams.get('orderId'),
             paymentKey : searchParams.get('paymentKey'),
@@ -81,6 +71,26 @@ const PaySuccess = () => {
                         ...prevState,
                         ...data
                     }));
+                    setOrderPayData((prevState) => ({
+                        ...prevState,
+                        TSOPIdx : data.orderId,
+                        MemberId : sessionStorage.getItem("id"),
+                        TSOPMethod : `${data.method}_${data.easyPay.provider}`,
+                        TSOPPrice : data.totalAmount,
+                        TSOPStatus : 'Y',
+                        TSOPDivi : searchParams.get('ordertype'),
+                    }))
+                    setOrderWaitData((prevState) => ({
+                        ...prevState,
+                        SGONum : Number(searchParams.get('sgonum')),
+                        SGIdx : searchParams.get('roomnum'),
+                        MemberId : sessionStorage.getItem("id"),
+                        TSGOPIdx : data.orderId,
+                        SGOStartDate : searchParams.get('start'),
+                        SGOEndDate : searchParams.get('end'),
+                        SGOPeople : searchParams.get('people'),
+                        SGOtotal : data.totalAmount,
+                    }))
                     setOrderState(true);
                 }
                 setLoading(false);
@@ -92,6 +102,12 @@ const PaySuccess = () => {
 
     useEffect(() => {
         if(orderState) {
+            console.log("1" ,orderPayData)
+            console.log("2" ,orderWaitData)
+
+            // alert("결제가 성공적으로 완료되었습니다.");
+            // setOrderState(false);
+            // setResponseData(null);
             // 백엔드 저장
             Promise.all([
                 axios.post('http://localhost:8099/api/OrderPay', orderPayData),

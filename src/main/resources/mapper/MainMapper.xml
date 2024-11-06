@@ -100,4 +100,31 @@
             sgp.sgpprice,
             sgimg.sgimg
     </select>
+    <insert id="InsertOrderPay" parameterType="map">
+        insert into tbl_studyorderpay (TsopIdx, MIdx, TsopMethod, TsopPrice, TsopStatus, TsopDate, TsopDivi)
+        values
+            (
+                #{TsopIdx},
+                (select midx from tbl_member where memberId = #{authVo.memberId} and rownum = 1),
+                #{TsopMethod},
+                #{TsopPrice},
+                #{TsopStatus},
+                to_char(sysdate, 'yyyy-mm-dd'),
+                #{TsopDivi}
+            )
+    </insert>
+    <insert id="InsertGOrderWait" parameterType="map">
+        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TsopIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal)
+        values
+            (
+                #{SGONum},
+                #{studyGInfoVo.SGIIdx},
+                (select midx from tbl_member where memberId = #{authVo.memberId} and rownum = 1),
+                #{studyOrderPayVo.TsopIdx},
+                to_char(sysdate, 'yyyy-mm-dd'),
+                to_char(#{SGOStartDate}, 'HH24:mm'),
+                to_char(#{SGOEndDate}, 'HH24:mm'),
+                #{SGOtotal}
+            )
+    </insert>
 </mapper>

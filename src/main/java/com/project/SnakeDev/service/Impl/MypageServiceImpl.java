@@ -2,10 +2,12 @@ package com.project.SnakeDev.service.Impl;
 
 import com.project.SnakeDev.mapper.MypageMapper;
 import com.project.SnakeDev.service.MypageService;
-import com.project.SnakeDev.vo.AuthVo;
+import com.project.SnakeDev.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -43,6 +45,41 @@ public class MypageServiceImpl implements MypageService {
         return mypageMapper.updateMemberAddress(authVo);
     }
 
+    @Override
+    public List<StudyInPareVo> ViewStudyInPare() {
+        return mypageMapper.ViewStudyInPare();
+    }
 
+    @Override
+    public List<StudyCommunityVo> getBoardInfo(
+            String memberId) {
+        return mypageMapper.getBoardInfo(memberId);
+    }
+
+    @Override
+    public List<StudyReviewVo> getReviewInfo(
+            String memberId) {
+        return mypageMapper.getReviewInfo(memberId);
+    }
+
+    @Override
+    public AuthVo ExitMemberInfo(
+            String memberId){
+        return mypageMapper.ExitMemberInfo(memberId);
+    }
+
+    @Override
+    public int InsertCustomerHelp(CustomerHelpVo customerHelpVo) {
+        return mypageMapper.InsertCustomerHelp(customerHelpVo);
+    }
+
+    @Override
+    public List<CustomerHelpVo> getCustomerHelpInfo(String memberId) {
+        return mypageMapper.getCustomerHelpInfo(memberId);
+    }
+//    @Override
+//    public void savePayment(StudyOrderPayVo studyOrderPayVo) throws Exception {
+//        mypageMapper.insertPayment(studyOrderPayVo);
+//    }
 
 }

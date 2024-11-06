@@ -28,6 +28,11 @@ public class StudyGInfoVo {
   public StudyGInfoVo() {
   }
 
+  // 예약 처리를 위한 Vo
+  public StudyGInfoVo(Integer SGIIdx) {
+    this.SGIIdx = SGIIdx;
+  }
+
   // 룸 정보와 이미지 정보 vo
   public StudyGInfoVo(int SGINum, String SGIContent1, String SGIContent2, StudyGImgVo studyGImgVo) {
     this.SGINum = SGINum;

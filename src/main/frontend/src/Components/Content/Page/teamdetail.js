@@ -34,17 +34,15 @@ const PaymentModal = ({
   const price = totalPrice;
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
+  const [random, setRandom] = useState(null);
 
-  const requestData = [
-    { 
-      roomnum : roomnum, 
-      date : date, 
-      start : start, 
-      end : end,
-      memberId : sessionStorage.getItem("id"),
-      OrderType : "GroupOrder",
-    },
-  ]
+  useEffect(() => {
+    const today = new Date();
+    const formatdate = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}`;
+    const randomNum = Math.floor(Math.random() * 1000000)
+    setRandom(`${formatdate}${randomNum}`);
+  }, [])
+  console.log(random)
   
   useEffect(() => {
     if(open) {
@@ -133,7 +131,7 @@ const PaymentModal = ({
                 orderId: nanoid(),
                 orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명) - ${totalPrice}원`,
                 customerName: `${sessionStorage.getItem("name")}`,
-                successUrl: window.location.origin + `/paysuccess?ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}`,
+                successUrl: window.location.origin + `/paysuccess?ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}&sgonum=${random}`,
                 failUrl: window.location.origin + `/fail`,
               });
 

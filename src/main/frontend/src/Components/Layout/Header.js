@@ -68,8 +68,6 @@ const Header = () => {
         })
     }
 
-
-
     const handleClick = () => {
         if(sessionStorage.getItem("loginState") === "true") {
             navigate('/mypage')
@@ -96,7 +94,6 @@ const Header = () => {
     //             console.log(error);
     //         })
     // }
-
 
 
     const index_choice = (index) => {
