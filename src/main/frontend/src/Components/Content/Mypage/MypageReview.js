@@ -3,200 +3,31 @@ import {BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 import axios from 'axios';
 import Pagination from "./Pagination";
 import MemberDeleteModal from "./MemberDeleteModal";
+import {format} from "date-fns";
 
 const MypageReview = () => {
-    const [MypageReview, setMypageReview] = useState('')
+    const [MypageReview, setMypageReview] = useState([])
     const [searchResults, setSearchResults] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [resultsPerpage, setResultsPerpage] = useState(10);
-    useEffect(() => {
-        axios.get('/api/mypage/mypageReview')
-            .then((res) => {
-                setMypageReview(res.data);
-            })
-            .catch(error => console.log(error))
-    }, []);
+    const [id, setId] = useState(sessionStorage.getItem("id"));
 
     useEffect(() => {
-        const result = [
+        axios.get("http://localhost:8099/api/mypage/mypageReview",
             {
-                title: "내가 작성 한 글 제목",
-                writer: "백지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김태랑",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-        ];
-        setSearchResults(result);
+                params: { id },
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            })
+            .then(response => {
+                setMypageReview(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error("에러발생: ", error);
+            })
     }, []);
+
 
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
 
@@ -206,8 +37,8 @@ const MypageReview = () => {
 
     const indexOfLastResult = currentPage * resultsPerpage;
     const indexOfFirstResult = indexOfLastResult - resultsPerpage;
-    const currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult);
-    const total = searchResults.length;
+    const currentResults = MypageReview.slice(indexOfFirstResult, indexOfLastResult);
+    const total = MypageReview.length;
 
     useEffect(() => {
         if (MemberModalOpen) {
@@ -300,23 +131,23 @@ const MypageReview = () => {
                                     <th>번호</th>
                                     <th>제목</th>
                                     <th>작성자</th>
-                                    <th>조회수</th>
+                                    <th>작성일</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {currentResults.map((result, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{result.title}</td>
-                                        <td>{result.writer}</td>
-                                        <td>{result.Views}</td>
+                                        <td>{result.srcontent}</td>
+                                        <td>{result.memberName}</td>
+                                        <td>{result.srregDate ? format(new Date(result.srregDate), 'yyyy-MM-dd') : null}</td>
                                     </tr>
                                 ))}
                                 </tbody>
                             </table>
                             <Pagination
                                 currentPage={currentPage}
-                                totalPages={Math.ceil(searchResults.length / resultsPerpage)}
+                                totalPages={Math.ceil(MypageReview.length / resultsPerpage)}
                                 onPageChange={handlePageChange}
                             />
                         </div>

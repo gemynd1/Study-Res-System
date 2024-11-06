@@ -18,56 +18,27 @@ const MypageAccount = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        axios.get("http://localhost:8099/api/mypage/mypageAccount", {
-            params: { id, pw},
-            headers: { 'Content-Type': 'application/json'},
-            withCredentials: true
-        })
-            .then(response => {
-                // setUserInfo(response.data);
-                sessionStorage.setItem("loginState", response.data);
-                alert('성공')
-                navigate('/mypage');
-                console.log(response.data);
+        if(sessionStorage.getItem("id") === id) {
+            axios.get("http://localhost:8099/api/mypage/mypageAccount", {
+                params: { id, pw},
+                headers: { 'Content-Type': 'application/json'},
+                withCredentials: true
             })
-            .catch(error => {
-                console.log(error);
-                alert('아이디 또는 비밀번호가 맞지 않습니다.')
-            })
+                .then(response => {
+                    // setUserInfo(response.data);
+                    sessionStorage.setItem("loginState", response.data);
+                    navigate('/mypage');
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert('아이디 또는 비밀번호가 맞지 않습니다.')
+                })
+        } else {
+            alert('아이디 또는 비밀번호가 맞지 않습니다.')
+            return null;
+        }
     }
-    //     e.preventDefault();
-    //     axios.get("http://localhost:8099/api/mypage/mypageAccount", {
-    //         params: { id, pw, name, address, detailAddress, phone },
-    //         headers: { 'Content-Type': 'application/json' },
-    //         withCredentials: true
-    //     })
-    //         .then(response => {
-    //             if (response.data.success) {
-    //                 alert('아이디 또는 비밀번호가 맞지 않습니다.');
-    //                 return false;
-    //             } else {
-    //                 sessionStorage.setItem("id", response.data['id']);
-    //                 sessionStorage.setItem("pw", response.data['pw']);
-    //                 sessionStorage.setItem("name", response.data['name']);
-    //                 sessionStorage.setItem("address", response.data['address']);
-    //                 sessionStorage.setItem("detailAddress", response.data['detailAddress']);
-    //                 sessionStorage.setItem("phone", response.data['phone']);
-    //                 console.log(response)
-    //                 alert('성공')
-    //                 navigate('/mypage');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             alert('아이디 또는 비밀번호가 일치하지 않습니다.')
-    //         });
-    // };
-
-
-    useEffect(() => {
-        axios.get('/api/mypage/mypageAccount')
-            .then(res => setMypageAccount(res.data))
-            .catch(error => console.log(error));
-    }, []);
 
     const [pwType, setPwType] = useState({ type: "password", visible: false });
 
