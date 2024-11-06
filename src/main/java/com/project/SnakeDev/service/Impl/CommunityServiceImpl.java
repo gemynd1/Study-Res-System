@@ -34,4 +34,9 @@ public class CommunityServiceImpl implements CommunityService {
         return communityMapper.ViewPost(comIdx);
     }
 
+    @Override
+    public List<CommunityVo> ViewComment(String comIdx) {
+        return communityMapper.ViewComment(comIdx);
+    }
+
 }

@@ -16,4 +16,6 @@ public interface CommunityMapper {
 
     List<CommunityVo> ViewPost(String comIdx);
 
+    List<CommunityVo> ViewComment(String comIdx);
+
 }

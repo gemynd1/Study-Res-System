@@ -197,12 +197,12 @@ const Post = () => {
     const queryParams = new URLSearchParams(location.search);
     const comIdx = queryParams.get('comIdx');
 
-    const [commentData, setCommentData] = useState([
-        {id:1, author:"김지민", refnum:1, num:1, groupNum:1, content:"111안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?", date:"2024-09-05 21:49:17"},
-        {id:2, author:"백지민", refnum:2, num:2, groupNum:1, content:"222네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능 합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.", date:"2024-09-05 21:49:17"},
-    ]);
+    const [commentData, setCommentData] = useState([]);
 
     const [boardContents, setBoardContents] = useState();
+
+    const sessionId = sessionStorage.getItem('id');
+    const sessionName = sessionStorage.getItem('name');
 
     // useEffect(() => {
     //     const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
@@ -246,9 +246,23 @@ const Post = () => {
         })
     }, [comIdx]);
 
-    console.log(boardContents);
+    useEffect(() => {
+        axios.get('http://localhost:8099/api/board/post/comment', {
+            params: { comIdx },
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            setCommentData(response.data)
+        }).catch(error => {
+            console.log(error);
+        })
+    }, [comIdx]);
 
-    if (!boardContents) {
+    console.log(boardContents);
+    console.log(commentData);
+
+    if (!boardContents | !commentData) {
         return <div>Loading...</div>;
     }
 
@@ -270,21 +284,22 @@ const Post = () => {
 
                 <div className="post-info1">
                     <img src="/img/icon/person.png" alt="personicon" className="post-author-icon" />
-                    <span className="post-author">백지민 님</span>
+                    <span className="post-author">{boardContents.memberName} 님</span>
                     <img src="/img/icon/calendar.png" alt="calendaricon" className="post-calendar-icon" />
                     <span className="post-writeday">{boardContents.comRegDate}</span>
                 </div>
 
                 <div className="post-info2">
                     <img src="/img/icon/group.png" alt="groupicon" className="post-group-icon" />
-                    <span className="post-group">1 / 5 명</span>
-                    <span className="post-group2">(4명 남음)</span>
+                    <span className="post-group">{boardContents.groupCount + 1} / {boardContents.comToCount} 명</span>
+                    <span className="post-group2">({boardContents.comToCount - (boardContents.groupCount + 1)}명 남음)</span>
                 </div>
 
                 <div className="post-info3">
                     <div className="post-member">
                         <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
-                        <span className="post-member-name">김지민</span>
+                        <span className="post-member-name">{boardContents.memberName}</span>
+                        {}
                     </div>
                 </div>
 

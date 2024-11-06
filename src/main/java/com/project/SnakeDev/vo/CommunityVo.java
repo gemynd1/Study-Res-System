@@ -9,6 +9,8 @@ public class CommunityVo {
     private String ComGroupName;
 
     private int GroupCount;
+    private String MemberName;
+    private String MemberNames;
 
     // 기본생성자
     public CommunityVo() {
@@ -56,6 +58,29 @@ public class CommunityVo {
         ComReportCount = comReportCount;
         ComGroupName = comGroupName;
         GroupCount = groupCount;
+    }
+
+    // post페이지에서 사용되는 vo
+    public CommunityVo(int comIdx, int comCateIdx, int MIdx, String comTitle, String comContent, String comRegDate, String comDelDate, String comUpDate, int comintoDate, int comToCount, String comStartDate, String comEndDate, String comPlace, String comZipcode, String comAddress, int comReportCount, String comGroupName, String memberName, String memberNames) {
+        ComIdx = comIdx;
+        ComCateIdx = comCateIdx;
+        this.MIdx = MIdx;
+        ComTitle = comTitle;
+        ComContent = comContent;
+        ComRegDate = comRegDate;
+        ComDelDate = comDelDate;
+        ComUpDate = comUpDate;
+        ComintoDate = comintoDate;
+        ComToCount = comToCount;
+        ComStartDate = comStartDate;
+        ComEndDate = comEndDate;
+        ComPlace = comPlace;
+        ComZipcode = comZipcode;
+        ComAddress = comAddress;
+        ComReportCount = comReportCount;
+        ComGroupName = comGroupName;
+        MemberName = memberName;
+        MemberNames = memberNames;
     }
 
     public int getComIdx() {
@@ -200,5 +225,21 @@ public class CommunityVo {
 
     public void setGroupCount(int groupCount) {
         GroupCount = groupCount;
+    }
+
+    public String getMemberNames() {
+        return MemberNames;
+    }
+
+    public void setMemberNames(String memberNames) {
+        MemberNames = memberNames;
+    }
+
+    public String getMemberName() {
+        return MemberName;
+    }
+
+    public void setMemberName(String memberName) {
+        MemberName = memberName;
     }
 }
