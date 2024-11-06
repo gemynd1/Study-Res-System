@@ -16,6 +16,10 @@
     "@testing-library/user-event": "^13.5.0",
     "@tosspayments/payment-widget-sdk": "^0.12.0",
     "@tosspayments/tosspayments-sdk": "^2.3.2",
+<<<<<<< HEAD
+    "audit": "^0.0.6",
+=======
+>>>>>>> e3ab05e1f745479afd6e7f0016d81232e0fcb908
     "axios": "^1.7.7",
     "bfj": "^8.0.0",
     "ckeditor5-custom-build": "file:ckeditor5",

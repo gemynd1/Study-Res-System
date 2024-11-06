@@ -68,8 +68,11 @@ const Header = () => {
         })
     }
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> e3ab05e1f745479afd6e7f0016d81232e0fcb908
     const handleClick = () => {
         if(sessionStorage.getItem("loginState") === "true") {
             navigate('/mypage')
@@ -97,8 +100,11 @@ const Header = () => {
     //         })
     // }
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> e3ab05e1f745479afd6e7f0016d81232e0fcb908
     const index_choice = (index) => {
         if(active_index === index) {
             setActive_index(null);
