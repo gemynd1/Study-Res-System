@@ -281,12 +281,24 @@ const requestSriImg = async () => {
     uploadedFiles.forEach((uploadedFile) => {
       formData.append('SRIIMG', uploadedFile.file.name);
     });
-      // formData 확인 console
-  for (let [key, value] of formData.entries()) {
-    if (value instanceof File) {
-      console.log(`${key}: ${value.name} (${value.size} bytes)`); // Log file name and size
-    } else {
-      console.log(`${key}: ${value}`); // Log other form data
+    
+    const loggedInId = sessionStorage.getItem('name');
+    console.log(loggedInId);
+  
+    // MIDX 조회
+    let memberIndex;
+    try {
+      const response = await fetch(`http://localhost:8099/api/reviews/member/${loggedInId}`,{
+        method: 'GET',
+        // body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('MIDX를 가져오는 데 실패했습니다.');
+      }
+      memberIndex = await response.json();
+    } catch (error) {
+      alert(error.message);
+      return; // MIDX를 가져오지 못하면 함수 종료
     }
   }
   formData.entries()
