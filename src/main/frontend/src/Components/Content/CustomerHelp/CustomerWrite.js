@@ -1,14 +1,55 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const CustomerWrite = () => {
 
     const navigate = useNavigate();
+    const [CustomerWrite, setCustomerWrite] = useState({
+        writeTitle: "",
+        writeContent: "",
+        writeDate: ""
+    })
+    const [memberRandom, setMemberRandom] = useState(null);
 
     const handleNavigate = () => {
         navigate('/mypage')
     }
 
+    const handleInput = (e) => {
+        setCustomerWrite({
+            ...CustomerWrite,
+            [e.target.name]: e.target.value,
+        });
+    }
+
+
+    const onSubmit = (e) => {
+        let random = null;
+        random = Math.floor(10000000 + Math.random() * 99999999);
+        setMemberRandom(random);
+
+        e.preventDefault();
+        axios.post("http://localhost:8099/api/customer/customerWrite", {
+            CHIdx: Number(random),
+            MemberId : sessionStorage.getItem("id"),
+            CHContent: CustomerWrite.writeContent,
+            CHTitle: CustomerWrite.writeTitle
+        },
+        {
+            headers: {
+                "Content-Type": "application/json", // 반드시 JSON으로 설정
+            },
+            })
+            .then(response => {
+                alert("문의가 접수 되었습니다.")
+                navigate("/CustomerHelp/customerDetail");
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error("에러발생: ", error);
+            })
+    }
 
     return (
         <div className="MyPage">
@@ -59,36 +100,38 @@ const CustomerWrite = () => {
                 <div className="helpText2">
                     <span>제목, 내용에 개인정보를 입력하지 마세요.</span>
                 </div>
-                <div className="helpInputBox">
-                    <div className="helpInput">
-                        <div className="helpLeft">
-                            <span className="SpanText">아이디</span>
-                            <span className="detailTitle">*</span>
+                <form onSubmit={onSubmit}>
+                    <div className="helpInputBox">
+                        <div className="helpInput">
+                            <div className="helpLeft">
+                                <span className="SpanText">아이디</span>
+                                <span className="detailTitle">*</span>
+                            </div>
+                            <div className="helpRight">
+                                <input type="text" value={sessionStorage.getItem("name")}/>
+                            </div>
                         </div>
-                        <div className="helpRight">
-                            <input type="text"/>
+                        <div className="helpInput">
+                            <div className="helpLeft">
+                                <span className="SpanText">제목</span>
+                                <span className="detailTitle">*</span>
+                            </div>
+                            <div className="helpRight2">
+                                <input type="text" name="writeTitle" placeholder="100자 이내로 입력하세요." value={CustomerWrite.writeTitle} onChange={handleInput}/>
+                            </div>
                         </div>
+                        <div className="helpInput">
+                            <div className="helpLeft">
+                                <span className="SpanText">내용</span>
+                                <span className="detailTitle">*</span>
+                            </div>
+                            <div className="helpRight3">
+                                <input type="text" name="writeContent" placeholder="문의 내용을 적어주세요." value={CustomerWrite.writeContent} onChange={handleInput}/>
+                            </div>
+                        </div>
+                        <button type="submit" className="helpBtn">문의하기</button>
                     </div>
-                    <div className="helpInput">
-                        <div className="helpLeft">
-                            <span className="SpanText">제목</span>
-                            <span className="detailTitle">*</span>
-                        </div>
-                        <div className="helpRight2">
-                            <input type="text" placeholder="100자 이내로 입력하세요."/>
-                        </div>
-                    </div>
-                    <div className="helpInput">
-                        <div className="helpLeft">
-                            <span className="SpanText">내용</span>
-                            <span className="detailTitle">*</span>
-                        </div>
-                        <div className="helpRight3">
-                            <input type="text" placeholder="문의 내용을 적어주세요."/>
-                        </div>
-                    </div>
-                    <button onClick={handleNavigate} className="helpBtn">문의하기</button>
-                </div>
+                </form>
             </div>
         </div>
     );

@@ -5,201 +5,29 @@ import Pagination from "./Pagination";
 import MemberDeleteModal from "./MemberDeleteModal";
 
 const MypageBoard = () => {
-    const [MypageBoard, setMypageBoard] = useState('');
+    const [MypageBoard, setMypageBoard] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [resultsPerpage, setResultsPerpage] = useState(10);
 
+    const [id, setId] = useState(sessionStorage.getItem("id"));
+
+
     useEffect(() => {
-        axios.get('/api/mypage/mypageBoard')
-            .then((res) => {
-                setMypageBoard(res.data);
+        axios.get("http://localhost:8099/api/mypage/mypageBoard",
+            {
+                params: { id },
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             })
-            .catch(error => console.log(error))
+            .then(response => {
+                setMypageBoard(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error("에러발생: ", error);
+            })
     }, []);
-
-    useEffect(() => {
-        const result = [
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "백지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김태랑",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-            {
-                title: "2",
-                writer: "정희수",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "1",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "김지민",
-                Views: "100,000"
-            },
-            {
-                title: "내가 작성 한 글 제목",
-                writer: "홍길동",
-                Views: "100,000"
-            },
-        ];
-        setSearchResults(result);
-    }, []);
-
-
 
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
 
@@ -210,8 +38,8 @@ const MypageBoard = () => {
 
     const indexOfLastResult = currentPage * resultsPerpage;
     const indexOfFirstResult = indexOfLastResult - resultsPerpage;
-    const currentResults = searchResults.slice(indexOfFirstResult, indexOfLastResult);
-    const total = searchResults.length;
+    const currentResults = MypageBoard.slice(indexOfFirstResult, indexOfLastResult);
+    const total = MypageBoard.length;
 
     useEffect(() => {
         if (MemberModalOpen) {
@@ -313,16 +141,16 @@ const MypageBoard = () => {
                                     {currentResults.map((result, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{result.title}</td>
-                                            <td>{result.writer}</td>
-                                            <td>{result.Views}</td>
+                                            <td>{result.comcontent}</td>
+                                            <td>{result.memberName}</td>
+                                            <td>{result.comintodate}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                             <Pagination
                                 currentPage={currentPage}
-                                totalPages={Math.ceil(searchResults.length / resultsPerpage)}
+                                totalPages={Math.ceil(MypageBoard.length / resultsPerpage)}
                                 onPageChange={handlePageChange}
                             />
                         </div>

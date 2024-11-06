@@ -1,9 +1,12 @@
 package com.project.SnakeDev.mapper;
 
-import com.project.SnakeDev.vo.AuthVo;
+import com.project.SnakeDev.vo.*;
 import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 public interface MypageMapper {
@@ -22,5 +25,25 @@ public interface MypageMapper {
 
     // 기존 회원 정보 조회 쿼리
     AuthVo getUpdateInfo(@Param("memberId") String memberId);
+
+    // 마이페이지 시간충전 보여주기
+    List<StudyInPareVo> ViewStudyInPare();
+
+    // 내가 작성한 글 보여주기
+    List<StudyCommunityVo> getBoardInfo(@Param("memberId") String memberId);
+
+    // 내가 작성한 리뷰 보여주기
+    List<StudyReviewVo> getReviewInfo(@Param("memberId") String memberId);
+
+    // 회원탈퇴
+    AuthVo ExitMemberInfo(@Param("memberId") String memberId);
+
+    // 고객센터 문의작성
+    int InsertCustomerHelp(CustomerHelpVo customerHelpVo);
+
+    // 고객센터 문의작성 보여주기
+    List<CustomerHelpVo> getCustomerHelpInfo(@Param("memberId") String memberId);
+    // 시간충전 저장
+//    void insertPayment(StudyOrderPayVo studyOrderPayVo) throws Exception;
 
 }

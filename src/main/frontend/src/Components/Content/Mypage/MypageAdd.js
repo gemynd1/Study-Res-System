@@ -10,15 +10,19 @@ const MypageAdd = () => {
     const [TicketSelect, setTicketSelect] = useState('당일권');
     const [selectAmount, setSelectAmount] = useState(null);
     const [selectName, setSelectName] = useState(null);
+    const [widget, setWidget] = useState(null);
+    const [TimeInfo, setTimeInfo] = useState([]);
 
 
     const [ModalOpen, setModalOpen] = useState(false);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
+    const [SipIdx, setSipIdx] = useState(1);
 
 
-    const openModal = (amount, Name) => {
+    const openModal = (amount, Name, SipIdx) => {
         setSelectAmount(amount);
-        setSelectName(Name)
+        setSelectName(Name);
+        setSipIdx(SipIdx);
         setModalOpen(true);
     }
 
@@ -33,14 +37,6 @@ const MypageAdd = () => {
     const closeModal = () => {
         setModalOpen(false);
     }
-
-    useEffect(() => {
-        axios.get('/api/mypage/mypageAdd')
-            .then((res) => {
-                setMypageAdd(res.data);
-            })
-            .catch(error => console.log(error))
-    }, []);
 
     useEffect(() => {
         if (MemberModalOpen) {
@@ -65,6 +61,20 @@ const MypageAdd = () => {
             document.body.style.overflow = "auto";
         };
     }, [ModalOpen]);
+
+
+    useEffect(() => {
+        axios.get("http://localhost:8099/api/mypage/mypageTime", {
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => {
+                setTimeInfo(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('데이터 못가져옴: ', error);
+            })
+    }, []);
 
     return (
         <div className="MyPage">
@@ -144,58 +154,57 @@ const MypageAdd = () => {
                             </div>
                             {TicketSelect === '당일권' && (
                                 <div className="TimeBox">
-                                    <div className="Timebox2">
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("1,500", "당일권 1시간")}>당일권 1시간 <br/> 1,500원</button>
-
+                                    <div className="Timebox2" >
+                                        {TimeInfo ? TimeInfo.slice(0,2).map((result, index) => (
+                                        <div className="SameTime" key={index}>
+                                            <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                {result.sipName} <br/> {result.sipPrice}</button>
                                         </div>
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("3,000", "당일권 2시간")}>당일권 2시간 <br/> 3,000원</button>
-                                        </div>
+                                        )) : ''}
                                     </div>
                                     <div className="Timebox2">
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("5,000", "당일권 4시간")}>당일권 4시간 <br/> 5,000원</button>
-                                        </div>
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("6,000", "당일권 6시간")}>당일권 6시간 <br/> 6,000원</button>
-                                        </div>
+                                        {TimeInfo ? TimeInfo.slice(2,4).map((result, index) => (
+                                            <div className="SameTime" key={index}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                    {result.sipName} <br/> {result.sipPrice}</button>
+                                            </div>
+                                        )) : ''}
                                     </div>
                                     <div className="Timebox2">
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("8,000", "당일권 9시간")}>당일권 9시간 <br/> 8,000원</button>
-                                        </div>
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("10,000", "당일권 12시간")}>당일권 12시간 <br/> 10,000원</button>
-                                        </div>
+                                        {TimeInfo ? TimeInfo.slice(4,6).map((result, index) => (
+                                            <div className="SameTime" key={index}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                    {result.sipName} <br/> {result.sipPrice}</button>
+                                            </div>
+                                        )) : ''}
                                     </div>
                                 </div>
                             )}
                             {TicketSelect === '정기권' && (
                                 <div className="TimeBox">
                                     <div className="Timebox2">
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("45,000", "종일권 30시간")}>종일권 30시간 <br/> 45,000원</button>
-                                        </div>
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("60,000", "정기권 50시간")}>정기권 50시간 <br/> 60,000원</button>
-                                        </div>
+                                        {TimeInfo ? TimeInfo.slice(6,8).map((result, index) => (
+                                            <div className="SameTime" key={index}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                    {result.sipName} <br/> {result.sipPrice}</button>
+                                            </div>
+                                        )) : ''}
                                     </div>
                                     <div className="Timebox2">
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("110,000", "정기권 100시간")}>정기권 100시간 <br/> 110,000원</button>
-                                        </div>
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("120,000", "정기구너 4주 자유 이용권")}>정기권 4주 자유 이용권<br/> 120,000원</button>
-                                        </div>
+                                        {TimeInfo ? TimeInfo.slice(8,10).map((result, index) => (
+                                            <div className="SameTime" key={index}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                    {result.sipName} <br/> {result.sipPrice}</button>
+                                            </div>
+                                        )) : ''}
                                     </div>
                                     <div className="Timebox2">
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("230,000", "정기권 8주 자유 이용권")}>정기권 8주 자유 이용권<br/> 230,000원</button>
-                                        </div>
-                                        <div className="SameTime">
-                                            <button onClick={() => openModal("800,000", "정기권 1년 이용권")}>정기권 1년 이용권<br/> 800,000</button>
-                                        </div>
+                                        {TimeInfo ? TimeInfo.slice(10,12).map((result, index) => (
+                                            <div className="SameTime" key={index}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                    {result.sipName} <br/> {result.sipPrice}</button>
+                                            </div>
+                                        )) : ''}
                                     </div>
                                 </div>
                             )}
@@ -231,6 +240,7 @@ const MypageAdd = () => {
                 onClose={() => setModalOpen(false)}
                 amount={selectAmount}
                 Name={selectName}
+                widget={widget}
             />
             <MemberDeleteModal
                 open={MemberModalOpen}
