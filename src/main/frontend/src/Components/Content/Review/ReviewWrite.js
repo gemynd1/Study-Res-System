@@ -235,13 +235,14 @@ const ReviewWrite = () => {
     });
     
     const loggedInId = sessionStorage.getItem('name');
+    console.log(loggedInId);
   
     // MIDX 조회
     let memberIndex;
     try {
       const response = await fetch(`http://localhost:8099/api/reviews/member/${loggedInId}`,{
         method: 'GET',
-        body: formData,
+        // body: formData,
       });
       if (!response.ok) {
         throw new Error('MIDX를 가져오는 데 실패했습니다.');

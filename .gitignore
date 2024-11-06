@@ -34,3 +34,6 @@ build/
 
 # 환경설정
 .env
+
+# 내꺼 sql파일
+snake2(personal).sql
