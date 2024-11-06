@@ -1,8 +1,9 @@
 package com.project.SnakeDev.controller;
 
 import ch.qos.logback.core.model.Model;
+import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.MypageService;
-import com.project.SnakeDev.vo.AuthVo;
+import com.project.SnakeDev.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.User;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -74,6 +78,66 @@ public class MypageController {
         }
     }
 
+    @GetMapping("/mypage/mypageTime")
+    public ResponseEntity<Object> studyinpare() {
+        return ResponseEntity.ok(mypageService.ViewStudyInPare());
+    }
 
+    @GetMapping("/mypage/mypageBoard")
+    public ResponseEntity<Object> mypageBoard(
+            @RequestParam("id") String memberId) {
+        List<StudyCommunityVo> BoardInfo = mypageService.getBoardInfo(memberId);
+        return ResponseEntity.ok(BoardInfo);
+    }
+
+    @GetMapping("/mypage/mypageReview")
+    public ResponseEntity<Object> mypageReview(
+            @RequestParam("id") String memberId) {
+        List<StudyReviewVo> ReviewInfo = mypageService.getReviewInfo(memberId);
+        System.out.println(ReviewInfo);
+        return ResponseEntity.ok(ReviewInfo);
+    }
+
+    @PostMapping("/customer/customerWrite")
+    public ResponseEntity<String> customerWrite(@RequestBody Map<String, Object> data) {
+        try {
+            CustomerHelpVo customerHelpVo = VOMapper.mapToVO(data, CustomerHelpVo.class);
+            if (mypageService.InsertCustomerHelp(customerHelpVo) > 0) {
+                return ResponseEntity.ok("ok");
+            } else {
+                return ResponseEntity.badRequest().body("no");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // 오류를 콘솔에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
+    @GetMapping("/customer/customerView")
+    public ResponseEntity<Object> customerView(
+            @RequestParam("id") String memberId) {
+        List<CustomerHelpVo> customerView = mypageService.getCustomerHelpInfo(memberId);
+        return ResponseEntity.ok(customerView);
+    }
+
+
+    // 회원탈퇴
+//
+//    @GetMapping("/mypage/mypageDelte")
+//    public ResponseEntity<Object> mypageDelte(
+//            @RequestParam("id") String memberId) {
+//
+//    }
+
+    // 결제 저장
+//    @PostMapping("/mypage/saveTime")
+//    public String saveTime(@RequestBody StudyOrderPayVo studyOrderPayVo) {
+//        try {
+//            mypageService.savePayment(studyOrderPayVo);
+//            return "저장 성공";
+//        } catch (Exception e) {
+//            return "에러 발생: " + e.getMessage();
+//        }
+//    }
 
 }

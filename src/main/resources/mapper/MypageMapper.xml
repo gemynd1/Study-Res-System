@@ -60,10 +60,74 @@
         where midx = (select midx from tbl_member where memberid = #{memberId})
     </update>
 
-
-
-
     <select id="getUpdateInfo" resultType="com.project.SnakeDev.vo.AuthVo">
         SELECT * FROM tbl_member WHERE MemberId = #{memberId}
     </select>
+
+    <select id="ViewStudyInPare" resultType="com.project.SnakeDev.vo.StudyInPareVo">
+        select * from tbl_studyinpare
+    </select>
+
+    <select id="getBoardInfo" resultType="com.project.SnakeDev.vo.StudyCommunityVo">
+        select
+            tm.comcateidx as comcateidx,
+            tm.midx as midx,
+            tm.comtitle as comtitle,
+            tm.comcontent as comcontent,
+            tm.comregdate as comregdate,
+            tm.comintodate as comintodate,
+            tma.memberId as MemberId,
+            tma.memberName as memberName
+        from tbl_community tm
+                 inner join tbl_member tma
+                            on tm.midx = tma.midx
+        where tma.memberid = #{memberId}
+    </select>
+
+    <select id="getReviewInfo" resultType="com.project.SnakeDev.vo.StudyReviewVo">
+        select
+            tm.sridx as sridx,
+            tm.sgiidx as sgiidx,
+            tm.midx as midx,
+            tm.srcontent as srcontent,
+            tm.srstar as srstar,
+            tm.srregdate as srregdate,
+            tma.memberId as memberId,
+            tma.memberName as memberName
+        from tbl_studyReview tm
+                 inner join tbl_member tma
+                            on tm.midx = tma.midx
+        where memberid = #{memberId}
+    </select>
+
+    <insert id="InsertCustomerHelp" parameterType="map">
+        INSERT INTO tbl_customerHelp (CHIdx, MIDX, CHContent, CHTitle, CHDate)
+        VALUES (
+                   #{CHIdx},
+                   (SELECT MIDX FROM TBL_MEMBER WHERE MEMBERID = #{MemberId}),
+                   #{CHContent},
+                   #{CHTitle},
+                   sysdate
+               )
+    </insert>
+
+    <select id="getCustomerHelpInfo" resultType="com.project.SnakeDev.vo.CustomerHelpVo">
+        select
+            tm.chidx as chidx,
+            tm.midx as midx,
+            tm.chcontent as chcontent,
+            tm.chtitle as chtitle,
+            tm.chdate as chdate,
+            tma.memberId as memberId,
+            tma.memberName as memberName
+        from tbl_customerhelp tm
+                 inner join tbl_member tma
+                            on tm.midx = tma.midx
+        where tma.memberid = #{memberId}
+    </select>
+
+<!--    <insert id="insertPayment" par ameterType="com.project.SnakeDev.vo.StudyOrderPayVo">-->
+<!--        insert into tbl_studyorderpay (tsopidx, midx, tsopmethod, tsopprice, tsopstatus, tsopdate, tsopdivi)-->
+<!--        values (#{tsopidx}, #{midx}, #{tsopmenthod}, #{tsopprice}, #{tsopstatus}, #{tsopdate}, #{tsopdivi})-->
+<!--    </insert>-->
 </mapper>
