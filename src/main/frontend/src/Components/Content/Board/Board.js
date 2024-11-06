@@ -1,24 +1,47 @@
-import React, { useState } from "react";
-import "../../../style/board.css";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import "../../../style/board.css";
 
 const contentClick = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
 }
 
 const Board = () => {
+    // 게시글을 담아두는 state
     const [boardContents, setBoardContents] = useState([
-        {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        {id:2, category:1, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        {id:3, category:1, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        {id:4, category:1, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        {id:5, category:1, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:6, category:2, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:7, category:2, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:8, category:2, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:9, category:2, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:10, category:2, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:2, category:1, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:3, category:1, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:4, category:1, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
+        // {id:5, category:1, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
     ]);
+
+    // 카테고리를 담어두는 state
+    const [boardCategorys, setBoardCategory] = useState([]);
+
+    useEffect(() => {
+        axios.all([
+            axios.get("http://localhost:8099/api/board/category", {
+                headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
+            }),
+            axios.get("http://localhost:8099/api/board", {
+                headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
+            })
+        ])
+        .then(
+            axios.spread((res1, res2) => {
+                setBoardCategory(res1.data);
+                setBoardContents(res2.data);
+            })
+        )
+        .catch(error => {
+            // 오류 처리
+            console.log(error); // 응답 출력
+        });
+    }, []);
+
+    // console.log(boardCategorys);
 
     return (
         <>
@@ -26,26 +49,27 @@ const Board = () => {
                 <div className="board-page">
                     <div className="board-menubar">
                         <div className="category-section">
-                            <Link to="/board/category/deadline" className="category1 category">
-                                <img src="/img/icon/deadline(circle).png" alt="deadline" className="category1-image"/>
-                                <div className="category1-title">곧 마감!</div>
-                            </Link>
-                            <Link to="/board/category/new" className="category2 category">
-                                <img src="/img/icon/new(circle).png" alt="new" className="category2-image"/>
-                                <div className="category2-title">NEW!</div>
-                            </Link>
-                            <Link to="/board/category/programming" className="category3 category">
-                                <img src="/img/icon/programming(circle).png" alt="programming" className="category3-image"/>
-                                <div className="category3-title">프로그래밍</div>
-                            </Link>
-                            <Link to="/board/category/programming" className="category4 category">
-                                <img src="/img/icon/programming(circle).png" alt="programming" className="category4-image"/>
-                                <div className="category4-title">영어</div>
-                            </Link>
+                            {boardCategorys.map((category) => (
+                                category.comcateidx === 1 ? (
+                                    <Link to="/board/category/deadline" className="category1 category">
+                                        <img src="/img/icon/deadline(circle).png" alt="deadline" className="category1-image"/>
+                                        <div className="category1-title">{category.comcatename}</div>
+                                    </Link>
+                                ) : category.comcateidx === 2 ? (
+                                    <Link to="/board/category/new" className="category2 category">
+                                        <img src="/img/icon/new(circle).png" alt="new" className="category2-image"/>
+                                        <div className="category2-title">NEW!</div>
+                                    </Link>
+                                ) : category.comcateidx === 3 ? (
+                                    <Link to="/board/category/programming" className="category3 category">
+                                        <img src="/img/icon/programming(circle).png" alt="programming" className="category3-image"/>
+                                        <div className="category3-title">프로그래밍</div>
+                                    </Link>
+                                ) : null
+                            ))}
                         </div>
                         <Link to="/board/postWrite" className="writeButton">
                             <div className="writeButton-1">글쓰기</div>
-                            {/* <div className="writeButton-2"></div> */}
                         </Link>
                     </div>
                     <div className="board-section">
@@ -59,21 +83,23 @@ const Board = () => {
                                     </Link>
                                 </div>
                                 {boardContents.map((content) => (
-                                    <div className="board-category-1-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
-                                        <p className="board-category-1-content-title">{content.title}</p>
-                                        <p className="board-category-1-content-detail">{content.detail}</p>
-                                        <div className="board-category-1-content-info">
-                                            <div className="board-category-1-content-info-dday">
-                                                <span className="board-category-1-content-info-dday-text">D-DAY</span>
+                                    content.comCateIdx === 1 ? (
+                                            <div className="board-category-1-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
+                                                <p className="board-category-1-content-title">{content.comTitle}</p>
+                                                <p className="board-category-1-content-detail">{content.comContent}</p>
+                                                <div className="board-category-1-content-info">
+                                                    <div className="board-category-1-content-info-dday">
+                                                        <span className="board-category-1-content-info-dday-text">D-DAY</span>
+                                                    </div>
+                                                    <p className="board-category-1-content-info-date">{content.comStartDate}</p>
+                                                    <p className="board-category-1-content-info-address">{content.comAddress}</p>
+                                                </div>
+                                                <div className="board-category-1-content-info2">
+                                                    <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
+                                                    <p className="board-category-1-content-info2-count">{content.groupCount + 1} / {content.comToCount}</p>
+                                                </div>
                                             </div>
-                                            <p className="board-category-1-content-info-date">{content.date}</p>
-                                            <p className="board-category-1-content-info-address">{content.address}</p>
-                                        </div>
-                                        <div className="board-category-1-content-info2">
-                                            <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-1-content-info2-group" />
-                                            <p className="board-category-1-content-info2-count">{content.group}</p>
-                                        </div>
-                                    </div>
+                                    ) : null
                                 ))}
                                 {/* <div className="board-category-1-content" onClick={() => contentClick("/board/post/1")}>
                                     <p className="board-category-1-content-title">이 글의 제목입니다.</p>
@@ -103,21 +129,23 @@ const Board = () => {
                                     </Link>
                                 </div>
                                 {boardContents.map((content) => (
-                                    <div className="board-category-2-content" onClick={() => contentClick(`/board/post/${content.id}`)}>
-                                        <p className="board-category-2-content-title">{content.title}</p>
-                                        <p className="board-category-2-content-detail">{content.detail}</p>
-                                        <div className="board-category-2-content-info">
-                                            <div className="board-category-2-content-info-dday">
-                                                <span className="board-category-2-content-info-dday-text">D-DAY</span>
+                                    content.comCateIdx === 2 ? (
+                                        <div className="board-category-2-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
+                                            <p className="board-category-2-content-title">{content.comTitle}</p>
+                                            <p className="board-category-2-content-detail">{content.comContent}</p>
+                                            <div className="board-category-2-content-info">
+                                                <div className="board-category-2-content-info-dday">
+                                                    <span className="board-category-2-content-info-dday-text">D-DAY</span>
+                                                </div>
+                                                <p className="board-category-2-content-info-date">{content.comStartDate}</p>
+                                                <p className="board-category-2-content-info-address">{content.comAddress}</p>
                                             </div>
-                                            <p className="board-category-2-content-info-date">{content.date}</p>
-                                            <p className="board-category-2-content-info-address">{content.address}</p>
+                                            <div className="board-category-2-content-info2">
+                                                <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-2-content-info2-group" />
+                                                <p className="board-category-2-content-info2-count">{content.groupCount + 1} / {content.comToCount}</p>
+                                            </div>
                                         </div>
-                                        <div className="board-category-2-content-info2">
-                                            <img src="/img/icon/group.png" alt="그룹이미지" className="board-category-2-content-info2-group" />
-                                            <p className="board-category-2-content-info2-count">{content.group}</p>
-                                        </div>
-                                    </div>
+                                    ) : null
                                 ))}
                             </div>
                         </div>

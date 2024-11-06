@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 import '../../../style/post.css';
 
 // 댓글 더보기 버튼 import
@@ -191,6 +192,17 @@ const pageNationData = (event) => {
 
 
 const Post = () => {
+    // url에 담겨져 있는 parameter 값 가져오기
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const comIdx = queryParams.get('comIdx');
+
+    const [commentData, setCommentData] = useState([
+        {id:1, author:"김지민", refnum:1, num:1, groupNum:1, content:"111안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?", date:"2024-09-05 21:49:17"},
+        {id:2, author:"백지민", refnum:2, num:2, groupNum:1, content:"222네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능 합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.", date:"2024-09-05 21:49:17"},
+    ]);
+
+    const [boardContents, setBoardContents] = useState();
 
     // useEffect(() => {
     //     const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
@@ -221,16 +233,30 @@ const Post = () => {
         };
     }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행되도록 합니다.
 
-    const [commentData, setCommentData] = useState([
-        {id:1, author:"김지민", refnum:1, num:1, groupNum:1, content:"111안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요? 안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?안녕하세요. 화상회의에 필요한데 노트북 사용 가능한가요?", date:"2024-09-05 21:49:17"},
-        {id:2, author:"백지민", refnum:2, num:2, groupNum:1, content:"222네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능 합니다. 네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.네 노트북 사용 가능합니다.", date:"2024-09-05 21:49:17"},
-    ]);
+    useEffect(() => {
+        axios.get('http://localhost:8099/api/board/post', {
+            params: { comIdx },
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            setBoardContents(...response.data)
+        }).catch(error => {
+            console.log(error);
+        })
+    }, [comIdx]);
+
+    console.log(boardContents);
+
+    if (!boardContents) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
             <div className="post">
 
-                <p className="title">게시판 (곧 마감)</p>
+                <p className="title">{boardContents.comTitle} (곧 마감)</p>
 
                 <div className="breadcrumb">
                     <img src="/img/icon/home(breadcrumb).png" alt="homeicon" className="breadcrumb-home" />
@@ -246,7 +272,7 @@ const Post = () => {
                     <img src="/img/icon/person.png" alt="personicon" className="post-author-icon" />
                     <span className="post-author">백지민 님</span>
                     <img src="/img/icon/calendar.png" alt="calendaricon" className="post-calendar-icon" />
-                    <span className="post-writeday">2024-09-05</span>
+                    <span className="post-writeday">{boardContents.comRegDate}</span>
                 </div>
 
                 <div className="post-info2">
@@ -266,17 +292,17 @@ const Post = () => {
 
                     <div className="post-startdate">
                         <img src="/img/icon/calendar(startdate).png" alt="startdateicon" className="post-startdate-icon" />
-                        <span className="post-startdate-text">2024-09-06 AM 10:00</span>
+                        <span className="post-startdate-text">{boardContents.comStartDate}</span>
                     </div>
 
                     <div className="post-enddate">
                         <img src="/img/icon/calendar(enddate).png" alt="enddateicon" className="post-enddate-icon" />
-                        <span className="post-enddate-text">2024-09-06 AM 12:00</span>
+                        <span className="post-enddate-text">{boardContents.comEndDate}</span>
                     </div>
 
                     <div className="post-location">
                         <img src="/img/icon/location.png" alt="locationicon" className="post-location-icon" />
-                        <span className="post-location-text">경기도 안양시 만안구 양화로37번길 34 (연성대학교)</span>
+                        <span className="post-location-text">{boardContents.comAddress} ({boardContents.comPlace})</span>
                     </div>
 
                     <div className="kakao-button">
@@ -300,21 +326,7 @@ const Post = () => {
                 </div>
 
                 <div className="post-content">
-                    <p className="post-content-text">
-                    입찰 시 일정 고시금액 이상은 적격심사를 하게되어있습니다.
-                    적격심사 시 신인도 가점 3점을 무조건 확보하는 것이 유리합니다.
-                    적격심사 가점 항목 중 특허•디자인 등록 보유시 적격심사 신인도
-                    가점 0.75점을 받을 수 있습니다.(이전 소요기간 약 2주)
-                     
-                     
-                    이에 자사에서 가지고 있는 디자인등록증(간판/조형물)의 권리이전을 통해 광고인분들에게 도움이 되고자 합니다.
-                    - 권리이전 수수료: 150만원(vat별도)
-                    * 특허법인 양도이전 수수료 별도 (VAT,관납료 포함) : 286,600원
-                     
-                     
-                     
-                    ※ 문의 : 김세근 과장 010-3344-5305
-                    </p>
+                    <p className="post-content-text">{boardContents.comContent}</p>
                 </div>
 
                 <div className="post-comment">

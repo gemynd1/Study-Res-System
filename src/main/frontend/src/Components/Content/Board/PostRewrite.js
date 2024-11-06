@@ -562,7 +562,7 @@ const PostRewrite = () => {
                         <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postRewrite">
 
                             {studyRoomInfos.map((studyRoomInfo) => (
-                                <SwiperSlide>
+                                <SwiperSlide className="mySwiper_postRewrite-slide">
                                     <div className="studyroom">
                                         <img src={`/img/room/study room${studyRoomInfo.id}-1.png`} alt={`room${studyRoomInfo.id}`} />
                                         <div>{studyRoomInfo.name}</div>

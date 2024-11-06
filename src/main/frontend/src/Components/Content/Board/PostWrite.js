@@ -438,10 +438,10 @@ const PostRewrite = () => {
                      </div>) }
                     {RadioValue === '스터디룸' && (
                       <div className="meetingPoint-studyroom">
-                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postRewrite">
+                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postWrite">
 
                             {studyRoomInfos.map((studyRoomInfo) => (
-                                <SwiperSlide>
+                                <SwiperSlide className="mySwiper_postWrite-slide">
                                     <div className="studyroom">
                                         <img src={`/img/room/study room${studyRoomInfo.id}-1.png`} alt={`room${studyRoomInfo.id}`} />
                                         <div>{studyRoomInfo.name}</div>

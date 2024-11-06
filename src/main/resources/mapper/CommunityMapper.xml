@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.project.SnakeDev.mapper.CommunityMapper">
+
+    <select id="ViewCommunity" resultType="com.project.SnakeDev.vo.CommunityVo">
+        <![CDATA[
+        select * from (
+            SELECT
+                c.*,
+                COUNT(ts.COMIDX) AS GroupCount
+            FROM
+                tbl_community c
+            LEFT JOIN
+                tbl_TogetherStudy ts
+            ON
+                c.COMIDX = ts.COMIDX
+            GROUP BY
+                c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+            ORDER BY
+                c.COMIDX DESC
+        ) where rownum <= 5
+        ]]>
+    </select>
+
+    <select id="ViewCurrentCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
+        SELECT
+            c.*,
+            COUNT(ts.COMIDX) AS GroupCount
+        FROM
+            tbl_community c
+                LEFT JOIN
+            tbl_TogetherStudy ts
+            ON
+                c.COMIDX = ts.COMIDX
+        WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+        GROUP BY
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+        ORDER BY
+            c.COMIDX DESC
+    </select>
+
+    <select id="ViewCommunityCategory" resultType="com.project.SnakeDev.vo.CommunityCategoryVo">
+        select * from tbl_community_category where comcateusestate = 'Y'
+    </select>
+
+    <select id="ViewPost" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
+        SELECT
+            c.*,
+            COUNT(ts.COMIDX) AS GroupCount
+        FROM
+            tbl_community c
+                LEFT JOIN
+            tbl_TogetherStudy ts
+            ON
+                c.COMIDX = ts.COMIDX
+        WHERE c.COMIDX = #{int_comIdx}
+        GROUP BY
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+        ORDER BY
+            c.COMIDX DESC
+    </select>
+</mapper>
