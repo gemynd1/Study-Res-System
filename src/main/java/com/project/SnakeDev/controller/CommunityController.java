@@ -54,4 +54,9 @@ public class CommunityController {
         return ResponseEntity.ok(communityService.ViewComment(comIdx));
     }
 
+    @GetMapping("/board/postRewrite")
+    public ResponseEntity<Object> postRewrite(@RequestParam("comIdx") String comIdx) {
+        return ResponseEntity.ok(communityService.ViewPost_forPostRewrite(comIdx));
+    }
+
 }

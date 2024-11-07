@@ -60,8 +60,28 @@
             c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName
     </select>
 
+    <select id="ViewPost_forPostRewrite" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
+        select
+            c.*,
+            cc.COMCATENAME as comCategoryName,
+            listagg(m2.MemberName, ', ') within group (order by m2.MemberName) as MemberNames,
+            COUNT(ts.COMIDX) AS MemberCount
+        from
+            tbl_community c
+            join tbl_member m on c.midx = m.midx
+            join tbl_community_category cc on c.comcateidx = cc.comcateidx
+            left join tbl_TogetherStudy ts on c.comidx = ts.comidx
+            left join tbl_member m2 on ts.midx = m2.midx
+        where
+            c.comidx = #{comIdx}
+        group by
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE,
+            c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS,
+            c.COMREPORTCOUNT, cc.COMCATENAME
+    </select>
+
     <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
-        select * from tbl_community_comment where comidx = #{comIdx}
+        select tcc.*,tm.membername  from tbl_community_comment tcc, tbl_member tm  where tcc.comidx = #{comidx} and tcc.midx = tm.midx
     </select>
 
 </mapper>

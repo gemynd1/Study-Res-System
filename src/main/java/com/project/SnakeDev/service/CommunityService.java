@@ -15,4 +15,6 @@ public interface CommunityService {
     public List<CommunityVo> ViewPost(String comIdx);
 
     public List<CommunityVo> ViewComment(String comIdx);
+
+    public List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
 }

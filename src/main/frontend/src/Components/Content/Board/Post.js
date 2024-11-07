@@ -25,7 +25,7 @@ import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // 댓글 더보기 버튼
-function FadeMenu() {
+function FadeMenu(sessionId, sessionName, memberName, midx) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -34,6 +34,8 @@ function FadeMenu() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    // console.log(sessionId, sessionName, memberName, midx);
 
     return (
         <div className="fademenu">
@@ -261,6 +263,7 @@ const Post = () => {
 
     console.log(boardContents);
     console.log(commentData);
+    console.log(sessionId, sessionName);
 
     if (!boardContents | !commentData) {
         return <div>Loading...</div>;
@@ -354,23 +357,23 @@ const Post = () => {
 
                     <div className="post-comment-main">
                         {commentData.map((comment) => (
-                            comment.refnum === 1 ? (
+                            comment.ccrefnum === 1 ? (
                                 <div className="post-question">
                                     <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
                                     <div className="comment-text">
-                                        <span className="comment-author-name">{comment.author}</span>
-                                        <p className="comment-detail">{comment.content}</p>
-                                        <span className="comment-loaddate">{comment.date}</span>
+                                        <span className="comment-author-name">{comment.memberName}</span>
+                                        <p className="comment-detail">{comment.cccontent}</p>
+                                        <span className="comment-loaddate">{comment.ccregdate}</span>
                                     </div>
 
-                                    <FadeMenu />
+                                    <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
 
                                 </div>
-                            ) : comment.refnum === 2 ? (
+                            ) : comment.ccrefnum === 2 ? (
                                 <div className="post-reply">
                                     <b className="post-reply-author">호스트의 답글</b>
-                                    <p className="reply-detail">{comment.content}</p>
-                                    <span className="reply-loaddate">{comment.date}</span>
+                                    <p className="reply-detail">{comment.cccontent}</p>
+                                    <span className="reply-loaddate">{comment.ccregdate}</span>
                                 </div>
                             ) : null
                         ))}

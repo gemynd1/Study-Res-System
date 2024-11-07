@@ -18,4 +18,5 @@ public interface CommunityMapper {
 
     List<CommunityVo> ViewComment(String comIdx);
 
+    List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
 }
