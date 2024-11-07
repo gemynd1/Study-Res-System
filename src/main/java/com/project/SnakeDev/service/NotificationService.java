@@ -5,5 +5,5 @@ import com.project.SnakeDev.vo.NotificationVo;
 import java.util.List;
 
 public interface NotificationService {
-    public List<NotificationVo> ViewNotification(String MemberId, String MemberName);
+    public List<NotificationVo> ViewNotification(String sessionId, String sessionName);
 }
