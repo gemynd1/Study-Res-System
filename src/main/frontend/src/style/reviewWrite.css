@@ -19,9 +19,12 @@
   margin-bottom: 42px;
 }
 
-.css-ece9u5 {
-  min-width: 1002px !important;
+.drop-wid{
+  min-width: 1000px !important;
 }
+/* .css-ece9u5 {
+  min-width: 1002px !important;
+} */
 
 .css-13r4j3i .MuiTextField-root {
   width: 116ch !important;

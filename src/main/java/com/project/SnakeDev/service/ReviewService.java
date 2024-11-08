@@ -1,15 +1,16 @@
 package com.project.SnakeDev.service;
 
+import com.project.SnakeDev.vo.ReviewVo;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ReviewService {
-    void createReview(int SGIIDX, String SRCONTENT, int SRSTAR, String TSHTLCONTENTags, int MIDX, List<MultipartFile> SRIIMG);
 
-    // 추가된 메서드: 회원 ID로 MIDX 조회
-    public Integer getMidxFromMemberName(int srIdx,String memberName);  
 
-    public uploadImage(int srIdx, List<MultipartFile> SRIIMG )
+    int InsertReview(ReviewVo reviewVo);
+
+
+
 }
 
 //public 사용시 다른 클래스에서 접근 가능 

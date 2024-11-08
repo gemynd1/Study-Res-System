@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor       // 기본 생성자 생성
-@AllArgsConstructor      // 모든 필드를 매개변수로 받는 생성자 생성
+       // 기본 생성자 생성
+   // 모든 필드를 매개변수로 받는 생성자 생성
 public class ReviewVo {
     private Integer srIdx;       // 스터디룸 게시글 번호
     private Integer sgiIdx;      // 스터디룸 idx
@@ -18,6 +18,7 @@ public class ReviewVo {
     private Date srUpdate;       // 수정일
 
 
+    private String memberId;
     // 필수 필드만 사용하는 생성자
     public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent) {
         this.srIdx = srIdx;
@@ -27,7 +28,26 @@ public class ReviewVo {
         this.srContent = srContent;
     }
 
-    // Getter & Setter 메서드
+    public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent, Date srRegDate, Date srDelDate, Date srUpdate, String memberId) {
+        this.srIdx = srIdx;
+        this.sgiIdx = sgiIdx;
+        this.mIdx = mIdx;
+        this.srStar = srStar;
+        this.srContent = srContent;
+        this.srRegDate = srRegDate;
+        this.srDelDate = srDelDate;
+        this.srUpdate = srUpdate;
+        this.memberId = memberId;
+    }
+// Getter & Setter 메서드
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
 
     public Integer getSrIdx() {
         return srIdx;
@@ -47,6 +67,14 @@ public class ReviewVo {
 
     public Integer getMIdx() {
         return mIdx;
+    }
+
+    public Integer getmIdx() {
+        return mIdx;
+    }
+
+    public void setmIdx(Integer mIdx) {
+        this.mIdx = mIdx;
     }
 
     public void setMIdx(Integer mIdx) {
@@ -109,11 +137,3 @@ public class ReviewVo {
                 '}';
     }
 }
-
-
-    // private Integer tshtlidx; //해시태그목록
-    // private String tshtlcontent; //내용
-    // private Integer tshtidx; //해시태그id
-
-    // private String tshtlContent;
-    // private 

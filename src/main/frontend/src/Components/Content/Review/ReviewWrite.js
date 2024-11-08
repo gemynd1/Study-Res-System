@@ -158,6 +158,7 @@ function BasicSelect({ studyRoom, setStudyRoom }) {
       <FormControl fullWidth>
         <InputLabel id="study-room-label">Study room</InputLabel>
         <Select
+          className="drop-wid"
           labelId="study-room-label"
           id="study-room"
           value={studyRoom}
@@ -221,102 +222,126 @@ const ReviewWrite = () => {
   const [sriImg, setSriImg] = useState([]); // 이미지를 배열안에 string으로 url 가져오기
   const memberName = sessionStorage.getItem('name');
 
-  const requestMidx = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8099/api/reviews/member/${memberName}`, {
-        headers: { 'Content-Type': 'application/json' }
-      });
+//   const requestMidx = async () => {
+//     try {
+//       const response = await axios.get(`http://localhost:8099/api/reviews/member/${memberName}`, {
+//         headers: { 'Content-Type': 'application/json' }
+//       });
+//
+//       if (response.status !== 200) {
+//         throw new Error('MIDX를 가져오는 데 실패했습니다.');
+//       }
+//
+//       return setMidx(response.data); // MIDX를 반환
+//     } catch (error) {
+//       console.error("Error fetching MIDX:", error);
+//       alert(error.message);
+//       return null;
+//     }
+//   };
+// requestMidx();
 
-      if (response.status !== 200) {
-        throw new Error('MIDX를 가져오는 데 실패했습니다.');
-      }
-      
-      return setMidx(response.data); // MIDX를 반환
-    } catch (error) {
-      console.error("Error fetching MIDX:", error);
-      alert(error.message);
-      return null;
-    }
+// const requestSriImg = async () => { //
+//   try {
+//     const response = await axios.get('http://localhost:8099/api/reviews/img', {
+//       headers: { 'Content-Type': 'application/json' }
+//     });
+//
+//     if (response.status !== 200) {
+//       throw new Error('SriImg를 가져오는 데 실패했습니다.');
+//     }
+//   } catch (error) {
+//     console.error("Error fetching SriImg:", error);
+//     alert(error.message);
+//     return null;
+//   }
+// };
+// requestSriImg(); 
+    const [test, setTest] = useState({
+        sgiIdx: '',
+        srContent: '',
+        srStar: '',
+    })
+    setTest({
+        sgiIdx: studyRoom,
+        srContent: content,
+        srStar: rating,
+    })
+  const handleCreate = (e) => {
+        e.preventDefault();
+      axios.post("http://localhost:8099/api/review/content", {
+              sgiIdx: test.sgiIdx,
+              srContent: test.content,
+              srStar: test.rating,
+              mIdx: sessionStorage.getItem("id"),
+        },
+        {
+            headers: {
+                "Content-Type": "application/json", // 반드시 JSON으로 설정
+            },
+            })
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(response => {
+                console.log(response.data);
+                // console.error("에러발생: ", error);
+            })
+
+
+
+
+
+    // if (!studyRoom || !content || !rating || tags.length === 0 || uploadedFiles.length === 0) {
+    //   alert('모든 필드를 채워주세요.');
+    //   return;
+    // }
+
+    // const reviewFormData = new FormData();
+    // reviewFormData.append('SGIIDX', studyRoom);
+    // reviewFormData.append('SRCONTENT', content);
+    // reviewFormData.append('SRSTAR', rating);
+    // reviewFormData.append('TSHTLCONTENT', tags);
+    // reviewFormData.append('MIDX', midx); // MIDX 추가
+
+  //   for (let [key, value] of formData.entries()) {
+  //   if (value instanceof File) {
+  //     console.log(`${key}: ${value.name} (${value.size} bytes)`); // Log file name and size
+  //   } else {
+  //     console.log(`${key}: ${value}`); // Log other form data
+  //   }
+  // }
+  // reviewFormData .entries() 매서드 객체 FormData에 포함된 몯느 키-값 쌍의 반복자를 반환. 배열로 저장
+  //   try {
+  //     const reviewResponse = await axios.post('http://localhost:8099/api/reviews', reviewFormData );
+  //     if (reviewResponse.status !== 200) {
+  //       throw new Error('서버에 데이터를 저장하는 데 실패했습니다.');
+  //     }
+  //     alert('리뷰가 성공적으로 저장되었습니다.');
+  //     console.log(reviewResponse.data);
+  //
+  //     const imageFormData = new FormData();
+  //       uploadedFiles.forEach((uploadedFile) => {
+  //       imageFormData.append('SRIIMG', uploadedFile.file.name); // file 객체 자체를 추가x 나는 이미지 이름을 넣고 싶음
+  //     });
+  //     const imageResponse = await axios.post('http://localhost:8099/api/reviews/img', imageFormData, {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     }
+  //     });
+  //     if (imageResponse.status !== 200) {
+  //       throw new Error('이미지 데이터를 저장하는 데 실패했습니다.');
+  //     }
+  //     console.log('이미지가 성공적으로 저장되었습니다:', imageResponse.data);
+  //
+  //
+  //   } catch (error) {
+  //     console.error("Error:", error.response ? error.response.status : error.message);
+  //     alert(error.message);
+  //   }
+
   };
-requestMidx();
 
-const requestSriImg = async () => {
-  try {
-    const response = await axios.get('http://localhost:8099/api/reviews/img', {
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    if (response.status !== 200) {
-      throw new Error('SriImg를 가져오는 데 실패했습니다.');
-    }
-        // 필요한 값들을 int형, int형, string형으로 추출
-        const int1 = parseInt(response.data.int1, 10);   // 첫 번째 int형
-        const int2 = parseInt(response.data.int2, 10);   // 두 번째 int형
-        const str = response.data.str;                    // string형
-    
-        return { int1, int2, str }; // 값 반환
-    // return setSriImg(response.data); // 
-  } catch (error) {
-    console.error("Error fetching SriImg:", error);
-    alert(error.message);
-    return null;
-  }
-};
-// requestSriImg();
-
-  const handleCreate = async () => {
-    if (!studyRoom || !content || !rating || tags.length === 0 || uploadedFiles.length === 0) {
-      alert('모든 필드를 채워주세요.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('SGIIDX', studyRoom);
-    formData.append('SRCONTENT', content);
-    formData.append('SRSTAR', rating);
-    formData.append('TSHTLCONTENT', JSON.stringify(tags));
-    formData.append('MIDX', midx); // MIDX 추가
-
-    // 파일 추가
-    uploadedFiles.forEach((uploadedFile) => {
-      formData.append('SRIIMG', uploadedFile.file.name);
-    });
-    
-    const loggedInId = sessionStorage.getItem('name');
-    console.log(loggedInId);
-  
-    // MIDX 조회
-    let memberIndex;
-    try {
-      const response = await fetch(`http://localhost:8099/api/reviews/member/${loggedInId}`,{
-        method: 'GET',
-        // body: formData,
-      });
-      if (!response.ok) {
-        throw new Error('MIDX를 가져오는 데 실패했습니다.');
-      }
-      memberIndex = await response.json();
-    } catch (error) {
-      alert(error.message);
-      return; // MIDX를 가져오지 못하면 함수 종료
-    }
-  }
-  formData.entries()
-    try {
-      const response = await axios.post('http://localhost:8099/api/reviews', formData);
-      console.log('Response from server:', response.data);
-      
-      if (response.status !== 200) {
-        throw new Error('서버에 데이터를 저장하는 데 실패했습니다.');
-      }
-
-      alert('리뷰가 성공적으로 저장되었습니다.');
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error:", error.response ? error.response.status : error.message);
-      alert(error.message);
-    }
-  };
 
   return (
     
