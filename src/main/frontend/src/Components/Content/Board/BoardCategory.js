@@ -32,6 +32,15 @@ const BoardCategory = () => {
         console.log(categoryValue + " - " + boardContents.length)
         // db에서 boardContents.length+1부터 5개씩 가져오는 sql문을 만들어서 실행해야함 
         // 그리고나서 boardContents안에 sql로 가져온 값을 추가해준면된다.
+        
+        // axios.get(`http://localhost:8099/api/board/select/category/more`, {
+        //     params : { categoryValue : categoryValue, currentNumber : boardContents.length },
+        //     headers : { 'Content-Type': 'application/json' }
+        // }).then(response => {
+        //     console.log(response.data);
+        // }).catch(error => {
+        //     console.log(error);
+        // },[categoryValue]);
     }
 
     const currentUrl = window.location.href;
@@ -70,32 +79,12 @@ const BoardCategory = () => {
         if(categoryValue === "deadline") {
             return "시작이 얼마남지 않은 모임을 확인해보세요!";
         } else if(categoryValue === "new") {
-            return "새로운 모임을 확인해보세요!";
+            return "새로 만들어진 모임을 확인해보세요!";
         } else if(categoryValue === "programming") {
             return "프로그래밍 모임을 확인해보세요!";
         }
     }
 
-    // useEffect(() => {
-    //     axios.all([
-    //         axios.get("http://localhost:8099/api/board/category", {
-    //             headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
-    //         }),
-    //         axios.get("http://localhost:8099/api/board", {
-    //             headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
-    //         })
-    //     ])
-    //     .then(
-    //         axios.spread((res1, res2) => {
-    //             setBoardCategory(res1.data);
-    //             setBoardContents(res2.data);
-    //         })
-    //     )
-    //     .catch(error => {
-    //         // 오류 처리
-    //         console.log(error); // 응답 출력
-    //     });
-    // }, []);
 
     useEffect(() => {
         const currentCategoryValue = location.pathname.split("/").pop();

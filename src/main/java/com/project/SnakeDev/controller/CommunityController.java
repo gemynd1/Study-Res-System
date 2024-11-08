@@ -44,6 +44,22 @@ public class CommunityController {
         return ResponseEntity.ok(communityService.ViewCurrentCommunity(currentCategory));
     }
 
+    @GetMapping("/board/select/category/more")
+    public ResponseEntity<Object> moreCommunity(@RequestParam("currentCategory") String currentCategory,
+                                                @RequestParam("ContentNumber") int ContentNumber) {
+        if (currentCategory.equals("deadline")) {
+            currentCategory = "곧 마감!";
+        } else if (currentCategory.equals("new")) {
+            currentCategory = "new!";
+        } else if (currentCategory.equals("programming")) {
+            currentCategory = "프로그래밍";
+        } else  {
+            currentCategory = null;
+        }
+
+        return ResponseEntity.ok(communityService.ViewMoreCommunity(currentCategory, ContentNumber));
+    }
+
     @GetMapping("/board/post")
     public ResponseEntity<Object> post(@RequestParam("comIdx") String comIdx) {
         return ResponseEntity.ok(communityService.ViewPost(comIdx));

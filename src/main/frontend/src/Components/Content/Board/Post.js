@@ -386,8 +386,29 @@ const Post = () => {
 
                 <div className="join-button-section">
                     <div className="join-button">
-                        <img src="/img/icon/check.png" alt="checkicon" className="join-button-icon" />
+                        <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
                         <span className="join-button-text">참여하기</span>
+                    </div>
+                </div>
+                
+                <div className="out-button-section" style={{display: 'none'}}>
+                    <div className="out-button">
+                        <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                        <span className="out-button-text">나가기</span>
+                    </div>
+                </div>
+
+                <div className="fix-button-section" style={{display: 'none'}}>
+                    <div className="fix-button">
+                        <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
+                        <span className="fix-button-text">수정</span>
+                    </div>
+                </div>
+
+                <div className="delete-button-section" style={{display: 'none'}}>
+                    <div className="delete-button">
+                        <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
+                        <span className="delete-button-text">삭제</span>
                     </div>
                 </div>
 

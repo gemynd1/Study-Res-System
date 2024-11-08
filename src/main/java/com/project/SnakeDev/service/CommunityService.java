@@ -5,12 +5,16 @@ import com.project.SnakeDev.vo.CommunityVo;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 public interface CommunityService {
     public List<CommunityVo> ViewCommunity();
 
     public List<CommunityCategoryVo> ViewCommunityCategory();
 
     public List<CommunityVo> ViewCurrentCommunity(String currentCategory);
+    
+    public List<CommunityVo> ViewMoreCommunity(String currentCategory, int ViewMoreCommunity);
 
     public List<CommunityVo> ViewPost(String comIdx);
 

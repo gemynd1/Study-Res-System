@@ -30,6 +30,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public List<CommunityVo> ViewMoreCommunity(String currentCategory, int ViewMoreCommunity) {
+        return communityMapper.ViewMoreCommunity(currentCategory, ViewMoreCommunity);
+    }
+
+    @Override
     public List<CommunityVo> ViewPost(String comIdx) {
         return communityMapper.ViewPost(comIdx);
     }
