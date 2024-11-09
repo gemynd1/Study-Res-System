@@ -46,7 +46,8 @@ public class CommunityController {
 
     @GetMapping("/board/select/category/more")
     public ResponseEntity<Object> moreCommunity(@RequestParam("currentCategory") String currentCategory,
-                                                @RequestParam("ContentNumber") int ContentNumber) {
+                                                @RequestParam("ContentNumber") String ContentNumber) {
+
         if (currentCategory.equals("deadline")) {
             currentCategory = "곧 마감!";
         } else if (currentCategory.equals("new")) {
@@ -57,7 +58,9 @@ public class CommunityController {
             currentCategory = null;
         }
 
-        return ResponseEntity.ok(communityService.ViewMoreCommunity(currentCategory, ContentNumber));
+        int int_ContentNumber = Integer.parseInt(ContentNumber);
+
+        return ResponseEntity.ok(communityService.ViewMoreCommunity(currentCategory, int_ContentNumber));
     }
 
     @GetMapping("/board/post")
