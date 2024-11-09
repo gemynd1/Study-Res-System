@@ -23,20 +23,25 @@
     </select>
 
     <select id="ViewCurrentCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
-        SELECT
-            c.*,
-            COUNT(ts.COMIDX) AS GroupCount
-        FROM
-            tbl_community c
-                LEFT JOIN
-            tbl_TogetherStudy ts
+        <![CDATA[
+        SELECT * FROM (
+            SELECT
+                c.*,
+                COUNT(ts.COMIDX) AS GroupCount
+            FROM
+                tbl_community c
+            LEFT JOIN
+                tbl_TogetherStudy ts
             ON
                 c.COMIDX = ts.COMIDX
-        WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
-        GROUP BY
-            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
-        ORDER BY
-            c.COMIDX DESC
+            WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+            GROUP BY
+                c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+            ORDER BY
+                c.COMIDX DESC
+            )
+        WHERE ROWNUM <= 2
+        ]]>
     </select>
 
     <select id="ViewCommunityCategory" resultType="com.project.SnakeDev.vo.CommunityCategoryVo">
@@ -82,6 +87,25 @@
 
     <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
         select tcc.*,tm.membername  from tbl_community_comment tcc, tbl_member tm  where tcc.comidx = #{comidx} and tcc.midx = tm.midx
+    </select>
+
+    <select id="ViewMoreCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="map">
+        SELECT
+            c.*,
+            COUNT(ts.COMIDX) AS GroupCount
+        FROM
+            tbl_community c
+        LEFT JOIN
+            tbl_TogetherStudy ts
+        ON
+            c.COMIDX = ts.COMIDX
+        WHERE
+            comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+        GROUP BY
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+        ORDER BY
+            c.COMIDX DESC
+        OFFSET #{int_ContentNumber} ROWS FETCH NEXT 1 ROWS ONLY
     </select>
 
 </mapper>
