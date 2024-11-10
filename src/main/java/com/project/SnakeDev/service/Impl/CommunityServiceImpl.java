@@ -4,6 +4,7 @@ import com.project.SnakeDev.mapper.CommunityMapper;
 import com.project.SnakeDev.service.CommunityService;
 import com.project.SnakeDev.vo.CommunityCategoryVo;
 import com.project.SnakeDev.vo.CommunityVo;
+import com.project.SnakeDev.vo.StudyGInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,10 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public List<CommunityVo> ViewPost_forPostRewrite(String comIdx) {
         return communityMapper.ViewPost_forPostRewrite(comIdx);
+    }
+
+    @Override
+    public List<StudyGInfoVo> ViewStudyroom() {
+        return communityMapper.ViewStudyroom();
     }
 }

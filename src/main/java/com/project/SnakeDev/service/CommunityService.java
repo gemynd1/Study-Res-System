@@ -5,6 +5,7 @@ import com.project.SnakeDev.vo.CommunityVo;
 
 import java.util.List;
 
+import com.project.SnakeDev.vo.StudyGInfoVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CommunityService {
@@ -21,4 +22,6 @@ public interface CommunityService {
     public List<CommunityVo> ViewComment(String comIdx);
 
     public List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
+
+    public List<StudyGInfoVo> ViewStudyroom();
 }

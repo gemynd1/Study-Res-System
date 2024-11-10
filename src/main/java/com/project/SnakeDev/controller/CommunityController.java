@@ -1,6 +1,8 @@
 package com.project.SnakeDev.controller;
 
 import com.project.SnakeDev.service.CommunityService;
+import com.project.SnakeDev.vo.CommunityVo;
+import com.project.SnakeDev.vo.StudyGInfoVo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000") // React 개발 서버 주소
@@ -75,7 +79,14 @@ public class CommunityController {
 
     @GetMapping("/board/postRewrite")
     public ResponseEntity<Object> postRewrite(@RequestParam("comIdx") String comIdx) {
-        return ResponseEntity.ok(communityService.ViewPost_forPostRewrite(comIdx));
+        List<CommunityVo> result_ViewPost_forPostRewrite = communityService.ViewPost_forPostRewrite(comIdx);
+        List<StudyGInfoVo> result_ViewStudyroom= communityService.ViewStudyroom();
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("community", result_ViewPost_forPostRewrite);
+        result.put("studyroom", result_ViewStudyroom);
+
+        return ResponseEntity.ok(result);
     }
 
 }

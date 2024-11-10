@@ -55,7 +55,7 @@ import { Navigation } from 'swiper/modules';
 import PostCodePopup from "../Account/AccountCom/PostCodePopup";
 
 // input ui component
-function BasicTextFields({label, comTitle, comContent}) {
+function BasicTextFields({label, comTitle, comContent, onChange, name}) {
 	const multiline = label === '내용' ? {multiline: true, rows: 15} : {};
     const text = label === '제목' ? comTitle : comContent;
 
@@ -66,18 +66,18 @@ function BasicTextFields({label, comTitle, comContent}) {
 		noValidate
 		autoComplete="off"
 	  >
-		<TextField id="outlined-basic" label={label} variant="outlined" value={text} {...multiline} />
+		<TextField id="outlined-basic" label={label} variant="outlined" value={text} onChange={onChange} name={name} {...multiline} />
 	  </Box>
 	);
   }
 
 // 카테고리select ui component
-function BasicSelect({comCategoryName}) {
-	const [category, setCategory] = React.useState('');
+function BasicSelect({comCategoryName, onChange, name}) {
+	// const [category, setCategory] = React.useState('');
   
-	const handleChange = (event) => {
-	  setCategory(event.target.value);
-	};
+	// const handleChange = (event) => {
+	//   setCategory(event.target.value);
+	// };
   
 	return (
 	  <Box sx={{ minWidth: 120 }}>
@@ -88,7 +88,8 @@ function BasicSelect({comCategoryName}) {
 			id="demo-simple-select"
 			value={comCategoryName}
 			label="카테고리"
-			onChange={handleChange}
+			onChange={onChange}
+			name={name}
 		  >
 			<MenuItem value={"곧 마감!"}>곧 마감!</MenuItem>
 			<MenuItem value={"new"}>new</MenuItem>
@@ -151,7 +152,7 @@ function RowRadioButtonsGroup({RadioValue, setRadioValue}) {
 }
 
 // startdate & enddate ui component
-function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate}) {
+function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate, name, onChange}) {
   const dateTypeText = dateType === 'startdate' ? '모임 시작일' : '모임 종료일';
   let dateValue
   if(dateType === 'startdate') {
@@ -170,7 +171,7 @@ function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate}) {
 		  ]}
 		>
 		  <DemoItem label={dateTypeText}>
-			<DateTimePicker defaultValue={dayjs(dateValue)} />
+			<DateTimePicker defaultValue={dayjs(dateValue)} name={name} onChange={onChange} />
 		  </DemoItem>
 		</DemoContainer>
 	  </LocalizationProvider>
@@ -201,12 +202,18 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-function NumberInputAdornments({comToCount}) {
+function NumberInputAdornments({comToCount, name, onChange}) {
   return (
 	<Box
 	  sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}
 	>
-	  <NumberInput endAdornment={<InputAdornmentNumber>명</InputAdornmentNumber>} value={comToCount} />
+	  <NumberInput endAdornment={<InputAdornmentNumber>명</InputAdornmentNumber>}
+	  			   name={name}
+				   value={comToCount}
+				   onChange={onChange}
+				   min={1}
+				   max={10}
+	  />
 	</Box>
   );
 }
@@ -369,27 +376,22 @@ const Button = styled('button')(
 );
 
 const PostRewrite = () => {
-  const [RadioValue, setRadioValue] = useState('');
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const comIdx = queryParams.get('comIdx');
 
-  const [groupMemberInfos, setGroupMemberInfos] = useState([
-	{id: 1, name: '김지민'},
-	{id: 2, name: '김태랑'}
-  ]);
-
-  const del_groupMember = (event) => {
-	const id = event.target.getAttribute('data-id');
-	// db에 실제로 데이터를 지워야함
-	setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.id !== Number(id)));
-  }
-
-  const [studyRoomInfos, setStudyRoomInfos] = useState([
-	{id: 1, name: '스터디룸1'},
-	{id: 2, name: '스터디룸2'},
-	{id: 3, name: '스터디룸3'}
-  ]);
+  const [RadioValue, setRadioValue] = useState("");
 
   const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
   const [popup, setPopup] = useState(false);
+
+  const [boardContents, setBoardContents] = useState();
+
+  const [studyRoomInfos, setStudyRoomInfos] = useState([]);
+
+  // 해당 post에 참여중인 멤버들의 데이터를 처리하는 부분
+  const [groupMemberInfos, setGroupMemberInfos] = useState();
+
 
   const handleComplete = (data) => {
 	  setPopup(!popup);
@@ -402,25 +404,102 @@ const PostRewrite = () => {
 	});
   }
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const comIdx = queryParams.get('comIdx');
+  const handleFormChange = (e) => {
+	const { name, value } = e.target;
+	setBoardContents(boardContents => ({
+		...boardContents,
+		[name]: value
+	}));
+  };
 
-  const [boardContents, setBoardContents] = useState();
+  const handleDateChange = (name, value) => {
+	setBoardContents(boardContents => ({
+		...boardContents,
+		[name]: value
+	}));
+  };
+
+  const handleNumberChange = (e) => {
+  	const { name, value } = e.target;
+  	setBoardContents(boardContents => ({
+		...boardContents,
+		[name]: parseInt(value, 10)
+	}));
+  };
+
+  const del_groupMember = (event) => {
+	const id = event.target.getAttribute('data-id');
+	// db에 실제로 데이터를 지워야함
+	setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.id !== Number(id)));
+  }
 
   useEffect(()=> {
 	axios.get("http://localhost:8099/api/board/postRewrite", {
 	  params: { comIdx },
 	  Headers: {'content-type': 'application/json',}
 	}).then((response) => {
-	  setBoardContents(...response.data);
+        setBoardContents(...response.data.community);
+        setStudyRoomInfos(response.data.studyroom);
 	}).catch((error) => {
         console.log(error);
 	})
   },[comIdx])
+
+  useEffect(() => {
+	console.log('useEffect 실행됨'); // useEffect 훅의 실행 여부 확인
+    console.log('boardContents:', boardContents); // boardContents 값 확인
+    if(boardContents && boardContents.memberNames) {
+
+		// listagg를 통해서 여러 멤버들의 이름값을 가져와서 split으로 처리하고 useState로 관리하는 부분
+        const split_memberNames = boardContents.memberNames.split(',').map((name, index) => ({
+            id: index,
+            name: name.trim()
+        }));
+        setGroupMemberInfos(split_memberNames);
+
+		// db에서 address의 값을 가져와서 그 값에 해당하는 radio버튼을 선택하도록 처리하는 부분
+		const usually_comAddress = boardContents.comAddress;
+		console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
+		if (usually_comAddress === '온라인') {
+        	setRadioValue('온라인');
+		} else if (usually_comAddress === '스터디룸') {
+			setRadioValue('스터디룸');
+		} else if (usually_comAddress) {
+			setRadioValue('상세주소');
+		} else {
+			setRadioValue('');
+		}
+    }else if(boardContents) {
+		// db에서 address의 값을 가져와서 그 값에 해당하는 radio버튼을 선택하도록 처리하는 부분
+		const usually_comAddress = boardContents.comAddress;
+		console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
+		if (usually_comAddress === '온라인') {
+        	setRadioValue('온라인');
+		} else if (usually_comAddress === '스터디룸') {
+			setRadioValue('스터디룸');
+		} else if (usually_comAddress) {
+			setRadioValue('상세주소');
+		} else {
+			setRadioValue('');
+		}
+	}
+  }, [boardContents]);
+
+//   TODO: 스터디룸 이미지를 listagg로 여러개 가져와서 split으로 처리해야함
+//   useEffect(() => {
+// 	if(boardContents && groupMemberInfos.studyGImgs) {
+// 		const split_studyGImgs = groupMemberInfos.studyGImgs.split(',').map((name, index) => ({
+// 				id: index,
+// 				name: name.trim()
+// 			}));
+// 	}
+//   }, [groupMemberInfos]);
   
   console.log(boardContents);
-  
+  console.log(groupMemberInfos);
+  console.log(studyRoomInfos);
+  console.log(RadioValue);
+
   // 데이터가 로드되기 전에는 로딩 메시지를 표시
   if (!boardContents) {
     return <div>Loading...</div>;
@@ -435,21 +514,21 @@ const PostRewrite = () => {
 						<div className="title">
 							<span className="title-text">제목</span>
 						</div>
-						<BasicTextFields label="제목" comTitle={boardContents.comTitle}/>
+						<BasicTextFields label="제목" name="comTitle" comTitle={boardContents.comTitle} onChange={handleFormChange}/>
 					</div>
 
 					<div className="category-section">
 						<div className="category">
 							<span className="category-text">카테고리</span>
 						</div>
-						<BasicSelect comCategoryName={boardContents.comCategoryName}/>
+						<BasicSelect name="comCategoryName" comCategoryName={boardContents.comCategoryName} onChange={handleFormChange}/>
 					</div>
 
 					<div className="content-section">
 						<div className="content">
 							<span className="content-text">내용</span>
 						</div>
-						<BasicTextFields label="내용" comContent={boardContents.comContent}/>
+						<BasicTextFields label="내용" name="comContent" comContent={boardContents.comContent} onChange={handleFormChange}/>
 					</div>
 
 					<div className="groupCount-section">
@@ -458,18 +537,18 @@ const PostRewrite = () => {
 						</div>
 						<div className="testgroup">
 							<div className="current-count">
-								<InputAdornments type='current' groupCount={boardContents.groupCount + 1} />
+								<InputAdornments type='current' groupCount={boardContents.groupCount + 1}/>
 							</div>
 							<div className="/">/</div>
 							<div className="maximum-count">
-								<NumberInputAdornments comToCount={boardContents.comToCount}/>
+								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount} onChange={handleNumberChange}/>
 								<p className="maximum-count-text">모임의 최대인원</p>
 							</div>
 						</div>
 					</div>
 
 					<div className="groupCount-user-section">
-						{groupMemberInfos.map((groupMemberInfo) => (
+						{groupMemberInfos && groupMemberInfos.map((groupMemberInfo) => (
 							<div className="group-user-background">
 								<div className="group-user" key={groupMemberInfo.id}>
 									<img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
@@ -489,7 +568,7 @@ const PostRewrite = () => {
 						그리고 전달되어진 props의 값이 무엇인지에 따라서 
 						밑에 나타나는 div의 내용을 달라지게 한다. */}
                         {/* TODO: db처리에서 comAddress값으로 스터디룸인지 온라인인지 상세정보인지 구분가능하도록 해당값들을 comAddress에서 처리해야함 */}
-						<RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue} comAddress={boardContents.comAddress}/>
+						<RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue}/>
 
 					</div>
 
@@ -539,8 +618,8 @@ const PostRewrite = () => {
 							{studyRoomInfos.map((studyRoomInfo) => (
 								<SwiperSlide className="mySwiper_postRewrite-slide">
 									<div className="studyroom">
-										<img src={`/img/room/study room${studyRoomInfo.id}-1.png`} alt={`room${studyRoomInfo.id}`} />
-										<div>{studyRoomInfo.name}</div>
+										<img src={`${studyRoomInfo.studyGImgs}`} alt={`room${studyRoomInfo.sgiidx}`} />
+										<div>{studyRoomInfo.sgicontent1}</div>
 									</div>
 								</SwiperSlide>
 							))}
@@ -552,14 +631,14 @@ const PostRewrite = () => {
 						<div className="startdate">
 							<span className="startdate-text">시작일</span>
 						</div>
-						<ResponsiveDateTimePickers dateType='startdate' comStartDate={boardContents.comStartDate}/>
+						<ResponsiveDateTimePickers dateType='startdate' name="comStartDate" comStartDate={boardContents.comStartDate} onChange={handleDateChange}/>
 					</div>
 
 					<div className="enddate-section">
 						<div className="enddate">
 							<span className="enddate-text">종료일</span>
 						</div>
-						<ResponsiveDateTimePickers dateType='enddate' comEndDate={boardContents.comEndDate}/>
+						<ResponsiveDateTimePickers dateType='enddate' name="comEndDate" comEndDate={boardContents.comEndDate} onChange={handleDateChange}/>
 					</div>
 
 					<div className="button-section">

@@ -108,4 +108,16 @@
         OFFSET #{int_ContentNumber} ROWS FETCH NEXT 1 ROWS ONLY
     </select>
 
+    <select id="ViewStudyroom" resultType="com.project.SnakeDev.vo.StudyGInfoVo">
+        select
+            s.*,
+            listagg(g.sgimg, ', ') within group (order by g.sgiidx) as studyGImgs
+        from
+            tbl_studyginfo s
+        left join
+            tbl_studygimg g on s.sgiidx = g.sgiidx
+        group by
+            s.sgiidx, s.scidx, s.sginum, s.sgiusestate, s.sgicontent1, s.sgicontent2
+    </select>
+
 </mapper>
