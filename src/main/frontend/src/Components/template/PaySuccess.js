@@ -7,11 +7,13 @@ import '../../style/Pay.css'; // 별도 스타일 파일
 import axios from 'axios';
 
 const PaySuccess = () => {
+    // e.preventDefault();
     const [isConfirmed, setIsConfirmed] = useState(false);
     const location = useLocation();
     const [searchParams] = useSearchParams();
     const [loading, setLoading] = useState(true);
     const [responseData, setResponseData] = useState([]);
+    const [paydata, setPaydata] = useState('');
     const [orderPayData, setOrderPayData] = useState({
         TSOPIdx : '',
         TSOPMethod : '',
@@ -21,18 +23,32 @@ const PaySuccess = () => {
     }) // 결제 성공 시 들어갈 내역 테이블
     const [orderWaitData, setOrderWaitData] = useState({
         SGONum : '',
-        SGIdx : '',
-        TSGOPIdx : '',
+        SGIIdx : '',
+        TSOPIdx : '',
+        SGORegDate : '',
         SGOStartDate : '',
         SGOEndDate : '',
         SGOtotal : '',
-    }) // 결제 성공 후 예약 내용 들어갈 테이블
+    }) // 결제 성공 후 예약 내용 들어갈 테이블]
     const [orderState, setOrderState] = useState(false);
-    const [orderRandom, setOrderRandom] = useState(null);
-
+    const ordernum = searchParams.get('ordernum');
+    // 임시 저장한 데이터 저장할 useState
+    const [orderContent, setOrderContent] = useState("");
     const navigate = useNavigate();
 
+
     useEffect(() => {
+        // 임시 저장한 데이터 가져옴, 가져온 데이터는 Y처리
+        axios.get('http://localhost:8099/api/templateOrderInfo', 
+            {
+                params : { ordernum },
+                headers : { 'Content-Type': 'application/json' }
+            }).then((res) => {
+                setOrderContent(res.data);
+            }).catch((error) => {
+                console.error('error', error);
+            });
+
         const requestData = {
             orderId : searchParams.get('orderId'),
             paymentKey : searchParams.get('paymentKey'),
@@ -55,6 +71,7 @@ const PaySuccess = () => {
                     throw new Error(responseData.error);
                 }
                 console.log('결제 승인 성공:', response.data);
+                setPaydata(responseData);
                 return responseData;
             } catch (error) {
                 console.error('결제 승인 실패:', error);
@@ -67,28 +84,19 @@ const PaySuccess = () => {
         approvePayment()
             .then((data) => {
                 if(data) {
-                    setResponseData((prevState) => ({
-                        ...prevState,
-                        ...data
-                    }));
+                    // 결제 승인 후 결제내역data
                     setOrderPayData((prevState) => ({
                         ...prevState,
                         TSOPIdx : data.orderId,
-                        MemberId : sessionStorage.getItem("id"),
                         TSOPMethod : `${data.method}_${data.easyPay.provider}`,
                         TSOPPrice : data.totalAmount,
                         TSOPStatus : 'Y',
-                        TSOPDivi : searchParams.get('ordertype'),
                     }))
+                    // 최종 결제 후 order data
                     setOrderWaitData((prevState) => ({
                         ...prevState,
-                        SGONum : Number(searchParams.get('sgonum')),
-                        SGIdx : searchParams.get('roomnum'),
-                        MemberId : sessionStorage.getItem("id"),
-                        TSGOPIdx : data.orderId,
-                        SGOStartDate : searchParams.get('start'),
-                        SGOEndDate : searchParams.get('end'),
-                        SGOPeople : searchParams.get('people'),
+                        SGONum : searchParams.get('ordernum'),
+                        TSOPIdx : data.orderId,
                         SGOtotal : data.totalAmount,
                     }))
                     setOrderState(true);
@@ -101,37 +109,71 @@ const PaySuccess = () => {
     }, [searchParams]);
 
     useEffect(() => {
-        if(orderState) {
-            console.log("1" ,orderPayData)
-            console.log("2" ,orderWaitData)
+        const startdate = `${orderContent[0]?.date} ${orderContent[0]?.start}:00`;
+        const enddate = `${orderContent[0]?.date} ${orderContent[0]?.end}:00`;
+        const date = new Date(orderContent[0]?.date);
+        const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        
+        setOrderPayData((prevState) => ({
+            ...prevState,
+            TSOPDivi : orderContent[0]?.OrderType
+        }))
+        setOrderWaitData((prevState) => ({
+            ...prevState,
+            SGIIdx : orderContent[0]?.roomnum,
+            SGORegDate: formattedDate,
+            SGOStartDate : startdate,
+            SGOEndDate : enddate,
+        }))
+    }, [orderContent])
 
+    useEffect(() => {
+        if(orderState) {
+            // console.log("1" ,orderPayData)
+            // console.log("2" ,orderWaitData)
+            // console.log("3", searchParams.get('data'))
+            // console.log("4", JSON.parse(searchParams.get('data')))
+            // console.log("5", orderContent);
             // alert("결제가 성공적으로 완료되었습니다.");
             // setOrderState(false);
             // setResponseData(null);
             // 백엔드 저장
-            Promise.all([
-                axios.post('http://localhost:8099/api/OrderPay', orderPayData),
-                axios.post('http://localhost:8099/api/OrderWait', orderWaitData),
-            ])
-            .then(([res1, res2]) => {
+            
+            console.log(orderPayData);
+            console.log(orderWaitData);
+            axios.post('http://localhost:8099/api/OrderPay', null,
+                {
+                    params : {
+                        orderPayData : JSON.stringify(orderPayData),
+                        MemberId : sessionStorage.getItem("id"),  
+                    },
+                    headers:{'Content-Type': 'application/json'}  
+                },
+            ).then((res1) => {
                 console.log('첫번째 완', res1.data)
-                console.log('두번째 완', res2.data)
-
-                alert("결제가 성공적으로 완료되었습니다.");
-                setOrderState(false);
-                setResponseData(null);
-            })
-            .catch((error) => {
+                axios.post('http://localhost:8099/api/OrderWait', null,
+                    {
+                        params : {
+                            orderWaitData : JSON.stringify(orderWaitData),
+                            MemberId : sessionStorage.getItem("id"),  
+                        },
+                        headers:{'Content-Type': 'application/json'}  
+                    },
+                ).then((res2) => {
+                    console.log('두번째 완', res2.data)
+    
+                    alert("결제가 성공적으로 완료되었습니다.");
+                    setOrderState(false);
+                    setResponseData(null);
+                })
+                .catch((error) => {
+                    console.error('요청실패', error)
+                })
+            }).catch((error) => {
                 console.error('요청실패', error)
             })
         }
-    },[orderState])
-    
-        
-            // 백엔드 저장
-            // axios.post("http://localhost:8099/api/orderPay")
-            // console.log("업데이트된 결제 데이터:", responseData);
-            // console.log("업데이트된 결제 데이터ㅇㅇ:", paymentData);
+    },[orderState, orderPayData, orderWaitData])
     // 홈으로 돌아가는 함수
     const handleReturnHome = () => {
         navigate('/');
@@ -153,31 +195,25 @@ const PaySuccess = () => {
                     <div className="confirmation-icon">
                         <CheckCircleIcon style={{ fontSize: '4rem', color: '#4CAF50' }} />
                     </div>
-                    {/* 결제 성공 메시지 */}
                     <h2 className="confirmation-title">결제가 완료 되었습니다</h2>
-                    {/* 주문 세부 사항 */}
                     <div className='order-title'>
                         <h4>주문 정보</h4>
                     </div>
-                    <div className="order-details">
-                        
-                        <table border={1}>
-                            <tr>
-                                {/* 스터디룸인지 개인시간인지 */}
-                                <td>예약 내역</td>
-                                <td>결제 방법</td>
-                                <td>결제 번호</td>
-                                <td>예약날짜</td>
-                                <td>결제 금액</td>
-                            </tr>
-                            <tr>
-                                {/* <td>{paymentData.orderName}</td>
-                                <td>{paymentData.method}</td>
-                                <td>{paymentData.orderId}</td>
-                                <td>{paymentData.card}</td>
-                                <td>{paymentData.amount}</td> */}
-                            </tr>
-                        </table>
+
+                    <div className="order-complete-box">
+                        <div className="order-details">
+                            <div>
+                                <p><span className="order-details-title">예약번호 :</span> {searchParams.get('ordernum')}</p>
+                                <hr />
+                                <p><span className="order-details-title">예약일시 :</span> {orderContent[0]?.date}</p>
+                                <hr />
+                                <p><span className="order-details-title">예약내역 :</span> {paydata.orderName}</p>
+                                <hr />
+                                <p><span className="order-details-title">결제방법 :</span> {orderPayData.TSOPMethod}</p>
+                                <hr />
+                                <p><span className="order-details-title">결제금액 :</span> {orderPayData.TSOPPrice}원</p>
+                            </div>
+                        </div>
                     </div>
                     {/* 스터디룸 예약인지 개인시간인지*/}
                     <p className="confirmation-text">

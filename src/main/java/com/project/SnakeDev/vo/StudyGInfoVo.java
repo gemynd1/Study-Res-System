@@ -3,7 +3,8 @@ package com.project.SnakeDev.vo;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+//@AllArgsConstructor
+@NoArgsConstructor
 public class StudyGInfoVo {
   private Integer SGIIdx;
   private Integer SCIdx;
@@ -25,8 +26,8 @@ public class StudyGInfoVo {
   private StudyGImgVo studyGImgVo; // 사진 값 가져오기 위한 vo 선언
   private StudyGPareVo studyGPareVo; // 해당 룸의 가격들 가져오기 위한 vo 선언
 
-  public StudyGInfoVo() {
-  }
+//  public StudyGInfoVo() {
+//  }
 
   // 예약 처리를 위한 Vo
   public StudyGInfoVo(Integer SGIIdx) {
@@ -34,7 +35,7 @@ public class StudyGInfoVo {
   }
 
   // 룸 정보와 이미지 정보 vo
-  public StudyGInfoVo(int SGINum, String SGIContent1, String SGIContent2, StudyGImgVo studyGImgVo) {
+  public StudyGInfoVo(Integer SGINum, String SGIContent1, String SGIContent2, StudyGImgVo studyGImgVo) {
     this.SGINum = SGINum;
     this.SGIContent1 = SGIContent1;
     this.SGIContent2 = SGIContent2;
@@ -42,8 +43,6 @@ public class StudyGInfoVo {
   }
 
   // 룸 상세 정보와 이미지 정보, 요금 정보 vo
-
-
   public StudyGInfoVo(Integer SGINum, String SGIUseState, String SGIContent1, String SGIContent2, String SGIDContent1, String SGIDContent2, String SGIDContent3, String SGIDContent4, String SGIDContent5, String SGIDContent6, String SGIDContent7, String SGIDContent8, String SGIDContent9, String SGIDContent10, StudyGImgVo studyGImgVo, StudyGPareVo studyGPareVo) {
     this.SGINum = SGINum;
     this.SGIUseState = SGIUseState;

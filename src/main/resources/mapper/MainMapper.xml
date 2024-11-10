@@ -100,31 +100,40 @@
             sgp.sgpprice,
             sgimg.sgimg
     </select>
+    <insert id="saveTemplateOrder" parameterType="map">
+        insert into tbl_templateorder values(#{TTOIdx}, #{requestData}, 'N')
+    </insert>
+    <select id="selectTemplateOrder" resultType="String">
+        select ttocontent from tbl_templateorder where ttoidx = #{ordernum}
+    </select>
+    <update id="updateTemplateOrder" parameterType="java.lang.String">
+        update tbl_templateorder set ttostate = 'Y' where ttoidx = #{ordernum}
+    </update>
     <insert id="InsertOrderPay" parameterType="map">
-        insert into tbl_studyorderpay (TsopIdx, MIdx, TsopMethod, TsopPrice, TsopStatus, TsopDate, TsopDivi)
+        insert into tbl_studyorderpay (TSOPIdx, MIdx, TSOPMethod, TSOPPrice, TSOPStatus, TsopDate, TSOPDivi)
         values
             (
-                #{TsopIdx},
-                (select midx from tbl_member where memberId = #{authVo.memberId} and rownum = 1),
-                #{TsopMethod},
-                #{TsopPrice},
-                #{TsopStatus},
-                to_char(sysdate, 'yyyy-mm-dd'),
-                #{TsopDivi}
+                #{pay.TSOPIdx},
+                (select midx from tbl_member where memberId = #{MemberId}),
+                #{pay.TSOPMethod},
+                #{pay.TSOPPrice},
+                #{pay.TSOPStatus},
+                to_date(sysdate, 'yyyy-mm-dd'),
+                #{pay.TSOPDivi}
             )
     </insert>
     <insert id="InsertGOrderWait" parameterType="map">
-        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TsopIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal)
+        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TSOPIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal)
         values
             (
-                #{SGONum},
-                #{studyGInfoVo.SGIIdx},
-                (select midx from tbl_member where memberId = #{authVo.memberId} and rownum = 1),
-                #{studyOrderPayVo.TsopIdx},
-                to_char(sysdate, 'yyyy-mm-dd'),
-                to_char(#{SGOStartDate}, 'HH24:mm'),
-                to_char(#{SGOEndDate}, 'HH24:mm'),
-                #{SGOtotal}
+                #{wait.SGONum},
+                #{wait.studyGInfoVo.SGIIdx},
+                (select midx from tbl_member where memberId = #{MemberId}),
+                #{wait.studyOrderPayVo.TSOPIdx},
+                to_date(#{wait.SGORegDate}, 'yyyy-mm-dd'),
+                to_date(#{wait.SGOStartDate}, 'yyyy-mm-dd HH24:mi'),
+                to_date(#{wait.SGOEndDate}, 'yyyy-mm-dd HH24:mi'),
+                #{wait.SGOtotal}
             )
     </insert>
 </mapper>

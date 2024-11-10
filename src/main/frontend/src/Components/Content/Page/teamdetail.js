@@ -19,7 +19,7 @@ import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
-// import { nanoid } from nanoid;
+
 const { nanoid } = require('nanoid');
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
@@ -42,8 +42,8 @@ const PaymentModal = ({
     const randomNum = Math.floor(Math.random() * 1000000)
     setRandom(`${formatdate}${randomNum}`);
   }, [])
-  console.log(random)
-  
+  // console.log(random)
+
   useEffect(() => {
     if(open) {
       const fetchPaymentWidgets = async () => {
@@ -122,29 +122,41 @@ const PaymentModal = ({
           }}
           className="button"
           disabled={!ready}
-          onClick={async () => {
+          onClick={() => {
             try {
               // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
               // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
               // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-              await widgets.requestPayment({
-                orderId: nanoid(),
-                orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명) - ${totalPrice}원`,
-                customerName: `${sessionStorage.getItem("name")}`,
-                successUrl: window.location.origin + `/paysuccess?ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}&sgonum=${random}`,
-                failUrl: window.location.origin + `/fail`,
-              });
+              // 예약정보 json 데이터
+              const requestData = [
+                { 
+                  random : random,
+                  roomnum : roomnum,
+                  date : date, 
+                  start : start, 
+                  end : end,
+                  memberId : sessionStorage.getItem("id"),
+                  OrderType : "GroupOrder",
+                },
+              ]
 
-              // const requestData = [
-              //   { 
-              //     roomnum : roomnum, 
-              //     date : date, 
-              //     start : start, 
-              //     end : end,
-              //     memberId : sessionStorage.getItem("id"),
-              //     OrderType : "GroupOrder",
-              //   },
-              // ]
+              // 먼저 업데이트
+              axios.post(`http://localhost:8099/api/templateOrder?random=${encodeURIComponent(String(random))}&requestData=${encodeURIComponent(JSON.stringify(requestData))}`,
+                {
+                  headers : { 'Content-Type': 'application/json' }
+                },
+              )
+              .then(res => {
+                widgets.requestPayment({
+                  orderId: nanoid(),
+                  orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명)`,
+                  customerName: `${sessionStorage.getItem("name")}`,
+                  successUrl: window.location.origin + `/paysuccess?ordernum=${random}`,
+                  // ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}&sgonum=${random}
+                  failUrl: window.location.origin + `/fail`,
+                });
+              })
+              
             } catch (error) {
               // 에러 처리하기
               console.error(error);
@@ -417,7 +429,7 @@ const TeamDetailButtons = ({ count, setCount, start, end }) => {
     }
   };
 
-  console.log(start, end)
+  // console.log(start, end)
 
   return (
     <div className="teamDetail__side-buttons-wrap">
@@ -579,7 +591,7 @@ const TeamDetail = () => {
       headers: { 'Content-Type': 'application/json' }
     })
     .then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       const Img = res.data['studyGImg'];
       const data = res.data['studyGInfoVo'];
       
@@ -612,7 +624,7 @@ const TeamDetail = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Updated htmlcontentdata:', htmlcontentdata, ImgContent, selectedValue);
+    // console.log('Updated htmlcontentdata:', htmlcontentdata, ImgContent, selectedValue);
   }, [htmlcontentdata, ImgContent, selectedValue]);
 
   const onContentClick = (index) => {

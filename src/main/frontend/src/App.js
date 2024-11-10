@@ -35,6 +35,7 @@ import ReviewDetail from "./Components/Content/Review/ReviewDetail";
 import Template_Create from "./Components/template/Template_Create";
 import Template_Editor from "./Components/template/Template_Editor";
 import PaySuccess from "./Components/template/PaySuccess";
+import Loading from "./Components/template/Loading";
 
 // import './App.css';
 const ScrollToTop  = () => {
@@ -102,6 +103,7 @@ function AppContent() {
           <Route  path="/teamdetail" />
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
+          <Route path="/loading" element={<Loading />} />
       </Routes>
       {!hideHeaderLogin && <Footer />}
 

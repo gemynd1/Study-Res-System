@@ -1,53 +1,66 @@
 package com.project.SnakeDev.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@AllArgsConstructor
+//@AllArgsConstructor
+@NoArgsConstructor
 public class StudyGOrderVo {
-    private Integer SGONum;
-    private Date SGORegDate;
-    private Date SGOStartDate;
-    private Date SGOEndDate;
-    private Integer SGOtotal;
+     String SGONum;
+     String SGORegDate;
+     String SGOStartDate;
+     String SGOEndDate;
+     Integer SGOtotal;
 
-    private StudyGInfoVo studyGInfoVo;
-    private AuthVo authVo;
-    private StudyOrderPayVo studyOrderPayVo;
+     StudyGInfoVo studyGInfoVo;
+     StudyOrderPayVo studyOrderPayVo;
+     AuthVo authVo;
 
-    public StudyGOrderVo() {
+//    public StudyGOrderVo() {
+//    }
+
+    // 예약 최종처리
+    public StudyGOrderVo(String SGONum, String SGORegDate, String SGOStartDate, String SGOEndDate, Integer SGOtotal, StudyGInfoVo studyGInfoVo, StudyOrderPayVo studyOrderPayVo) {
+        this.SGONum = SGONum;
+        this.SGORegDate = SGORegDate;
+        this.SGOStartDate = SGOStartDate;
+        this.SGOEndDate = SGOEndDate;
+        this.SGOtotal = SGOtotal;
+        this.studyGInfoVo = studyGInfoVo;
+        this.studyOrderPayVo = studyOrderPayVo;
     }
 
-    public Integer getSGONum() {
+    public String getSGONum() {
         return SGONum;
     }
 
-    public void setSGONum(Integer SGONum) {
+    public void setSGONum(String SGONum) {
         this.SGONum = SGONum;
     }
 
-    public Date getSGORegDate() {
+    public String getSGORegDate() {
         return SGORegDate;
     }
 
-    public void setSGORegDate(Date SGORegDate) {
+    public void setSGORegDate(String SGORegDate) {
         this.SGORegDate = SGORegDate;
     }
 
-    public Date getSGOStartDate() {
+    public String getSGOStartDate() {
         return SGOStartDate;
     }
 
-    public void setSGOStartDate(Date SGOStartDate) {
+    public void setSGOStartDate(String SGOStartDate) {
         this.SGOStartDate = SGOStartDate;
     }
 
-    public Date getSGOEndDate() {
+    public String getSGOEndDate() {
         return SGOEndDate;
     }
 
-    public void setSGOEndDate(Date SGOEndDate) {
+    public void setSGOEndDate(String SGOEndDate) {
         this.SGOEndDate = SGOEndDate;
     }
 
@@ -67,13 +80,6 @@ public class StudyGOrderVo {
         this.studyGInfoVo = studyGInfoVo;
     }
 
-    public AuthVo getAuthVo() {
-        return authVo;
-    }
-
-    public void setAuthVo(AuthVo authVo) {
-        this.authVo = authVo;
-    }
 
     public StudyOrderPayVo getStudyOrderPayVo() {
         return studyOrderPayVo;
@@ -82,4 +88,14 @@ public class StudyGOrderVo {
     public void setStudyOrderPayVo(StudyOrderPayVo studyOrderPayVo) {
         this.studyOrderPayVo = studyOrderPayVo;
     }
+
+    public AuthVo getAuthVo() {
+        return authVo;
+    }
+
+    public void setAuthVo(AuthVo authVo) {
+        this.authVo = authVo;
+    }
+
+
 }

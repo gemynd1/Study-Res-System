@@ -1,8 +1,9 @@
 package com.project.SnakeDev.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.Impl.MainServiceImpl;
-import com.project.SnakeDev.service.MainService;
 import com.project.SnakeDev.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -60,13 +62,37 @@ public class MainController {
         return ResponseEntity.ok(response);
     }
 
+    // 결제 승인 전에 JSON으로 데이터 미리 저장
+    @PostMapping("/templateOrder")
+    public ResponseEntity<Object> templateOrder(
+            @RequestParam("random") String TTOIdx,
+            @RequestParam("requestData") String requestData) {
+        mainService.saveTemplateOrder(TTOIdx, requestData);
+        return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/templateOrderInfo")
+    public ResponseEntity<String> templateOrderInfo(@RequestParam("ordernum") String ordernum) {
+        int result1 =  mainService.updateTemplateOrder(ordernum);
+        if(result1 > 0) {
+            String result2 = mainService.selectTemplateOrder(ordernum);
+            return ResponseEntity.ok(result2);
+        } else {
+            return ResponseEntity.badRequest().body("no");
+        }
+    }
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
     // 결제 승인 내역 DB저장
     @PostMapping("/OrderPay")
-    public ResponseEntity<Object> OrderPay(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<Object> OrderPay(@RequestParam("orderPayData") String orderPayDataJson,
+                                           @RequestParam("MemberId") String MemberId) {
+//        System.out.println(orderPayData);
         try {
-            StudyOrderPayVo studyOrderPayVo = VOMapper.mapToVO(data, StudyOrderPayVo.class);
-            System.out.println(studyOrderPayVo);
-            if(mainService.InsertOrderPay(studyOrderPayVo) > 0) {
+            Map<String, Object> orderPayData = objectMapper.readValue(orderPayDataJson, Map.class);
+            StudyOrderPayVo studyOrderPayVo = VOMapper.mapToVO(orderPayData, StudyOrderPayVo.class);
+
+            if(mainService.InsertOrderPay(MemberId, studyOrderPayVo) > 0) {
                 return ResponseEntity.ok("ok");
             } else {
                 return ResponseEntity.badRequest().body("no");
@@ -79,11 +105,21 @@ public class MainController {
 
     // 결제 승인 후 최종 예약 내역 DB저장
     @PostMapping("/OrderWait")
-    public ResponseEntity<Object> OrderWait(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<Object> OrderWait(@RequestParam("orderWaitData") String orderWaitDataJson,
+                                            @RequestParam("MemberId") String MemberId) {
         try {
-            StudyGOrderVo studyGOrderVo = VOMapper.mapToVO(data, StudyGOrderVo.class);
-            System.out.println(studyGOrderVo);
-            if(mainService.InsertGOrderWait(studyGOrderVo) > 0) {
+            Map<String, Object> orderWaitData = objectMapper.readValue(orderWaitDataJson, Map.class);
+            StudyGOrderVo studyGOrderVo = VOMapper.mapToVO(orderWaitData, StudyGOrderVo.class);
+
+            StudyGInfoVo studyGInfoVo = new StudyGInfoVo();
+            studyGInfoVo.setSGIIdx((Integer) orderWaitData.get("SGIIdx"));
+            studyGOrderVo.setStudyGInfoVo(studyGInfoVo);
+
+            StudyOrderPayVo studyOrderPayVo = new StudyOrderPayVo();
+            studyOrderPayVo.setTSOPIdx((String) orderWaitData.get("TSOPIdx"));
+            studyGOrderVo.setStudyOrderPayVo(studyOrderPayVo);
+
+            if(mainService.InsertGOrderWait(MemberId, studyGOrderVo) > 0) {
                 return ResponseEntity.ok("ok");
             } else {
                 return ResponseEntity.badRequest().body("no");
