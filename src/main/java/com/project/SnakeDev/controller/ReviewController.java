@@ -69,14 +69,17 @@ public class ReviewController {
 //     }
 
     @PostMapping("/review/content")
-    public ResponseEntity<String> InsertReview(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<String> InsertReview(@RequestParam("data1") Map<String, Object> data) {
+//        @RequestParams("") tags, uploadfiles 등등 얘네들은 따로 길이만큼 for문 돌려서 데이터 넣어주면 완료ㅇㅋ?
          try {
              ReviewVo reviewVo = VOMapper.mapToVO(data, ReviewVo.class);
+             // 글작성하는거 // 이미지 태그
              if (reviewService.InsertReview(reviewVo) > 0){
                  return ResponseEntity.ok("ok");
              } else {
                  return ResponseEntity.status(401).body("no");
              }
+
          } catch (Exception e) {
              e.printStackTrace();
              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");

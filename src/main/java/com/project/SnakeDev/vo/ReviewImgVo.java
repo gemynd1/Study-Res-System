@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor       // 기본 생성자 생성
+@AllArgsConstructor       // 기본 생성자 생성
 // 모든 필드를 매개변수로 받는 생성자 생성
 public class ReviewImgVo {
     private Integer sriimgidx; // 스터디 리뷰사진 번호
@@ -12,11 +12,14 @@ public class ReviewImgVo {
     private String sriimg; //스터디룸 사진 url
 
 
-    public ReviewImgVo(Integer sriimgidx, Integer srIdx, String sriimg) {
-        this.sriimgidx = sriimgidx;
-        this.srIdx = srIdx;
-        this.sriimg = sriimg;
+    public ReviewImgVo() {
     }
+
+//    public ReviewImgVo(Integer sriimgidx, Integer srIdx, String sriimg) {
+//        this.sriimgidx = sriimgidx;
+//        this.srIdx = srIdx;
+//        this.sriimg = sriimg;
+//    }
 
     public Integer getSrrImageIdx() {
         return sriimgidx;

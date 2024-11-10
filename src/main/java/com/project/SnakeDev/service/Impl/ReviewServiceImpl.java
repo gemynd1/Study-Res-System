@@ -97,6 +97,7 @@ public class ReviewServiceImpl implements ReviewService {
 //     }
 
     @Override
+    @Transactional
     public int InsertReview(ReviewVo reviewVo){
         return reviewMapper.InsertReview(reviewVo);
     }

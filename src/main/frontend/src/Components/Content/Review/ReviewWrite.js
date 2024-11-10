@@ -15,7 +15,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
@@ -99,7 +99,7 @@ function OneLineTextFields({ tags, setTags }) {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
-      event.preventDefault();
+      // event.preventDefault();
       if (inputValue.length <= 6 && tags.length < 3) {
         setTags((prevTags) => [...prevTags, `#${inputValue.trim()}`]);
         setInputValue('');
@@ -218,9 +218,62 @@ const ReviewWrite = () => {
   const [rating, setRating] = useState('');
   const [tags, setTags] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [midx, setMidx] = useState(null);  // MIDX를 상태로 추가
-  const [sriImg, setSriImg] = useState([]); // 이미지를 배열안에 string으로 url 가져오기
-  const memberName = sessionStorage.getItem('name');
+  // const [midx, setMidx] = useState(null);  // MIDX를 상태로 추가
+  // const [sriImg, setSriImg] = useState([]); // 이미지를 배열안에 string으로 url 가져오기
+  // const memberName = sessionStorage.getItem('name');
+  
+  const [data1, setData1] = useState({
+    studyRoom:'',
+    content: '',
+    rating: '',
+    memberId: '',
+  })
+  // useEffect(() => {
+  //   setData1((prevState) => ({
+  //     ...prevState,
+  //     sgiIdx: studyRoom,
+  //     srContent: content,
+  //     srStar: rating,
+  //     memberId: sessionStorage.getItem('id'),
+  //   }))
+  // }, [])
+
+  const handleCreate = (e) => {
+    // console.log('data1:', data1);
+    console.log('studyRoom:',studyRoom);
+    console.log('content:',content)
+    // console.log('data1.studyRoom:',data1.studyRoom);
+    // console.log('data1.content:',data1.content);
+    console.log('rating',rating);
+    console.log(tags);
+    console.log(uploadedFiles);
+
+    e.preventDefault();
+
+    // data1 ->
+    // sgiIdx: Number(studyRoom),
+    //       srContent: content,
+    //       srStar: Number(rating),
+    //       memberId: sessionStorage.getItem("id"),
+
+    axios.post("http://localhost:8099/api/review/content", {
+        params : {data1},
+        // , tags, uploadedFiles
+      },
+      {
+          headers: {
+              "Content-Type": "application/json", // 반드시 JSON으로 설정
+          },
+      })
+      .then(response => {
+        // 성공하면 리뷰메인으로 나가게 해주면 되고
+          console.log(response.data);
+      })
+      .catch(error => {
+          console.error(error);
+          // console.error("에러발생: ", error);
+      })
+  };
 
 //   const requestMidx = async () => {
 //     try {
@@ -257,37 +310,9 @@ const ReviewWrite = () => {
 //   }
 // };
 // requestSriImg(); 
-    const [test, setTest] = useState({
-        sgiIdx: '',
-        srContent: '',
-        srStar: '',
-    })
-    setTest({
-        sgiIdx: studyRoom,
-        srContent: content,
-        srStar: rating,
-    })
-  const handleCreate = (e) => {
-        e.preventDefault();
-      axios.post("http://localhost:8099/api/review/content", {
-              sgiIdx: test.sgiIdx,
-              srContent: test.content,
-              srStar: test.rating,
-              mIdx: sessionStorage.getItem("id"),
-        },
-        {
-            headers: {
-                "Content-Type": "application/json", // 반드시 JSON으로 설정
-            },
-            })
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(response => {
-                console.log(response.data);
-                // console.error("에러발생: ", error);
-            })
-
+  
+    
+  
 
 
 
@@ -340,7 +365,7 @@ const ReviewWrite = () => {
   //     alert(error.message);
   //   }
 
-  };
+  
 
 
   return (

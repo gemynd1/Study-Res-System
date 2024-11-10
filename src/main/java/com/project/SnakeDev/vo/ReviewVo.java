@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
        // 기본 생성자 생성
    // 모든 필드를 매개변수로 받는 생성자 생성
+@AllArgsConstructor //여기에 필드에 쓴 모든생성자만 만들어줌
 public class ReviewVo {
     private Integer srIdx;       // 스터디룸 게시글 번호
     private Integer sgiIdx;      // 스터디룸 idx
@@ -16,112 +17,107 @@ public class ReviewVo {
     private Date srRegDate;      // 생성일
     private Date srDelDate;      // 삭제일
     private Date srUpdate;       // 수정일
-
-
     private String memberId;
-    // 필수 필드만 사용하는 생성자
-    public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent) {
-        this.srIdx = srIdx;
-        this.sgiIdx = sgiIdx;
-        this.mIdx = mIdx;
-        this.srStar = srStar;
-        this.srContent = srContent;
-    }
 
-    public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent, Date srRegDate, Date srDelDate, Date srUpdate, String memberId) {
-        this.srIdx = srIdx;
-        this.sgiIdx = sgiIdx;
-        this.mIdx = mIdx;
-        this.srStar = srStar;
-        this.srContent = srContent;
-        this.srRegDate = srRegDate;
-        this.srDelDate = srDelDate;
-        this.srUpdate = srUpdate;
-        this.memberId = memberId;
-    }
+       public ReviewVo() {
+       }
+
+           // 필수 필드만 사용하는 생성자
+//    public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent) {
+//        this.srIdx = srIdx;
+//        this.sgiIdx = sgiIdx;
+//        this.mIdx = mIdx;
+//        this.srStar = srStar;
+//        this.srContent = srContent;
+//    }
+//
+//    public ReviewVo(Integer srIdx, Integer sgiIdx, Integer mIdx, Integer srStar, String srContent, Date srRegDate, Date srDelDate, Date srUpdate, String memberId) {
+//        this.srIdx = srIdx;
+//        this.sgiIdx = sgiIdx;
+//        this.mIdx = mIdx;
+//        this.srStar = srStar;
+//        this.srContent = srContent;
+//        this.srRegDate = srRegDate;
+//        this.srDelDate = srDelDate;
+//        this.srUpdate = srUpdate;
+//        this.memberId = memberId;
+//    }
 // Getter & Setter 메서드
 
-    public String getMemberId() {
-        return memberId;
-    }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
+           public Integer getSrIdx() {
+               return srIdx;
+           }
 
-    public Integer getSrIdx() {
-        return srIdx;
-    }
+           public void setSrIdx(Integer srIdx) {
+               this.srIdx = srIdx;
+           }
 
-    public void setSrIdx(Integer srIdx) {
-        this.srIdx = srIdx;
-    }
+           public Integer getSgiIdx() {
+               return sgiIdx;
+           }
 
-    public Integer getSgiIdx() {
-        return sgiIdx;
-    }
+           public void setSgiIdx(Integer sgiIdx) {
+               this.sgiIdx = sgiIdx;
+           }
 
-    public void setSgiIdx(Integer sgiIdx) {
-        this.sgiIdx = sgiIdx;
-    }
+           public Integer getmIdx() {
+               return mIdx;
+           }
 
-    public Integer getMIdx() {
-        return mIdx;
-    }
+           public void setmIdx(Integer mIdx) {
+               this.mIdx = mIdx;
+           }
 
-    public Integer getmIdx() {
-        return mIdx;
-    }
+           public Integer getSrStar() {
+               return srStar;
+           }
 
-    public void setmIdx(Integer mIdx) {
-        this.mIdx = mIdx;
-    }
+           public void setSrStar(Integer srStar) {
+               this.srStar = srStar;
+           }
 
-    public void setMIdx(Integer mIdx) {
-        this.mIdx = mIdx;
-    }
+           public String getSrContent() {
+               return srContent;
+           }
 
-    public Integer getSrStar() {
-        return srStar;
-    }
+           public void setSrContent(String srContent) {
+               this.srContent = srContent;
+           }
 
-    public void setSrStar(Integer srStar) {
-        this.srStar = srStar;
-    }
+           public Date getSrRegDate() {
+               return srRegDate;
+           }
 
-    public String getSrContent() {
-        return srContent;
-    }
+           public void setSrRegDate(Date srRegDate) {
+               this.srRegDate = srRegDate;
+           }
 
-    public void setSrContent(String srContent) {
-        this.srContent = srContent;
-    }
+           public Date getSrDelDate() {
+               return srDelDate;
+           }
 
-    public Date getSrRegDate() {
-        return srRegDate;
-    }
+           public void setSrDelDate(Date srDelDate) {
+               this.srDelDate = srDelDate;
+           }
 
-    public void setSrRegDate(Date srRegDate) {
-        this.srRegDate = srRegDate;
-    }
+           public Date getSrUpdate() {
+               return srUpdate;
+           }
 
-    public Date getSrDelDate() {
-        return srDelDate;
-    }
+           public void setSrUpdate(Date srUpdate) {
+               this.srUpdate = srUpdate;
+           }
 
-    public void setSrDelDate(Date srDelDate) {
-        this.srDelDate = srDelDate;
-    }
+           public String getMemberId() {
+               return memberId;
+           }
 
-    public Date getSrUpdate() {
-        return srUpdate;
-    }
+           public void setMemberId(String memberId) {
+               this.memberId = memberId;
+           }
 
-    public void setSrUpdate(Date srUpdate) {
-        this.srUpdate = srUpdate;
-    }
-
-    @Override
+           @Override
     public String toString() {
         return "ReviewVo{" +
                 "srIdx=" + srIdx +

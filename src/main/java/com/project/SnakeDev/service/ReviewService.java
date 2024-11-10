@@ -1,13 +1,13 @@
 package com.project.SnakeDev.service;
 
 import com.project.SnakeDev.vo.ReviewVo;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
+
 public interface ReviewService {
-
-
-    int InsertReview(ReviewVo reviewVo);
+    public int InsertReview(ReviewVo reviewVo);
 
 
 

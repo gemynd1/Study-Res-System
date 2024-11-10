@@ -3,11 +3,11 @@
 <mapper namespace="com.project.SnakeDev.mapper.ReviewMapper">
 
     <insert id="InsertReview" parameterType="map">
-        insert into tbl_studyreview (sridx,sgiidx, midx, srcontent, srstar, srRegDate)
+        insert into tbl_studyreview (sridx, sgiIdx, mIdx, srcontent, srstar, srRegDate)
         values (
-                #{srIdx},
+                SREVIEW_SEQ.nextval,
                 #{sgiIdx},
-                (select midx from tbl_member where = #{memberId}),
+                (select mIdx from tbl_member where memberid = #{memberId}),
                 #{srContent},
                 #{srStar},
                 sysdate)
