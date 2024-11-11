@@ -392,6 +392,8 @@ const PostRewrite = () => {
   // 해당 post에 참여중인 멤버들의 데이터를 처리하는 부분
   const [groupMemberInfos, setGroupMemberInfos] = useState();
 
+  
+
 
   const handleComplete = (data) => {
 	  setPopup(!popup);
@@ -430,16 +432,54 @@ const PostRewrite = () => {
   const del_groupMember = (event) => {
 	const id = event.target.getAttribute('data-id');
 	// db에 실제로 데이터를 지워야함
-	setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.id !== Number(id)));
+	setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.midx !== Number(id)));
+  }
+
+  const updateContent = (e) => {
+	e.stopPropagation(); // 이벤트 전파 중지
+	axios.post("http://localhost:8099/api/board/post/postRewrite", 
+		{
+			ComIdx: boardContents.comIdx,
+			ComCateIdx: boardContents.comCateIdx,
+			MIdx: boardContents.mIdx,
+			ComTitle: boardContents.comTitle,
+			ComContent: boardContents.comContent,
+			ComRegDate: boardContents.comRegDate,
+			ComDelDate: boardContents.comDelDate,
+			ComUpDate: boardContents.comUpDate,
+			ComintoDate: boardContents.comintoDate,
+			ComToCount: boardContents.comToCount,
+			ComStartDate: boardContents.comStartDate,
+			ComEndDate: boardContents.comEndDate,
+			ComPlace: boardContents.comPlace,
+			ComZipcode: boardContents.comZipcode,
+			ComAddress: boardContents.comAddress,
+    		ComReportCount: boardContents.comReportCount,
+    		ComGroupName: boardContents.comGroupName,
+			groupMemberInfos: groupMemberInfos,
+			comCategoryName: boardContents.comCategoryName
+		},
+		{
+			headers: { 'Content-Type': 'application/json' }
+		}).then((response) => {
+			console.log(response.data);
+			if(response.data[0] === true && response.data[1] === true) {
+				alert("게시글 수정이 완료되었습니다. 성공!");
+			}
+		}).catch((error) => {
+			console.log(error);
+			alert("게시글 수정에 실패하였습니다. 다시 시도해주세요.");
+		});
   }
 
   useEffect(()=> {
-	axios.get("http://localhost:8099/api/board/postRewrite", {
+	axios.get("http://localhost:8099/api/board/get/postRewrite", {
 	  params: { comIdx },
 	  Headers: {'content-type': 'application/json',}
 	}).then((response) => {
         setBoardContents(...response.data.community);
         setStudyRoomInfos(response.data.studyroom);
+		setGroupMemberInfos(response.data.groupMember);
 	}).catch((error) => {
         console.log(error);
 	})
@@ -448,40 +488,53 @@ const PostRewrite = () => {
   useEffect(() => {
 	console.log('useEffect 실행됨'); // useEffect 훅의 실행 여부 확인
     console.log('boardContents:', boardContents); // boardContents 값 확인
-    if(boardContents && boardContents.memberNames) {
+    // if(boardContents && boardContents.memberNames) {
 
-		// listagg를 통해서 여러 멤버들의 이름값을 가져와서 split으로 처리하고 useState로 관리하는 부분
-        const split_memberNames = boardContents.memberNames.split(',').map((name, index) => ({
-            id: index,
-            name: name.trim()
-        }));
-        setGroupMemberInfos(split_memberNames);
+	// 	// listagg를 통해서 여러 멤버들의 이름값을 가져와서 split으로 처리하고 useState로 관리하는 부분
+    //     // const split_memberNames = boardContents.memberNames.split(',').map((name, index) => ({
+    //     //     id: index,
+    //     //     name: name.trim()
+    //     // }));
+    //     // setGroupMemberInfos(split_memberNames);
 
-		// db에서 address의 값을 가져와서 그 값에 해당하는 radio버튼을 선택하도록 처리하는 부분
+	// 	// db에서 address의 값을 가져와서 그 값에 해당하는 radio버튼을 선택하도록 처리하는 부분
+	// 	const usually_comAddress = boardContents.comAddress;
+	// 	console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
+	// 	if (usually_comAddress === '온라인') {
+    //     	setRadioValue('온라인');
+	// 	} else if (usually_comAddress === '스터디룸') {
+	// 		setRadioValue('스터디룸');
+	// 	} else if (usually_comAddress) {
+	// 		setRadioValue('상세주소');
+	// 	} else {
+	// 		setRadioValue('');
+	// 	}
+    // }else if(boardContents) {
+	// 	// db에서 address의 값을 가져와서 그 값에 해당하는 radio버튼을 선택하도록 처리하는 부분
+	// 	const usually_comAddress = boardContents.comAddress;
+	// 	console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
+	// 	if (usually_comAddress === '온라인') {
+    //     	setRadioValue('온라인');
+	// 	} else if (usually_comAddress === '스터디룸') {
+	// 		setRadioValue('스터디룸');
+	// 	} else if (usually_comAddress) {
+	// 		setRadioValue('상세주소');
+	// 	} else {
+	// 		setRadioValue('');
+	// 	}
+	// }
+	if(boardContents) {
 		const usually_comAddress = boardContents.comAddress;
-		console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
-		if (usually_comAddress === '온라인') {
-        	setRadioValue('온라인');
-		} else if (usually_comAddress === '스터디룸') {
-			setRadioValue('스터디룸');
-		} else if (usually_comAddress) {
-			setRadioValue('상세주소');
-		} else {
-			setRadioValue('');
-		}
-    }else if(boardContents) {
-		// db에서 address의 값을 가져와서 그 값에 해당하는 radio버튼을 선택하도록 처리하는 부분
-		const usually_comAddress = boardContents.comAddress;
-		console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
-		if (usually_comAddress === '온라인') {
-        	setRadioValue('온라인');
-		} else if (usually_comAddress === '스터디룸') {
-			setRadioValue('스터디룸');
-		} else if (usually_comAddress) {
-			setRadioValue('상세주소');
-		} else {
-			setRadioValue('');
-		}
+			console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
+			if (usually_comAddress === '온라인') {
+				setRadioValue('온라인');
+			} else if (usually_comAddress === '스터디룸') {
+				setRadioValue('스터디룸');
+			} else if (usually_comAddress) {
+				setRadioValue('상세주소');
+			} else {
+				setRadioValue('');
+			}
 	}
   }, [boardContents]);
 
@@ -537,7 +590,7 @@ const PostRewrite = () => {
 						</div>
 						<div className="testgroup">
 							<div className="current-count">
-								<InputAdornments type='current' groupCount={boardContents.groupCount + 1}/>
+								<InputAdornments type='current' groupCount={groupMemberInfos.length + 1}/>
 							</div>
 							<div className="/">/</div>
 							<div className="maximum-count">
@@ -550,10 +603,10 @@ const PostRewrite = () => {
 					<div className="groupCount-user-section">
 						{groupMemberInfos && groupMemberInfos.map((groupMemberInfo) => (
 							<div className="group-user-background">
-								<div className="group-user" key={groupMemberInfo.id}>
+								<div className="group-user" key={groupMemberInfo.midx}>
 									<img src="/img/icon/person.png" alt="userIcon" className="user-icon" />
-									<span className="user-text">{groupMemberInfo.name}</span>
-									<img src="/img/icon/x.png" alt="XIcon" className="X-icon" data-id={groupMemberInfo.id} onClick={del_groupMember} />
+									<span className="user-text">{groupMemberInfo.memberName}</span>
+									<img src="/img/icon/x.png" alt="XIcon" className="X-icon" data-id={groupMemberInfo.midx} onClick={del_groupMember} />
 								</div>
 							</div>
 						))}
@@ -642,7 +695,7 @@ const PostRewrite = () => {
 					</div>
 
 					<div className="button-section">
-						<div className="active-button">
+						<div className="active-button" onClick={updateContent}>
 							<img src="/img/icon/check.png" alt="" className="activeIcon" />
 							<span className="active-text">작성하기</span>
 						</div>

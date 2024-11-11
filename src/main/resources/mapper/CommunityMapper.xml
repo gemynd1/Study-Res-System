@@ -68,21 +68,24 @@
     <select id="ViewPost_forPostRewrite" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
         select
             c.*,
-            cc.COMCATENAME as comCategoryName,
-            listagg(m2.MemberName, ', ') within group (order by m2.MemberName) as MemberNames,
-            COUNT(ts.COMIDX) AS MemberCount
+            cc.COMCATENAME as comCategoryName
         from
             tbl_community c
-            join tbl_member m on c.midx = m.midx
-            join tbl_community_category cc on c.comcateidx = cc.comcateidx
-            left join tbl_TogetherStudy ts on c.comidx = ts.comidx
-            left join tbl_member m2 on ts.midx = m2.midx
+                join tbl_member m on c.midx = m.midx
+                join tbl_community_category cc on c.comcateidx = cc.comcateidx
         where
             c.comidx = #{comIdx}
-        group by
-            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE,
-            c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS,
-            c.COMREPORTCOUNT, cc.COMCATENAME
+    </select>
+
+    <select id="ViewGroupMember_forPostRewrite" resultType="com.project.SnakeDev.vo.TogetherStudyVo" parameterType="String">
+        select
+            ts.*,
+            m.MemberName
+        from
+            tbl_TogetherStudy ts
+                join tbl_member m on ts.midx = m.midx
+        where
+            comidx = #{comIdx}
     </select>
 
     <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
@@ -119,5 +122,35 @@
         group by
             s.sgiidx, s.scidx, s.sginum, s.sgiusestate, s.sgicontent1, s.sgicontent2
     </select>
+
+    <update id="updateCommunity" parameterType="com.project.SnakeDev.vo.CommunityVo">
+        update tbl_community
+            set ComIdx = #{ComIdx},
+                ComCateIdx = (select ComCateIdx from tbl_community_category where comCateName = #{comCategoryName}),
+                ComTitle = #{ComTitle},
+                ComContent = #{ComContent},
+                ComRegDate = TO_DATE(#{ComRegDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComDelDate = TO_DATE(#{ComDelDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComUpDate = TO_DATE(#{ComUpDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComintoDate = #{ComintoDate},
+                ComToCount = #{ComToCount},
+                ComStartDate = TO_DATE(#{ComStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComEndDate = TO_DATE(#{ComEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComPlace = #{ComPlace},
+                ComZipcode = #{ComZipcode},
+                ComAddress = #{ComAddress},
+                ComReportCount = #{ComReportCount}
+            where comidx = #{ComIdx}
+    </update>
+
+    <delete id="deleteTogetherStudy" parameterType="map">
+        DELETE FROM tbl_TogetherStudy
+        WHERE comidx = #{comIdx}
+          AND (comidx, midx) NOT IN (
+                                     <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
+                                         #{item.comIdx}, #{item.midx}
+                                     </foreach>
+            )
+    </delete>
 
 </mapper>
