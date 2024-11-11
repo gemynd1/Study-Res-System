@@ -21,7 +21,9 @@ public interface CommunityService {
 
     public List<CommunityVo> ViewPost(String comIdx);
 
-    public List<CommunityVo> ViewComment(String comIdx);
+    public List<CommunityVo> ViewComment(String comIdx, String currentPage, String commentSize);
+
+    public int ViewCommentSize(String comIdx);
 
     public List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
 

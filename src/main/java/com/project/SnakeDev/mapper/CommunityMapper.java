@@ -21,7 +21,9 @@ public interface CommunityMapper {
 
     List<CommunityVo> ViewPost(String comIdx);
 
-    List<CommunityVo> ViewComment(String comIdx);
+    List<CommunityVo> ViewComment(String comIdx, String currentPage, String commentSize);
+
+    int ViewCommentSize(String comIdx);
 
     List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
 

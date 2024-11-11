@@ -8,6 +8,7 @@ import com.project.SnakeDev.vo.StudyGInfoVo;
 import com.project.SnakeDev.vo.TogetherStudyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,13 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public List<CommunityVo> ViewComment(String comIdx) {
-        return communityMapper.ViewComment(comIdx);
+    public List<CommunityVo> ViewComment(String comIdx, String currentPage, String commentSize) {
+        return communityMapper.ViewComment(comIdx, currentPage, commentSize);
+    }
+
+    @Override
+    public int ViewCommentSize(String comIdx) {
+        return communityMapper.ViewCommentSize(comIdx);
     }
 
     @Override

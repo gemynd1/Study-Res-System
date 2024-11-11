@@ -88,8 +88,32 @@
             comidx = #{comIdx}
     </select>
 
-    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
-        select tcc.*,tm.membername  from tbl_community_comment tcc, tbl_member tm  where tcc.comidx = #{comidx} and tcc.midx = tm.midx
+    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="map">
+        WITH CommentWithRowNum AS (
+            SELECT
+                tcc.*,
+                tm.membername,
+                ROW_NUMBER() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS row_num
+            FROM
+                tbl_community_comment tcc
+                    JOIN
+                tbl_member tm ON tcc.midx = tm.midx
+            WHERE
+                tcc.comidx = #{comIdx}
+        )
+        SELECT
+            *
+        FROM
+            CommentWithRowNum
+        WHERE
+            row_num BETWEEN (#{currentPage} * #{commentSize} - (#{commentSize} - (#{commentSize} - 1))) AND (#{currentPage} * #{commentSize})
+    </select>
+
+    <select id="ViewCommentSize" resultType="int" parameterType="String">
+        SELECT
+            CEIL(COUNT(*) / 2) AS pageSize
+        FROM tbl_community_comment
+        WHERE comidx = #{comidx}
     </select>
 
     <select id="ViewMoreCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="map">
@@ -146,10 +170,10 @@
     <delete id="deleteTogetherStudy" parameterType="map">
         DELETE FROM tbl_TogetherStudy
         WHERE comidx = #{comIdx}
-          AND (comidx, midx) NOT IN (
-                                     <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
-                                         #{item.comIdx}, #{item.midx}
-                                     </foreach>
+            AND (comidx, midx) NOT IN (
+                <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
+                    #{item.comIdx}, #{item.midx}
+                </foreach>
             )
     </delete>
 

@@ -68,9 +68,12 @@ function FadeMenu(sessionId, sessionName, memberName, midx) {
 }
 // 댓글 페이지네이션
 // props로 페이지네이션의 총 페이지 수를 받아와서 사용해야함.
-function BasicPagination() {
+function BasicPagination({currentPage, onChange, size}) {
     return (
-    <Pagination count={10} />
+    <Pagination 
+        count={size}
+        page={currentPage}
+        onChange={onChange}/>
     );
 }   
 
@@ -185,13 +188,6 @@ const TheaterLocation = () => {
   };
 
 
-const pageNationData = (event) => {
-    const clickedElement = event.target;
-    console.log(clickedElement);
-    // clickedElement의 값을 사용해서 db에서 댓글에 대한 데이터를 select해오면 됨.
-}
-
-
 
 const Post = () => {
     // url에 담겨져 있는 parameter 값 가져오기
@@ -200,40 +196,29 @@ const Post = () => {
     const comIdx = queryParams.get('comIdx');
 
     const [commentData, setCommentData] = useState([]);
-
     const [boardContents, setBoardContents] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [commentSize, setCommentSize] = useState(0);
 
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
 
-    // useEffect(() => {
-    //     const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
-    //     console.log(currentPage);
-    // }, []);
-
-    // const pageNationButton = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button')
-    // pageNationButton.addEventListener('click', pageNationData);
-
-    useEffect(() => {
-        const pageNationButton = document.querySelectorAll('nav.MuiPagination-root ul.MuiPagination-ul li button');
-        const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
+    // 페이지네이션의 페이지가 변경될 때 호출되는 함수
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value); // 현재 페이지 상태 업데이트
         console.log(currentPage)
-        
-        if (pageNationButton) {
-            pageNationButton.forEach(button => {
-                button.addEventListener('click', pageNationData);
-            })
-        }
-
-        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-        return () => {
-            if (pageNationButton) {
-                pageNationButton.forEach(button => {
-                    button.addEventListener('click', pageNationData);
-                })
+        // 여기보세요
+        axios.get('http://localhost:8099/api/board/post/comment', {
+            params: { comIdx, currentPage, commentSize },
+            headers: {
+                'Content-Type': 'application/json',
             }
-        };
-    }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행되도록 합니다.
+        }).then(response => {
+            setCommentData(response.data)
+        }).catch(error => {
+            console.log(error);
+        })
+    };
 
     useEffect(() => {
         axios.get('http://localhost:8099/api/board/post', {
@@ -249,13 +234,13 @@ const Post = () => {
     }, [comIdx]);
 
     useEffect(() => {
-        axios.get('http://localhost:8099/api/board/post/comment', {
+        axios.get('http://localhost:8099/api/board/post/commentSize', {
             params: { comIdx },
             headers: {
                 'Content-Type': 'application/json',
             }
         }).then(response => {
-            setCommentData(response.data)
+            setCommentSize(response.data)
         }).catch(error => {
             console.log(error);
         })
@@ -264,6 +249,7 @@ const Post = () => {
     console.log(boardContents);
     console.log(commentData);
     console.log(sessionId, sessionName);
+    console.log(commentSize);
 
     if (!boardContents | !commentData) {
         return <div>Loading...</div>;
@@ -380,7 +366,7 @@ const Post = () => {
                     </div>
 
                     {/* props로 페이지네이션의 총 페이지 수를 넘겨서 사용해야함. */}
-                    <BasicPagination />
+                    <BasicPagination page={currentPage} onChange={handlePageChange} size={commentSize} />
 
                 </div>
 

@@ -620,7 +620,6 @@ const PostRewrite = () => {
 						{/* 해당 라디오그룹은 props로 값들을 전달한다. 
 						그리고 전달되어진 props의 값이 무엇인지에 따라서 
 						밑에 나타나는 div의 내용을 달라지게 한다. */}
-                        {/* TODO: db처리에서 comAddress값으로 스터디룸인지 온라인인지 상세정보인지 구분가능하도록 해당값들을 comAddress에서 처리해야함 */}
 						<RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue}/>
 
 					</div>

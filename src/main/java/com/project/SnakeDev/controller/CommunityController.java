@@ -74,8 +74,16 @@ public class CommunityController {
     }
 
     @GetMapping("/board/post/comment")
-    public ResponseEntity<Object> comment(@RequestParam("comIdx") String comIdx) {
-        return ResponseEntity.ok(communityService.ViewComment(comIdx));
+    public ResponseEntity<Object> comment(@RequestParam("comIdx") String comIdx,
+                                          @RequestParam("currentPage") String currentPage,
+                                          @RequestParam("commentSize") String commentSize) {
+
+        return ResponseEntity.ok(communityService.ViewComment(comIdx, currentPage, commentSize));
+    }
+
+    @GetMapping("/board/post/commentSize")
+    public ResponseEntity<Object> commentSize(@RequestParam("comIdx") String comIdx) {
+        return ResponseEntity.ok(communityService.ViewCommentSize(comIdx));
     }
 
     @GetMapping("/board/get/postRewrite")
@@ -100,8 +108,10 @@ public class CommunityController {
         updateCommunity_result = communityService.updateCommunity(data);
 
         Boolean deleteTogetherStudy_result = false;
+
         String comidx = data.get("ComIdx").toString();
         List<Map<String, Object>> groupMemberInfos = (List<Map<String, Object>>) data.get("groupMemberInfos");
+
         deleteTogetherStudy_result = communityService.deleteTogetherStudy(comidx, groupMemberInfos);
 
         List result = new ArrayList();
