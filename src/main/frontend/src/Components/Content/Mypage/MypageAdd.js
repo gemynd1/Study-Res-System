@@ -10,18 +10,18 @@ const MypageAdd = () => {
     const [TicketSelect, setTicketSelect] = useState('당일권');
     const [selectAmount, setSelectAmount] = useState(null);
     const [selectName, setSelectName] = useState(null);
+    const [selectName2, setSelectName2] = useState(null);
     const [widget, setWidget] = useState(null);
     const [TimeInfo, setTimeInfo] = useState([]);
-
-
     const [ModalOpen, setModalOpen] = useState(false);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
     const [SipIdx, setSipIdx] = useState(1);
 
 
-    const openModal = (amount, Name, SipIdx) => {
+    const openModal = (amount, Name, Name2, SipIdx) => {
         setSelectAmount(amount);
         setSelectName(Name);
+        setSelectName2(Name2);
         setSipIdx(SipIdx);
         setModalOpen(true);
     }
@@ -158,7 +158,7 @@ const MypageAdd = () => {
                                         {/* 1시간 2시간 */}
                                         {TimeInfo ? TimeInfo.slice(0,2).map((result, index) => (
                                         <div className="SameTime" key={index}>
-                                            <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                            <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                 {result.sipName} <br/> {result.sipPrice}</button>
                                         </div>
                                         )) : ''}
@@ -167,7 +167,7 @@ const MypageAdd = () => {
                                         {/* 4시간 6시간 */}
                                         {TimeInfo ? TimeInfo.slice(2,4).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -176,7 +176,7 @@ const MypageAdd = () => {
                                         {/* 9시간 12시간 */}
                                         {TimeInfo ? TimeInfo.slice(4,6).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -188,7 +188,7 @@ const MypageAdd = () => {
                                     <div className="Timebox2">
                                         {TimeInfo ? TimeInfo.slice(6,8).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -196,7 +196,7 @@ const MypageAdd = () => {
                                     <div className="Timebox2">
                                         {TimeInfo ? TimeInfo.slice(8,10).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -204,7 +204,7 @@ const MypageAdd = () => {
                                     <div className="Timebox2">
                                         {TimeInfo ? TimeInfo.slice(10,12).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -246,6 +246,7 @@ const MypageAdd = () => {
                 Name={selectName}
                 widget={widget}
                 TicketSelect={TicketSelect}
+                Name2={selectName2}
             />
             <MemberDeleteModal
                 open={MemberModalOpen}

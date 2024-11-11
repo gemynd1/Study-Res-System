@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public interface MainMapper {
     List<StudyGOrderVo> selectTime(String sginum);
     int InsertOrderPay(@Param("MemberId") String MemberId, @Param("pay") StudyOrderPayVo studyOrderPayVo);
     int InsertGOrderWait(@Param("MemberId") String MemberId, @Param("wait") StudyGOrderVo studyGOrderVo);
+    int InsertInOrderWait(HashMap<String, Object> params);
     int saveTemplateOrder(String TTOIdx, String requestData);
     String selectTemplateOrder(String ordernum);
     int updateTemplateOrder(String ordernum);

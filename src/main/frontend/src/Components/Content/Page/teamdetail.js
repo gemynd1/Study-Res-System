@@ -15,6 +15,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { styled, TableCell, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import dayjs from "dayjs";
+import 'dayjs/locale/ko';
 import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -151,7 +152,7 @@ const PaymentModal = ({
                   orderId: nanoid(),
                   orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명)`,
                   customerName: `${sessionStorage.getItem("name")}`,
-                  successUrl: window.location.origin + `/paysuccess?ordernum=${random}`,
+                  successUrl: window.location.origin + `/paysuccess?ordernum=${random}&ordertype=grouporder`,
                   // ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}&sgonum=${random}
                   failUrl: window.location.origin + `/fail`,
                 });
@@ -433,9 +434,10 @@ const TeamDetailButtons = ({ count, setCount, start, end }) => {
 
 // 시간 단위 예약하기 버튼 클릭하면 보여주는 캘릭더 컴포넌트
 const BasicDateCalendar = ({ selectedDate, setSelectedDate }) => {
-  // const [selectedDate, setSelectedDate] = useState(null);
+  const minDate = dayjs().startOf("month");
+  const maxDate = dayjs().add(3, "month").endOf("month");
 
-  const disablePastDates = (date) => {
+  const disablePastDates = (date) => {  
     return date.isBefore(dayjs(), "day");
   };
 
@@ -443,16 +445,13 @@ const BasicDateCalendar = ({ selectedDate, setSelectedDate }) => {
     setSelectedDate(newDate); // 선택된 날짜를 상태로 저장
   };
 
-  // 상태가 업데이트된 후, 선택된 날짜를 콘솔에 출력
-  useEffect(() => {
-    if (selectedDate) {
-      console.log("선택된 날짜:", selectedDate.format("YYYY-MM-DD"));
-    }
-  }, [selectedDate]); // selectedDate가 변경될 때마다 실행
+  useEffect(() => {},[selectedDate]);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
       <DateCalendar
+        minDate={minDate} // 최소 날짜 설정
+        maxDate={maxDate} // 최대 날짜 설정
         shouldDisableDate={disablePastDates}
         onChange={handleDateChange} // 날짜 선택 핸들러 추가
         value={selectedDate} // 선택된 날짜를 상태로 관리

@@ -11,16 +11,19 @@ const PaySuccess = () => {
     const [isConfirmed, setIsConfirmed] = useState(false);
     const location = useLocation();
     const [searchParams] = useSearchParams();
+    const orderType = searchParams.get('ordertype');
     const [loading, setLoading] = useState(true);
     const [responseData, setResponseData] = useState([]);
     const [paydata, setPaydata] = useState('');
+    // 결제 성공 시 들어갈 내역 테이블(결제내역)
     const [orderPayData, setOrderPayData] = useState({
         TSOPIdx : '',
         TSOPMethod : '',
         TSOPPrice : '',
         TSOPStatus : '',
         TSOPDivi : '',
-    }) // 결제 성공 시 들어갈 내역 테이블
+    }) 
+    // 결제 성공 후 예약 내용 들어갈 테이블(그룹)
     const [orderWaitData, setOrderWaitData] = useState({
         SGONum : '',
         SGIIdx : '',
@@ -29,13 +32,15 @@ const PaySuccess = () => {
         SGOStartDate : '',
         SGOEndDate : '',
         SGOtotal : '',
-    }) // 결제 성공 후 예약 내용 들어갈 테이블]
+    }) 
+    // 결제 성공 후 예약 내용 들어갈 테이블(개인)
+    const [orderWaitinData, setOrderWaitinData] = useState('');
+
     const [orderState, setOrderState] = useState(false);
     const ordernum = searchParams.get('ordernum');
     // 임시 저장한 데이터 저장할 useState
     const [orderContent, setOrderContent] = useState("");
     const navigate = useNavigate();
-
 
     useEffect(() => {
         // 임시 저장한 데이터 가져옴, 가져온 데이터는 Y처리
@@ -84,31 +89,52 @@ const PaySuccess = () => {
         approvePayment()
             .then((data) => {
                 if(data) {
-                    // 결제 승인 후 결제내역data
-                    if(data.method === "간편결제") {
-                        setOrderPayData((prevState) => ({
+                    // 결제 승인 후 결제내역(그룹)
+                    if(orderType === 'grouporder') {
+                        if(data.method === "간편결제") {
+                            setOrderPayData((prevState) => ({
+                                ...prevState,
+                                TSOPIdx : data.orderId,
+                                TSOPMethod : `${data.method}_${data.easyPay.provider}`,
+                                TSOPPrice : data.totalAmount,
+                                TSOPStatus : 'Y',
+                            }))
+                        } else if(data.method === "카드") {
+                            setOrderPayData((prevState) => ({
+                                ...prevState,
+                                TSOPIdx : data.orderId,
+                                TSOPMethod : `${data.method}_${data.card.cardType}(${data.card.ownerType})`,
+                                TSOPPrice : data.totalAmount,
+                                TSOPStatus : 'Y',
+                            }))
+                        }
+                        // 최종 결제 후 order data
+                        setOrderWaitData((prevState) => ({
                             ...prevState,
+                            SGONum : searchParams.get('ordernum'),
                             TSOPIdx : data.orderId,
-                            TSOPMethod : `${data.method}_${data.easyPay.provider}`,
-                            TSOPPrice : data.totalAmount,
-                            TSOPStatus : 'Y',
+                            SGOtotal : data.totalAmount,
                         }))
-                    } else if(data.method === "카드") {
-                        setOrderPayData((prevState) => ({
-                            ...prevState,
-                            TSOPIdx : data.orderId,
-                            TSOPMethod : `${data.method}_${data.card.cardType}(${data.card.ownerType})`,
-                            TSOPPrice : data.totalAmount,
-                            TSOPStatus : 'Y',
-                        }))
+                    // 결제 승인 후 결제내역(개인좌석)
+                    } else if(orderType === 'inviorder') {
+                        if(data.method === "간편결제") {
+                            setOrderPayData((prevState) => ({
+                                ...prevState,
+                                TSOPIdx : data.orderId,
+                                TSOPMethod : `${data.method}_${data.easyPay.provider}`,
+                                TSOPPrice : data.totalAmount,
+                                TSOPStatus : 'Y',
+                            }))
+                        } else if(data.method === "카드") {
+                            setOrderPayData((prevState) => ({
+                                ...prevState,
+                                TSOPIdx : data.orderId,
+                                TSOPMethod : `${data.method}_${data.card.cardType}(${data.card.ownerType})`,
+                                TSOPPrice : data.totalAmount,
+                                TSOPStatus : 'Y',
+                            }))
+                        }
                     }
-                    // 최종 결제 후 order data
-                    setOrderWaitData((prevState) => ({
-                        ...prevState,
-                        SGONum : searchParams.get('ordernum'),
-                        TSOPIdx : data.orderId,
-                        SGOtotal : data.totalAmount,
-                    }))
                     setOrderState(true);
                 }
                 setLoading(false);
@@ -124,23 +150,33 @@ const PaySuccess = () => {
         const date = new Date(orderContent[0]?.date);
         const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         
-        setOrderPayData((prevState) => ({
-            ...prevState,
-            TSOPDivi : orderContent[0]?.OrderType
-        }))
-        setOrderWaitData((prevState) => ({
-            ...prevState,
-            SGIIdx : orderContent[0]?.roomnum,
-            SGORegDate: formattedDate,
-            SGOStartDate : startdate,
-            SGOEndDate : enddate,
-        }))
+        if(orderType === 'grouporder') {
+            setOrderPayData((prevState) => ({
+                ...prevState,
+                TSOPDivi : orderContent[0]?.OrderType
+            }))
+            setOrderWaitData((prevState) => ({
+                ...prevState,
+                SGIIdx : orderContent[0]?.roomnum,
+                SGORegDate: formattedDate,
+                SGOStartDate : startdate,
+                SGOEndDate : enddate,
+            }))
+        } else if(orderType === 'inviorder') {
+            setOrderPayData((prevState) => ({
+                ...prevState,
+                TSOPDivi : orderContent[0]?.OrderType
+            }))
+            setOrderWaitinData(orderContent[0]?.sipname);
+        }
+        
     }, [orderContent])
 
     useEffect(() => {
         if(orderState) {
             console.log(orderPayData);
             console.log(orderWaitData);
+            console.log(orderWaitinData);
             axios.post('http://localhost:8099/api/OrderPay', null,
                 {
                     params : {
@@ -150,25 +186,48 @@ const PaySuccess = () => {
                     headers:{'Content-Type': 'application/json'}  
                 },
             ).then((res1) => {
-                console.log('첫번째 완', res1.data)
-                axios.post('http://localhost:8099/api/OrderWait', null,
-                    {
-                        params : {
-                            orderWaitData : JSON.stringify(orderWaitData),
-                            MemberId : sessionStorage.getItem("id"),  
+                if(orderType === 'grouporder') {
+                    console.log('첫번째 완', res1.data)
+                    axios.post('http://localhost:8099/api/OrderWait', null,
+                        {
+                            params : {
+                                orderWaitData : JSON.stringify(orderWaitData),
+                                MemberId : sessionStorage.getItem("id"),  
+                            },
+                            headers:{'Content-Type': 'application/json'}  
                         },
-                        headers:{'Content-Type': 'application/json'}  
-                    },
-                ).then((res2) => {
-                    console.log('두번째 완', res2.data)
-    
-                    alert("결제가 성공적으로 완료되었습니다.");
-                    setOrderState(false);
-                    setResponseData(null);
-                })
-                .catch((error) => {
-                    console.error('요청실패', error)
-                })
+                    ).then((res2) => {
+                        console.log('두번째 완', res2.data)
+        
+                        alert("결제가 성공적으로 완료되었습니다.");
+                        setOrderState(false);
+                        setResponseData(null);
+                    })
+                    .catch((error) => {
+                        console.error('요청실패', error)
+                    })
+                } else if(orderType === 'inviorder'){
+                    console.log('첫번째 완', res1.data)
+                    axios.post('http://localhost:8099/api/OrderWaitIn', null,
+                        {
+                            params : {
+                                orderWaitinData : orderWaitinData,
+                                MemberId : sessionStorage.getItem("id"),  
+                            },
+                            headers:{'Content-Type': 'application/json'}  
+                        },
+                    ).then((res2) => {
+                        console.log('두번째 완', res2.data)
+        
+                        alert("결제가 성공적으로 완료되었습니다.");
+                        setOrderState(false);
+                        setResponseData(null);
+                    })
+                    .catch((error) => {
+                        console.error('요청실패', error)
+                    })
+                }
+                
             }).catch((error) => {
                 console.error('요청실패', error)
             })

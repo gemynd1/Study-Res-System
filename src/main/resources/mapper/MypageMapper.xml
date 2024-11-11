@@ -65,7 +65,11 @@
     </select>
 
     <select id="ViewStudyInPare" resultType="com.project.SnakeDev.vo.StudyInPareVo">
-        select * from tbl_studyinpare
+        select SipIdx,
+               SipName as SipName,
+               REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(SipName, '\(.+\)'), ' '), '시간'), '이용권') as SipName1,
+               SipPrice
+        from tbl_studyinpare
     </select>
 
     <select id="getBoardInfo" resultType="com.project.SnakeDev.vo.StudyCommunityVo">

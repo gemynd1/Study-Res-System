@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,12 @@ public class MainServiceImpl implements MainService {
     public int InsertGOrderWait(@Param("MemberId") String MemberId,
                                 @Param("wait") StudyGOrderVo studyGOrderVo) {
         return mainMapper.InsertGOrderWait(MemberId, studyGOrderVo);
+    }
+
+    @Override
+    @Transactional
+    public int InsertInOrderWait(HashMap<String, Object> params) {
+        return mainMapper.InsertInOrderWait(params);
     }
 
     @Override

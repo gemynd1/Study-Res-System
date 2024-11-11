@@ -138,6 +138,25 @@ public class MainController {
         }
     }
 
+    @PostMapping("/OrderWaitIn")
+    public ResponseEntity<Object> OrderWaitIn(@RequestParam("orderWaitinData") String orderWaitinData,
+                                              @RequestParam("MemberId") String MemberId) {
+        try {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("MemberId", MemberId);
+            params.put("SIPName", orderWaitinData);
+
+            if(mainService.InsertInOrderWait(params) > 0) {
+                return ResponseEntity.ok("ok");
+            } else {
+                return ResponseEntity.badRequest().body("no");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
     // 토스 결제 승인
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String WIDGET_SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";

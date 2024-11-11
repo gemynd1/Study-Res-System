@@ -143,4 +143,44 @@
                 #{wait.SGOtotal}
             )
     </insert>
+    <update id="InsertInOrderWait" parameterType="java.util.HashMap">
+        <choose>
+            <when test='SIPName == "4주"'>
+                update tbl_member set
+                    MStartinDate = case
+                        when MEndinDate > sysdate then MStartinDate
+                        else sysdate
+                    end,
+                    MEndinDate = case
+                        when MEndinDate > sysdate then to_char(to_date(MEndinDate, 'YYYY-MM-DD') + 28)
+                        else to_char(to_date(sysdate, 'YYYY-MM-DD') + 28)
+                    end
+            </when>
+            <when test='SIPName == "8주"'>
+                update tbl_member set
+                    MStartinDate = case
+                        when MEndinDate > sysdate then MStartinDate
+                        else sysdate
+                    end,
+                    MEndinDate = case
+                        when MEndinDate > sysdate then to_char(to_date(MEndinDate, 'YYYY-MM-DD') + 56)
+                        else to_char(to_date(sysdate, 'YYYY-MM-DD') + 56)
+                    end
+            </when>
+            <when test='SIPName == "1년이용권"'>
+                update tbl_member set
+                    MStartinDate = case
+                        when MEndinDate > sysdate then MStartinDate
+                        else sysdate
+                    end,
+                    MEndinDate = case
+                        when MEndinDate > sysdate then to_char(add_months(MEndinDate, 12), 'YYYY-MM-DD'))
+                        else to_char(to_date(add_months(sysdate, 12), 'YYYY-MM-DD'))
+                    end
+            </when>
+            <otherwise>
+                update tbl_member set MUseTime = MUseTime + #{SIPName} where memberId = #{MemberId}
+            </otherwise>
+        </choose>
+    </update>
 </mapper>
