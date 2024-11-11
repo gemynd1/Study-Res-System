@@ -36,6 +36,12 @@ public class MainServiceImpl implements MainService {
 
     @Override
     @Transactional
+    public List<StudyGOrderVo> selectTime(String sginum) {
+        return mainMapper.selectTime(sginum);
+    }
+
+    @Override
+    @Transactional
     public int InsertOrderPay(@Param("MemberId") String MemberId,
                               @Param("pay") StudyOrderPayVo studyOrderPayVo) {
         return mainMapper.InsertOrderPay(MemberId, studyOrderPayVo);

@@ -402,14 +402,14 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  width: 400px;
+  width: 350px;
   padding: 8px;
   justify-content: space-evenly;
 }
 
 .toggleButton {
   border-radius: 8px;
-  width: 60px; /* 버튼의 고정 너비 */
+  width: 80px; /* 버튼의 고정 너비 */
   height: 36px; /* 버튼의 고정 높이 */
   background-color: #ffd600 !important; /* 기본 배경색 */
   color: #000; /* 기본 텍스트 색상 */
@@ -417,7 +417,7 @@ h2 {
   font-weight: bold;
 
   &:hover {
-    background-color: #ffd600 !important; /* hover 시 배경색을 기본 배경색과 동일하게 설정 */
+    background-color: #ffd600; /* hover 시 배경색을 기본 배경색과 동일하게 설정 */
   }
 
   &.Mui-selected {
@@ -429,4 +429,9 @@ h2 {
       background-color: #7ee9bb !important; /* 선택된 버튼 위에 마우스를 올렸을 때 배경색 유지 */
     }
   }
+}
+
+.toggleButton.blur {
+  background-color: #a5a6b9 !important;
+  color: #fff;
 }

@@ -14,6 +14,7 @@ public interface MainMapper {
     List<StudyGInfoVo> ViewStudyGInfo();
     List<StudyInInfoVo> ViewStudyInInfo();
     List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum);
+    List<StudyGOrderVo> selectTime(String sginum);
     int InsertOrderPay(@Param("MemberId") String MemberId, @Param("pay") StudyOrderPayVo studyOrderPayVo);
     int InsertGOrderWait(@Param("MemberId") String MemberId, @Param("wait") StudyGOrderVo studyGOrderVo);
     int saveTemplateOrder(String TTOIdx, String requestData);

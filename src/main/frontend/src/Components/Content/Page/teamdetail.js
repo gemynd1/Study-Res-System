@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 import teamDetail from "../../../style/teamDetail.css";
@@ -266,35 +266,7 @@ const RadioButtonsGroup = ({ selectedValue, setSelectedValue }) => {
   );
 }
 
-// 시간 단위 예약하기 버튼 클릭하면 보여주는 캘릭더 컴포넌트
-const BasicDateCalendar = ({ selectedDate, setSelectedDate }) => {
-  // const [selectedDate, setSelectedDate] = useState(null);
 
-  const disablePastDates = (date) => {
-    return date.isBefore(dayjs(), "day");
-  };
-
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate); // 선택된 날짜를 상태로 저장
-  };
-
-  // 상태가 업데이트된 후, 선택된 날짜를 콘솔에 출력
-  useEffect(() => {
-    if (selectedDate) {
-      console.log("선택된 날짜:", selectedDate.format("YYYY-MM-DD"));
-    }
-  }, [selectedDate]); // selectedDate가 변경될 때마다 실행
-
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar
-        shouldDisableDate={disablePastDates}
-        onChange={handleDateChange} // 날짜 선택 핸들러 추가
-        value={selectedDate} // 선택된 날짜를 상태로 관리
-      />
-    </LocalizationProvider>
-  );
-}
 
 // 버튼 커마한거
 const BasicButtons = ({text, width, height, fontSize, padding, margin, backgroundColor, color, onClick}) => {
@@ -459,14 +431,55 @@ const TeamDetailButtons = ({ count, setCount, start, end }) => {
   );
 }
 
+// 시간 단위 예약하기 버튼 클릭하면 보여주는 캘릭더 컴포넌트
+const BasicDateCalendar = ({ selectedDate, setSelectedDate }) => {
+  // const [selectedDate, setSelectedDate] = useState(null);
+
+  const disablePastDates = (date) => {
+    return date.isBefore(dayjs(), "day");
+  };
+
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate); // 선택된 날짜를 상태로 저장
+  };
+
+  // 상태가 업데이트된 후, 선택된 날짜를 콘솔에 출력
+  useEffect(() => {
+    if (selectedDate) {
+      console.log("선택된 날짜:", selectedDate.format("YYYY-MM-DD"));
+    }
+  }, [selectedDate]); // selectedDate가 변경될 때마다 실행
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateCalendar
+        shouldDisableDate={disablePastDates}
+        onChange={handleDateChange} // 날짜 선택 핸들러 추가
+        value={selectedDate} // 선택된 날짜를 상태로 관리
+      />
+    </LocalizationProvider>
+  );
+}
+
 // 0:00~23:00 시간 선택해주는 부분
-const TimeSelector = ({ selectedTimes, onTimeChange }) => {
+const TimeSelector = ({ selectedTimes, onTimeChange, reservedTimes }) => {
   const handleChange = (event, newSelectedTimes) => {
     if (newSelectedTimes.length <= 2) {
       if (newSelectedTimes.length === 2) {
         const [first, second] = newSelectedTimes;
         const start = Math.min(first, second);
         const end = Math.max(first, second);
+
+        // 새로운 선택된 시간 범위에 예약된 시간이 포함되는지 확인
+        const invalidSelection = reservedTimes.some(
+          (reserved) => reserved >= start && reserved <= end
+        );
+
+        if (invalidSelection) {
+          alert("예약된 시간이 포함되어 선택할 수 없습니다.");
+          return; // 선택을 취소
+        }
+
         const newSelection = [];
         for (let i = start; i <= end; i++) {
           if (!newSelectedTimes.includes(i)) {
@@ -483,7 +496,7 @@ const TimeSelector = ({ selectedTimes, onTimeChange }) => {
     }
   };
 
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const hours = Array.from({ length: 12 }, (_, i) => i + 10);
 
   return (
     <>
@@ -500,7 +513,8 @@ const TimeSelector = ({ selectedTimes, onTimeChange }) => {
             key={hour}
             value={hour}
             aria-label={`${hour}:00`}
-            className="toggleButton"
+            className={`toggleButton ${reservedTimes.includes(hour) ? "blur" : ""}`}
+            disabled={reservedTimes.includes(hour)}
           >
             {hour}:00
           </ToggleButton>
@@ -512,10 +526,10 @@ const TimeSelector = ({ selectedTimes, onTimeChange }) => {
 
 const TeamDetail = () => {
   const [swiper, setSwiper] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [count, setCount] = useState(0);
   const [selectedValue, setSelectedValue] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null);
   const [isTimeChoiceSelected, setIsTimeChoiceSelected] = useState(false);
   const {sgiId} = useParams(); // 파라미터 저장
   const [ImgContent, setImgContent] = useState([]);
@@ -657,6 +671,69 @@ const TeamDetail = () => {
     width: 'auto',
   }
 
+  const [reservations, setReservations] = useState([]);
+  const [blurTimes, setBlurTimes] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8099/api/selectTime?sgiId=${sgiId}`);
+        
+        // 데이터를 변환하여 저장
+        const formattedData = res.data.map((item) => {
+          const start = parseInt(item.sgostartDate, 10);
+          const end = parseInt(item.sgoendDate, 10);
+          
+          // start부터 end까지의 시간을 포함하는 배열 생성
+          const times = [];
+          for (let hour = start; hour <= end - 1; hour++) {
+            times.push(hour);
+          }
+
+          return {
+            date: item.sgoregDate,
+            times: times,
+          };
+        });
+
+        setReservations(formattedData);
+
+        // 날짜별로 시간을 병합하여 blurTimes 객체에 저장
+        const mergedBlurTimes = {};
+        formattedData.forEach((item) => {
+          if (!mergedBlurTimes[item.date]) {
+            mergedBlurTimes[item.date] = new Set(item.times);
+          } else {
+            item.times.forEach((time) => mergedBlurTimes[item.date].add(time));
+          }
+        });
+
+        // Set을 배열로 변환
+        Object.keys(mergedBlurTimes).forEach(
+          (date) => (mergedBlurTimes[date] = Array.from(mergedBlurTimes[date]))
+        );
+
+        setBlurTimes(mergedBlurTimes);
+      } catch (error) {
+        console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
+      }
+    };
+    fetchData();
+  }, [sgiId]);
+
+  useEffect(() => {
+    // if (reservations) {
+    //   console.log("가져온 데이터:", reservations);
+    //   console.log("Blur 처리할 시간들:", blurTimes);
+    // }
+  }, [reservations, blurTimes]);
+
+  // 선택된 날짜에 맞는 예약된 시간 필터링
+  const reservedTimes = useMemo(() => {
+    return blurTimes[selectedDate?.format("YYYY-MM-DD")] || [];
+  }, [selectedDate, blurTimes]);
+  // console.log(blurTimes)
+
   return (
     <div className="teamDetail">
       <div className="teamDetail__main">
@@ -737,7 +814,7 @@ const TeamDetail = () => {
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
             <div className="teamDetail__main-content-text-title">이용후기</div>
-            <div className="flex fd-c ai-c p-r">
+            <div className="flex fd-c ai-c ">
               <div className="teamDetail__main-review">
                 <div className="teamDetail__main-review-profileIcon">
                   <img
@@ -909,6 +986,7 @@ const TeamDetail = () => {
                   <TimeSelector
                     selectedTimes={selectedTimes}
                     onTimeChange={setSelectedTimes}
+                    reservedTimes={reservedTimes}
                   />
                   <div className="teamDetail__side-legend">
                     <div className="teamDetail__side-legend-wrap">
@@ -952,8 +1030,8 @@ const TeamDetail = () => {
         </div>
         <div className="teamDetail__side-contact-actions-buttons">
           <div className="teamDitail__call-chating">
-            <BasicButtons text="전화" />
-            <BasicButtons text="채팅" />
+            {/* <BasicButtons text="전화" />
+            <BasicButtons text="채팅" /> */}
           </div>
           <BasicButtons2
             text="예약가능"

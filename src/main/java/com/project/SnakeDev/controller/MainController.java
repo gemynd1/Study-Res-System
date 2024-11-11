@@ -50,16 +50,24 @@ public class MainController {
     public ResponseEntity<Map<String, Object>> studygInfoDetail(@RequestParam("sgiId") String sginum) {
         List<StudyGInfoVo> studyGInfoVoList = mainService.ViewStudyGInfoDetail(sginum);
         StudyGInfoVo studyGInfoVo = studyGInfoVoList.get(0);
-        System.out.println('s');
+//        System.out.println('s');
 
         String[] studyGImg = studyGInfoVo.getStudyGImgVo().getSGImg().split(",");
 
         Map<String, Object> response = new HashMap<>();
         response.put("studyGInfoVo", studyGInfoVo);
         response.put("studyGImg", studyGImg);
-        System.out.println(response);
+//        System.out.println(response);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/selectTime")
+    public ResponseEntity<Object> selectTime(@RequestParam("sgiId") String sginum) {
+        List<StudyGOrderVo> result = mainService.selectTime(sginum);
+//        result = mainService.selectTime(sginum);
+
+        return ResponseEntity.ok(result);
     }
 
     // 결제 승인 전에 JSON으로 데이터 미리 저장

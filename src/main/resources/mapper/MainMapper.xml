@@ -100,6 +100,13 @@
             sgp.sgpprice,
             sgimg.sgimg
     </select>
+    <select id="selectTime" resultType="com.project.SnakeDev.vo.StudyGOrderVo">
+        select
+            to_char(sgoregdate, 'yyyy-mm-dd') as sgoregdate,
+            to_char(sgostartdate, 'HH24') as sgostartdate,
+            to_char(sgoenddate, 'HH24') as sgoenddate
+        from tbl_studygorder where sgiidx = #{sginum}
+    </select>
     <insert id="saveTemplateOrder" parameterType="map">
         insert into tbl_templateorder values(#{TTOIdx}, #{requestData}, 'N')
     </insert>
@@ -110,7 +117,7 @@
         update tbl_templateorder set ttostate = 'Y' where ttoidx = #{ordernum}
     </update>
     <insert id="InsertOrderPay" parameterType="map">
-        insert into tbl_studyorderpay (TSOPIdx, MIdx, TSOPMethod, TSOPPrice, TSOPStatus, TsopDate, TSOPDivi)
+        insert into tbl_studyorderpay (TsopIdx, MIdx, TsopMethod, TsopPrice, TsopStatus, TsopDate, TsopDivi)
         values
             (
                 #{pay.TSOPIdx},

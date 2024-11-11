@@ -155,6 +155,7 @@ const MypageAdd = () => {
                             {TicketSelect === '당일권' && (
                                 <div className="TimeBox">
                                     <div className="Timebox2" >
+                                        {/* 1시간 2시간 */}
                                         {TimeInfo ? TimeInfo.slice(0,2).map((result, index) => (
                                         <div className="SameTime" key={index}>
                                             <button onClick={() => openModal(result.sipPrice, result.sipName)}>
@@ -163,6 +164,7 @@ const MypageAdd = () => {
                                         )) : ''}
                                     </div>
                                     <div className="Timebox2">
+                                        {/* 4시간 6시간 */}
                                         {TimeInfo ? TimeInfo.slice(2,4).map((result, index) => (
                                             <div className="SameTime" key={index}>
                                                 <button onClick={() => openModal(result.sipPrice, result.sipName)}>
@@ -171,6 +173,7 @@ const MypageAdd = () => {
                                         )) : ''}
                                     </div>
                                     <div className="Timebox2">
+                                        {/* 9시간 12시간 */}
                                         {TimeInfo ? TimeInfo.slice(4,6).map((result, index) => (
                                             <div className="SameTime" key={index}>
                                                 <button onClick={() => openModal(result.sipPrice, result.sipName)}>
@@ -217,6 +220,7 @@ const MypageAdd = () => {
                             <div className="AddTimeText">
                                 <span>※당일권 1시간 선택하셨습니다</span>
                             </div>
+                            {/* db 로 사용시간 처리 */}
                             <div className="AddStudyTime">
                                 <span>사용 시간</span>
                                 <span>00 : 20</span>
@@ -241,6 +245,7 @@ const MypageAdd = () => {
                 amount={selectAmount}
                 Name={selectName}
                 widget={widget}
+                TicketSelect={TicketSelect}
             />
             <MemberDeleteModal
                 open={MemberModalOpen}

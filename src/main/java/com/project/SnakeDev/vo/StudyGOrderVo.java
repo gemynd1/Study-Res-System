@@ -21,6 +21,13 @@ public class StudyGOrderVo {
 //    public StudyGOrderVo() {
 //    }
 
+    // 예약된 시간이 있는지 확인
+    public StudyGOrderVo(String SGORegDate, String SGOStartDate, String SGOEndDate) {
+        this.SGORegDate = SGORegDate;
+        this.SGOStartDate = SGOStartDate;
+        this.SGOEndDate = SGOEndDate;
+    }
+
     // 예약 최종처리
     public StudyGOrderVo(String SGONum, String SGORegDate, String SGOStartDate, String SGOEndDate, Integer SGOtotal, StudyGInfoVo studyGInfoVo, StudyOrderPayVo studyOrderPayVo) {
         this.SGONum = SGONum;

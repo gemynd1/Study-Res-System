@@ -11,6 +11,7 @@ public interface MainService {
     public List<StudyGInfoVo> ViewStudyGInfo();
     public List<StudyInInfoVo> ViewStudyInInfo();
     public List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum);
+    public List<StudyGOrderVo> selectTime(String sginum);
     public int InsertOrderPay(String MemberId,StudyOrderPayVo studyOrderPayVo);
     public int InsertGOrderWait(String MemberId, StudyGOrderVo studyGOrderVo);
     public int saveTemplateOrder(String TTOIdx, String requestData);

@@ -85,13 +85,23 @@ const PaySuccess = () => {
             .then((data) => {
                 if(data) {
                     // 결제 승인 후 결제내역data
-                    setOrderPayData((prevState) => ({
-                        ...prevState,
-                        TSOPIdx : data.orderId,
-                        TSOPMethod : `${data.method}_${data.easyPay.provider}`,
-                        TSOPPrice : data.totalAmount,
-                        TSOPStatus : 'Y',
-                    }))
+                    if(data.method === "간편결제") {
+                        setOrderPayData((prevState) => ({
+                            ...prevState,
+                            TSOPIdx : data.orderId,
+                            TSOPMethod : `${data.method}_${data.easyPay.provider}`,
+                            TSOPPrice : data.totalAmount,
+                            TSOPStatus : 'Y',
+                        }))
+                    } else if(data.method === "카드") {
+                        setOrderPayData((prevState) => ({
+                            ...prevState,
+                            TSOPIdx : data.orderId,
+                            TSOPMethod : `${data.method}_${data.card.cardType}(${data.card.ownerType})`,
+                            TSOPPrice : data.totalAmount,
+                            TSOPStatus : 'Y',
+                        }))
+                    }
                     // 최종 결제 후 order data
                     setOrderWaitData((prevState) => ({
                         ...prevState,
@@ -129,16 +139,6 @@ const PaySuccess = () => {
 
     useEffect(() => {
         if(orderState) {
-            // console.log("1" ,orderPayData)
-            // console.log("2" ,orderWaitData)
-            // console.log("3", searchParams.get('data'))
-            // console.log("4", JSON.parse(searchParams.get('data')))
-            // console.log("5", orderContent);
-            // alert("결제가 성공적으로 완료되었습니다.");
-            // setOrderState(false);
-            // setResponseData(null);
-            // 백엔드 저장
-            
             console.log(orderPayData);
             console.log(orderWaitData);
             axios.post('http://localhost:8099/api/OrderPay', null,

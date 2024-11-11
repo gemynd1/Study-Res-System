@@ -7,17 +7,32 @@ import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "EIZMkdSmXud7BAXITGXJM";
 const { nanoid } = require('nanoid');
-const MoneyModal = ({ open, onClose, amount, Name, widget }) => {
+const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect }) => {
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState(null);
-
+    const [total, setTotal] = useState(amount);
+    const [quantity, setQuantity] = useState(1);
 
     // const { nanoid } = require('nanoid');
+    const increaseQuantity = (input) => {
+        if(quantity < input) {
+            setQuantity(quantity + 1);
+            setTotal((quantity + 1) * amount);
+        }
+    };
+    
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+            setTotal((quantity - 1) * amount);
+        }
+    };
 
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
+            setQuantity(1);
         }
     };
 
@@ -91,8 +106,16 @@ const MoneyModal = ({ open, onClose, amount, Name, widget }) => {
                         <span className="PaymentText1">{Name}</span>
                     </div>
                     <div className="AllCredit">
+                        <span className="PaymentText">수량선택</span>
+                        <span>
+                            <button onClick={() => decreaseQuantity}>-</button>
+                            <span>{quantity}</span>
+                            <button onClick={() => increaseQuantity(TicketSelect === "당일권" ? 10 : 3)}>+</button>
+                        </span>
+                    </div>
+                    <div className="AllCredit">
                         <span className="PaymentText">최종 결제 금액</span>
-                        <span className="PaymentText1">{amount}원</span>
+                        <span className="PaymentText1">{quantity === 1 ? amount : total}원</span>
                     </div>
                     <div className="AllCredit">
                         <span className="PaymentText">결제수단 선택</span>

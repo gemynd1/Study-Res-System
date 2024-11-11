@@ -81,5 +81,4 @@ public class StudyOrderPayVo {
     public void setTSOPDivi(String TSOPDivi) {
         this.TSOPDivi = TSOPDivi;
     }
-
 }
