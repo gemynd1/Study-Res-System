@@ -155,6 +155,7 @@
                         when MEndinDate > sysdate then to_char(to_date(MEndinDate, 'YYYY-MM-DD') + 28)
                         else to_char(to_date(sysdate, 'YYYY-MM-DD') + 28)
                     end
+                where memberId = #{MemberId}
             </when>
             <when test='SIPName == "8주"'>
                 update tbl_member set
@@ -166,6 +167,7 @@
                         when MEndinDate > sysdate then to_char(to_date(MEndinDate, 'YYYY-MM-DD') + 56)
                         else to_char(to_date(sysdate, 'YYYY-MM-DD') + 56)
                     end
+                where memberId = #{MemberId}
             </when>
             <when test='SIPName == "1년이용권"'>
                 update tbl_member set
@@ -177,9 +179,10 @@
                         when MEndinDate > sysdate then to_char(add_months(MEndinDate, 12), 'YYYY-MM-DD'))
                         else to_char(to_date(add_months(sysdate, 12), 'YYYY-MM-DD'))
                     end
+                where memberId = #{MemberId}
             </when>
             <otherwise>
-                update tbl_member set MUseTime = MUseTime + #{SIPName} where memberId = #{MemberId}
+                update tbl_member set MUseTime = MUseTime + #{SIPName, jdbcType=INTEGER} where memberId = #{MemberId}
             </otherwise>
         </choose>
     </update>

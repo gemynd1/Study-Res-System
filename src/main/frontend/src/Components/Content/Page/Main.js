@@ -9,17 +9,17 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
 import "swiper/css";
+import { colors } from "@mui/material";
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     borderRadius: 6,
-    boxShadow: 24,
+    outline: "none"
 }
 
 // 숫자 자동으로 올려주는 함수들
@@ -50,7 +50,10 @@ function useCountNum(end, start = 0, duration = 2000) {
     return count;
 }
 
-const BasicModal = ({ open, handleClose, selectedItem }) => {
+const SeatModal = ({ open, handleClose, seatInfo }) => {
+    // useEffect(() => {
+    //     axios.get('http://localhost:8099/api/')
+    // }, [])
     // console.log(selectedItem)
     return (
         <div>
@@ -62,17 +65,48 @@ const BasicModal = ({ open, handleClose, selectedItem }) => {
             >
                 <Box sx={style}>
                     <div className="modal-seat-header">
-                        <span className="modal-seat-header-title">{selectedItem}</span>
+                        <span className="modal-seat-header-title">{seatInfo}번 자리 예약하기</span>
                     </div>
                     <div className="modal-seat-title-section">
-                            <div>
-                                <span className="modal-seat-title">{selectedItem}</span><br />
-                                <span className="modal-seat-content">{selectedItem}</span>
-                            </div> 
+                        <span className="modal-seat-title">예약 진행</span>
+                    </div>
+                    <div className="modal-seat-content-section">
+                        <table>
+                            <tr>
+                                <th>남은 시간</th>
+                                <td>10시간 / 시간 없음</td>
+                            </tr>
+                            <tr>
+                                <th>남은 기간</th>
+                                <td>~ 2024/12/12 / 기간 없음</td>
+                            </tr>
+                            <tr className="select">
+                                <th>사용 시간 선택</th>
+                                <td>
+                                    <select className="modal-seat-select-section">
+                                        {Array.from({length:11}, (_, i) => (
+                                            <option key={i} value={i}>{i}시간</option>
+                                        ))}
+                                    </select>
+                                </td>
+                            </tr>
+                            {/* <tr>
+                                <th>기간권 사용하기</th>
+                                <td>
+                                    <input className="modal-seat-input" placeholder="사용할 시간 입력(숫자만 입력해주세요...)" />
+                                </td>
+                            </tr> */}
+                        </table>
+                    </div>
+                    <div className="modal-seat-content">
+                        ※시간권 결제 하신분은 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>0시간</b>으로 선택하시고 예약하기 버튼만 눌러주세요※ <br />
+                    </div>
+                    <div className="modal-seat-order">
+                        <span>이용할 시간/기간 : 1시간 / 기간권이용</span>
                     </div>
                     <div className="modal-seat-button-section">
                         <div onClick={handleClose} className="modal-seat-active-button">
-                            <span className="modal-active-text">확인</span>
+                            <span className="modal-active-text">예약하기</span>
                         </div>
                     </div>
                 </Box>
@@ -355,7 +389,7 @@ const Main = () => {
                 </p>
             </section>
             {/* 모달 컴포넌트 */}
-            <BasicModal 
+            <SeatModal
                 open={openModal} 
                 handleClose={handleCloseModal} 
                 seatInfo={selectedSeat}

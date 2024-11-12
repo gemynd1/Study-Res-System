@@ -42,6 +42,9 @@ const PaySuccess = () => {
     const [orderContent, setOrderContent] = useState("");
     const navigate = useNavigate();
 
+    const invidate = new Date();
+    const formattedDate = `${invidate.getFullYear()}-${String(invidate.getMonth() + 1).padStart(2, '0')}-${String(invidate.getDate()).padStart(2, '0')}`;
+
     useEffect(() => {
         // 임시 저장한 데이터 가져옴, 가져온 데이터는 Y처리
         axios.get('http://localhost:8099/api/templateOrderInfo', 
@@ -264,7 +267,10 @@ const PaySuccess = () => {
                             <div>
                                 <p><span className="order-details-title">예약번호 :</span> {searchParams.get('ordernum')}</p>
                                 <hr />
-                                <p><span className="order-details-title">예약일시 :</span> {orderContent[0]?.date}</p>
+                                <p>
+                                    <span className="order-details-title">예약일시 :</span> {orderType === 'grouporder' ? orderContent[0]?.date : formattedDate}
+                                    {/* {orderContent[0]?.date} */}
+                                </p>
                                 <hr />
                                 <p><span className="order-details-title">예약내역 :</span> {paydata.orderName}</p>
                                 <hr />
@@ -276,7 +282,7 @@ const PaySuccess = () => {
                     </div>
                     {/* 스터디룸 예약인지 개인시간인지*/}
                     <p className="confirmation-text">
-                        저희 스터디룸을 이용해주셔서 감사합니다 <br />
+                        저희 SN스터디를 이용해주셔서 감사합니다 <br />
                         구매하신 이용권은 예약날짜에 맞춰 이용하실 수 있습니다.
                     </p>
                     {/* 홈으로 돌아가기 버튼 */}

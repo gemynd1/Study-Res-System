@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../../../style/Mypage.css';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
 import axios from "axios";
 // import { nanoid } from nanoid;
@@ -9,6 +9,7 @@ const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = "ll-yw-PKw-5_SU3JBZJvL";
 const { nanoid } = require('nanoid');
 const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }) => {
+    const location = useLocation();
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -23,29 +24,47 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
         setRandom(`${formatdate}${randomNum}`);
     }, [])
 
+    useEffect(() => {
+        if(open) {
+            setQuantity(1);
+            setSipname(Name2)
+            setTotal(amount)
+        }
+    },[TicketSelect, Name2, amount])
+
     const increaseQuantity = (input) => {
-        if(quantity < input) {
-            setQuantity(quantity + 1);
-            setSipname(Name2.includes('주') || Name2.includes('년') ? Name2 : Name2 * (quantity + 1));
-            setTotal((quantity + 1) * amount);
+        if(TicketSelect === "당일권" && quantity < input) {
+            const newQuantity = quantity + 1;
+            setQuantity(newQuantity);
+            setSipname(Name2 * (newQuantity));
+            setTotal((newQuantity) * amount);
         }
     };
     
     const decreaseQuantity = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-            setSipname(Name2.includes('주') || Name2.includes('년') ? Name2 : Name2 * (quantity - 1));
-            setTotal((quantity - 1) * amount);
+        if (TicketSelect === "당일권" && quantity > 1) {
+            const newQuantity = quantity - 1;
+            setQuantity(newQuantity);
+            setSipname(Name2 * (newQuantity));
+            setTotal((newQuantity) * amount);
         }
     };
-
-    useEffect(() => {console.log(sipname, total)}, [sipname, total])
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
-            setQuantity(1);
+            resetModal();
         }
+    };
+
+    const resetModal = () => {
+        // 모달을 닫을 때 모든 상태를 기본값으로 초기화
+        setQuantity(1);
+        setSipname(Name2); 
+        setTotal(amount); 
+        setReady(false); 
+        setWidgets(null); 
+        setRandom(null); 
     };
 
     useEffect(() => {
@@ -77,7 +96,7 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
                 // ------ 주문의 결제 금액 설정 ------
                 await widgets.setAmount({
                     currency: "KRW",
-                    value: quantity === 1 ? Number(amount) : Number(total)
+                    value: Number(total)
                 });
                 try {
                     await Promise.all([
@@ -99,7 +118,7 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
             }, 100);
         };
         renderPaymentWidgets();
-    }, [widgets, open, amount]);
+    }, [widgets, open, total]);
 
     if (!open) return null; // open이 false면 컴포넌트 자체를 렌더링하지 않음
 
@@ -138,10 +157,12 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
                     </div>
                     <div className="AllCredit">
                         <span className="PaymentText">최종 결제 금액</span>
-                        <span className="PaymentText1"> 
-                            총 
-                            {Name2.includes("주") || Name2.includes("년") ? Name2 : Name2 * quantity} 
-                            {Name2.includes("주") || Name2.includes("년") ? "" : "시간"} / {quantity === 1 ? amount : total}원</span>
+                        <span className="PaymentText1">
+                            {/* 총 {total}, {amount}원 */}
+                            {/* {Name2.includes("주") || Name2.includes("년") ? Name2 : Name2 * quantity} */}
+                            {/* {TicketSelect === "당일권" ? total : amount}원 */}
+                            {sipname} / {total}원
+                        </span>
                     </div>
                     <div className="AllCredit">
                         <span className="PaymentText">결제수단 선택</span>
@@ -178,24 +199,18 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
                                     ).then(res=> {
                                         widgets.requestPayment({
                                             orderId: nanoid(),
-                                            orderName: "시간",
+                                            orderName: `${Name2.includes("주") || Name2.includes("년") ? sipname: sipname + "시간"}`,
                                             successUrl: window.location.origin + `/paysuccess?ordernum=${random}&ordertype=inviorder`,
                                             failUrl: window.location.origin + `/fail`,
                                             // customerEmail: "taerangkim0116@gmail.com",
                                             customerName: `${sessionStorage.getItem("name")}`,
                                             customerMobilePhone: "01092783810",
-                                        });
+                                        }).catch((error) => {
+                                            console.error(error);
+                                        })
                                     })
-                                    
                                 } catch (error) {
-                                    if(error.code === 500) {
-                                        alert("결제 창이 닫혔습니다. 결제를 다시 시도해주세요.")
-                                        window.location.reload();
-                                    } else {
-                                        // 에러 처리하기
-                                        console.error(error);
-                                    }
-                                    
+                                    console.error(error);
                                 }
                             }}
                         >결제하기</button>
