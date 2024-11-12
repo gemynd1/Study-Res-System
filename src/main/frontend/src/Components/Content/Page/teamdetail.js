@@ -118,10 +118,11 @@ const PaymentModal = ({
         <div id="agreement" />
         <button
           style={{
-            marginTop: "20px", width: "100%" , height: "60px", fontSize: "1.25rem", padding: "12px 24px", 
-            margin: "2px 2px", color: "white", backgroundColor: "#3065AC", borderRadius: "3px", border:"none" 
+            marginTop: "20px", width: "100%" , height: "60px", fontSize: "20px", padding: "12px 24px", 
+            margin: "2px 2px", color: "white", borderRadius: "3px", border:"none", fontWeight: "bold"
           }}
-          className="button"
+          // backgroundColor: "#3065AC"
+          className="detail-order-button"
           disabled={!ready}
           onClick={() => {
             try {

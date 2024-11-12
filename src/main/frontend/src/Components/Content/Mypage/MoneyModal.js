@@ -11,10 +11,10 @@ const { nanoid } = require('nanoid');
 const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }) => {
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState(null);
-    const [total, setTotal] = useState(amount);
     const [quantity, setQuantity] = useState(1);
     const [random, setRandom] = useState(null);
-    const [sipname, setSipname] = useState(Name2);
+    const [total, setTotal] = useState(amount); // 가격
+    const [sipname, setSipname] = useState(Name2); // 시간
 
     useEffect(() => {
         const today = new Date();
@@ -38,6 +38,8 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
             setTotal((quantity - 1) * amount);
         }
     };
+
+    useEffect(() => {console.log(sipname, total)}, [sipname, total])
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -121,9 +123,15 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
                         <span className="PaymentText">수량선택</span>
                         {/* <span> */}
                         <span className="paymentQuantity-container">
-                            <button className="paymentQuantitybtn" onClick={decreaseQuantity}>-</button>
-                            <span className="paymentQuantityspan">{quantity}</span>
-                            <button className="paymentQuantitybtn" onClick={() => increaseQuantity(TicketSelect === "당일권" ? 10 : 1)}>+</button>
+                            {TicketSelect === "당일권" ? (
+                                <>
+                                    <button className="paymentQuantitybtn" onClick={decreaseQuantity}>-</button>
+                                    <span className="paymentQuantityspan">{quantity}</span>
+                                    <button className="paymentQuantitybtn" onClick={() => increaseQuantity(10)}>+</button>
+                                </>
+                            ) : (
+                                <span className="paymentQuantityspan">{quantity}</span>
+                            )}
                         </span>
                             
                         {/* </span> */}
@@ -131,7 +139,8 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
                     <div className="AllCredit">
                         <span className="PaymentText">최종 결제 금액</span>
                         <span className="PaymentText1"> 
-                            총 {Name2.includes("주") || Name2.includes("년") ? Name2 : Name2 * quantity} 
+                            총 
+                            {Name2.includes("주") || Name2.includes("년") ? Name2 : Name2 * quantity} 
                             {Name2.includes("주") || Name2.includes("년") ? "" : "시간"} / {quantity === 1 ? amount : total}원</span>
                     </div>
                     <div className="AllCredit">

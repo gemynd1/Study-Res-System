@@ -215,16 +215,16 @@ const MypageAdd = () => {
                         <div className="AddTime">
                             <div className="AddTime1">
                                 <img src="/img/icon/logo.png" alt="로고"/>
-                                <span>정희수님의 잔여 시간입니다</span>
+                                <span>{sessionStorage.getItem('name')}님의 잔여 시간입니다</span>
                             </div>
-                            <div className="AddTimeText">
-                                <span>※당일권 1시간 선택하셨습니다</span>
-                            </div>
+                            {/* <div className="AddTimeText">
+                                <span>※ 당일권 1시간 선택하셨습니다</span>
+                            </div> */}
                             {/* db 로 사용시간 처리 */}
-                            <div className="AddStudyTime">
+                            {/* <div className="AddStudyTime">
                                 <span>사용 시간</span>
                                 <span>00 : 20</span>
-                            </div>
+                            </div> */}
                             <div className="AddStudyTime">
                                 <span>남은 시간</span>
                                 <span>00 : 40</span>
