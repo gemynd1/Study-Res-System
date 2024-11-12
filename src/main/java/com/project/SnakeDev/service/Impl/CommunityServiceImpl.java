@@ -58,6 +58,10 @@ public class CommunityServiceImpl implements CommunityService {
         return communityMapper.ViewPost_forPostRewrite(comIdx);
     }
 
+    public List<TogetherStudyVo> ViewGroupMember_forPost(String comIdx) {
+        return communityMapper.ViewGroupMember_forPost(comIdx);
+    }
+
     @Override
     public List<TogetherStudyVo> ViewGroupMember_forPostRewrite(String comIdx) {
         return communityMapper.ViewGroupMember_forPostRewrite(comIdx);

@@ -12,6 +12,7 @@ public class CommunityVo {
     private String MemberName;
     private String MemberNames;
     private String ComCategoryName;
+    private String MemberId;
 
     // 기본생성자
     public CommunityVo() {
@@ -62,7 +63,7 @@ public class CommunityVo {
     }
 
     // post페이지에서 사용되는 vo
-    public CommunityVo(int comIdx, int comCateIdx, int MIdx, String comTitle, String comContent, String comRegDate, String comDelDate, String comUpDate, int comintoDate, int comToCount, String comStartDate, String comEndDate, String comPlace, String comZipcode, String comAddress, int comReportCount, String comGroupName, String memberName, String memberNames) {
+    public CommunityVo(int comIdx, int comCateIdx, int MIdx, String comTitle, String comContent, String comRegDate, String comDelDate, String comUpDate, int comintoDate, int comToCount, String comStartDate, String comEndDate, String comPlace, String comZipcode, String comAddress, int comReportCount, String comGroupName, int groupCount, String memberName, String comCategoryName, String memberId) {
         ComIdx = comIdx;
         ComCateIdx = comCateIdx;
         this.MIdx = MIdx;
@@ -80,8 +81,10 @@ public class CommunityVo {
         ComAddress = comAddress;
         ComReportCount = comReportCount;
         ComGroupName = comGroupName;
+        GroupCount = groupCount;
         MemberName = memberName;
-        MemberNames = memberNames;
+        ComCategoryName = comCategoryName;
+        MemberId = memberId;
     }
 
     //postRewrite페이지에서 사용되는 vo
@@ -274,5 +277,13 @@ public class CommunityVo {
 
     public void setComCategoryName(String comCategoryName) {
         ComCategoryName = comCategoryName;
+    }
+
+    public String getMemberId() {
+        return MemberId;
+    }
+
+    public void setMemberId(String memberId) {
+        MemberId = memberId;
     }
 }

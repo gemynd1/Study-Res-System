@@ -52,17 +52,31 @@
         select
             c.*,
             m.MemberName,
-            listagg(ts.Midx, ', ') within group (order by ts.Midx) as MemberNames
+            m.MemberId,
+            cc.ComCateName as comCategoryName
         from
             tbl_community c
-            join
+        join
             tbl_member m on c.midx = m.midx
-            left join
-            tbl_TogetherStudy ts on c.comidx = ts.comidx
+        left join
+            tbl_community_category cc on c.COMCATEIDX = cc.COMCATEIDX
         where
-            c.comidx = #{comidx}
+            c.comidx = #{comIdx}
         group by
-            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName, m.MemberId, cc.ComCateName
+    </select>
+
+    <select id="ViewGroupMember_forPost" resultType="com.project.SnakeDev.vo.TogetherStudyVo" parameterType="String">
+        select
+            ts.*,
+            m.MemberName,
+            m.MemberId
+        from
+            tbl_TogetherStudy ts
+        join
+            tbl_member m on ts.midx = m.midx
+        where
+            ts.comidx = #{comIdx}
     </select>
 
     <select id="ViewPost_forPostRewrite" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
@@ -89,11 +103,11 @@
     </select>
 
     <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="map">
-        WITH CommentWithRowNum AS (
+        WITH CommentWithDenseRank AS (
             SELECT
                 tcc.*,
                 tm.membername,
-                ROW_NUMBER() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS row_num
+                DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
             FROM
                 tbl_community_comment tcc
                     JOIN
@@ -104,9 +118,9 @@
         SELECT
             *
         FROM
-            CommentWithRowNum
+            CommentWithDenseRank
         WHERE
-            row_num BETWEEN (#{currentPage} * #{commentSize} - (#{commentSize} - (#{commentSize} - 1))) AND (#{currentPage} * #{commentSize})
+            dense_rank BETWEEN (#{currentPage} * #{commentSize} - (#{commentSize} - (#{commentSize} - 1))) AND (#{currentPage} * #{commentSize})
     </select>
 
     <select id="ViewCommentSize" resultType="int" parameterType="String">

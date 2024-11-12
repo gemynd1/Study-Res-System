@@ -25,7 +25,7 @@ import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // 댓글 더보기 버튼
-function FadeMenu(sessionId, sessionName, memberName, midx) {
+function FadeMenu({sessionId, sessionName, comment_memberName, comment_midx, board_memberName, board_midx}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -35,7 +35,26 @@ function FadeMenu(sessionId, sessionName, memberName, midx) {
         setAnchorEl(null);
     };
 
-    // console.log(sessionId, sessionName, memberName, midx);
+    const menuItem = () => {
+        const items = [];
+
+        if (sessionId === board_midx && sessionName === board_memberName) {
+            items.push(<MenuItem onClick={handleClose}>신고</MenuItem>)
+            items.push(<MenuItem onClick={handleClose}>답글작성</MenuItem>)
+            items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
+        } else if (sessionId === comment_midx && sessionName === comment_memberName) {
+            items.push(<MenuItem onClick={handleClose}>수정</MenuItem>)
+            items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
+        } else if (sessionId === board_midx && sessionName === board_memberName && 
+                   sessionId === comment_midx && sessionName === comment_memberName) {
+            items.push(<MenuItem onClick={handleClose}>수정</MenuItem>)
+            items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
+        } else {
+            items.push(<MenuItem onClick={handleClose}>신고</MenuItem>)
+        }
+    }
+
+    // console.log(sessionId, sessionName, comment_memberName, comment_midx, board_memberName, board_midx);
 
     return (
         <div className="fademenu">
@@ -62,6 +81,8 @@ function FadeMenu(sessionId, sessionName, memberName, midx) {
                 <MenuItem onClick={handleClose}>답글작성</MenuItem>
                 <MenuItem onClick={handleClose}>수정</MenuItem>
                 <MenuItem onClick={handleClose}>개시글 삭제</MenuItem>
+                {/* 여기보세요! */}
+                {/* {menuItem().map((item)=>item)} */}
             </Menu>
         </div>
     );
@@ -196,7 +217,9 @@ const Post = () => {
     const comIdx = queryParams.get('comIdx');
 
     const [commentData, setCommentData] = useState([]);
-    const [boardContents, setBoardContents] = useState();
+    const [boardContents, setBoardContents] = useState({midx: "", memberName: "", comTitle: "", comContent: "", comRegDate: "", comStartDate: "", comEndDate: "", comAddress: "", comPlace: "", comToCount: "", groupCount: "", memberNames: ""});
+    // const [boardContents, setBoardContents] = useState();
+    const [groupMemberInfos, setGroupMemberInfos] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [commentSize, setCommentSize] = useState(0);
 
@@ -207,7 +230,50 @@ const Post = () => {
     const handlePageChange = (event, value) => {
         setCurrentPage(value); // 현재 페이지 상태 업데이트
         console.log(currentPage)
-        // 여기보세요
+    };
+
+    const renderButtons = () => {
+        if (groupMemberInfos.some(member => member.memberId === sessionId && member.memberName === sessionName)) {
+            return (
+                <div className="out-button-section">
+                    <div className="out-button">
+                        <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                        <span className="out-button-text">나가기</span>
+                    </div>
+                </div>
+            );
+        }
+
+        if (boardContents && sessionId === boardContents.memberId && sessionName === boardContents.memberName) {
+            return (
+                <>
+                    <div className="fix-button-section">
+                        <div className="fix-button">
+                            <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
+                            <span className="fix-button-text">수정</span>
+                        </div>
+                    </div>
+                    <div className="delete-button-section">
+                        <div className="delete-button">
+                            <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
+                            <span className="delete-button-text">삭제</span>
+                        </div>
+                    </div>
+                </>
+            );
+        }
+
+        return (
+            <div className="join-button-section">
+                <div className="join-button">
+                    <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
+                    <span className="join-button-text">참여하기</span>
+                </div>
+            </div>
+        );
+    };
+
+    useEffect(() => {
         axios.get('http://localhost:8099/api/board/post/comment', {
             params: { comIdx, currentPage, commentSize },
             headers: {
@@ -218,40 +284,65 @@ const Post = () => {
         }).catch(error => {
             console.log(error);
         })
-    };
+    }, [comIdx, currentPage, commentSize])
+
+    // useEffect(() => {
+    //     axios.get('http://localhost:8099/api/board/post', {
+    //         params: { comIdx },
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }).then(response => {
+    //         setBoardContents(...response.data)
+    //     }).catch(error => {
+    //         console.log(error);
+    //     })
+    // }, [comIdx]);
+
+    // useEffect(() => {
+    //     axios.get('http://localhost:8099/api/board/post/commentSize', {
+    //         params: { comIdx },
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }).then(response => {
+    //         setCommentSize(response.data)
+    //     }).catch(error => {
+    //         console.log(error);
+    //     })
+    // }, [comIdx]);
 
     useEffect(() => {
-        axios.get('http://localhost:8099/api/board/post', {
-            params: { comIdx },
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then(response => {
-            setBoardContents(...response.data)
-        }).catch(error => {
+        axios.all([
+            axios.get('http://localhost:8099/api/board/post/commentSize', {
+                params: { comIdx },
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }),
+            axios.get('http://localhost:8099/api/board/post', {
+                params: { comIdx },
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+        ]).then(axios.spread((commentSize, boardContents) => {
+            setCommentSize(commentSize.data)
+            setBoardContents(...boardContents.data.ViewPost)
+            setGroupMemberInfos(boardContents.data.ViewGroupMember_forPost)
+        })).catch(error => {
             console.log(error);
         })
-    }, [comIdx]);
-
-    useEffect(() => {
-        axios.get('http://localhost:8099/api/board/post/commentSize', {
-            params: { comIdx },
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then(response => {
-            setCommentSize(response.data)
-        }).catch(error => {
-            console.log(error);
-        })
-    }, [comIdx]);
+    },[comIdx])
 
     console.log(boardContents);
     console.log(commentData);
     console.log(sessionId, sessionName);
+    console.log(boardContents.memberId, boardContents.memberName);
     console.log(commentSize);
+    console.log(groupMemberInfos);
 
-    if (!boardContents | !commentData) {
+    if (!boardContents | !commentData | !groupMemberInfos) {
         return <div>Loading...</div>;
     }
 
@@ -259,14 +350,14 @@ const Post = () => {
         <>
             <div className="post">
 
-                <p className="title">{boardContents.comTitle} (곧 마감)</p>
+                <p className="title">{boardContents.comTitle}</p>
 
                 <div className="breadcrumb">
                     <img src="/img/icon/home(breadcrumb).png" alt="homeicon" className="breadcrumb-home" />
                     <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow" />
                     <span className="breadcrumb-board">게시판</span>
                     <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow2" />
-                    <span className="breadcrumb-category">곧 마감</span>
+                    <span className="breadcrumb-category">{boardContents.comCategoryName}</span>
                 </div>
 
                 <div className="contour"></div>
@@ -280,17 +371,25 @@ const Post = () => {
 
                 <div className="post-info2">
                     <img src="/img/icon/group.png" alt="groupicon" className="post-group-icon" />
-                    <span className="post-group">{boardContents.groupCount + 1} / {boardContents.comToCount} 명</span>
-                    <span className="post-group2">({boardContents.comToCount - (boardContents.groupCount + 1)}명 남음)</span>
+                    <span className="post-group">{groupMemberInfos.length + 1} / {boardContents.comToCount} 명</span>
+                    <span className="post-group2">({boardContents.comToCount - (groupMemberInfos.length + 1)}명 남음)</span>
                 </div>
 
                 <div className="post-info3">
                     <div className="post-member">
                         <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
                         <span className="post-member-name">{boardContents.memberName}</span>
-                        {}
                     </div>
                 </div>
+
+                {groupMemberInfos.map((groupMemberInfo) => (
+                    <div className="post-info3">
+                        <div className="post-member">
+                            <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
+                            <span className="post-member-name">{groupMemberInfo.memberName}</span>
+                        </div>
+                    </div>
+                ))}
 
                 <div className="post-info4">
 
@@ -341,6 +440,32 @@ const Post = () => {
                         {/* <span className="QandA-button-text">질문 작성하기</span> */}
                     </div>
 
+                    {/* {commentData.map((root) => (
+                        <div className="post-comment-main" key={root.CCGroupNum}>
+                            {commentData.map((comment) => (
+                                comment.ccrefnum === 1 && root.CCGroupNum === comment.CCGroupNum ? (
+                                    <div className="post-question">
+                                        <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
+                                        <div className="comment-text">
+                                            <span className="comment-author-name">{comment.memberName}</span>
+                                            <p className="comment-detail">{comment.cccontent}</p>
+                                            <span className="comment-loaddate">{comment.ccregdate}</span>
+                                        </div>
+
+                                        <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
+
+                                    </div>
+                                ) : comment.ccrefnum === 2 && root.CCGroupNum === comment.CCGroupNum ? (
+                                    <div className="post-reply">
+                                        <b className="post-reply-author">호스트의 답글</b>
+                                        <p className="reply-detail">{comment.cccontent}</p>
+                                        <span className="reply-loaddate">{comment.ccregdate}</span>
+                                    </div>
+                                ) : null
+                            ))}
+                        </div>
+                    ))} */}
+
                     <div className="post-comment-main">
                         {commentData.map((comment) => (
                             comment.ccrefnum === 1 ? (
@@ -352,7 +477,12 @@ const Post = () => {
                                         <span className="comment-loaddate">{comment.ccregdate}</span>
                                     </div>
 
-                                    <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
+                                    <FadeMenu sessionId={sessionId}
+                                              sessionName={sessionName}
+                                              comment_memberName={comment.memberName}
+                                              comment_midx={comment.midx}
+                                              board_memberName={boardContents.memberName}
+                                              board_memberId={boardContents.memberId} />
 
                                 </div>
                             ) : comment.ccrefnum === 2 ? (
@@ -370,34 +500,44 @@ const Post = () => {
 
                 </div>
 
-                <div className="join-button-section">
-                    <div className="join-button">
-                        <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
-                        <span className="join-button-text">참여하기</span>
-                    </div>
-                </div>
+                {renderButtons()}
                 
-                <div className="out-button-section" style={{display: 'none'}}>
-                    <div className="out-button">
-                        <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
-                        <span className="out-button-text">나가기</span>
-                    </div>
-                </div>
+                
+                {/* {groupMemberInfos.map((groupMemberInfo) => (
+                    groupMemberInfo.memberId === sessionId && groupMemberInfo.memberName === sessionName ? (
+                        <div className="out-button-section">
+                            <div className="out-button">
+                                <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                                <span className="out-button-text">나가기</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="join-button-section">
+                            <div className="join-button">
+                                <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
+                                <span className="join-button-text">참여하기</span>
+                            </div>
+                        </div>
+                    )
+                ))}
 
-                <div className="fix-button-section" style={{display: 'none'}}>
-                    <div className="fix-button">
-                        <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
-                        <span className="fix-button-text">수정</span>
-                    </div>
-                </div>
+                {boardContents && sessionId === boardContents.memberId && sessionName === boardContents.memberName ? (
+                    <>
+                        <div className="fix-button-section">
+                            <div className="fix-button">
+                                <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
+                                <span className="fix-button-text">수정</span>
+                            </div>
+                        </div>
 
-                <div className="delete-button-section" style={{display: 'none'}}>
-                    <div className="delete-button">
-                        <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
-                        <span className="delete-button-text">삭제</span>
-                    </div>
-                </div>
-
+                        <div className="delete-button-section">
+                            <div className="delete-button">
+                                <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
+                                <span className="delete-button-text">삭제</span>
+                            </div>
+                        </div>
+                    </>
+                ) : null } */}
             </div>
         </>
     )

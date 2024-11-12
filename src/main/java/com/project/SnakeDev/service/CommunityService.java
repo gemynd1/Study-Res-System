@@ -27,6 +27,8 @@ public interface CommunityService {
 
     public List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
 
+    public List<TogetherStudyVo> ViewGroupMember_forPost(String comIdx);
+
     public List<TogetherStudyVo> ViewGroupMember_forPostRewrite(String comIdx);
 
     public List<StudyGInfoVo> ViewStudyroom();

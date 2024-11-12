@@ -70,7 +70,14 @@ public class CommunityController {
 
     @GetMapping("/board/post")
     public ResponseEntity<Object> post(@RequestParam("comIdx") String comIdx) {
-        return ResponseEntity.ok(communityService.ViewPost(comIdx));
+        List<CommunityVo>rs1 = communityService.ViewPost(comIdx);
+        List<TogetherStudyVo> rs2 = communityService.ViewGroupMember_forPost(comIdx);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("ViewPost", rs1);
+        result.put("ViewGroupMember_forPost", rs2);
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/board/post/comment")

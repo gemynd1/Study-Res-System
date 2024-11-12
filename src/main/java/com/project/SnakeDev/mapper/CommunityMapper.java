@@ -27,6 +27,8 @@ public interface CommunityMapper {
 
     List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
 
+    List<TogetherStudyVo> ViewGroupMember_forPost(String comIdx);
+
     List<TogetherStudyVo> ViewGroupMember_forPostRewrite(String comIdx);
 
     List<StudyGInfoVo> ViewStudyroom();
