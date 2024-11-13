@@ -7,20 +7,24 @@
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
     <typeAliases>
-<!--        <typeAlias alias="MemberVo" type="com.project.SnakeProject.vo.MemberVo"></typeAlias>-->
+        <!--        <typeAlias alias="MemberVo" type="com.project.SnakeProject.vo.MemberVo"></typeAlias>-->
         <typeAlias alias="CommunityVo" type="com.project.SnakeDev.vo.CommunityVo"/>
-<!--        <typeAlias alias="CommunityCategoryVo" type="com.project.SnakeProject.vo.CommunityCategoryVo"></typeAlias>-->
-<!--        <typeAlias alias="CommunityCommentVo" type="com.project.SnakeProject.vo.CommunityCommentVo"></typeAlias>-->
+        <!--        <typeAlias alias="CommunityCategoryVo" type="com.project.SnakeProject.vo.CommunityCategoryVo"></typeAlias>-->
+        <!--        <typeAlias alias="CommunityCommentVo" type="com.project.SnakeProject.vo.CommunityCommentVo"></typeAlias>-->
 
         <typeAlias alias="StudyGInfoVo" type="com.project.SnakeDev.vo.StudyGInfoVo"></typeAlias>
         <typeAlias alias="StudyGImgVo" type="com.project.SnakeDev.vo.StudyGImgVo"></typeAlias>
         <typeAlias alias="StudyGPareVo" type="com.project.SnakeDev.vo.StudyGPareVo"></typeAlias>
+<<<<<<< HEAD
+        <!--        <typeAlias alias="StudyGOrderVo" type="com.project.SnakeProject.vo.StudyGOrderVo"></typeAlias>-->
+=======
         <typeAlias alias="StudyOrderPayVo" type="com.project.SnakeDev.vo.StudyOrderPayVo"></typeAlias>
 <!--        <typeAlias alias="StudyGOrderVo" type="com.project.SnakeProject.vo.StudyGOrderVo"></typeAlias>-->
+>>>>>>> d0b6a374fdcbdc837da0636f5b9fac5a94364981
 
-<!--        <typeAlias alias="StudyReviewImgVo" type="com.project.SnakeProject.vo.StudyReviewImgVo"></typeAlias>-->
+        <!--        <typeAlias alias="StudyReviewImgVo" type="com.project.SnakeProject.vo.StudyReviewImgVo"></typeAlias>-->
 
-<!--        <typeAlias alias="MemberAlarmVo" type="com.project.SnakeProject.vo.MemberAlarmVo"></typeAlias>-->
+        <!--        <typeAlias alias="MemberAlarmVo" type="com.project.SnakeProject.vo.MemberAlarmVo"></typeAlias>-->
     </typeAliases>
     <mappers>
         <package name="com.project.SnakeDev.mapper"/>
