@@ -23,20 +23,25 @@
     </select>
 
     <select id="ViewCurrentCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
-        SELECT
-            c.*,
-            COUNT(ts.COMIDX) AS GroupCount
-        FROM
-            tbl_community c
-                LEFT JOIN
-            tbl_TogetherStudy ts
+        <![CDATA[
+        SELECT * FROM (
+            SELECT
+                c.*,
+                COUNT(ts.COMIDX) AS GroupCount
+            FROM
+                tbl_community c
+            LEFT JOIN
+                tbl_TogetherStudy ts
             ON
                 c.COMIDX = ts.COMIDX
-        WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
-        GROUP BY
-            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
-        ORDER BY
-            c.COMIDX DESC
+            WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+            GROUP BY
+                c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+            ORDER BY
+                c.COMIDX DESC
+            )
+        WHERE ROWNUM <= 2
+        ]]>
     </select>
 
     <select id="ViewCommunityCategory" resultType="com.project.SnakeDev.vo.CommunityCategoryVo">
@@ -44,19 +49,108 @@
     </select>
 
     <select id="ViewPost" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
+        select
+            c.*,
+            m.MemberName,
+            listagg(ts.Midx, ', ') within group (order by ts.Midx) as MemberNames
+        from
+            tbl_community c
+            join
+            tbl_member m on c.midx = m.midx
+            left join
+            tbl_TogetherStudy ts on c.comidx = ts.comidx
+        where
+            c.comidx = #{comidx}
+        group by
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName
+    </select>
+
+    <select id="ViewPost_forPostRewrite" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
+        select
+            c.*,
+            cc.COMCATENAME as comCategoryName
+        from
+            tbl_community c
+                join tbl_member m on c.midx = m.midx
+                join tbl_community_category cc on c.comcateidx = cc.comcateidx
+        where
+            c.comidx = #{comIdx}
+    </select>
+
+    <select id="ViewGroupMember_forPostRewrite" resultType="com.project.SnakeDev.vo.TogetherStudyVo" parameterType="String">
+        select
+            ts.*,
+            m.MemberName
+        from
+            tbl_TogetherStudy ts
+                join tbl_member m on ts.midx = m.midx
+        where
+            comidx = #{comIdx}
+    </select>
+
+    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
+        select tcc.*,tm.membername  from tbl_community_comment tcc, tbl_member tm  where tcc.comidx = #{comidx} and tcc.midx = tm.midx
+    </select>
+
+    <select id="ViewMoreCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="map">
         SELECT
             c.*,
             COUNT(ts.COMIDX) AS GroupCount
         FROM
             tbl_community c
-                LEFT JOIN
+        LEFT JOIN
             tbl_TogetherStudy ts
-            ON
-                c.COMIDX = ts.COMIDX
-        WHERE c.COMIDX = #{int_comIdx}
+        ON
+            c.COMIDX = ts.COMIDX
+        WHERE
+            comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
         GROUP BY
             c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
         ORDER BY
             c.COMIDX DESC
+        OFFSET #{int_ContentNumber} ROWS FETCH NEXT 1 ROWS ONLY
     </select>
+
+    <select id="ViewStudyroom" resultType="com.project.SnakeDev.vo.StudyGInfoVo">
+        select
+            s.*,
+            listagg(g.sgimg, ', ') within group (order by g.sgiidx) as studyGImgs
+        from
+            tbl_studyginfo s
+        left join
+            tbl_studygimg g on s.sgiidx = g.sgiidx
+        group by
+            s.sgiidx, s.scidx, s.sginum, s.sgiusestate, s.sgicontent1, s.sgicontent2
+    </select>
+
+    <update id="updateCommunity" parameterType="com.project.SnakeDev.vo.CommunityVo">
+        update tbl_community
+            set ComIdx = #{ComIdx},
+                ComCateIdx = (select ComCateIdx from tbl_community_category where comCateName = #{comCategoryName}),
+                ComTitle = #{ComTitle},
+                ComContent = #{ComContent},
+                ComRegDate = TO_DATE(#{ComRegDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComDelDate = TO_DATE(#{ComDelDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComUpDate = TO_DATE(#{ComUpDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComintoDate = #{ComintoDate},
+                ComToCount = #{ComToCount},
+                ComStartDate = TO_DATE(#{ComStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComEndDate = TO_DATE(#{ComEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComPlace = #{ComPlace},
+                ComZipcode = #{ComZipcode},
+                ComAddress = #{ComAddress},
+                ComReportCount = #{ComReportCount}
+            where comidx = #{ComIdx}
+    </update>
+
+    <delete id="deleteTogetherStudy" parameterType="map">
+        DELETE FROM tbl_TogetherStudy
+        WHERE comidx = #{comIdx}
+          AND (comidx, midx) NOT IN (
+                                     <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
+                                         #{item.comIdx}, #{item.midx}
+                                     </foreach>
+            )
+    </delete>
+
 </mapper>

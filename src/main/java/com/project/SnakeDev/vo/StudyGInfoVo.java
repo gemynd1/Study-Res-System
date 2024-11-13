@@ -23,6 +23,8 @@ public class StudyGInfoVo {
   private String SGIDContent9;
   private String SGIDContent10;
 
+  private String studyGImgs; // 사진값을 하나의 칼럼에 가져오기 위한 변수 선언
+
   private StudyGImgVo studyGImgVo; // 사진 값 가져오기 위한 vo 선언
   private StudyGPareVo studyGPareVo; // 해당 룸의 가격들 가져오기 위한 vo 선언
 
@@ -40,6 +42,17 @@ public class StudyGInfoVo {
     this.SGIContent1 = SGIContent1;
     this.SGIContent2 = SGIContent2;
     this.studyGImgVo = studyGImgVo;
+  }
+
+  // postRewrite & postWrite에서 사용할 vo (스터디룸에 대한 정보 가져올때 사용)
+  public StudyGInfoVo(Integer SGIIdx, Integer SCIdx, Integer SGINum, String SGIUseState, String SGIContent1, String SGIContent2, String studyGImgs) {
+    this.SGIIdx = SGIIdx;
+    this.SCIdx = SCIdx;
+    this.SGINum = SGINum;
+    this.SGIUseState = SGIUseState;
+    this.SGIContent1 = SGIContent1;
+    this.SGIContent2 = SGIContent2;
+    this.studyGImgs = studyGImgs;
   }
 
   // 룸 상세 정보와 이미지 정보, 요금 정보 vo
@@ -206,4 +219,11 @@ public class StudyGInfoVo {
     this.studyGPareVo = studyGPareVo;
   }
 
+  public String getStudyGImgs() {
+    return studyGImgs;
+  }
+
+  public void setStudyGImgs(String studyGImgs) {
+    this.studyGImgs = studyGImgs;
+  }
 }
