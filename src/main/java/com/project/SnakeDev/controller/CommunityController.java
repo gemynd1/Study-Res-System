@@ -70,12 +70,27 @@ public class CommunityController {
 
     @GetMapping("/board/post")
     public ResponseEntity<Object> post(@RequestParam("comIdx") String comIdx) {
-        return ResponseEntity.ok(communityService.ViewPost(comIdx));
+        List<CommunityVo>rs1 = communityService.ViewPost(comIdx);
+        List<TogetherStudyVo> rs2 = communityService.ViewGroupMember_forPost(comIdx);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("ViewPost", rs1);
+        result.put("ViewGroupMember_forPost", rs2);
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/board/post/comment")
-    public ResponseEntity<Object> comment(@RequestParam("comIdx") String comIdx) {
-        return ResponseEntity.ok(communityService.ViewComment(comIdx));
+    public ResponseEntity<Object> comment(@RequestParam("comIdx") String comIdx,
+                                          @RequestParam("currentPage") String currentPage,
+                                          @RequestParam("commentSize") String commentSize) {
+
+        return ResponseEntity.ok(communityService.ViewComment(comIdx, currentPage, commentSize));
+    }
+
+    @GetMapping("/board/post/commentSize")
+    public ResponseEntity<Object> commentSize(@RequestParam("comIdx") String comIdx) {
+        return ResponseEntity.ok(communityService.ViewCommentSize(comIdx));
     }
 
     @GetMapping("/board/get/postRewrite")
@@ -100,8 +115,10 @@ public class CommunityController {
         updateCommunity_result = communityService.updateCommunity(data);
 
         Boolean deleteTogetherStudy_result = false;
+
         String comidx = data.get("ComIdx").toString();
         List<Map<String, Object>> groupMemberInfos = (List<Map<String, Object>>) data.get("groupMemberInfos");
+
         deleteTogetherStudy_result = communityService.deleteTogetherStudy(comidx, groupMemberInfos);
 
         List result = new ArrayList();
@@ -109,6 +126,27 @@ public class CommunityController {
         result.add(deleteTogetherStudy_result);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/board/insert/comment")
+    public ResponseEntity<Object> post_comment(@RequestBody Map<String, Object> data) {
+
+        int comIdx = Integer.parseInt(data.get("comIdx").toString());
+        int commentType = Integer.parseInt(data.get("commentType").toString());
+        String comment = data.get("comment").toString();
+        int maxCCGroupNum = Integer.parseInt(data.get("maxCCGroupNum").toString());
+        String sessionId = data.get("sessionId").toString();
+
+        if (commentType == 0) {
+//            sessionId와 memberId(댓글작성자)가 다른 경우
+            return ResponseEntity.ok(communityService.insert_comment_question(comIdx, comment, maxCCGroupNum, sessionId));
+        }else if (commentType == 1) {
+//            sessionId와 memberId(댓글작성자)가 같은 경우
+//            return ResponseEntity.ok(communityService.insert_comment_reply(comIdx, comment, maxCCGroupNum, sessionId));
+            return ResponseEntity.ok("success");
+        }else {
+            return ResponseEntity.ok("fail");
+        }
     }
 
 }
