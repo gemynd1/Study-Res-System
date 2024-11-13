@@ -346,6 +346,17 @@ header div.first-background div.second-background div.message-headerBar span.mes
     margin-left: 3%;
 }
 
+.message-headerBar span {
+    display: inline;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    color: #FFFFFF;
+    margin-left: 3%
+}
+
 header div.first-background div.second-background div.message-section {
     position: relative;
     width: 500px;
@@ -356,10 +367,18 @@ header div.first-background div.second-background div.message-section {
 }
 
 header div.first-background div.second-background div.message-section div.typeBar {
-    display: flex;
-    position: relative;
+
+
+}
+
+.typeBar2 {
     width: 100%;
     margin-left: 4%;
+}
+
+header div.first-background div.second-background div.message-section div.typeBar2 {
+    display: flex;
+    position: relative;
 }
 
 header div.first-background div.second-background div.message-section div.typeBar div.personal-message {
