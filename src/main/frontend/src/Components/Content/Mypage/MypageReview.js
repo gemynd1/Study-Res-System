@@ -116,6 +116,12 @@ const MypageReview = () => {
                             <span className="menuText">시간충전</span>
                         </div>
                     </Link>
+                    <Link to='/mypage/mypageCheck' style={{textDecoration: 'none'}}>
+                        <div className="updateText2">
+                            <img src="/img/icon/mypage5.png" alt="예약확인"/>
+                            <span className="menuText">예약확인</span>
+                        </div>
+                    </Link>
                 </div>
 
                 <div className="UpdateBody">

@@ -3,12 +3,24 @@ import {BrowserRouter, Link, Outlet, Route, Routes, useNavigate} from "react-rou
 import axios from 'axios';
 import MemberDeleteModal from "./MemberDeleteModal";
 import PostCodePopup from "../Account/AccountCom/PostCodePopup";
+import PhoneVali from "../Account/AccountCom/PhoneVali";
 
 const MypageUpdate = () => {
     const [MypageUpdate, setMypageUpdate] = useState('');
     const [EditedValues, setEditedValues] = useState({});
     const navigate = useNavigate();
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
+    const [PasswordMessage, setPasswordMessage] = useState("");
+    const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+    const [isPassword, setIsPassword] = useState(false);
+    const [authObj, setauthObj] = useState({
+        phonenumber: "",
+        pw: "",
+    });
+
+    const isNumeric = (input) =>
+        /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4}$/.test(input); // 전화번호 정규식
+
     // 우편번호 API
     const [enroll_company, setEnroll_company] = useState(
         {
@@ -60,37 +72,44 @@ const MypageUpdate = () => {
                     // alert('데이터 못가져옴')
                 })
         } else {
-            alert('account로 이동')
+            alert('오류가 발생하였습니다.')
+            navigate('/');
         }
     }, []);
 
     const handleUpdate = (e) => {
         e.preventDefault();
 
-        axios.post("http://localhost:8099/api/update",
-            {
+        if (isPassword || authObj.pw === '') {
+            axios.post("http://localhost:8099/api/update",
+                {
                     "memberId": userInfo.memberId,
                     "memberName": userInfo.memberName,
                     "memberPhone": userInfo.memberPhone,
-                    "memberPw": userInfo.memberPw,
+                    "memberPw":  authObj.pw ? authObj.pw : userInfo.memberPw,
                     "maaddress": enroll_company.address,
                     "mdetailaddress": enroll_company.detailedAddress,
                     "mzonecode": enroll_company.zonecode,
                     "malatitude": parseFloat(enroll_company.latitude),
                     "malongitude": parseFloat(enroll_company.longitude)
-                    },
-            {
-                        header : {'Content-Type' : 'application/json'}
-                    }
+                },
+                {
+                    header: {'Content-Type': 'application/json'}
+                }
             )
-            .then(response => {
-                // console.log("수정", response.data);
-                alert('회원정보가 수정되었습니다.');
-                navigate('/mypage');
-            })
-            .catch(error => {
-                console.error('에러발생',error);
-            })
+                .then(response => {
+                    // console.log("수정", response.data);
+                    alert('회원정보가 수정되었습니다.');
+                    // sessionStorage.clear();
+                    sessionStorage.setItem("name", userInfo.memberName );
+                    navigate('/mypage');
+                })
+                .catch(error => {
+                    console.error('에러발생', error);
+                })
+        } else {
+            alert('회원정보 수정에 실패했습니다.')
+        }
     }
 
     const handleInputChange = (e) => {
@@ -99,6 +118,46 @@ const MypageUpdate = () => {
             [e.target.name]: e.target.value
         })
     }
+
+    const handleInputChange3 = (e) => {
+        const result = e.target.value
+            .replace(/[^0-9.]/g, "")
+            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+            .replace(/(-{1,2})$/g, "");
+
+        setUserInfo({
+            ...userInfo,
+            [e.target.name]: result
+        });
+    }
+
+    const handleInputChange2 = (e) => {
+        setUserInfo({
+            ...userInfo,
+            [e.target.name]: e.target.value
+        });
+
+        setauthObj({
+            ...authObj,
+            pw: e.target.value
+        });
+
+        const isPwNumeric = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,30}$/; // 비밀번호 정규식
+        const password = e.target.value;
+
+        if (!isPwNumeric.test(password)) {
+            setPasswordMessage("비밀번호는 8~30자의 영소문자, 숫자 !@*&-_만 입력 가능합니다.");
+            setIsPassword(false);
+        } else if (password.length < 8) {
+            setPasswordMessage("8자 이상 입력해주세요");
+            setIsPassword(false);
+        } else {
+            setPasswordMessage(null);
+            console.log(userInfo);
+            setIsPassword(true);
+        }
+    };
+
 
     const handleInput = (e) => {
         setEnroll_company({
@@ -218,6 +277,12 @@ const MypageUpdate = () => {
                             <span className="menuText">시간충전</span>
                         </div>
                     </Link>
+                    <Link to='/mypage/mypageCheck' style={{textDecoration: 'none'}}>
+                        <div className="updateText2">
+                            <img src="/img/icon/mypage5.png" alt="예약확인"/>
+                            <span className="menuText">예약확인</span>
+                        </div>
+                    </Link>
                 </div>
 
 
@@ -268,7 +333,7 @@ const MypageUpdate = () => {
                                         value={userInfo.memberPw}
                                         id="memberPw"
                                         name="memberPw"
-                                        onChange={handleInputChange}
+                                        onChange={handleInputChange2}
                                         />
                                     <span onClick={handlePassWordType}>
                                     {pwType.visible ? (
@@ -276,7 +341,13 @@ const MypageUpdate = () => {
                                         :
                                         (<img src="/img/icon/seepassword.png" alt="비밀번호 숨기기" className="UpdatepasswordIcon"/>
                                         )}
-                                </span>
+                                    </span>
+                                    {authObj.pw.length > 0 && (
+                                        <span
+                                            style={{ color: "red", fontSize: "12px", display: "block" }}>
+                                        {PasswordMessage}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                             {/*<div className="UpdateInputBox">*/}
@@ -340,11 +411,33 @@ const MypageUpdate = () => {
                                     <span>전화번호</span>
                                 </div>
                                 <div className="UpdateInput">
+                                    {/*<PhoneVali*/}
+                                    {/*    phone={authObj}*/}
+                                    {/*    setPhone={setauthObj}*/}
+                                    {/*    value={userInfo.memberPhone}*/}
+                                    {/*    onInupt={handleInputChange3.memberPhone}*/}
+                                    {/*    onChange={handleInputChange3}*/}
+                                    {/*    validators={[*/}
+                                    {/*        {*/}
+                                    {/*            fn: (input) => input.length > 0,*/}
+                                    {/*            message: "전화번호를 입력해주세요.",*/}
+                                    {/*        },*/}
+                                    {/*        {*/}
+                                    {/*            fn: isNumeric,*/}
+                                    {/*            message: "숫자만 입력해주세요.",*/}
+                                    {/*        },*/}
+                                    {/*        {*/}
+                                    {/*            fn: (input) => input.length >= 10,*/}
+                                    {/*            message: "10자 이상 입력해주세요.",*/}
+                                    {/*        },*/}
+                                    {/*    ]}*/}
+                                    {/*    />*/}
                                 <input
                                         type="text"
                                         value={userInfo.memberPhone}
                                         id="memberPhone"
-                                        onChange={(e) => handleInputChange('memberPhone', e.target.value)}
+                                        name="memberPhone"
+                                        onChange={handleInputChange3}
                                         />
                                 </div>
                             </div>

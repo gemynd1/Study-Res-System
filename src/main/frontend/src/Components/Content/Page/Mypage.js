@@ -70,6 +70,14 @@ const Mypage = () => {
                                 </div>
                                 <span className="mypageIcon5">시간충전</span>
                             </div>
+                            <div className="circleBox">
+                                <div className="circle">
+                                    <Link to='/mypage/mypageCheck'>
+                                        <img src="/img/icon/mypage5.png" className="mypageIcon4" alt='/'/>
+                                    </Link>
+                                </div>
+                                <span className="mypageIcon5">예약확인</span>
+                            </div>
                         </div>
                         <div className="AccountInput">
                             <img src="/img/icon/logo.png" className="logo" alt="/"/>
@@ -78,7 +86,7 @@ const Mypage = () => {
                         <div className="MypageSelect">
                             <div className="circleBox">
                                 <div className="circle">
-                                    <Link to='/CustomerHelp/CustomerWrite'>
+                                <Link to='/CustomerHelp/CustomerWrite'>
                                         <img src='/img/icon/customerWrite.png' alt="문의하기"
                                              style={{width: "60px", height: "60px"}}/>
                                         {/*<span className="Inquiry">1</span>*/}

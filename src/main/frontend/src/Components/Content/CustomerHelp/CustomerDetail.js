@@ -16,12 +16,18 @@ const CustomerDetail = () => {
     const [expandedIndexes, setExpandedIndexes] = useState(false);
 
     // 각 문의 내역을 클릭할 때 상세 내용을 토글
+    // const handleToggleDetail = (index) => {
+    //     // 클릭된 인덱스가 현재 열려 있다면 닫고, 아니라면 추가
+    //     setExpandedIndexes((prevIndexes) =>
+    //         prevIndexes.includes(index)
+    //             ? prevIndexes.filter((i) => i !== index) // 열려 있다면 닫기
+    //             : [...prevIndexes, index] // 닫혀 있다면 열기
+    //     );
+    // };
+
     const handleToggleDetail = (index) => {
-        setExpandedIndexes((prevState) => ({
-            ...prevState,
-            [index]: !prevState[index], // 클릭한 항목의 상태를 반전
-        }));
-    };
+        setExpandedIndexes((prevIndex) => (prevIndex === index ? null : index)) // 같은 인덱스를 클릭하면 닫고 아니면 열기
+    }
 
     useEffect(() => {
         axios.get("http://localhost:8099/api/customer/customerView", {
@@ -87,35 +93,54 @@ const CustomerDetail = () => {
                 </div>
             </div>
             <div className="CustomerDetailBody">
-                <div className="CustomerText">
-                    <span className="DetailText">문의 내역</span>
-                </div>
-                {customerDetail && customerDetail.length > 0 ? (
-                    customerDetail.map((result, index) => (
-                        <div className="CustomerDetailBox" key={index} onClick={handleToggleDetail} >
-                            <div className="DetailBox">
-                                <span>{result.chcontent}</span>
-                                <div className="DetailBox2">
-                                    <span>{result.chdate ? format(new Date(result.chdate), 'yyyy-MM-dd') : null}</span>
-                                </div>
-                            </div>
-                            {/* 클릭된 항목의 상세 내용을 표시 */}
-                            {expandedIndexes && (
-                                <div className="DetailBox">
-                                    <p>상세 내용: {result.chcontent}</p>
-                                    {/* 다른 추가 정보도 여기에 표시할 수 있음 */}
-                                </div>
-                            )}
-                        </div>
-                    ))
-                ) : (
-                    <div>
-                        <span style={{ fontSize: '30px', display: 'flex', justifyContent: 'center', padding: '190px' }}>
-                            문의 내역이 없습니다.
-                        </span>
+                <div className="Customer22">
+                    <div className="CustomerText">
+                        <span className="DetailText">문의 내역</span>
                     </div>
-                )}
+                    {customerDetail && customerDetail.length > 0 ? (
+                        customerDetail.map((result, index) => (
+                            <div className="CustomerDetailBox" key={index} onClick={() => handleToggleDetail(index)} >
+                                <div className="DetailBox">
+                                    <span>{result.chtitle}</span>
+                                    <div className="DetailBox2">
+                                        <span>{result.chdate ? format(new Date(result.chdate), 'yyyy-MM-dd') : null}</span>
+                                    </div>
+                                </div>
+                                {/* 클릭된 항목의 상세 내용을 표시 */}
+                                {expandedIndexes === index && (
+                                    <div className="DetailTitle">
+                                        <div className="DetailTitle2">
+                                            <span>{result.chtitle}</span>
+                                        </div>
+                                        <div className="DetailContent">
+                                            <span>{result.chcontent}</span>
+                                        </div>
+                                        <div className="DetailContent2">
+                                            <span>문의번호: {result.chidx}</span>
+                                            <span>문의날짜: {result.chdate ? format(new Date(result.chdate), 'yyyy-MM-dd') : null}</span>
+                                        </div>
+                                        <div className="AdminContent">
+                                            <div className="AdminTitle">
+                                                <img src="/img/icon/logo.png" alt="snlogo" className="logo"/>
+                                                <span>SN 스터디 고객센터 답변</span>
+                                            </div>
+                                            <div className="AdminContent1">
+                                                <span>SN 스터디 고객센터의 답변 내용입니다</span>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <div>
+                            <span style={{ fontSize: '30px', display: 'flex', justifyContent: 'center', padding: '190px' }}>
+                                문의 내역이 없습니다.
+                            </span>
+                        </div>
+                    )}
+                </div>
 
                 <Pagination
                     currentPage={currentPage}

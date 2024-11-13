@@ -1,8 +1,21 @@
 import React from "react";
 import "../../style/footer.css";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Footer = () => {
+
+    const navigate = useNavigate();
+
+
+
+    const handleClick = () => {
+        if (sessionStorage.getItem("id")) {
+            navigate("/CustomerHelp/CustomerService")
+        } else {
+            alert("로그인 후 이용해주세요.")
+        }
+    }
+
     return (
         <>
             <footer className="footer">
@@ -28,9 +41,9 @@ const Footer = () => {
                     {/* <Link to="고객센터(문의하기)">
                         <img src="/img/icon/message(white).png" alt="message" className="footer-message"/>
                     </Link> */}
-                    <Link to="/CustomerHelp/CustomerService">
-                        <img src="/img/icon/call(white).png" alt="call" className="footer-call"/>
-                    </Link>
+                    {/*<Link to="/CustomerHelp/CustomerService">*/}
+                        <img src="/img/icon/call(white).png" alt="call" className="footer-call" onClick={handleClick}/>
+                    {/*</Link>*/}
                     <Link to="https://github.com/breath03/SnakeDev">
                         <img src="/img/icon/github(white).png" alt="github" className="footer-github"/>
                     </Link>
