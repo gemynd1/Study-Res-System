@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.Impl.MainServiceImpl;
+import com.project.SnakeDev.service.Impl.NotificationServiceImpl;
 import com.project.SnakeDev.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
@@ -28,6 +29,7 @@ import java.util.*;
 public class MainController {
     @Autowired
     private MainServiceImpl mainService;
+    private NotificationServiceImpl notificationService;
 
     @GetMapping("/studygInfo")
     public ResponseEntity<Object> studygInfo() {
@@ -138,6 +140,21 @@ public class MainController {
         }
     }
 
+    @PostMapping("/OrderNotification")
+    public ResponseEntity<Object> OrderNotification(@RequestParam("orderNotificationData") String MaContent) {
+        try {
+            if(notificationService.OrderNotification(MaContent) > 0) {
+                return ResponseEntity.ok("ok");
+            } else {
+                return ResponseEntity.badRequest().body("no");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+//        return ResponseEntity.ok(notificationService.OrderNotification(MaContent));
+    }
+
     @PostMapping("/OrderWaitIn")
     public ResponseEntity<Object> OrderWaitIn(@RequestParam("orderWaitinData") String orderWaitinData,
                                               @RequestParam("MemberId") String MemberId) {
@@ -216,35 +233,4 @@ public class MainController {
         connection.setDoOutput(true);
         return connection;
     }
-
-    //        try {
-//            // 결제 승인 요청 데이터 생성
-//            JSONObject requestBody = new JSONObject();
-//            requestBody.put("paymentKey", paymentRequest.getPaymentKey());
-//            requestBody.put("orderId", paymentRequest.getOrderId());
-//            requestBody.put("amount", paymentRequest.getAmount());
-//
-//            // 요청 헤더 설정
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-//            headers.setBasicAuth(tossSecretKey, ""); // Basic 인증
-//
-//            HttpEntity<String> requestEntity = new HttpEntity<>(requestBody.toString(), headers);
-//
-//            // API 요청
-//            RestTemplate restTemplate = new RestTemplate();
-//            ResponseEntity<String> response = restTemplate.exchange(
-//                "https://api.tosspayments.com/v1/payments/confirm",
-//                HttpMethod.POST,
-//                requestEntity,
-//                String.class
-//            );
-//
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8")
-//                    .body(response.getBody());
-//
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("결제 승인 실패: " + e.getMessage());
-//        }
 }

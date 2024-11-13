@@ -27,5 +27,4 @@ public class NotificationController {
 
         return ResponseEntity.ok(notificationService.ViewNotification(MemberId, MemberName));
     }
-
 }

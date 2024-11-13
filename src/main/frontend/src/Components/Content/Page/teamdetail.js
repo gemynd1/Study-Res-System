@@ -151,7 +151,7 @@ const PaymentModal = ({
               .then(res => {
                 widgets.requestPayment({
                   orderId: nanoid(),
-                  orderName: `${roomTitle} - ${date} (${start} ~ ${end}) (${people}명)`,
+                  orderName: `${roomTitle} - ${date} (${start + ":00"} ~ ${end + 1 + ":00"}) (${people}명)`,
                   customerName: `${sessionStorage.getItem("name")}`,
                   successUrl: window.location.origin + `/paysuccess?ordernum=${random}&ordertype=grouporder`,
                   // ordertype=GroupOrder&roomnum=${roomnum}&date=${date}&start=${start}&end=${end}&people=${people}&sgonum=${random}

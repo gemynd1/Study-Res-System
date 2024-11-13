@@ -4,6 +4,7 @@ import axios from 'axios';
 import MoneyModal from "./MoneyModal";
 import {Modal} from "@mui/material";
 import MemberDeleteModal from "./MemberDeleteModal";
+import { Add } from "@mui/icons-material";
 
 const MypageAdd = () => {
     const [MypageAdd, setMypageAdd] = useState('');
@@ -13,6 +14,7 @@ const MypageAdd = () => {
     const [selectName2, setSelectName2] = useState(null);
     const [widget, setWidget] = useState(null);
     const [TimeInfo, setTimeInfo] = useState([]);
+    const [AddTimeInfo, setAddTimeInfo] = useState([]);
     const [ModalOpen, setModalOpen] = useState(false);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
     const [SipIdx, setSipIdx] = useState(1);
@@ -64,16 +66,33 @@ const MypageAdd = () => {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8099/api/mypage/mypageTime", {
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .then(response => {
-                setTimeInfo(response.data);
-                console.log(response.data);
+        axios
+            .all([
+                axios.get('http://localhost:8099/api/mypage/mypageTime'),
+                axios.get(`http://localhost:8099/api/mypage/mypageAddTime?memberid=${sessionStorage.getItem('id')}`),
+                ],
+            {
+                header : {'Content-Type' : 'application/json'}
             })
-            .catch(error => {
-                console.error('데이터 못가져옴: ', error);
-            })
+            .then(
+                axios.spread((res1, res2) => {
+                    setTimeInfo(res1.data);
+                    setAddTimeInfo(res2.data);
+                    console.log(AddTimeInfo);
+                })
+            )
+            .catch(error => console.log(error))
+
+        // axios.get("http://localhost:8099/api/mypage/mypageTime", {
+        //     headers: { 'Content-Type': 'application/json' }
+        // })
+        //     .then(response => {
+        //         setTimeInfo(response.data);
+        //         console.log(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('데이터 못가져옴: ', error);
+        //     })
     }, []);
 
     return (
@@ -227,11 +246,11 @@ const MypageAdd = () => {
                             </div> */}
                             <div className="AddStudyTime">
                                 <span>남은 시간</span>
-                                <span>00 : 40</span>
+                                <span>{AddTimeInfo[0].museTime}시간</span>
                             </div>
                             <div className="AddStudyTime">
                                 <span>남은 정기권 일 수</span>
-                                <span>00일</span>
+                                <span>{AddTimeInfo[0].mendinDate === null ? "기간 없음" : AddTimeInfo[0].mendinDate}</span>
                             </div>
 
                         </div>

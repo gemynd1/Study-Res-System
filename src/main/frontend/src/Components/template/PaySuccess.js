@@ -35,6 +35,7 @@ const PaySuccess = () => {
     }) 
     // 결제 성공 후 예약 내용 들어갈 테이블(개인)
     const [orderWaitinData, setOrderWaitinData] = useState('');
+    const [orderNotification, setORderNotification] = useState('');
 
     const [orderState, setOrderState] = useState(false);
     const ordernum = searchParams.get('ordernum');
@@ -118,6 +119,7 @@ const PaySuccess = () => {
                             TSOPIdx : data.orderId,
                             SGOtotal : data.totalAmount,
                         }))
+                        setORderNotification(`스터디룸 ${data.orderName} 이 예약되었습니다.`)
                     // 결제 승인 후 결제내역(개인좌석)
                     } else if(orderType === 'inviorder') {
                         if(data.method === "간편결제") {
@@ -191,17 +193,29 @@ const PaySuccess = () => {
             ).then((res1) => {
                 if(orderType === 'grouporder') {
                     console.log('첫번째 완', res1.data)
-                    axios.post('http://localhost:8099/api/OrderWait', null,
-                        {
-                            params : {
-                                orderWaitData : JSON.stringify(orderWaitData),
-                                MemberId : sessionStorage.getItem("id"),  
-                            },
-                            headers:{'Content-Type': 'application/json'}  
-                        },
-                    ).then((res2) => {
+                    Promise.all([
+                        axios.post('http://localhost:8099/api/OrderWait', null, 
+                            {
+                                params : {
+                                    orderWaitData : JSON.stringify(orderWaitData),
+                                    MemberId : sessionStorage.getItem("id"),  
+                                },
+                                headers:{'Content-Type': 'application/json'}  
+                            }
+                        ),
+                        axios.post('http://localhost:8099/api/OrderNotification', null,
+                            {
+                                params : {
+                                    orderNotificationData : orderNotification
+                                },
+                                headers:{'Content-Type': 'application/json'}  
+                            }
+                        )
+                    ])
+                    .then(([res2, res3]) => {
                         console.log('두번째 완', res2.data)
-        
+                        console.log('세번째 완', res3.data)
+                        
                         alert("결제가 성공적으로 완료되었습니다.");
                         setOrderState(false);
                         setResponseData(null);
@@ -209,6 +223,24 @@ const PaySuccess = () => {
                     .catch((error) => {
                         console.error('요청실패', error)
                     })
+                    // axios.post('http://localhost:8099/api/OrderWait', null,
+                    //     {
+                    //         params : {
+                    //             orderWaitData : JSON.stringify(orderWaitData),
+                    //             MemberId : sessionStorage.getItem("id"),  
+                    //         },
+                    //         headers:{'Content-Type': 'application/json'}  
+                    //     },
+                    // ).then((res2) => {
+                    //     console.log('두번째 완', res2.data)
+                        
+                    //     alert("결제가 성공적으로 완료되었습니다.");
+                    //     setOrderState(false);
+                    //     setResponseData(null);
+                    // })
+                    // .catch((error) => {
+                    //     console.error('요청실패', error)
+                    // })
                 } else if(orderType === 'inviorder'){
                     console.log('첫번째 완', res1.data)
                     axios.post('http://localhost:8099/api/OrderWaitIn', null,
@@ -287,6 +319,9 @@ const PaySuccess = () => {
                     </p>
                     {/* 홈으로 돌아가기 버튼 */}
                     <div>
+                    <Button variant="contained" color="primary" onClick={handleReturnHome}>
+                            홈으로가기
+                        </Button>
                         <Button variant="contained" color="primary" onClick={handleReturnHome}>
                             홈으로가기
                         </Button>

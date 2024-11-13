@@ -72,6 +72,10 @@
         from tbl_studyinpare
     </select>
 
+    <select id="mypageAddTime" resultType="com.project.SnakeDev.vo.AuthVo">
+        select musetime, mendindate from tbl_member where memberid = #{memberid}
+    </select>
+
     <select id="getBoardInfo" resultType="com.project.SnakeDev.vo.StudyCommunityVo">
         select
             tm.comcateidx as comcateidx,

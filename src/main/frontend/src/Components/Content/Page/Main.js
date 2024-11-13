@@ -54,7 +54,6 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
     // useEffect(() => {
     //     axios.get('http://localhost:8099/api/')
     // }, [])
-    // console.log(selectedItem)
     return (
         <div>
             <Modal
@@ -84,8 +83,9 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                                 <th>사용 시간 선택</th>
                                 <td>
                                     <select className="modal-seat-select-section">
-                                        {Array.from({length:11}, (_, i) => (
-                                            <option key={i} value={i}>{i}시간</option>
+                                        <option value={"기간"}>기간권사용</option>
+                                        {Array.from({length:12}, (_, i) => (
+                                            <option key={i + 1} value={i + 1}>{i + 1}시간</option>
                                         ))}
                                     </select>
                                 </td>
@@ -99,7 +99,7 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                         </table>
                     </div>
                     <div className="modal-seat-content">
-                        ※시간권 결제 하신분은 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>0시간</b>으로 선택하시고 예약하기 버튼만 눌러주세요※ <br />
+                        ※시간권 결제 하신분은 시간 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>'기간권사용'</b>으로 선택하시고 예약하기 버튼만 눌러주세요※ <br />
                     </div>
                     <div className="modal-seat-order">
                         <span>이용할 시간/기간 : 1시간 / 기간권이용</span>
@@ -328,7 +328,7 @@ const Main = () => {
                                                 className="seat" 
                                                 id={"seat" + studyininfo.siinum}
                                                 onClick={() => 
-                                                    sessionStorage.getItem("id") === null ? '' : handleOpenModal(studyininfo.siinum)
+                                                    sessionStorage.getItem("id") === null ? alert("로그인 후 이용해주세요.") : handleOpenModal(studyininfo.siinum)
                                                 } 
                                             />
                                         </React.Fragment>
