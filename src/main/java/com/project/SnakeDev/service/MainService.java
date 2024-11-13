@@ -16,7 +16,7 @@ public interface MainService {
     public int InsertOrderPay(String MemberId,StudyOrderPayVo studyOrderPayVo);
     public int InsertGOrderWait(String MemberId, StudyGOrderVo studyGOrderVo);
     public int InsertInOrderWait(HashMap<String, Object> params);
-    public int saveTemplateOrder(String TTOIdx, String requestData);
-    public String selectTemplateOrder(String ordernum);
-    public int updateTemplateOrder(String ordernum);
+    public int saveTemplateOrder(String TTOIdx, String requestData, String MemberId);
+    public String selectTemplateOrder(String orderid);
+    public int updateTemplateOrder(String orderid);
 }

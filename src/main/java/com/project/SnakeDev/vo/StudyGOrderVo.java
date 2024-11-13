@@ -13,7 +13,7 @@ public class StudyGOrderVo {
      String SGOStartDate;
      String SGOEndDate;
      Integer SGOtotal;
-
+     Integer SGOPeople;
      StudyGInfoVo studyGInfoVo;
      StudyOrderPayVo studyOrderPayVo;
      AuthVo authVo;

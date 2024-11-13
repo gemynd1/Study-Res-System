@@ -21,8 +21,19 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public int OrderNotification(String MaContent) {
-        return notificationMapper.OrderNotification(MaContent);
+    public int OrderNotification(@Param("MaContent") String MaContent,
+                                 @Param("MemberId") String MemberId) {
+        return notificationMapper.OrderNotification(MaContent, MemberId);
+    }
+
+    @Override
+    public int notificationdel(@Param("maidx") Integer maidx) {
+        return notificationMapper.notificationdel(maidx);
+    }
+
+    @Override
+    public int notificationdelall() {
+        return notificationMapper.notificationdelall();
     }
 
 }

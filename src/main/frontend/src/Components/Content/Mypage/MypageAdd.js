@@ -5,6 +5,7 @@ import MoneyModal from "./MoneyModal";
 import {Modal} from "@mui/material";
 import MemberDeleteModal from "./MemberDeleteModal";
 import { Add } from "@mui/icons-material";
+import { format, parseISO } from "date-fns";
 
 const MypageAdd = () => {
     const [MypageAdd, setMypageAdd] = useState('');
@@ -14,7 +15,10 @@ const MypageAdd = () => {
     const [selectName2, setSelectName2] = useState(null);
     const [widget, setWidget] = useState(null);
     const [TimeInfo, setTimeInfo] = useState([]);
-    const [AddTimeInfo, setAddTimeInfo] = useState([]);
+    const [AddTimeInfo, setAddTimeInfo] = useState({
+        museTime : '',
+        mendinDate : '',
+    });
     const [ModalOpen, setModalOpen] = useState(false);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
     const [SipIdx, setSipIdx] = useState(1);
@@ -69,17 +73,18 @@ const MypageAdd = () => {
         axios
             .all([
                 axios.get('http://localhost:8099/api/mypage/mypageTime'),
-                axios.get(`http://localhost:8099/api/mypage/mypageAddTime?memberid=${sessionStorage.getItem('id')}`
+                axios.get(`http://localhost:8099/api/mypage/mypageAddTime?memberid=${encodeURIComponent(String(sessionStorage.getItem('id')))}`
             )],
-                { headers : {'Content-Type' : 'application/json'}}
-            )
+                { headers : {'Content-Type' : 'application/json'}
+            })
             .then(
                 axios.spread((res1, res2) => {
                     setTimeInfo(res1.data);
                     setAddTimeInfo(res2.data);
+                    console.log(res2.data)
                 })
             )
-            .catch((error) => console.log(error))
+            .catch((error) => console.error(error))
 
         // axios.get("http://localhost:8099/api/mypage/mypageTime", {
         //     headers: { 'Content-Type': 'application/json' }
@@ -240,12 +245,6 @@ const MypageAdd = () => {
                                 <img src="/img/icon/logo.png" alt="로고"/>
                                 <span>{sessionStorage.getItem("name")}님의 잔여 시간입니다</span>
                             </div>
-                            <div className="AddTimeText">
-                                <span>※당일권 1시간 결제하셨습니다</span>
-                            </div>
-                            <div className="AddStudyTime">
-                                <span>{sessionStorage.getItem('name')}님의 잔여 시간입니다</span>
-                            </div>
                             {/* <div className="AddTimeText">
                                 <span>※ 당일권 1시간 선택하셨습니다</span>
                             </div> */}
@@ -256,11 +255,12 @@ const MypageAdd = () => {
                             </div> */}
                             <div className="AddStudyTime">
                                 <span>남은 시간</span>
-                                <span>{AddTimeInfo[0].museTime}시간</span>
+                                <span>{AddTimeInfo.museTime === null ? "시간 없음" : AddTimeInfo.museTime}시간</span>
                             </div>
                             <div className="AddStudyTime">
                                 <span>남은 정기권 일 수</span>
-                                <span>{AddTimeInfo[0].mendinDate === null ? "기간 없음" : AddTimeInfo[0].mendinDate}</span>
+                                {/* <span>{formattedDate}</span> */}
+                                <span>{AddTimeInfo?.mendinDate === null ? "기간 없음" : AddTimeInfo?.mendinDate.replace(/T.*/, "")}</span>
                             </div>
 
                         </div>

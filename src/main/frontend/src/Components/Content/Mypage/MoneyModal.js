@@ -14,6 +14,7 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
     const [widgets, setWidgets] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [random, setRandom] = useState(null);
+    const [orderid, setOrderid] = useState('');
     const [total, setTotal] = useState(amount); // 가격
     const [sipname, setSipname] = useState(Name2); // 시간
 
@@ -22,6 +23,7 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
         const formatdate = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}`;
         const randomNum = Math.floor(Math.random() * 1000000)
         setRandom(`${formatdate}${randomNum}`);
+        setOrderid(nanoid());
     }, [])
 
     useEffect(() => {
@@ -192,13 +194,13 @@ const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }
                                             OrderType : "InviOrder"
                                         }
                                     ]
-                                    axios.post(`http://localhost:8099/api/templateOrder?random=${encodeURIComponent(String(random))}&requestData=${encodeURIComponent(JSON.stringify(requestData))}`,
+                                    axios.post(`http://localhost:8099/api/templateOrder?random=${encodeURIComponent(String(orderid))}&requestData=${encodeURIComponent(JSON.stringify(requestData))}&memberid=${sessionStorage.getItem("id")}`,
                                         {
                                             headers : { 'Content-Type': 'application/json' }
                                         }
                                     ).then(res=> {
                                         widgets.requestPayment({
-                                            orderId: nanoid(),
+                                            orderId: orderid,
                                             orderName: `${Name2.includes("주") || Name2.includes("년") ? sipname: sipname + "시간"}`,
                                             successUrl: window.location.origin + `/paysuccess?ordernum=${random}&ordertype=inviorder`,
                                             failUrl: window.location.origin + `/fail`,

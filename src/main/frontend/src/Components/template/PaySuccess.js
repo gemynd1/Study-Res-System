@@ -17,6 +17,7 @@ const PaySuccess = () => {
     const [paydata, setPaydata] = useState('');
     // 결제 성공 시 들어갈 내역 테이블(결제내역)
     const [orderPayData, setOrderPayData] = useState({
+        SGONum : '',
         TSOPIdx : '',
         TSOPMethod : '',
         TSOPPrice : '',
@@ -32,13 +33,15 @@ const PaySuccess = () => {
         SGOStartDate : '',
         SGOEndDate : '',
         SGOtotal : '',
+        SGOPeople : ''
     }) 
     // 결제 성공 후 예약 내용 들어갈 테이블(개인)
     const [orderWaitinData, setOrderWaitinData] = useState('');
-    const [orderNotification, setORderNotification] = useState('');
 
+    const [orderNotification, setOrderNotification] = useState('');
     const [orderState, setOrderState] = useState(false);
     const ordernum = searchParams.get('ordernum');
+    const orderid = searchParams.get('orderId')
     // 임시 저장한 데이터 저장할 useState
     const [orderContent, setOrderContent] = useState("");
     const navigate = useNavigate();
@@ -50,7 +53,7 @@ const PaySuccess = () => {
         // 임시 저장한 데이터 가져옴, 가져온 데이터는 Y처리
         axios.get('http://localhost:8099/api/templateOrderInfo', 
             {
-                params : { ordernum },
+                params : { orderid },
                 headers : { 'Content-Type': 'application/json' }
             }).then((res) => {
                 setOrderContent(res.data);
@@ -119,7 +122,7 @@ const PaySuccess = () => {
                             TSOPIdx : data.orderId,
                             SGOtotal : data.totalAmount,
                         }))
-                        setORderNotification(`스터디룸 ${data.orderName} 이 예약되었습니다.`)
+                        setOrderNotification(`스터디룸 ${data.orderName} 이 예약되었습니다.`);
                     // 결제 승인 후 결제내역(개인좌석)
                     } else if(orderType === 'inviorder') {
                         if(data.method === "간편결제") {
@@ -166,6 +169,7 @@ const PaySuccess = () => {
                 SGORegDate: formattedDate,
                 SGOStartDate : startdate,
                 SGOEndDate : enddate,
+                SGOpeople : orderContent[0]?.people,
             }))
         } else if(orderType === 'inviorder') {
             setOrderPayData((prevState) => ({
@@ -173,6 +177,16 @@ const PaySuccess = () => {
                 TSOPDivi : orderContent[0]?.OrderType
             }))
             setOrderWaitinData(orderContent[0]?.sipname);
+            console.log(orderContent[0]?.sipname);
+            setOrderNotification(
+                orderContent[0]?.sipname && typeof orderContent[0].sipname === 'string'
+                    ? orderContent[0]?.sipname.includes('년')
+                        ? `${orderContent[0]?.sipname}이 충전되었습니다.` 
+                        : orderContent[0]?.sipname.includes('주') 
+                            ? `${orderContent[0]?.sipname} 정기권이 충전되었습니다.` 
+                            : `${orderContent[0]?.sipname} 시간이 충전되었습니다.`
+                    : `${orderContent[0]?.sipname} 시간이 충전되었습니다.`  
+            );
         }
         
     }, [orderContent])
@@ -200,69 +214,64 @@ const PaySuccess = () => {
                                     orderWaitData : JSON.stringify(orderWaitData),
                                     MemberId : sessionStorage.getItem("id"),  
                                 },
-                                headers:{'Content-Type': 'application/json'}  
                             }
                         ),
                         axios.post('http://localhost:8099/api/OrderNotification', null,
                             {
                                 params : {
-                                    orderNotificationData : orderNotification
+                                    MaContent : orderNotification,
+                                    MemberId : sessionStorage.getItem("id"),  
                                 },
-                                headers:{'Content-Type': 'application/json'}  
                             }
                         )
-                    ])
-                    .then(([res2, res3]) => {
-                        console.log('두번째 완', res2.data)
-                        console.log('세번째 완', res3.data)
-                        
-                        alert("결제가 성공적으로 완료되었습니다.");
-                        setOrderState(false);
-                        setResponseData(null);
-                    })
+                    ],{headers:{'Content-Type': 'application/json'}})
+                    .then(
+                        axios.spread((res2, res3) => {
+                            console.log('두번째 완', res2.data)
+                            console.log('세번째 완', res3.data)
+                            
+                            alert("결제가 성공적으로 완료되었습니다.");
+                            setOrderState(false);
+                            setResponseData(null);
+                        })
+                    )
                     .catch((error) => {
                         console.error('요청실패', error)
                     })
-                    // axios.post('http://localhost:8099/api/OrderWait', null,
-                    //     {
-                    //         params : {
-                    //             orderWaitData : JSON.stringify(orderWaitData),
-                    //             MemberId : sessionStorage.getItem("id"),  
-                    //         },
-                    //         headers:{'Content-Type': 'application/json'}  
-                    //     },
-                    // ).then((res2) => {
-                    //     console.log('두번째 완', res2.data)
-                        
-                    //     alert("결제가 성공적으로 완료되었습니다.");
-                    //     setOrderState(false);
-                    //     setResponseData(null);
-                    // })
-                    // .catch((error) => {
-                    //     console.error('요청실패', error)
-                    // })
                 } else if(orderType === 'inviorder'){
                     console.log('첫번째 완', res1.data)
-                    axios.post('http://localhost:8099/api/OrderWaitIn', null,
-                        {
-                            params : {
-                                orderWaitinData : orderWaitinData,
-                                MemberId : sessionStorage.getItem("id"),  
+                    Promise.all([
+                        axios.post('http://localhost:8099/api/OrderWaitIn', null,
+                            {
+                                params : {
+                                    orderWaitinData : orderWaitinData,
+                                    MemberId : sessionStorage.getItem("id"),  
+                                },
                             },
-                            headers:{'Content-Type': 'application/json'}  
-                        },
-                    ).then((res2) => {
-                        console.log('두번째 완', res2.data)
-        
-                        alert("결제가 성공적으로 완료되었습니다.");
-                        setOrderState(false);
-                        setResponseData(null);
-                    })
+                        ),
+                        axios.post('http://localhost:8099/api/OrderNotification', null,
+                            {
+                                params : {
+                                    MaContent : orderNotification,
+                                    MemberId : sessionStorage.getItem("id"),  
+                                },
+                            }
+                        )
+                    ], {headers:{'Content-Type': 'application/json'}})
+                    .then(
+                        axios.spread((res2,res3) => {
+                            console.log('두번째 완', res2.data)
+                            console.log('세번째 완', res3.data)
+            
+                            alert("결제가 성공적으로 완료되었습니다.");
+                            setOrderState(false);
+                            setResponseData(null);
+                        })
+                    )
                     .catch((error) => {
                         console.error('요청실패', error)
                     })
                 }
-                
             }).catch((error) => {
                 console.error('요청실패', error)
             })
@@ -271,6 +280,10 @@ const PaySuccess = () => {
     // 홈으로 돌아가는 함수
     const handleReturnHome = () => {
         navigate('/');
+    };
+
+    const handleReturnBack = () => {
+        navigate(-1);
     };
 
     return (
@@ -318,11 +331,11 @@ const PaySuccess = () => {
                         구매하신 이용권은 예약날짜에 맞춰 이용하실 수 있습니다.
                     </p>
                     {/* 홈으로 돌아가기 버튼 */}
-                    <div>
-                    <Button variant="contained" color="primary" onClick={handleReturnHome}>
-                            홈으로가기
+                    <div className="confirmation-buttons">
+                        <Button style={{ margin: '10px' }} variant="contained" color="secondary" onClick={handleReturnBack}>
+                            이전페이지
                         </Button>
-                        <Button variant="contained" color="primary" onClick={handleReturnHome}>
+                        <Button style={{ margin: '10px' }} variant="contained" color="primary" onClick={handleReturnHome}>
                             홈으로가기
                         </Button>
                     </div>

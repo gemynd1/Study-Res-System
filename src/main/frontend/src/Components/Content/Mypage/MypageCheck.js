@@ -3,112 +3,11 @@ import React, {useEffect, useState} from "react";
 import MemberDeleteModal from "./MemberDeleteModal";
 import Pagination from "./Pagination";
 import Pagination2 from "./Pagination2";
+import axios from "axios";
 
 const MypageCheck = () => {
-    const [MypageCheckResult] = useState([
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        }
-        ]);
-
-
-    const [MypageCheckPerson] = useState([
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        }
-    ]);
+    const [MypageGroupResult, setMypageGroupResult] = useState([]);
+    const [MypageInviResult, setMypageInviResult] = useState([]);
     const [MypageCheck, setMypageCheck] = useState([]);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
 
@@ -121,12 +20,11 @@ const MypageCheck = () => {
 
     const indexOfLastResult = currentPage * resultsPerpage;
     const indexOfFirstResult = indexOfLastResult - resultsPerpage;
-    const currentResults = MypageCheckResult.slice(indexOfFirstResult, indexOfLastResult);
+    const currentResults = MypageGroupResult.slice(indexOfFirstResult, indexOfLastResult);
 
     const indexOfLastResult2 = currentPage2 * resultsPerpage2;
     const indexOfFirstResult2 = indexOfLastResult2 - resultsPerpage2;
-    const cuurentResults2 = MypageCheckPerson.slice(indexOfFirstResult2, indexOfLastResult2);
-
+    const cuurentResults2 = MypageInviResult.slice(indexOfFirstResult2, indexOfLastResult2);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -152,7 +50,35 @@ const MypageCheck = () => {
         };
     }, [MemberModalOpen]);
 
-
+    useEffect(() => {
+        Promise.all([
+            axios.get(`http://localhost:8099/api/mypage/mypageGroupCheck?memberid=${sessionStorage.getItem("id")}`),
+            axios.get(`http://localhost:8099/api/mypage/mypageInviCheck?memberid=${sessionStorage.getItem("id")}`)
+        ],
+            { headers : {'Content-Type' : 'application/json'}
+        })
+        .then(
+            axios.spread((res1, res2) => {
+                setMypageGroupResult(res1.data);
+                setMypageInviResult(res2.data);
+            })
+        )
+        .catch(error => {
+            console.error("에러발생: ", error);
+        });
+        // axios.get(`http://localhost:8099/api/mypage/mypageCheck?memberid=${sessionStorage.getItem("id")}`,
+        //     {
+        //         headers: { 'Content-Type': 'application/json' },
+        //         withCredentials: true
+        //     })
+        //     .then(response => {
+        //         setMypageCheck(response.data);
+        //         console.log(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error("에러발생: ", error);
+        //     })
+    }, []); 
 
     return(
         <div className="MyPage">
@@ -237,25 +163,27 @@ const MypageCheck = () => {
                                         <th>예약내역</th>
                                         <th>금액</th>
                                         <th>상태</th>
+                                        <th>취소</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        {currentResults.map((result, index) => (
+                                        {/* {currentResults.map((result, index) => (
                                             <tr key={index}>
                                                 <td>{result.Reservationnumber}</td>
                                                 <td>{result.Reservationdate}</td>
                                                 <td>{result.Reservationdetails}</td>
                                                 <td>{result.Price}</td>
                                                 <td>
-                                                    <button>{result.situation}</button>
+                                                    <button>결제 완료</button>
                                                 </td>
+                                                <td><button>취소</button></td>
                                             </tr>
-                                        ))}
+                                        ))} */}
                                     </tbody>
                                 </table>
                                 <Pagination2
                                     currentPage={currentPage}
-                                    totalPages={Math.ceil(MypageCheckResult.length / resultsPerpage)}
+                                    totalPages={Math.ceil(MypageGroupResult.length / resultsPerpage)}
                                     onPageChange={handlePageChange}
                                 />
                             </div>
@@ -275,25 +203,27 @@ const MypageCheck = () => {
                                     <th>예약내역</th>
                                     <th>금액</th>
                                     <th>상태</th>
+                                    <th>취소</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {cuurentResults2.map((result, index) => (
+                                {/* {cuurentResults2.map((result, index) => (
                                     <tr key={index}>
                                         <td>{result.Reservationnumber}</td>
                                         <td>{result.Reservationdate}</td>
                                         <td>{result.Reservationdetails}</td>
                                         <td>{result.Price}</td>
                                         <td>
-                                            <button>{result.situation}</button>
+                                            <button>결제완료</button>
                                         </td>
+                                        <td><button>취소</button></td>
                                     </tr>
-                                ))}
+                                ))} */}
                                 </tbody>
                             </table>
                             <Pagination2
                                 currentPage={currentPage2}
-                                totalPages={Math.ceil(MypageCheckPerson.length / resultsPerpage2)}
+                                totalPages={Math.ceil(MypageInviResult.length / resultsPerpage2)}
                                 onPageChange={handlePageChange2}
                             />
                         </div>

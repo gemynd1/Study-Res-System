@@ -11,5 +11,8 @@ import java.util.List;
 public interface NotificationMapper {
     List<NotificationVo> ViewNotification(@Param("sessionId") String sessionId,
                                           @Param("sessionName") String sessionName);
-    int OrderNotification(String MaContent);
+    int OrderNotification(@Param("MaContent") String MaContent,
+                          @Param("MemberId") String MemberId);
+    int notificationdel(@Param("maidx") Integer maidx);
+    int notificationdelall();
 }

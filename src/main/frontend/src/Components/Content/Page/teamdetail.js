@@ -139,6 +139,7 @@ const PaymentModal = ({
                   end : end,
                   memberId : sessionStorage.getItem("id"),
                   OrderType : "GroupOrder",
+                  people : people
                 },
               ]
 
@@ -677,6 +678,7 @@ const TeamDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
         const res = await axios.get(`http://localhost:8099/api/selectTime?sgiId=${sgiId}`);
         
         // 데이터를 변환하여 저장
@@ -686,7 +688,7 @@ const TeamDetail = () => {
           
           // start부터 end까지의 시간을 포함하는 배열 생성
           const times = [];
-          for (let hour = start; hour <= end - 1; hour++) {
+          for (let hour = start; hour <= end; hour++) {
             times.push(hour);
           }
 
@@ -718,7 +720,11 @@ const TeamDetail = () => {
         console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
       }
     };
-    fetchData();
+    const interval = setInterval(() => {
+      fetchData();
+    }, 1500);
+    return () => clearInterval(interval);
+    
   }, [sgiId]);
 
   useEffect(() => {

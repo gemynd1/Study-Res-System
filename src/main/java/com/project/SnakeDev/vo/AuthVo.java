@@ -32,6 +32,11 @@ public class AuthVo {
         MemberId = memberId;
     }
 
+    public AuthVo(Integer MUseTime, Date MEndinDate) {
+        this.MUseTime = MUseTime;
+        this.MEndinDate = MEndinDate;
+    }
+
     public AuthVo(String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {
         MemberName = memberName;
         MemberId = memberId;

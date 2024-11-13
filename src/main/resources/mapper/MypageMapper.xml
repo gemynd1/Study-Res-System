@@ -73,7 +73,7 @@
     </select>
 
     <select id="mypageAddTime" resultType="com.project.SnakeDev.vo.AuthVo">
-        select musetime, mendindate from tbl_member where memberid = #{memberid}
+        select MUseTime, to_date(to_char(MEndinDate, 'YYYY-MM-DD')) as MEndinDate from tbl_member where memberid = #{memberid}
     </select>
 
     <select id="getBoardInfo" resultType="com.project.SnakeDev.vo.StudyCommunityVo">

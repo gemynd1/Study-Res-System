@@ -19,19 +19,16 @@ public class NotificationController {
     @GetMapping("/notification")
     public ResponseEntity<Object> notification(@RequestParam("sessionId") String sessionId,
                                                @RequestParam("sessionName") String sessionName) {
-
-//        session = request.getSession();
-//
-//        String MemberId = (String) session.getAttribute("id");
-//        String MemberName = (String) session.getAttribute("name");
-//
-//        if (MemberId == null || MemberName == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("세션 정보가 없습니다.");
-//        }
-//
-//        System.out.println(MemberId);
-//        System.out.println(MemberName);
-
         return ResponseEntity.ok(notificationService.ViewNotification(sessionId, sessionName));
+    }
+
+    @PostMapping("/notificationdel")
+    public ResponseEntity<Object> notificationdel(@RequestParam("maidx") Integer maidx) {
+        return ResponseEntity.ok(notificationService.notificationdel(maidx));
+    }
+
+    @PostMapping("/notificationdelall")
+    public ResponseEntity<Object> notificationdelall() {
+        return ResponseEntity.ok(notificationService.notificationdelall());
     }
 }

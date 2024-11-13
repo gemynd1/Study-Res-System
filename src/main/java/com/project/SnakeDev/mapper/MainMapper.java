@@ -19,7 +19,7 @@ public interface MainMapper {
     int InsertOrderPay(@Param("MemberId") String MemberId, @Param("pay") StudyOrderPayVo studyOrderPayVo);
     int InsertGOrderWait(@Param("MemberId") String MemberId, @Param("wait") StudyGOrderVo studyGOrderVo);
     int InsertInOrderWait(HashMap<String, Object> params);
-    int saveTemplateOrder(String TTOIdx, String requestData);
-    String selectTemplateOrder(String ordernum);
-    int updateTemplateOrder(String ordernum);
+    int saveTemplateOrder(String TTOIdx, String requestData, String MemberId);
+    String selectTemplateOrder(String orderid);
+    int updateTemplateOrder(String orderid);
 }

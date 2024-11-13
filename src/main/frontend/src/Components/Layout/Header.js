@@ -65,26 +65,6 @@ const Header = () => {
             navigate('/mypage/mypageAccount')
         }
     }
-    //
-    // const handleClick = () => {
-    //     axios.get("http://localhost:8099/api/mypage/mypageAccount", {
-    //         params: { id, pw },
-    //         headers: { 'Content-Type': 'application/json'},
-    //         withCredentials: true
-    //     })
-    //         .then(response => {
-    //             setUserInfo(response.data);
-    //             if (response.data.success) {
-    //                 navigate('/mypage/mypageAccount');
-    //             } else {
-    //                 navigate('/mypage');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         })
-    // }
-
 
     const index_choice = (index) => {
         if(active_index === index) {
@@ -111,15 +91,24 @@ const Header = () => {
         // {id: 5, content: "5김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"}
     ]);
 
+    // 하나씩 지우기
     const del_notification = (event) => {
         const id = event.target.getAttribute('data-id');
-        // db에 있는 알림을 지우고 다시 select한 결과로 notifications변경해야함
-        setNotifications(notifications.filter(notification => notification.id !== parseInt(id)));
+        console.log(id);
+        axios.post(`http://localhost:8099/api/notificationdel?maidx=${id}`, {headers: {'Content-Type': 'application/json'}})
+        .then(res => {
+            setNotifications(notifications.filter(notification => notification.maidx !== parseInt(id)));
+        })
+        
     }
 
+    // 전체 지우기
     const delAll_notification = () => {
-        setNotifications ([]);
-        // 실제로 db 알림에 해당하는 데이터를 delete시켜야함
+        axios.post('http://localhost:8099/api/notificationdelall', {headers: {'Content-Type': 'application/json'}})
+        .then(res => {
+            setNotifications ([]);
+        })
+        
     }
 
     // chat-section에 대한 정보
@@ -168,24 +157,26 @@ const Header = () => {
     
     // 알림에 대한 데이터가져오기
     useEffect(() => {
-        
         const sessionId = sessionStorage.getItem('id')
         const sessionName = sessionStorage.getItem('name')
 
-        axios.get("http://localhost:8099/api/notification", 
-            {
-                params: { sessionId, sessionName },
-                headers : { 'Content-Type': 'application/json' }
-            }
-        )
-        .then(response => {
-            console.log(sessionId);
-            console.log(sessionName);
-            setNotifications(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        });
+        const interval = setInterval(() => {
+            axios.get("http://localhost:8099/api/notification", 
+                {
+                    params: { sessionId, sessionName },
+                    headers : { 'Content-Type': 'application/json' }
+                }
+            )
+            .then(response => {
+                setNotifications(response.data);
+                // console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }, 1500);
+        return () => clearInterval(interval);
+        
     }, []);
 
     return (
@@ -275,8 +266,8 @@ const Header = () => {
                         </div>
                         <div className="notification-section">
                             {notifications.map((notification) => (
-                                <div className="notification" key={notification.id}>
-                                    <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" data-id={notification.id} onClick={del_notification} />
+                                <div className="notification" key={notification.maidx}>
+                                    <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" data-id={notification.maidx} onClick={del_notification} />
                                     <p className="notification-content">
                                         {notification.maContent}
                                     </p>

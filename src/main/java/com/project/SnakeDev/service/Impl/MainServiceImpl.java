@@ -63,19 +63,19 @@ public class MainServiceImpl implements MainService {
 
     @Override
     @Transactional
-    public int saveTemplateOrder(String TTOIdx, String requestData) {
-        return mainMapper.saveTemplateOrder(TTOIdx, requestData);
+    public int saveTemplateOrder(String TTOIdx, String requestData, String MemberId) {
+        return mainMapper.saveTemplateOrder(TTOIdx, requestData, MemberId);
     }
 
     @Override
     @Transactional
-    public String selectTemplateOrder(String ordernum) {
-        return mainMapper.selectTemplateOrder(ordernum);
+    public String selectTemplateOrder(String orderid) {
+        return mainMapper.selectTemplateOrder(orderid);
     }
 
     @Override
     @Transactional
-    public int updateTemplateOrder(String ordernum) {
-        return mainMapper.updateTemplateOrder(ordernum);
+    public int updateTemplateOrder(String orderid) {
+        return mainMapper.updateTemplateOrder(orderid);
     }
 }

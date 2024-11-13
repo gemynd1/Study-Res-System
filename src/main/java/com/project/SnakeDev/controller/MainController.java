@@ -29,6 +29,7 @@ import java.util.*;
 public class MainController {
     @Autowired
     private MainServiceImpl mainService;
+    @Autowired
     private NotificationServiceImpl notificationService;
 
     @GetMapping("/studygInfo")
@@ -76,16 +77,17 @@ public class MainController {
     @PostMapping("/templateOrder")
     public ResponseEntity<Object> templateOrder(
             @RequestParam("random") String TTOIdx,
-            @RequestParam("requestData") String requestData) {
-        mainService.saveTemplateOrder(TTOIdx, requestData);
+            @RequestParam("requestData") String requestData,
+            @RequestParam("memberid") String MemberId) {
+        mainService.saveTemplateOrder(TTOIdx, requestData, MemberId);
         return ResponseEntity.ok("ok");
     }
 
     @GetMapping("/templateOrderInfo")
-    public ResponseEntity<String> templateOrderInfo(@RequestParam("ordernum") String ordernum) {
-        int result1 =  mainService.updateTemplateOrder(ordernum);
+    public ResponseEntity<String> templateOrderInfo(@RequestParam("orderid") String orderid) {
+        int result1 =  mainService.updateTemplateOrder(orderid);
         if(result1 > 0) {
-            String result2 = mainService.selectTemplateOrder(ordernum);
+            String result2 = mainService.selectTemplateOrder(orderid);
             return ResponseEntity.ok(result2);
         } else {
             return ResponseEntity.badRequest().body("no");
@@ -141,9 +143,10 @@ public class MainController {
     }
 
     @PostMapping("/OrderNotification")
-    public ResponseEntity<Object> OrderNotification(@RequestParam("orderNotificationData") String MaContent) {
+    public ResponseEntity<Object> OrderNotification(@RequestParam("MaContent") String MaContent,
+                                                    @RequestParam("MemberId") String MemberId) {
         try {
-            if(notificationService.OrderNotification(MaContent) > 0) {
+            if(notificationService.OrderNotification(MaContent, MemberId) > 0) {
                 return ResponseEntity.ok("ok");
             } else {
                 return ResponseEntity.badRequest().body("no");
