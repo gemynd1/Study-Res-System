@@ -1,0 +1,128 @@
+.heading {
+    display: flex;
+    background: #268B5F;
+    border-radius: 20px 20px 0 0;
+    width: 500px;
+    height: 50px;
+    align-items: center;
+    position: relative;
+}
+
+.heading span {
+    display: inline;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    color: #FFFFFF;
+    margin-left: 3%;
+}
+
+.chatJoinContent {
+    margin-top: 80px;
+}
+
+.chatJoinContent span {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.joinOuterContainer {
+    width: 500px;
+    height: auto;
+}
+
+.joinInput {
+    margin-top: 40px;
+    margin-bottom: -40px;
+}
+
+.joinInput2 {
+    margin-bottom: 10px;
+}
+
+.joinInput, .joinInput2 {
+    display: flex;
+    justify-content: center;
+
+}
+
+.joinInput input , .joinInput2 input{
+    width: 300px;
+    height: 50px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    padding-left: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.562);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.3s;
+}
+
+.ButtonContent {
+    display: flex;
+    justify-content: center;
+}
+
+.joinButton {
+    cursor: pointer;
+    width: 300px;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(7, 187, 7, 0.795);
+    color: whitesmoke;
+    font-weight: bolder;
+    font-size: 16px;
+    transition: all 0.3s;
+    margin-top: 40px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.joinButton:hover {
+    background: rgb(5, 145, 5);
+    color: rgb(255, 255, 255);
+}
+
+.infoBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 500px;
+    height: 50px;
+    background: #268B5F;
+    border-radius: 20px 20px 0 0;
+}
+
+.chatClose {
+    margin-left: 100px;
+}
+
+.infoBar h3 {
+    color: white;
+    letter-spacing: 1px;
+}
+
+.messageContainer {
+    display: flex;
+    margin-top: 3px;
+}
+
+.messageBox {
+    background: #F3F3F3;
+    border-radius: 20px;
+    padding: 5px 20px;
+    color: black;
+    display: inline-block;
+    max-width: 40%;
+    margin: 20px auto auto 20px;
+}
+
+.sentText {
+    margin-right: 80%;
+}

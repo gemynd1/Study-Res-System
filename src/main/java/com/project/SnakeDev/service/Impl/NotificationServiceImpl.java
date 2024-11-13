@@ -14,8 +14,13 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationMapper notificationMapper;
 
     @Override
-    public List<NotificationVo> ViewNotification(String MemberId, String MemberName) {
-        return notificationMapper.ViewNotification(MemberId, MemberName);
+    public List<NotificationVo> ViewNotification(String sessionId, String sessionName) {
+        return notificationMapper.ViewNotification(sessionId, sessionName);
+    }
+
+    @Override
+    public int OrderNotification(String MaContent) {
+        return notificationMapper.OrderNotification(MaContent);
     }
 
 }

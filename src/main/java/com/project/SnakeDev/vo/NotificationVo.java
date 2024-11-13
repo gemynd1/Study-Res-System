@@ -7,14 +7,14 @@ public class NotificationVo {
      private String MemberId;
      private String MemberName;
 
+     private String sessionId, sessionName;
+
     // 기본생성자
     public NotificationVo() {
 
     }
 
     // tbl_member_alarm 테이블의 데이터를 가져오기 위한 생성자
-
-
     public NotificationVo(int MAIdx, int MIdx, String maTitle, String maContent, String maDate) {
         this.MAIdx = MAIdx;
         this.MIdx = MIdx;
@@ -77,5 +77,21 @@ public class NotificationVo {
 
     public void setMemberName(String memberName) {
         MemberName = memberName;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    public void setSessionName(String sessionName) {
+        this.sessionName = sessionName;
     }
 }

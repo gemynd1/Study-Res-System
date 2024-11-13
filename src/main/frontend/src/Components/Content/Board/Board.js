@@ -36,8 +36,7 @@ const Board = () => {
             })
         )
         .catch(error => {
-            // 오류 처리
-            console.log(error); // 응답 출력
+            console.log(error);
         });
     }, []);
 

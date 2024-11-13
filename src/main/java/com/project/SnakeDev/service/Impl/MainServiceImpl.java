@@ -2,13 +2,16 @@ package com.project.SnakeDev.service.Impl;
 
 import com.project.SnakeDev.mapper.MainMapper;
 import com.project.SnakeDev.service.MainService;
-import com.project.SnakeDev.vo.StudyGInfoVo;
-import com.project.SnakeDev.vo.StudyInInfoVo;
+import com.project.SnakeDev.vo.*;
+import org.apache.ibatis.annotations.Param;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MainServiceImpl implements MainService {
@@ -30,5 +33,49 @@ public class MainServiceImpl implements MainService {
     @Transactional
     public List<StudyGInfoVo> ViewStudyGInfoDetail(String sginum) {
         return mainMapper.ViewStudyGInfoDetail(sginum);
+    }
+
+    @Override
+    @Transactional
+    public List<StudyGOrderVo> selectTime(String sginum) {
+        return mainMapper.selectTime(sginum);
+    }
+
+    @Override
+    @Transactional
+    public int InsertOrderPay(@Param("MemberId") String MemberId,
+                              @Param("pay") StudyOrderPayVo studyOrderPayVo) {
+        return mainMapper.InsertOrderPay(MemberId, studyOrderPayVo);
+    }
+
+    @Override
+    @Transactional
+    public int InsertGOrderWait(@Param("MemberId") String MemberId,
+                                @Param("wait") StudyGOrderVo studyGOrderVo) {
+        return mainMapper.InsertGOrderWait(MemberId, studyGOrderVo);
+    }
+
+    @Override
+    @Transactional
+    public int InsertInOrderWait(HashMap<String, Object> params) {
+        return mainMapper.InsertInOrderWait(params);
+    }
+
+    @Override
+    @Transactional
+    public int saveTemplateOrder(String TTOIdx, String requestData) {
+        return mainMapper.saveTemplateOrder(TTOIdx, requestData);
+    }
+
+    @Override
+    @Transactional
+    public String selectTemplateOrder(String ordernum) {
+        return mainMapper.selectTemplateOrder(ordernum);
+    }
+
+    @Override
+    @Transactional
+    public int updateTemplateOrder(String ordernum) {
+        return mainMapper.updateTemplateOrder(ordernum);
     }
 }
