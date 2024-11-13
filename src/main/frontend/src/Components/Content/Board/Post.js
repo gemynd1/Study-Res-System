@@ -25,7 +25,7 @@ import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // 댓글 더보기 버튼
-function FadeMenu({sessionId, sessionName, comment_memberName, comment_midx, board_memberName, board_midx}) {
+function FadeMenu({sessionId, sessionName, comment_memberName, comment_memberId, board_memberName, board_memberId}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -38,20 +38,22 @@ function FadeMenu({sessionId, sessionName, comment_memberName, comment_midx, boa
     const menuItem = () => {
         const items = [];
 
-        if (sessionId === board_midx && sessionName === board_memberName) {
+        if (sessionId === board_memberId && sessionName === board_memberName) {
             items.push(<MenuItem onClick={handleClose}>신고</MenuItem>)
             items.push(<MenuItem onClick={handleClose}>답글작성</MenuItem>)
             items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
-        } else if (sessionId === comment_midx && sessionName === comment_memberName) {
+        } else if (sessionId === comment_memberId && sessionName === comment_memberName) {
             items.push(<MenuItem onClick={handleClose}>수정</MenuItem>)
             items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
-        } else if (sessionId === board_midx && sessionName === board_memberName && 
-                   sessionId === comment_midx && sessionName === comment_memberName) {
+        } else if (sessionId === board_memberId && sessionName === board_memberName && 
+                   sessionId === comment_memberId && sessionName === comment_memberName) {
             items.push(<MenuItem onClick={handleClose}>수정</MenuItem>)
             items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
         } else {
             items.push(<MenuItem onClick={handleClose}>신고</MenuItem>)
         }
+
+        return items;
     }
 
     // console.log(sessionId, sessionName, comment_memberName, comment_midx, board_memberName, board_midx);
@@ -77,12 +79,12 @@ function FadeMenu({sessionId, sessionName, comment_memberName, comment_midx, boa
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleClose}>신고</MenuItem>
+                {/* <MenuItem onClick={handleClose}>신고</MenuItem>
                 <MenuItem onClick={handleClose}>답글작성</MenuItem>
                 <MenuItem onClick={handleClose}>수정</MenuItem>
-                <MenuItem onClick={handleClose}>개시글 삭제</MenuItem>
-                {/* 여기보세요! */}
-                {/* {menuItem().map((item)=>item)} */}
+                <MenuItem onClick={handleClose}>개시글 삭제</MenuItem> */}
+
+                {menuItem().map((item)=>item)}
             </Menu>
         </div>
     );
@@ -99,7 +101,7 @@ function BasicPagination({currentPage, onChange, size}) {
 }   
 
 // input ui component
-function BasicTextFields() {
+function BasicTextFields({onChange}) {
     return (
         <Box
             component="form"
@@ -107,7 +109,7 @@ function BasicTextFields() {
             noValidate
             autoComplete="off"
         >
-            <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} />
+            <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} onChange={onChange} />
         </Box>
     );
 }
@@ -125,18 +127,62 @@ const style = {
     boxShadow: 24,
 };
 
-function BasicModal() {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+
+function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen, ModalhandleClose, open, setOpen}) {
+    const [comment, setComment] = useState();
+
+    const handleComment = (e) => {
+        setComment(e.target.value);
+      }
+    
+
+    const insert_comment = (event) => {
+        event.stopPropagation()
+        // console.log("등록 버튼 클릭");
+        // console.log(comment);
+        // console.log("memberId:", memberId);
+        // console.log("sessionId:", sessionId);
+
+        // 값이 같으면 댓글에 대한 답글을 쓰는거고 다르면 그냥 댓글을 쓰는거임
+        const commentType = memberId === sessionId ? 1 : 0;
+
+        // console.log(commentType);
+        // console.log("comIdx:", comIdx);
+
+        axios.post('http://localhost:8099/api/board/insert/comment',
+         {
+            comIdx:comIdx,
+            commentType: commentType,
+            comment: comment,
+            maxCCGroupNum: maxCCGroupNum,
+            sessionId: sessionId
+         }, {
+            header: {'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log(response.data);
+            response.data === true ? alert("댓글이 등록되었습니다.") : alert("댓글등록을 실패하였습니다. 다시 시도해주세요");
+            window.location.reload();
+        }).catch(error => {
+            console.log(error);
+            alert("댓글등록을 실패하였습니다. 다시 시도해주세요");
+            window.location.reload();
+        })
+
+        setOpen(false);
+    }
+
+    // // 상태 업데이트 후에 렌더링이 완료된 다음에 상태 값을 확인
+    // useEffect(() => {
+    //     console.log("Modal open 상태가 변경되었습니다:", open);
+    // }, [open]);
 
     return (
-        <div className="QandA-button" >
+        <div className="QandA-button" onClick={ModalhandleOpen}>
             <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
-            <div className="QandA-button-text" onClick={handleOpen}>질문 작성하기</div>
+            <div className="QandA-button-text">질문 작성하기</div>
             <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={ModalhandleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -150,16 +196,16 @@ function BasicModal() {
                         <span className="modal-title-count1">0자</span>
                         <span className="modal-title-count2">/200자</span>
                     </div>
-                    <BasicTextFields />
+                    <BasicTextFields onChange={handleComment}/>
                     <div className="modal-caution-section">
                         <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
                         <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
                     </div>
                     <div className="modal-button-section">
-                        <div onClick={handleClose} className="modal-cancel-button">
+                        <div className="modal-cancel-button" onClick={ModalhandleClose}>
                             <span className="modal-cancel-text">취소</span>
                         </div>
-                        <div onClick={handleClose} className="modal-active-button">
+                        <div className="modal-active-button" onClick={insert_comment}>
                             <span className="modal-active-text">등록</span>
                         </div>
                     </div>
@@ -219,12 +265,23 @@ const Post = () => {
     const [commentData, setCommentData] = useState([]);
     const [boardContents, setBoardContents] = useState({midx: "", memberName: "", comTitle: "", comContent: "", comRegDate: "", comStartDate: "", comEndDate: "", comAddress: "", comPlace: "", comToCount: "", groupCount: "", memberNames: ""});
     // const [boardContents, setBoardContents] = useState();
-    const [groupMemberInfos, setGroupMemberInfos] = useState(null);
+    const [groupMemberInfos, setGroupMemberInfos] = useState([{memberId: "", memberName: "", midx: "", comIdx: ""}]);
     const [currentPage, setCurrentPage] = useState(1);
     const [commentSize, setCommentSize] = useState(0);
+    // 모달의 open 상태를 관리하는 useState
+    const [open, setOpen] = useState(false);
 
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
+
+    // 모달 open 람수
+    const ModalhandleOpen = () => setOpen(true);
+
+    // 모달 close 함수
+    const ModalhandleClose = (event) => {
+        event.stopPropagation()
+        setOpen(false);
+    };
 
     // 페이지네이션의 페이지가 변경될 때 호출되는 함수
     const handlePageChange = (event, value) => {
@@ -232,10 +289,27 @@ const Post = () => {
         console.log(currentPage)
     };
 
+    const insert_groupMember = () => {
+        //현재 session이랑 해당 post의 groupmember들 작성자 확인 후 그리고 그룹의 인원 수가 현재인원수 보다 적으면 insert문 실행
+        console.log("참여하기 버튼 클릭");
+    }
+
+    const outPage = () => {
+        console.log("나가기 버튼 클릭");
+    }
+
+    const goto_PostRewrite = () => {
+        console.log("수정 버튼 클릭");
+    }
+
+    const post_delete = () => {
+        console.log("삭제 버튼 클릭");
+    }
+
     const renderButtons = () => {
         if (groupMemberInfos.some(member => member.memberId === sessionId && member.memberName === sessionName)) {
             return (
-                <div className="out-button-section">
+                <div className="out-button-section" onClick={outPage}>
                     <div className="out-button">
                         <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
                         <span className="out-button-text">나가기</span>
@@ -247,16 +321,22 @@ const Post = () => {
         if (boardContents && sessionId === boardContents.memberId && sessionName === boardContents.memberName) {
             return (
                 <>
-                    <div className="fix-button-section">
+                    <div className="fix-button-section" onClick={goto_PostRewrite}>
                         <div className="fix-button">
                             <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
                             <span className="fix-button-text">수정</span>
                         </div>
                     </div>
-                    <div className="delete-button-section">
+                    <div className="delete-button-section" onClick={post_delete}>
                         <div className="delete-button">
                             <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
                             <span className="delete-button-text">삭제</span>
+                        </div>
+                    </div>
+                    <div className="out-button-section" onClick={outPage} style={{marginTop: '40px'}}>
+                        <div className="out-button">
+                            <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                            <span className="out-button-text">나가기</span>
                         </div>
                     </div>
                 </>
@@ -264,7 +344,7 @@ const Post = () => {
         }
 
         return (
-            <div className="join-button-section">
+            <div className="join-button-section" onClick={insert_groupMember}>
                 <div className="join-button">
                     <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
                     <span className="join-button-text">참여하기</span>
@@ -327,7 +407,7 @@ const Post = () => {
                 }
             })
         ]).then(axios.spread((commentSize, boardContents) => {
-            setCommentSize(commentSize.data)
+            commentSize.data === 0 ? setCommentSize(0) : setCommentSize(commentSize.data)
             setBoardContents(...boardContents.data.ViewPost)
             setGroupMemberInfos(boardContents.data.ViewGroupMember_forPost)
         })).catch(error => {
@@ -341,6 +421,7 @@ const Post = () => {
     console.log(boardContents.memberId, boardContents.memberName);
     console.log(commentSize);
     console.log(groupMemberInfos);
+    console.log(sessionId !== boardContents.memberId);
 
     if (!boardContents | !commentData | !groupMemberInfos) {
         return <div>Loading...</div>;
@@ -375,21 +456,23 @@ const Post = () => {
                     <span className="post-group2">({boardContents.comToCount - (groupMemberInfos.length + 1)}명 남음)</span>
                 </div>
 
-                <div className="post-info3">
-                    <div className="post-member">
-                        <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
-                        <span className="post-member-name">{boardContents.memberName}</span>
-                    </div>
-                </div>
-
-                {groupMemberInfos.map((groupMemberInfo) => (
+                <div className="post-info3-frame">
                     <div className="post-info3">
                         <div className="post-member">
                             <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
-                            <span className="post-member-name">{groupMemberInfo.memberName}</span>
+                            <span className="post-member-name">{boardContents.memberName}</span>
                         </div>
                     </div>
-                ))}
+
+                    {groupMemberInfos.map((groupMemberInfo) => (
+                        <div className="post-info3">
+                            <div className="post-member">
+                                <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
+                                <span className="post-member-name">{groupMemberInfo.memberName}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
 
                 <div className="post-info4">
 
@@ -436,8 +519,16 @@ const Post = () => {
                     <div className="post-comment-header">
                         <span className="QandA">Q&A</span>
                         <span className="QandA-count">(2개)</span>
-                        <BasicModal />
-                        {/* <span className="QandA-button-text">질문 작성하기</span> */}
+                        {(sessionId !== boardContents.memberId && sessionId !== null) && (
+                            <BasicModal comIdx={comIdx}
+                                        sessionId={sessionId}
+                                        memberId={boardContents.memberId} 
+                                        maxCCGroupNum={boardContents.maxCCGroupNum}
+                                        ModalhandleOpen={ModalhandleOpen}
+                                        ModalhandleClose={ModalhandleClose}
+                                        open={open}
+                                        setOpen={setOpen} />
+                        )}
                     </div>
 
                     {/* {commentData.map((root) => (
@@ -480,7 +571,7 @@ const Post = () => {
                                     <FadeMenu sessionId={sessionId}
                                               sessionName={sessionName}
                                               comment_memberName={comment.memberName}
-                                              comment_midx={comment.midx}
+                                              comment_memberId={comment.memberId}
                                               board_memberName={boardContents.memberName}
                                               board_memberId={boardContents.memberId} />
 
@@ -490,6 +581,13 @@ const Post = () => {
                                     <b className="post-reply-author">호스트의 답글</b>
                                     <p className="reply-detail">{comment.cccontent}</p>
                                     <span className="reply-loaddate">{comment.ccregdate}</span>
+                                    
+                                    {/* <FadeMenu sessionId={sessionId}
+                                    sessionName={sessionName}
+                                    comment_memberName={comment.memberName}
+                                    comment_midx={comment.midx}
+                                    board_memberName={boardContents.memberName}
+                                    board_memberId={boardContents.memberId} /> */}
                                 </div>
                             ) : null
                         ))}
@@ -502,42 +600,6 @@ const Post = () => {
 
                 {renderButtons()}
                 
-                
-                {/* {groupMemberInfos.map((groupMemberInfo) => (
-                    groupMemberInfo.memberId === sessionId && groupMemberInfo.memberName === sessionName ? (
-                        <div className="out-button-section">
-                            <div className="out-button">
-                                <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
-                                <span className="out-button-text">나가기</span>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="join-button-section">
-                            <div className="join-button">
-                                <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
-                                <span className="join-button-text">참여하기</span>
-                            </div>
-                        </div>
-                    )
-                ))}
-
-                {boardContents && sessionId === boardContents.memberId && sessionName === boardContents.memberName ? (
-                    <>
-                        <div className="fix-button-section">
-                            <div className="fix-button">
-                                <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
-                                <span className="fix-button-text">수정</span>
-                            </div>
-                        </div>
-
-                        <div className="delete-button-section">
-                            <div className="delete-button">
-                                <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
-                                <span className="delete-button-text">삭제</span>
-                            </div>
-                        </div>
-                    </>
-                ) : null } */}
             </div>
         </>
     )

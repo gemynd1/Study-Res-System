@@ -53,12 +53,13 @@
             c.*,
             m.MemberName,
             m.MemberId,
-            cc.ComCateName as comCategoryName
+            cc.ComCateName as comCategoryName,
+            (SELECT MAX(CCGroupNum) FROM tbl_community_comment WHERE comidx = #{comIdx}) AS maxCCGroupNum
         from
             tbl_community c
-        join
+                join
             tbl_member m on c.midx = m.midx
-        left join
+                left join
             tbl_community_category cc on c.COMCATEIDX = cc.COMCATEIDX
         where
             c.comidx = #{comIdx}
@@ -107,6 +108,7 @@
             SELECT
                 tcc.*,
                 tm.membername,
+                tm.memberId,
                 DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
             FROM
                 tbl_community_comment tcc
@@ -124,10 +126,19 @@
     </select>
 
     <select id="ViewCommentSize" resultType="int" parameterType="String">
+        WITH RankedComments AS (
+            SELECT
+                tcc.*,
+                DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
+            FROM
+                tbl_community_comment tcc
+            WHERE
+                tcc.comidx = #{comIdx}
+        )
         SELECT
-            CEIL(COUNT(*) / 2) AS pageSize
-        FROM tbl_community_comment
-        WHERE comidx = #{comidx}
+            NVL(CEIL(MAX(dense_rank) / 2), 0) AS pageSize
+        FROM
+            RankedComments
     </select>
 
     <select id="ViewMoreCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="map">
@@ -190,5 +201,17 @@
                 </foreach>
             )
     </delete>
+
+    <insert id="insert_comment_question" parameterType="map">
+        insert into tbl_community_comment
+        values
+        (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, (#{maxCCGroupNum} + 1), #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+    </insert>
+
+<!--    <insert id="insert_comment_reply" parameterType="map">-->
+<!--        insert into tbl_community_comment-->
+<!--        values-->
+<!--            (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, #{maxCCGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)-->
+<!--    </insert>-->
 
 </mapper>

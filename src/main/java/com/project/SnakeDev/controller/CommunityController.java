@@ -128,4 +128,25 @@ public class CommunityController {
         return ResponseEntity.ok(result);
     }
 
+    @PostMapping("/board/insert/comment")
+    public ResponseEntity<Object> post_comment(@RequestBody Map<String, Object> data) {
+
+        int comIdx = Integer.parseInt(data.get("comIdx").toString());
+        int commentType = Integer.parseInt(data.get("commentType").toString());
+        String comment = data.get("comment").toString();
+        int maxCCGroupNum = Integer.parseInt(data.get("maxCCGroupNum").toString());
+        String sessionId = data.get("sessionId").toString();
+
+        if (commentType == 0) {
+//            sessionId와 memberId(댓글작성자)가 다른 경우
+            return ResponseEntity.ok(communityService.insert_comment_question(comIdx, comment, maxCCGroupNum, sessionId));
+        }else if (commentType == 1) {
+//            sessionId와 memberId(댓글작성자)가 같은 경우
+//            return ResponseEntity.ok(communityService.insert_comment_reply(comIdx, comment, maxCCGroupNum, sessionId));
+            return ResponseEntity.ok("success");
+        }else {
+            return ResponseEntity.ok("fail");
+        }
+    }
+
 }

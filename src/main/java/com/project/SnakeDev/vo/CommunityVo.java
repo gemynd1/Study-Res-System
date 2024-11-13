@@ -1,5 +1,8 @@
 package com.project.SnakeDev.vo;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class CommunityVo {
     private int ComIdx, ComCateIdx, MIdx;
     private String ComTitle, ComContent, ComRegDate, ComDelDate, ComUpDate;
@@ -13,6 +16,8 @@ public class CommunityVo {
     private String MemberNames;
     private String ComCategoryName;
     private String MemberId;
+    private int maxCCGroupNum;
+    private String sessionId;
 
     // 기본생성자
     public CommunityVo() {
@@ -285,5 +290,21 @@ public class CommunityVo {
 
     public void setMemberId(String memberId) {
         MemberId = memberId;
+    }
+
+    public int getMaxCCGroupNum() {
+        return maxCCGroupNum;
+    }
+
+    public void setMaxCCGroupNum(int maxCCGroupNum) {
+        this.maxCCGroupNum = maxCCGroupNum;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }
