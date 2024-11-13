@@ -178,9 +178,6 @@ const Header = () => {
         });
     }, []);
 
-    console.log("123");
-    console.log(notifications);
-
     return (
         <>
             <header className="header"> 

@@ -1,5 +1,6 @@
 package com.project.SnakeDev.controller;
 
+import com.project.SnakeDev.service.Impl.NotificationServiceImpl;
 import com.project.SnakeDev.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -13,12 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class NotificationController {
     @Autowired
-    private NotificationService notificationService;
+    private NotificationServiceImpl  notificationService;
 
     @GetMapping("/notification")
     public ResponseEntity<Object> notification(@RequestParam("sessionId") String sessionId,
-                                               @RequestParam("sessionName") String sessionName,
-                                               HttpServletRequest request, HttpSession session) {
+                                               @RequestParam("sessionName") String sessionName) {
 
 //        session = request.getSession();
 //

@@ -10,15 +10,6 @@ const Mypage = () => {
     const navigate = useNavigate();
     const [MypageData, setMypageData] = useState('');
 
-
-    useEffect(() => {
-        axios.get('/api/mypage')
-            .then((res) => {
-                setMypage(res.data);
-            })
-            .catch(error => console.log(error))
-    }, []);
-
     return (
         <div className="MyPage">
             <div className="Mypageheader">

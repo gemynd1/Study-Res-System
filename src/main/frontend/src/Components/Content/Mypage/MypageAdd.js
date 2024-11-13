@@ -69,19 +69,17 @@ const MypageAdd = () => {
         axios
             .all([
                 axios.get('http://localhost:8099/api/mypage/mypageTime'),
-                axios.get(`http://localhost:8099/api/mypage/mypageAddTime?memberid=${sessionStorage.getItem('id')}`),
-                ],
-            {
-                header : {'Content-Type' : 'application/json'}
-            })
+                axios.get(`http://localhost:8099/api/mypage/mypageAddTime?memberid=${sessionStorage.getItem('id')}`
+            )],
+                { headers : {'Content-Type' : 'application/json'}}
+            )
             .then(
                 axios.spread((res1, res2) => {
                     setTimeInfo(res1.data);
                     setAddTimeInfo(res2.data);
-                    console.log(AddTimeInfo);
                 })
             )
-            .catch(error => console.log(error))
+            .catch((error) => console.log(error))
 
         // axios.get("http://localhost:8099/api/mypage/mypageTime", {
         //     headers: { 'Content-Type': 'application/json' }

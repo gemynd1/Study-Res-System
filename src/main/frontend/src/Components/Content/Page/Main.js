@@ -175,9 +175,7 @@ const Main = () => {
             .all([
                 axios.get(baseUrl + '/api/studygInfo'), 
                 axios.get(baseUrl + '/api/studyininfo')], 
-                {
-                    headers : { 'Content-Type': 'application/json' 
-                }
+                { headers : { 'Content-Type': 'application/json'}
             })
             .then(
                 axios.spread((res1, res2) => {
