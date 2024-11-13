@@ -3,7 +3,7 @@
 <mapper namespace="com.project.SnakeDev.mapper.NotificationMapper">
 
     <select id="ViewNotification" resultType="com.project.SnakeDev.vo.NotificationVo" parameterType="map">
-        select ma.* from tbl_member_alarm ma, tbl_member m where m.MemberId = #{MemberId} and m.MemberName = #{MemberName}
+        select ma.* from tbl_member_alarm ma, tbl_member m where m.MemberId = #{sessionId} and m.MemberName = #{sessionName}
     </select>
 
 </mapper>

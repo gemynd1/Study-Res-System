@@ -228,6 +228,8 @@ h2 {
   width: 361px;
   height: 200px;
   background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
 }
 .teamDetail__side-image img{
   width: 100%;
@@ -240,10 +242,23 @@ h2 {
   width: 30px;
   height: 25px;
   text-align: center;
-  top: 47.8%;
-  left: 81.6%;
+  top: 87.6%;
+  left: 92%;
   color: white;
   background-color: purple;
+}
+
+.teamDetail_modal_swiper {
+  width: 800px;
+  height: 800px;
+  /* background-color: #fff; */
+  /* text-align: center; */
+}
+
+.teamDetail_modal_swiper .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .teamDetail__side-content-text-text {
@@ -349,6 +364,10 @@ h2 {
   height: 100%;
   object-fit: cover;
 }
+.detail-order-button:hover {
+  background-color: #ffd000;
+}
+
 
 /* calendar */
 .MuiPickersDay-root {
@@ -387,14 +406,14 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  width: 400px;
+  width: 350px;
   padding: 8px;
   justify-content: space-evenly;
 }
 
 .toggleButton {
   border-radius: 8px;
-  width: 60px; /* 버튼의 고정 너비 */
+  width: 80px; /* 버튼의 고정 너비 */
   height: 36px; /* 버튼의 고정 높이 */
   background-color: #ffd600 !important; /* 기본 배경색 */
   color: #000; /* 기본 텍스트 색상 */
@@ -402,7 +421,7 @@ h2 {
   font-weight: bold;
 
   &:hover {
-    background-color: #ffd600 !important; /* hover 시 배경색을 기본 배경색과 동일하게 설정 */
+    background-color: #ffd600; /* hover 시 배경색을 기본 배경색과 동일하게 설정 */
   }
 
   &.Mui-selected {
@@ -414,4 +433,9 @@ h2 {
       background-color: #7ee9bb !important; /* 선택된 버튼 위에 마우스를 올렸을 때 배경색 유지 */
     }
   }
+}
+
+.toggleButton.blur {
+  background-color: #a5a6b9 !important;
+  color: #fff;
 }

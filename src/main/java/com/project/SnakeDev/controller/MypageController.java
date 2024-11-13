@@ -83,6 +83,11 @@ public class MypageController {
         return ResponseEntity.ok(mypageService.ViewStudyInPare());
     }
 
+    @GetMapping("/mypage/mypageAddTime")
+    public ResponseEntity<Object> mypageAddTime(@RequestParam("memberid") String memberid) {
+        return ResponseEntity.ok(mypageService.mypageAddTime(memberid));
+    }
+
     @GetMapping("/mypage/mypageBoard")
     public ResponseEntity<Object> mypageBoard(
             @RequestParam("id") String memberId) {

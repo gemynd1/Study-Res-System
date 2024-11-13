@@ -15,6 +15,7 @@
         <typeAlias alias="StudyGInfoVo" type="com.project.SnakeDev.vo.StudyGInfoVo"></typeAlias>
         <typeAlias alias="StudyGImgVo" type="com.project.SnakeDev.vo.StudyGImgVo"></typeAlias>
         <typeAlias alias="StudyGPareVo" type="com.project.SnakeDev.vo.StudyGPareVo"></typeAlias>
+        <typeAlias alias="StudyOrderPayVo" type="com.project.SnakeDev.vo.StudyOrderPayVo"></typeAlias>
 <!--        <typeAlias alias="StudyGOrderVo" type="com.project.SnakeProject.vo.StudyGOrderVo"></typeAlias>-->
 
 <!--        <typeAlias alias="StudyReviewImgVo" type="com.project.SnakeProject.vo.StudyReviewImgVo"></typeAlias>-->

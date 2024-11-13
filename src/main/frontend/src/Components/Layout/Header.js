@@ -36,22 +36,6 @@ const Header = () => {
             return () => clearInterval(interval);
         }
     })
-
-    // 알림에 대한 데이터가져오기
-    useEffect(() => {
-        axios.get("http://localhost:8099/api/notification", 
-            {
-                headers : { 'Content-Type': 'application/json' } // 요청 헤더 설정
-            }
-        )
-        .then(response => {
-            setNotifications(response.data);
-        })
-        .catch(error => {
-            // 오류 처리
-            console.log(error); // 응답 출력
-        });
-    }, []);
     
     const logoutHandle = (e) => {
         // e.preventDefault();
@@ -181,6 +165,32 @@ const Header = () => {
         {id: 6, chatgroup: 2, senderType:"recipient", name: "김지민", content: "hi~", chatNum:3},
     ]);
 
+    
+    // 알림에 대한 데이터가져오기
+    useEffect(() => {
+        
+        const sessionId = sessionStorage.getItem('id')
+        const sessionName = sessionStorage.getItem('name')
+
+        axios.get("http://localhost:8099/api/notification", 
+            {
+                params: { sessionId, sessionName },
+                headers : { 'Content-Type': 'application/json' }
+            }
+        )
+        .then(response => {
+            console.log(sessionId);
+            console.log(sessionName);
+            setNotifications(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }, []);
+
+    console.log("123");
+    console.log(notifications);
+
     return (
         <>
             <header className="header"> 
@@ -271,10 +281,10 @@ const Header = () => {
                                 <div className="notification" key={notification.id}>
                                     <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" data-id={notification.id} onClick={del_notification} />
                                     <p className="notification-content">
-                                        {notification.content}
+                                        {notification.maContent}
                                     </p>
                                     <span className="notification-date">
-                                        {notification.date}
+                                        {notification.maDate}
                                     </span>
                                 </div>
                             ))}

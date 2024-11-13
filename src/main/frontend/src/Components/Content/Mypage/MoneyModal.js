@@ -1,54 +1,102 @@
 import React, { useEffect, useState } from "react";
 import '../../../style/Mypage.css';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+import axios from "axios";
 // import { nanoid } from nanoid;
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-const customerKey = "EIZMkdSmXud7BAXITGXJM";
+const customerKey = "ll-yw-PKw-5_SU3JBZJvL";
 const { nanoid } = require('nanoid');
-const MoneyModal = ({ open, onClose, amount, Name, widget }) => {
+const MoneyModal = ({ open, onClose, amount, Name, widget, TicketSelect, Name2 }) => {
+    const location = useLocation();
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [random, setRandom] = useState(null);
+    const [total, setTotal] = useState(amount); // 가격
+    const [sipname, setSipname] = useState(Name2); // 시간
 
+    useEffect(() => {
+        const today = new Date();
+        const formatdate = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}`;
+        const randomNum = Math.floor(Math.random() * 1000000)
+        setRandom(`${formatdate}${randomNum}`);
+    }, [])
 
-    // const { nanoid } = require('nanoid');
+    useEffect(() => {
+        if(open) {
+            setQuantity(1);
+            setSipname(Name2)
+            setTotal(amount)
+        }
+    },[TicketSelect, Name2, amount])
 
+    const increaseQuantity = (input) => {
+        if(TicketSelect === "당일권" && quantity < input) {
+            const newQuantity = quantity + 1;
+            setQuantity(newQuantity);
+            setSipname(Name2 * (newQuantity));
+            setTotal((newQuantity) * amount);
+        }
+    };
+    
+    const decreaseQuantity = () => {
+        if (TicketSelect === "당일권" && quantity > 1) {
+            const newQuantity = quantity - 1;
+            setQuantity(newQuantity);
+            setSipname(Name2 * (newQuantity));
+            setTotal((newQuantity) * amount);
+        }
+    };
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
+            resetModal();
         }
     };
 
+    const resetModal = () => {
+        // 모달을 닫을 때 모든 상태를 기본값으로 초기화
+        setQuantity(1);
+        setSipname(Name2); 
+        setTotal(amount); 
+        setReady(false); 
+        setWidgets(null); 
+        setRandom(null); 
+    };
+
     useEffect(() => {
-        if (!open) return; // open이 false면 실행하지 않음
-        const fetchPaymentWidgets = async () => {
-            try {
-                // ------  결제위젯 초기화 ------
-                const tossPayments = await loadTossPayments(clientKey);
-                // 회원 결제
-                const widgets = tossPayments.widgets({
-                    customerKey,
-                });
-                // 비회원 결제
-                // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
-                setWidgets(widgets);
-            } catch (error) {
-                console.error("Error loading Toss Payments widgets:", error);
-            }
-        };
-        fetchPaymentWidgets();
+        if(!open) return;// open이 false면 실행하지 않음
+        if (open) {
+            const fetchPaymentWidgets = async () => {
+                try {
+                    // ------  결제위젯 초기화 ------
+                    const tossPayments = await loadTossPayments(clientKey);
+                    // 회원 결제
+                    const widgets = tossPayments.widgets({
+                        customerKey,
+                    });
+                    // 비회원 결제
+                    // const widgets = tossPayments.widgets({ customerKey: ANONYMOUS });
+                    setWidgets(widgets);
+                } catch (error) {
+                    console.error("Error loading Toss Payments widgets:", error);
+                }
+            };
+            fetchPaymentWidgets();
+        }
     }, [clientKey, customerKey, open]);
 
     useEffect(() => {
-        if (!widgets || !open) return; // open과 widgets가 준비되지 않았으면 실행하지 않음
         const renderPaymentWidgets = async () => {
+            if (!widgets || !open) return; // open과 widgets가 준비되지 않았으면 실행하지 않음
             setTimeout(async () => {
                 // ------ 주문의 결제 금액 설정 ------
                 await widgets.setAmount({
                     currency: "KRW",
-                    value: Number(amount)
+                    value: Number(total)
                 });
                 try {
                     await Promise.all([
@@ -70,7 +118,7 @@ const MoneyModal = ({ open, onClose, amount, Name, widget }) => {
             }, 100);
         };
         renderPaymentWidgets();
-    }, [widgets, open, amount]);
+    }, [widgets, open, total]);
 
     if (!open) return null; // open이 false면 컴포넌트 자체를 렌더링하지 않음
 
@@ -91,8 +139,30 @@ const MoneyModal = ({ open, onClose, amount, Name, widget }) => {
                         <span className="PaymentText1">{Name}</span>
                     </div>
                     <div className="AllCredit">
+                        <span className="PaymentText">수량선택</span>
+                        {/* <span> */}
+                        <span className="paymentQuantity-container">
+                            {TicketSelect === "당일권" ? (
+                                <>
+                                    <button className="paymentQuantitybtn" onClick={decreaseQuantity}>-</button>
+                                    <span className="paymentQuantityspan">{quantity}</span>
+                                    <button className="paymentQuantitybtn" onClick={() => increaseQuantity(10)}>+</button>
+                                </>
+                            ) : (
+                                <span className="paymentQuantityspan">{quantity}</span>
+                            )}
+                        </span>
+                            
+                        {/* </span> */}
+                    </div>
+                    <div className="AllCredit">
                         <span className="PaymentText">최종 결제 금액</span>
-                        <span className="PaymentText1">{amount}원</span>
+                        <span className="PaymentText1">
+                            {/* 총 {total}, {amount}원 */}
+                            {/* {Name2.includes("주") || Name2.includes("년") ? Name2 : Name2 * quantity} */}
+                            {/* {TicketSelect === "당일권" ? total : amount}원 */}
+                            {sipname} / {total}원
+                        </span>
                     </div>
                     <div className="AllCredit">
                         <span className="PaymentText">결제수단 선택</span>
@@ -111,18 +181,35 @@ const MoneyModal = ({ open, onClose, amount, Name, widget }) => {
                                     // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
                                     // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
                                     // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-                                    await widgets.requestPayment({
-                                        orderId: nanoid(),
-                                        orderName: "시간",
-                                        successUrl: `${window.location.origin}/success?Name=${encodeURIComponent(Name)}&amount=${encodeURIComponent(amount)}&OrderType=individualOrder&MemberId=${encodeURIComponent(sessionStorage.getItem("id"))}`,
-                                        failUrl: `${window.location.origin}/fail?Name=${encodeURIComponent(Name)}&amount=${encodeURIComponent(amount)}`,
-
-                                        // customerEmail: "taerangkim0116@gmail.com",
-                                        customerName: `${sessionStorage.getItem("name")}`,
-                                        customerMobilePhone: "01092783810",
-                                    });
+                                    
+                                    // 먼저 get으로 해당 name 을 넘겨서 숫자만 뽑아온다. 정규화
+                                    
+                                    const requestData = [
+                                        {
+                                            random : random,
+                                            sipname : sipname,
+                                            memberId : sessionStorage.getItem("id"),
+                                            OrderType : "InviOrder"
+                                        }
+                                    ]
+                                    axios.post(`http://localhost:8099/api/templateOrder?random=${encodeURIComponent(String(random))}&requestData=${encodeURIComponent(JSON.stringify(requestData))}`,
+                                        {
+                                            headers : { 'Content-Type': 'application/json' }
+                                        }
+                                    ).then(res=> {
+                                        widgets.requestPayment({
+                                            orderId: nanoid(),
+                                            orderName: `${Name2.includes("주") || Name2.includes("년") ? sipname: sipname + "시간"}`,
+                                            successUrl: window.location.origin + `/paysuccess?ordernum=${random}&ordertype=inviorder`,
+                                            failUrl: window.location.origin + `/fail`,
+                                            // customerEmail: "taerangkim0116@gmail.com",
+                                            customerName: `${sessionStorage.getItem("name")}`,
+                                            customerMobilePhone: "01092783810",
+                                        }).catch((error) => {
+                                            console.error(error);
+                                        })
+                                    })
                                 } catch (error) {
-                                    // 에러 처리하기
                                     console.error(error);
                                 }
                             }}

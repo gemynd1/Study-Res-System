@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface NotificationService {
     public List<NotificationVo> ViewNotification(String MemberId, String MemberName);
+    public int OrderNotification(String MaContent);
 }
