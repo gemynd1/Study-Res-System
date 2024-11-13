@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface ReviewService {
-    public int InsertReview(ReviewVo reviewVo);
+    int InsertReview(ReviewVo reviewVo);
 
 
 
