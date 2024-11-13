@@ -35,6 +35,10 @@ import ReviewDetail from "./Components/Content/Review/ReviewDetail";
 import Template_Create from "./Components/template/Template_Create";
 import Template_Editor from "./Components/template/Template_Editor";
 import PaySuccess from "./Components/template/PaySuccess";
+import MypageCheck from "./Components/Content/Mypage/MypageCheck";
+import Chat from "./Components/Content/Page/Chating/Chat";
+import Join2 from "./Components/Content/Page/Chating/join2";
+
 
 // import './App.css';
 const ScrollToTop  = () => {
@@ -59,6 +63,12 @@ function AppContent() {
   //       })
   //       .catch(error => console.log(error))
   // }, []);
+
+  const [showChat, setShowChat] = useState(true);
+
+  const handleClick = () => {
+    setShowChat(false);
+  }
 
   return (
     <>
@@ -98,12 +108,17 @@ function AppContent() {
           <Route path="/mypage/mypageBoard" element={<MypageBoard />} />
           <Route path="/mypage/mypageReview" element={<MypageReview />} />
           <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
+          <Route path="/mypage/mypageCheck" element={<MypageCheck />} />
 
           <Route  path="/teamdetail" />
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
+
+          <Route path="/chating/chat/*" element={<Chat />} />  {/* 채팅 */}
+          <Route path="/chating/join2" element={<Join2 />} /> {/* 채팅 로그인 */}
       </Routes>
       {!hideHeaderLogin && <Footer />}
+
 
       <Routes>
         <Route path="/create" element={<Template_Create />} />

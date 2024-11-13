@@ -2,6 +2,7 @@ import {React, useEffect, useState} from "react";
 import "../../style/header.css";
 import axios from "axios";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import Join2 from "../Content/Page/Chating/join2";
 
 const Header = () => {
     const location = useLocation();
@@ -9,10 +10,11 @@ const Header = () => {
     const [pw, setPw] = useState('');
     const navigate = useNavigate();
     const [active_index, setActive_index] = useState(null);
-    const [active_message_index, setActive_message_index] = useState(0);
+    const [active_message_index, setActive_message_index] = useState(null);
     const [userInfo, setUserInfo] = useState([]);
+    const [ChatingModal, setChatingModal] = useState(false);
 
-    
+
     useEffect(() => {
         if(sessionStorage.getItem("id") != null && sessionStorage.getItem("id") !== "musenet") {
             const checkSession = () => {
@@ -68,6 +70,10 @@ const Header = () => {
         })
     }
 
+    const ChattingModal = () => {
+        setChatingModal(true);
+    }
+
     const handleClick = () => {
         if(sessionStorage.getItem("loginState") === "true") {
             navigate('/mypage')
@@ -99,10 +105,14 @@ const Header = () => {
     const index_choice = (index) => {
         if(active_index === index) {
             setActive_index(null);
+            setChatingModal(false);
+            setActive_message_index(null);
         }else{
             setActive_index(index);
+            setChatingModal(true)
         }
     }
+
 
     const message_type_choice = (index) => {
         setActive_message_index(index);
@@ -223,6 +233,7 @@ const Header = () => {
                             </li>
                             <li>
                                 <img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => {index_choice(1)}} />
+                                {/*<img src="/img/icon/chat.png" alt="chat" className={active_index === 1 ? "chat active" : "chat"} onClick={() => ChattingModal} />*/}
                             </li>
                             <li>
                                 {/*<Link to="/mypage/mypageAccount" style={{ textDecoration: 'none' }}>*/}
@@ -273,22 +284,43 @@ const Header = () => {
 
                 <div className="first-background" style={{display: active_index === 1 ? "block" : "none"}}>
                     <div className="second-background">
-
                         <div className="message-headerBar">
-                            <img src="/img/icon/chat(white).png" alt="chatIcon" className="message-icon" />
-                            <span className="message-text">채팅</span>
+                            <img src="/img/icon/chat(white).png" alt="채팅"
+                                 style={{width: "24px", height: "24px", marginLeft: "3%"}}/>
+                            <span>채팅방에 오신 것을 환영합니다</span>
                         </div>
 
                         <div className="message-section">
-
-                            <div className="typeBar">
-                                <div className={active_message_index === 0 ? "personal-message active" : "personal-message" } onClick={() => {message_type_choice(0)}}>
+                        <div className="typeBar">
+                            <div className="typeBar2">
+                                <div className={active_message_index === 0 ? "personal-message active" : "personal-message"} onClick={() => { message_type_choice(0) }}>
                                     <span className="personal-message-text">받은 메시지함</span>
                                 </div>
-                                <div className={active_message_index === 1 ? "group-message active" : "group-message"} onClick={() => {message_type_choice(1)}}>
+                                <div className={active_message_index === 1 ? "group-message active" : "group-message"} onClick={() => { message_type_choice(1) }}>
                                     <span className="group-message-text">모임</span>
                                 </div>
                             </div>
+
+                            {active_index === 1 && active_message_index === 1 && (
+                                <Join2
+                                    open={ChattingModal}
+                                    onClose={() => {
+                                        setChatingModal(false);
+                                        setActive_message_index(null);
+                                    }}
+                                />
+                            )}
+                        </div>
+
+
+                            {/*<div className="typeBar">*/}
+                            {/*    <div className={active_message_index === 0 ? "personal-message active" : "personal-message" } onClick={() => {message_type_choice(0)}}>*/}
+                            {/*        <span className="personal-message-text">받은 메시지함</span>*/}
+                            {/*    </div>*/}
+                            {/*    <div className={active_message_index === 1 ? "group-message active" : "group-message"} onClick={() => {message_type_choice(1)}}>*/}
+                            {/*        <span className="group-message-text">모임</span>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
 
                             <div className="personal-message-section" style={{display: active_message_index === 1 ? "none" : "block"}}>
                                 <div className="personal-message-content">
@@ -351,21 +383,21 @@ const Header = () => {
 
                             <div className="group-message-section" style={{display: active_message_index === 0 ? "none" : "block"}}>
 
-                                {chatHeaderBars.map((chatHeaderBar) => (
-                                    <div className="group-message-content" onClick={() => {showChat(chatHeaderBar.id)}}>
-                                    <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />
-                                    <div className="text-group">
-                                        <span className="groupName-text">({chatHeaderBar.groupName}) {chatHeaderBar.groupMember.length > 8 ? chatHeaderBar.groupMember.substring(0,8) + "..." : chatHeaderBar.groupMember}</span>
-                                        {chatContents.map((chatContent) => (
-                                            chatContent.chatgroup === chatHeaderBar.id && 
-                                            chatContent.chatNum === Math.max(...chatContents.map(chatContent => chatContent.chatNum)) && (
-                                                <p className="message-content">{chatContent.content}</p>
-                                            )
-                                        ))}
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                ))}
+                                {/*{chatHeaderBars.map((chatHeaderBar) => (*/}
+                                {/*    <div className="group-message-content" onClick={() => {showChat(chatHeaderBar.id)}}>*/}
+                                {/*    <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />*/}
+                                {/*    <div className="text-group">*/}
+                                {/*        <span className="groupName-text">({chatHeaderBar.groupName}) {chatHeaderBar.groupMember.length > 8 ? chatHeaderBar.groupMember.substring(0,8) + "..." : chatHeaderBar.groupMember}</span>*/}
+                                {/*        {chatContents.map((chatContent) => (*/}
+                                {/*            chatContent.chatgroup === chatHeaderBar.id && */}
+                                {/*            chatContent.chatNum === Math.max(...chatContents.map(chatContent => chatContent.chatNum)) && (*/}
+                                {/*                <p className="message-content">{chatContent.content}</p>*/}
+                                {/*            )*/}
+                                {/*        ))}*/}
+                                {/*    </div>*/}
+                                {/*    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />*/}
+                                {/*</div>*/}
+                                {/*))}*/}
 
                                 {/* <div className="group-message-content">
                                     <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />
@@ -442,6 +474,10 @@ const Header = () => {
                         ))}
 
                     </div>
+                    {/*<Join2*/}
+                    {/*    open={ChatingModal}*/}
+                    {/*    onClose={() => setChatingModal(false)}*/}
+                    {/*/>*/}
                 </div>
 
             </header>
