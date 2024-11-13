@@ -1,15 +1,19 @@
 package com.project.SnakeDev.vo;
 
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class StudyInPareVo {
     private Integer SipIdx;
     private Integer ScIdx;
     private String SipName;
+    private String SipName1;
     private Integer SipPrice;
 
-    public StudyInPareVo(Integer sipIdx, String sipName, Integer sipPrice) {
+    public StudyInPareVo(Integer sipIdx, String sipName, String sipName1, Integer sipPrice) {
         SipIdx = sipIdx;
         SipName = sipName;
+        SipName1 = sipName1;
         SipPrice = sipPrice;
     }
 
@@ -47,6 +51,14 @@ public class StudyInPareVo {
 
     public void setSipName(String sipName) {
         SipName = sipName;
+    }
+
+    public String getSipName1() {
+        return SipName1;
+    }
+
+    public void setSipName1(String sipName1) {
+        SipName1 = sipName1;
     }
 
     public Integer getSipPrice() {

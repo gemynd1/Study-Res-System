@@ -3,7 +3,8 @@ package com.project.SnakeDev.vo;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+//@AllArgsConstructor
+@NoArgsConstructor
 public class StudyGInfoVo {
   private Integer SGIIdx;
   private Integer SCIdx;
@@ -27,11 +28,16 @@ public class StudyGInfoVo {
   private StudyGImgVo studyGImgVo; // 사진 값 가져오기 위한 vo 선언
   private StudyGPareVo studyGPareVo; // 해당 룸의 가격들 가져오기 위한 vo 선언
 
-  public StudyGInfoVo() {
+//  public StudyGInfoVo() {
+//  }
+
+  // 예약 처리를 위한 Vo
+  public StudyGInfoVo(Integer SGIIdx) {
+    this.SGIIdx = SGIIdx;
   }
 
   // 룸 정보와 이미지 정보 vo
-  public StudyGInfoVo(int SGINum, String SGIContent1, String SGIContent2, StudyGImgVo studyGImgVo) {
+  public StudyGInfoVo(Integer SGINum, String SGIContent1, String SGIContent2, StudyGImgVo studyGImgVo) {
     this.SGINum = SGINum;
     this.SGIContent1 = SGIContent1;
     this.SGIContent2 = SGIContent2;

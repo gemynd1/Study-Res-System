@@ -51,6 +51,11 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
+    public List<AuthVo> mypageAddTime(String memberid) {
+        return mypageMapper.mypageAddTime(memberid);
+    }
+
+    @Override
     public List<StudyCommunityVo> getBoardInfo(
             String memberId) {
         return mypageMapper.getBoardInfo(memberId);

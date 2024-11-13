@@ -4,24 +4,26 @@ import axios from 'axios';
 import MoneyModal from "./MoneyModal";
 import {Modal} from "@mui/material";
 import MemberDeleteModal from "./MemberDeleteModal";
+import { Add } from "@mui/icons-material";
 
 const MypageAdd = () => {
     const [MypageAdd, setMypageAdd] = useState('');
     const [TicketSelect, setTicketSelect] = useState('당일권');
     const [selectAmount, setSelectAmount] = useState(null);
     const [selectName, setSelectName] = useState(null);
+    const [selectName2, setSelectName2] = useState(null);
     const [widget, setWidget] = useState(null);
     const [TimeInfo, setTimeInfo] = useState([]);
-
-
+    const [AddTimeInfo, setAddTimeInfo] = useState([]);
     const [ModalOpen, setModalOpen] = useState(false);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
     const [SipIdx, setSipIdx] = useState(1);
 
 
-    const openModal = (amount, Name, SipIdx) => {
+    const openModal = (amount, Name, Name2, SipIdx) => {
         setSelectAmount(amount);
         setSelectName(Name);
+        setSelectName2(Name2);
         setSipIdx(SipIdx);
         setModalOpen(true);
     }
@@ -64,16 +66,33 @@ const MypageAdd = () => {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8099/api/mypage/mypageTime", {
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .then(response => {
-                setTimeInfo(response.data);
-                console.log(response.data);
+        axios
+            .all([
+                axios.get('http://localhost:8099/api/mypage/mypageTime'),
+                axios.get(`http://localhost:8099/api/mypage/mypageAddTime?memberid=${sessionStorage.getItem('id')}`),
+                ],
+            {
+                header : {'Content-Type' : 'application/json'}
             })
-            .catch(error => {
-                console.error('데이터 못가져옴: ', error);
-            })
+            .then(
+                axios.spread((res1, res2) => {
+                    setTimeInfo(res1.data);
+                    setAddTimeInfo(res2.data);
+                    console.log(AddTimeInfo);
+                })
+            )
+            .catch(error => console.log(error))
+
+        // axios.get("http://localhost:8099/api/mypage/mypageTime", {
+        //     headers: { 'Content-Type': 'application/json' }
+        // })
+        //     .then(response => {
+        //         setTimeInfo(response.data);
+        //         console.log(response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('데이터 못가져옴: ', error);
+        //     })
     }, []);
 
     return (
@@ -155,25 +174,28 @@ const MypageAdd = () => {
                             {TicketSelect === '당일권' && (
                                 <div className="TimeBox">
                                     <div className="Timebox2" >
+                                        {/* 1시간 2시간 */}
                                         {TimeInfo ? TimeInfo.slice(0,2).map((result, index) => (
                                         <div className="SameTime" key={index}>
-                                            <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                            <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                 {result.sipName} <br/> {result.sipPrice}</button>
                                         </div>
                                         )) : ''}
                                     </div>
                                     <div className="Timebox2">
+                                        {/* 4시간 6시간 */}
                                         {TimeInfo ? TimeInfo.slice(2,4).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
                                     </div>
                                     <div className="Timebox2">
+                                        {/* 9시간 12시간 */}
                                         {TimeInfo ? TimeInfo.slice(4,6).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -185,7 +207,7 @@ const MypageAdd = () => {
                                     <div className="Timebox2">
                                         {TimeInfo ? TimeInfo.slice(6,8).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -193,7 +215,7 @@ const MypageAdd = () => {
                                     <div className="Timebox2">
                                         {TimeInfo ? TimeInfo.slice(8,10).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -201,7 +223,7 @@ const MypageAdd = () => {
                                     <div className="Timebox2">
                                         {TimeInfo ? TimeInfo.slice(10,12).map((result, index) => (
                                             <div className="SameTime" key={index}>
-                                                <button onClick={() => openModal(result.sipPrice, result.sipName)}>
+                                                <button onClick={() => openModal(result.sipPrice, result.sipName, result.sipName1)}>
                                                     {result.sipName} <br/> {result.sipPrice}</button>
                                             </div>
                                         )) : ''}
@@ -212,22 +234,23 @@ const MypageAdd = () => {
                         <div className="AddTime">
                             <div className="AddTime1">
                                 <img src="/img/icon/logo.png" alt="로고"/>
-                                <span>정희수님의 잔여 시간입니다</span>
+                                <span>{sessionStorage.getItem('name')}님의 잔여 시간입니다</span>
                             </div>
-                            <div className="AddTimeText">
-                                <span>※당일권 1시간 선택하셨습니다</span>
-                            </div>
-                            <div className="AddStudyTime">
+                            {/* <div className="AddTimeText">
+                                <span>※ 당일권 1시간 선택하셨습니다</span>
+                            </div> */}
+                            {/* db 로 사용시간 처리 */}
+                            {/* <div className="AddStudyTime">
                                 <span>사용 시간</span>
                                 <span>00 : 20</span>
-                            </div>
+                            </div> */}
                             <div className="AddStudyTime">
                                 <span>남은 시간</span>
-                                <span>00 : 40</span>
+                                <span>{AddTimeInfo[0].museTime}시간</span>
                             </div>
                             <div className="AddStudyTime">
                                 <span>남은 정기권 일 수</span>
-                                <span>00일</span>
+                                <span>{AddTimeInfo[0].mendinDate === null ? "기간 없음" : AddTimeInfo[0].mendinDate}</span>
                             </div>
 
                         </div>
@@ -241,6 +264,8 @@ const MypageAdd = () => {
                 amount={selectAmount}
                 Name={selectName}
                 widget={widget}
+                TicketSelect={TicketSelect}
+                Name2={selectName2}
             />
             <MemberDeleteModal
                 open={MemberModalOpen}

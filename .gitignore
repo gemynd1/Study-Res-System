@@ -34,6 +34,7 @@ build/
 
 # 환경설정
 .env
+snake.pem
 
 # 내꺼 sql파일
 snake2(personal).sql

@@ -21,6 +21,7 @@ public interface MypageService {
 
     // 시간충전 조회 메서드
     public List<StudyInPareVo> ViewStudyInPare();
+    public List<AuthVo> mypageAddTime(String memberid);
 
     // 내가 작성한 글 확인
     List<StudyCommunityVo> getBoardInfo(String memberId);

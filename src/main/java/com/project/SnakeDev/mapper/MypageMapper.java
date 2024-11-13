@@ -28,6 +28,7 @@ public interface MypageMapper {
 
     // 마이페이지 시간충전 보여주기
     List<StudyInPareVo> ViewStudyInPare();
+    List<AuthVo> mypageAddTime(@Param("memberid") String memberid);
 
     // 내가 작성한 글 보여주기
     List<StudyCommunityVo> getBoardInfo(@Param("memberId") String memberId);
