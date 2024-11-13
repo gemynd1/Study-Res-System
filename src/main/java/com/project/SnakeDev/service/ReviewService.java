@@ -1,12 +1,17 @@
 package com.project.SnakeDev.service;
 
+import com.project.SnakeDev.vo.ReviewVo;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
-public interface ReviewService {
-    void createReview(int studyRoom, String content, int rating, String tags, String userName, List<MultipartFile> images);
 
-    // 추가된 메서드: 회원 ID로 MIDX 조회
-    Integer getMemberIndexByUserName(String memberIndex);
+public interface ReviewService {
+    public int InsertReview(ReviewVo reviewVo);
+
+
 
 }
+
+//public 사용시 다른 클래스에서 접근 가능 
+//void: 메서드가 아무런 값을 반환하지 않음을 나타냅니다.

@@ -98,6 +98,16 @@ const Review = () => {
     
 };
 
+  const navigator = useNavigate();
+
+  const handleLogin = () => {
+    if (sessionStorage.getItem("id")) {
+      navigator("/review/post")
+    } else {
+      alert('로그인 후 이용해주세요.')
+    }
+  }
+
   return (
     <>
       <div className="review__page box">
@@ -109,9 +119,7 @@ const Review = () => {
               <UnstyledInputBasic />
               <UnstyledSelectForm onChange={setSelectedStudyRoom} />
             </div>
-            <Link to="/review/post">
-              <button>글쓰기</button>
-            </Link>
+              <button onClick={handleLogin}>글쓰기</button>
           </div>
 
           <div className="review-grid">

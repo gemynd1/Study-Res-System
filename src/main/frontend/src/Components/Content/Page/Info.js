@@ -163,7 +163,7 @@ const Info = () => {
                         </div>
                     </div>
 
-                    <div className="InfoBox">
+                    {/* <div className="InfoBox">
                         <div className="InfoBox1">
                             <span>스터디룸</span>
                         </div>
@@ -177,7 +177,7 @@ const Info = () => {
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

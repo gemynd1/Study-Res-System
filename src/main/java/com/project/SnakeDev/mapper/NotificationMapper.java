@@ -8,5 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface NotificationMapper {
-    List<NotificationVo> ViewNotification(String sessionId, String sessionName);
+    List<NotificationVo> ViewNotification(String MemberId, String MemberName);
+    int OrderNotification(String MaContent);
 }

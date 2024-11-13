@@ -1,59 +1,69 @@
 package com.project.SnakeDev.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@AllArgsConstructor
+//@AllArgsConstructor
+@NoArgsConstructor
 public class StudyOrderPayVo {
-    private Integer TsopIdx;
-    private Integer Midx;
-    private String TsopMethod;
-    private Integer TsopPirce;
-    private String TsopStatus;
-    private Date TsopDate;
-    private String TsopDivi;
+     String TSOPIdx;
+     String TSOPMethod;
+     Integer TSOPPrice;
+     String TSOPStatus;
+     Date TsopDate;
+     String TSOPDivi;
 
 
+//    public StudyOrderPayVo() {
+//    }
 
-    public Integer getTsopIdx() {
-        return TsopIdx;
+
+    // 결제 내역 처리
+    public StudyOrderPayVo(String TSOPIdx, String TSOPMethod, Integer TSOPPrice, String TSOPStatus, String TSOPDivi) {
+        this.TSOPIdx = TSOPIdx;
+        this.TSOPMethod = TSOPMethod;
+        this.TSOPPrice = TSOPPrice;
+        this.TSOPStatus = TSOPStatus;
+        this.TSOPDivi = TSOPDivi;
     }
 
-    public void setTsopIdx(Integer tsopIdx) {
-        TsopIdx = tsopIdx;
+    // 결제 승인 처리 후 예약 처리를 위한 Vo 처리
+    public StudyOrderPayVo(String TSOPIdx) {
+        this.TSOPIdx = TSOPIdx;
     }
 
-    public Integer getMidx() {
-        return Midx;
+    public String getTSOPIdx() {
+        return TSOPIdx;
     }
 
-    public void setMidx(Integer midx) {
-        Midx = midx;
+    public void setTSOPIdx(String TSOPIdx) {
+        this.TSOPIdx = TSOPIdx;
     }
 
-    public String getTsopMethod() {
-        return TsopMethod;
+    public String getTSOPMethod() {
+        return TSOPMethod;
     }
 
-    public void setTsopMethod(String tsopMethod) {
-        TsopMethod = tsopMethod;
+    public void setTSOPMethod(String TSOPMethod) {
+        this.TSOPMethod = TSOPMethod;
     }
 
-    public Integer getTsopPirce() {
-        return TsopPirce;
+    public Integer getTSOPPrice() {
+        return TSOPPrice;
     }
 
-    public void setTsopPirce(Integer tsopPirce) {
-        TsopPirce = tsopPirce;
+    public void setTSOPPrice(Integer TSOPPrice) {
+        this.TSOPPrice = TSOPPrice;
     }
 
-    public String getTsopStatus() {
-        return TsopStatus;
+    public String getTSOPStatus() {
+        return TSOPStatus;
     }
 
-    public void setTsopStatus(String tsopStatus) {
-        TsopStatus = tsopStatus;
+    public void setTSOPStatus(String TSOPStatus) {
+        this.TSOPStatus = TSOPStatus;
     }
 
     public Date getTsopDate() {
@@ -64,11 +74,11 @@ public class StudyOrderPayVo {
         TsopDate = tsopDate;
     }
 
-    public String getTsopDivi() {
-        return TsopDivi;
+    public String getTSOPDivi() {
+        return TSOPDivi;
     }
 
-    public void setTsopDivi(String tsopDivi) {
-        TsopDivi = tsopDivi;
+    public void setTSOPDivi(String TSOPDivi) {
+        this.TSOPDivi = TSOPDivi;
     }
 }
