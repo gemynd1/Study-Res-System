@@ -80,6 +80,14 @@ public class StudyGOrderVo {
         this.SGOtotal = SGOtotal;
     }
 
+    public Integer getSGOPeople() {
+        return SGOPeople;
+    }
+
+    public void setSGOPeople(Integer SGOPeople) {
+        this.SGOPeople = SGOPeople;
+    }
+
     public StudyGInfoVo getStudyGInfoVo() {
         return studyGInfoVo;
     }

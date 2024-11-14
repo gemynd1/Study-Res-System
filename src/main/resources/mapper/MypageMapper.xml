@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="com.project.SnakeDev.mapper.MypageMapper">
+    <!--  본인이 예약한 그룹방 명을 가져오기 위한 vo  -->
+    <resultMap id="StudyGInfoVo" type="com.project.SnakeDev.vo.StudyGInfoVo">
+        <constructor>
+            <arg column="SGIContent1" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <!--  본인이 예약한 그룹방에 대한 결제 확인  -->
+    <resultMap id="StudyOrderPayVo" type="com.project.SnakeDev.vo.StudyOrderPayVo">
+        <constructor>
+            <arg column="TSOPStatus" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <!--  본인이 충전한 금액에 대한 결제 내역  -->
+    <resultMap id="StudyOrderPayVo2" type="com.project.SnakeDev.vo.StudyOrderPayVo">
+        <constructor>
+            <arg column="TSOPPrice" javaType="java.lang.Integer" />
+            <arg column="TSOPStatus" javaType="java.lang.String" />
+            <arg column="TSOPDate" javaType="java.util.Date" />
+        </constructor>
+    </resultMap>
+    <resultMap id="StudyGOrderVo" type="com.project.SnakeDev.vo.StudyGOrderVo">
+        <result column="SGONum" property="SGONum" />
+        <result column="SGORegDate" property="SGORegDate" />
+        <result column="SGOStartDate" property="SGOStartDate" />
+        <result column="SGOEndDate" property="SGOEndDate" />
+        <result column="SGOtotal" property="SGOtotal" />
+        <result column="SGOPeople" property="SGOPeople" />
+        <collection property="studyGInfoVo" resultMap="StudyGInfoVo" />
+        <collection property="studyOrderPayVo" resultMap="StudyOrderPayVo" />
+    </resultMap>
+    <resultMap id="TemplateOrderVo" type="com.project.SnakeDev.vo.TemplateOrderVo">
+        <result column="TTOContent" property="TTOContent" />
+        <collection property="studyOrderPayVo" resultMap="StudyOrderPayVo2" />
+    </resultMap>
 
     <select id="getUserInfo" resultType="com.project.SnakeDev.vo.AuthVo">
         SELECT *
@@ -24,21 +58,6 @@
                  inner join tbl_memberaddress tma on tm.midx = tma.midx
         where tm.memberid = #{memberId}
     </select>
-
-<!--    <update id="updateInfo" parameterType="com.project.SnakeDev.vo.AuthVo">-->
-<!--        merge into tbl_member m-->
-<!--            using tbl_memberaddress a-->
-<!--            on (m.midx = a.midx)-->
-<!--            when matched then-->
-<!--                update set-->
-<!--                    m.membername = #{memberName},-->
-<!--                    m.memberid = #{memberId},-->
-<!--                    m.memberpw = #{memberPw},-->
-<!--                    m.memberphone = #{memberPhone},-->
-<!--                    a.maaddress = #{MAaddress},-->
-<!--                    a.mdetailaddress = #{MDetailaddress}-->
-<!--        where m.memberid = #{memberId}-->
-<!--    </update>-->
 
     <update id="updateMemberInfo" parameterType="com.project.SnakeDev.vo.AuthVo">
         update tbl_member
@@ -73,7 +92,12 @@
     </select>
 
     <select id="mypageAddTime" resultType="com.project.SnakeDev.vo.AuthVo">
-        select MUseTime, to_date(to_char(MEndinDate, 'YYYY-MM-DD')) as MEndinDate from tbl_member where memberid = #{memberid}
+        select MUseTime,
+               CASE
+                   WHEN MEndinDate > TRUNC(SYSDATE) THEN MEndinDate
+                   ELSE NULL
+                   END AS MEndinDate
+        from tbl_member where memberid = #{memberid}
     </select>
 
     <select id="getBoardInfo" resultType="com.project.SnakeDev.vo.StudyCommunityVo">
@@ -108,6 +132,39 @@
         where memberid = #{memberId}
     </select>
 
+    <select id="mypageGroupCheck" resultMap="StudyGOrderVo">
+        select
+            tsg.sgonum,
+            to_char(tsg.sgoregdate, 'YYYY-mm-dd') as SGORegDate,
+            tsi.sgicontent1,
+            to_char(tsg.sgostartdate, 'HH24:Mi') as SGOStartDate,
+            to_char(tsg.sgoenddate, 'HH24:Mi') as SGOEndDate,
+            tsg.sgopeople,
+            tsg.sgototal,
+            tsop.tsopstatus
+        from tbl_studygorder tsg
+             inner join tbl_studyorderpay tsop on tsg.tsopidx = tsop.tsopidx
+             inner join tbl_studyginfo tsi on tsg.sgiidx = tsi.sgiidx
+             inner join tbl_member tm on tsg.midx = tm.midx
+        where tm.midx = (select midx from tbl_member where memberid = #{MemberId})
+        order by tsg.sgoregdate desc
+    </select>
+
+    <select id="mypageInviCheck" resultMap="TemplateOrderVo">
+        select
+            tsop.TSOPPrice as TSOPPrice,
+            tsop.TSOPStatus as TSOPStatus,
+            tsop.TSOPDate as TSOPDate,
+            tto.TTOContent as TTOContent
+        from tbl_templateorder tto
+             inner join tbl_member tm on tto.midx = tm.midx
+             inner join tbl_studyorderpay tsop on tsop.tsopidx = tto.ttoidx
+        where tm.midx = (select midx from tbl_member where memberid = #{MemberId}) and
+            tsop.tsopstatus = 'Y' and
+            tsop.tsopdivi = 'InviOrder'
+        order by tsop.TSOPDate desc
+    </select>
+
     <insert id="InsertCustomerHelp" parameterType="map">
         INSERT INTO tbl_customerHelp (CHIdx, MIDX, CHContent, CHTitle, CHDate)
         VALUES (
@@ -116,8 +173,6 @@
                    #{CHContent},
                    #{CHTitle},
                    sysdate
-
-
              start
                )
     </insert>

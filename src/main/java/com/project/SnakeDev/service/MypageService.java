@@ -29,6 +29,9 @@ public interface MypageService {
     // 내가 작성한 리뷰 확인
     List<StudyReviewVo> getReviewInfo(String memberId);
 
+    List<StudyGOrderVo> mypageGroupCheck(String MemberId);
+    List<TemplateOrderVo> mypageInviCheck(String MemberId);
+
     // 회원 탈퇴
     AuthVo ExitMemberInfo (String memberId);
 

@@ -153,6 +153,7 @@ const PaySuccess = () => {
     }, [searchParams]);
 
     useEffect(() => {
+        console.log(orderContent);
         const startdate = `${orderContent[0]?.date} ${orderContent[0]?.start}:00`;
         const enddate = `${orderContent[0]?.date} ${orderContent[0]?.end}:00`;
         const date = new Date(orderContent[0]?.date);
@@ -280,10 +281,12 @@ const PaySuccess = () => {
     // 홈으로 돌아가는 함수
     const handleReturnHome = () => {
         navigate('/');
+        window.location.reload();
     };
 
     const handleReturnBack = () => {
         navigate(-1);
+        window.location.reload();
     };
 
     return (

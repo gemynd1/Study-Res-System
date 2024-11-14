@@ -154,23 +154,24 @@ const Header = () => {
         const sessionId = sessionStorage.getItem('id')
         const sessionName = sessionStorage.getItem('name')
 
-        const interval = setInterval(() => {
-            axios.get("http://localhost:8099/api/notification", 
-                {
-                    params: { sessionId, sessionName },
-                    headers : { 'Content-Type': 'application/json' }
-                }
-            )
-            .then(response => {
-                setNotifications(response.data);
-                // console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        }, 1500);
-        return () => clearInterval(interval);
-        
+        if(sessionId !== null) {
+            // const interval = setInterval(() => {
+                axios.get("http://localhost:8099/api/notification", 
+                    {
+                        params: { sessionId, sessionName },
+                        headers : { 'Content-Type': 'application/json' }
+                    }
+                )
+                .then(response => {
+                    setNotifications(response.data);
+                    // console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            // }, 1500);
+            // return () => clearInterval(interval);
+        }
     }, []);
 
     return (

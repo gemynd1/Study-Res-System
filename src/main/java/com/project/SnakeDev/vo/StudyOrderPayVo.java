@@ -12,13 +12,16 @@ public class StudyOrderPayVo {
      String TSOPMethod;
      Integer TSOPPrice;
      String TSOPStatus;
-     Date TsopDate;
+     Date TSOPDate;
      String TSOPDivi;
-
 
 //    public StudyOrderPayVo() {
 //    }
-
+    public StudyOrderPayVo(Integer TSOPPrice, String TSOPStatus, Date TSOPDate) {
+        this.TSOPPrice = TSOPPrice;
+        this.TSOPStatus = TSOPStatus;
+        this.TSOPDate = TSOPDate;
+    }
 
     // 결제 내역 처리
     public StudyOrderPayVo(String TSOPIdx, String TSOPMethod, Integer TSOPPrice, String TSOPStatus, String TSOPDivi) {
@@ -33,6 +36,7 @@ public class StudyOrderPayVo {
     public StudyOrderPayVo(String TSOPIdx) {
         this.TSOPIdx = TSOPIdx;
     }
+
 
     public String getTSOPIdx() {
         return TSOPIdx;
@@ -66,12 +70,12 @@ public class StudyOrderPayVo {
         this.TSOPStatus = TSOPStatus;
     }
 
-    public Date getTsopDate() {
-        return TsopDate;
+    public Date getTSOPDate() {
+        return TSOPDate;
     }
 
-    public void setTsopDate(Date tsopDate) {
-        TsopDate = tsopDate;
+    public void setTSOPDate(Date TSOPDate) {
+        this.TSOPDate = TSOPDate;
     }
 
     public String getTSOPDivi() {
@@ -81,4 +85,5 @@ public class StudyOrderPayVo {
     public void setTSOPDivi(String TSOPDivi) {
         this.TSOPDivi = TSOPDivi;
     }
+
 }

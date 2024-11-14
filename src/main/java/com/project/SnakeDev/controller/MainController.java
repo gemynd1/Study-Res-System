@@ -18,6 +18,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
+import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -31,6 +32,7 @@ public class MainController {
     private MainServiceImpl mainService;
     @Autowired
     private NotificationServiceImpl notificationService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/studygInfo")
     public ResponseEntity<Object> studygInfo() {
@@ -77,9 +79,9 @@ public class MainController {
     @PostMapping("/templateOrder")
     public ResponseEntity<Object> templateOrder(
             @RequestParam("random") String TTOIdx,
-            @RequestParam("requestData") String requestData,
+            @RequestParam("requestData") String TTOContent,
             @RequestParam("memberid") String MemberId) {
-        mainService.saveTemplateOrder(TTOIdx, requestData, MemberId);
+        mainService.saveTemplateOrder(TTOIdx, TTOContent, MemberId);
         return ResponseEntity.ok("ok");
     }
 
@@ -94,7 +96,7 @@ public class MainController {
         }
     }
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
     // 결제 승인 내역 DB저장
     @PostMapping("/OrderPay")
     public ResponseEntity<Object> OrderPay(@RequestParam("orderPayData") String orderPayDataJson,
@@ -171,6 +173,46 @@ public class MainController {
             } else {
                 return ResponseEntity.badRequest().body("no");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
+    @GetMapping("/myTimeInfo")
+    public ResponseEntity<Object> myTimeInfo(@RequestParam("MemberId") String MemberId) {
+        return ResponseEntity.ok(mainService.myTimeInfo(MemberId));
+    }
+
+    @PostMapping("/seatOrder")
+    public ResponseEntity<Object> seatOrder(@RequestParam("MemberId") String MemberId,
+                                            @RequestParam("seatNum") Integer seatNum,
+                                            @RequestParam("orderdata") String orderdata,
+                                            @RequestParam("selectedOption") String selectedOption) {
+        try {
+            Map<String, Object> orderData = objectMapper.readValue(orderdata, Map.class);
+            StudyInInfoVo studyInInfoVo = VOMapper.mapToVO(orderData, StudyInInfoVo.class);
+            System.out.println(orderdata);
+
+            // 개인이 예약된 자리가 있는지 확인하는 DB
+            if(mainService.selectStudyininfo(MemberId) > 0) return ResponseEntity.ok(5);
+
+            if(selectedOption.equals("기간")) {
+                // 회원이 선택한 기간권안에 당일 예약 날짜가 포함이 되어있는지 확인하는 DB
+                if(mainService.selectOptionTime(MemberId) <= 0) return ResponseEntity.ok(4);
+            } else {
+                // 회원이 시간제로 예약하였을 때 선택한 시간이 현재 충전이 되어있는지 확인하는 DB
+                if(mainService.selectOptionTime2(MemberId, selectedOption) <= 0) return ResponseEntity.ok(4);
+                if(mainService.updateIntime(MemberId, selectedOption) <= 0) return ResponseEntity.ok(3);
+            }
+            if(mainService.updateStudyInInfo(seatNum, studyInInfoVo, MemberId) <= 0) {
+                return ResponseEntity.ok(2);
+            } else {
+                return ResponseEntity.badRequest().body(1);
+            }
+
+            // 없다면 예약 진행
+//        if(mainService.updateStudyininfo(MemberId, seatNum) > 0) return ResponseEntity.ok(1);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");

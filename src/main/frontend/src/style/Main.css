@@ -300,6 +300,15 @@
     text-align: center;
 }
 
+.MuiBox-root .modal-seat-content-section .modal-seat-select-section-time {
+    width: 50%;
+    padding: 5px;
+    font-size: 0.9em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+
 .MuiBox-root .modal-seat-content-section .modal-seat-input {
     width: 96%;
     padding: 5px;

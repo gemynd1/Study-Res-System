@@ -260,7 +260,7 @@ const MypageAdd = () => {
                             <div className="AddStudyTime">
                                 <span>남은 정기권 일 수</span>
                                 {/* <span>{formattedDate}</span> */}
-                                <span>{AddTimeInfo?.mendinDate === null ? "기간 없음" : AddTimeInfo?.mendinDate.replace(/T.*/, "")}</span>
+                                <span>{AddTimeInfo?.mendinDate === null ? "기간 없음" : AddTimeInfo?.mendinDate.replace(/T.*/, "") + "까지"}</span>
                             </div>
 
                         </div>

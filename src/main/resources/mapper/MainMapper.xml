@@ -111,7 +111,7 @@
         insert into tbl_templateorder
         values (
                    #{TTOIdx},
-                   #{requestData},
+                   #{TTOContent},
                    'N',
                    (select midx from tbl_member where memberid = #{MemberId})
                )
@@ -146,7 +146,7 @@
                 to_date(#{wait.SGORegDate}, 'yyyy-mm-dd'),
                 to_date(#{wait.SGOStartDate}, 'yyyy-mm-dd HH24:mi'),
                 to_date(#{wait.SGOEndDate}, 'yyyy-mm-dd HH24:mi'),
-                #{wait.SGOtotal}
+                #{wait.SGOtotal},
                 #{wait.SGOPeople}
             )
     </insert>
@@ -194,5 +194,45 @@
                 update tbl_member set MUseTime = MUseTime + #{SIPName, jdbcType=INTEGER} where memberId = #{MemberId}
             </otherwise>
         </choose>
+    </update>
+    <select id="myTimeInfo" resultType="com.project.SnakeDev.vo.AuthVo">
+        select MUseTime,
+           CASE
+               WHEN MEndinDate > TRUNC(SYSDATE) THEN MEndinDate
+           ELSE NULL
+           END AS MEndinDate
+        from tbl_member where memberid = #{MemberId}
+    </select>
+    <select id="selectStudyininfo" resultType="java.lang.Integer">
+        select count(*) from tbl_studyininfo tsi
+                                 inner join tbl_member tm on tm.midx = tsi.midx
+        where tm.midx = (select midx from tbl_member where memberid = #{MemberId})
+    </select>
+    <select id="selectOptionTime" resultType="java.lang.Integer">
+        select count(*) from tbl_member
+            where midx = (select midx from tbl_member where memberid = #{MemberId}) and
+                to_date(sysdate, 'YYYY-MM-DD HH24:mi:ss') between
+                to_date(mstartindate, 'YYYY-MM-DD HH24:mi:ss') and to_date(mendindate, 'YYYY-MM-DD HH24:mi:ss');
+    </select>
+    <select id="selectOptionTime2" resultType="java.lang.Integer">
+        <![CDATA[
+        select count(*) from tbl_member where
+            midx = (select midx from tbl_member where MemberId = #{MemberId}) and
+            Musetime > #{selectedOption}
+        ]]>
+    </select>
+    <update id="updateIntime" parameterType="map">
+        update tbl_memberininfo set musetime =
+            case when musetime >= #{selectedOption} then musetime - #{selectedOption}
+            else musetime - 0 end
+        where midx = (select midx from tbl_member where memberid = #{MemberId})
+    </update>
+    <update id="updateStudyInInfo" parameterType="map">
+        UPDATE Tbl_StudyInInfo SET
+                                   MIdx = (select midx from tbl_member where memberid = #{MemberId}),
+                                   SeatUseState = 'Y',
+                                   SeatStartTime = to_date(#{seat.SeatStartTime}, 'YYYY-MM-DD HH24:mi:ss'),
+                                   SeatEndTime = to_date(#{seat.SeatEndTime}, 'YYYY-MM-DD HH24:mi:ss')
+        WHERE SCIdx = 1111 and SeatNum = (select SeatNum from Tbl_StudyInInfo where SIINum = #{seatNum})
     </update>
 </mapper>

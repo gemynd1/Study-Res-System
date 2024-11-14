@@ -1,7 +1,9 @@
 package com.project.SnakeDev.controller;
 
 import ch.qos.logback.core.model.Model;
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.project.SnakeDev.config.VOMapper;
+import com.project.SnakeDev.service.Impl.MypageServiceImpl;
 import com.project.SnakeDev.service.MypageService;
 import com.project.SnakeDev.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class MypageController {
     @Autowired
-    MypageService mypageService;
+    MypageServiceImpl mypageService;
 
     @GetMapping("/mypage/mypageAccount")
     public ResponseEntity<Object> mypageAccount(
@@ -103,17 +105,17 @@ public class MypageController {
         return ResponseEntity.ok(ReviewInfo);
     }
 
-//    @GetMapping("/mypage/mypageGroupCheck")
-//    public ResponseEntity<Object> mypageGroupCheck(@RequestParam("memberid") String MemberId) {
-//        List<StudyGOrderVo> GOrderInfo = mypageService.mypageGroupCheck(MemberId);
-//        return ResponseEntity.ok(GOrderInfo);
-//    }
-//
-//    @GetMapping("/mypage/mypageInviCheck")
-//    public ResponseEntity<Object> mypageInviCheck(@RequestParam("memberid") String MemberId) {
-//        List<StudyGOrderVo> inviInfo = mypageService.mypageInviCheck(MemberId);
-//        return ResponseEntity.ok(inviInfo);
-//    }
+    @GetMapping("/mypage/mypageGroupCheck")
+    public ResponseEntity<Object> mypageGroupCheck(@RequestParam("MemberId") String MemberId) {
+        List<StudyGOrderVo> GOrderInfo = mypageService.mypageGroupCheck(MemberId);
+        return ResponseEntity.ok(GOrderInfo);
+    }
+
+    @GetMapping("/mypage/mypageInviCheck")
+    public ResponseEntity<Object> mypageInviCheck(@RequestParam("MemberId") String MemberId) {
+        List<TemplateOrderVo> inviInfo = mypageService.mypageInviCheck(MemberId);
+        return ResponseEntity.ok(inviInfo);
+    }
 
     @PostMapping("/customer/customerWrite")
     public ResponseEntity<String> customerWrite(@RequestBody Map<String, Object> data) {
