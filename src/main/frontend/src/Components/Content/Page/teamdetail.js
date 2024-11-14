@@ -36,12 +36,14 @@ const PaymentModal = ({
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
   const [random, setRandom] = useState(null);
+  const [orderid, setOrderid] = useState('');
 
   useEffect(() => {
     const today = new Date();
     const formatdate = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}`;
     const randomNum = Math.floor(Math.random() * 1000000)
     setRandom(`${formatdate}${randomNum}`);
+    setOrderid(nanoid());
   }, [])
   // console.log(random)
 
@@ -144,14 +146,14 @@ const PaymentModal = ({
               ]
 
               // 먼저 업데이트
-              axios.post(`http://localhost:8099/api/templateOrder?random=${encodeURIComponent(String(random))}&requestData=${encodeURIComponent(JSON.stringify(requestData))}`,
+              axios.post(`http://localhost:8099/api/templateOrder?random=${encodeURIComponent(String(orderid))}&requestData=${encodeURIComponent(JSON.stringify(requestData))}&memberid=${sessionStorage.getItem('id')}`,
                 {
                   headers : { 'Content-Type': 'application/json' }
                 },
               )
               .then(res => {
                 widgets.requestPayment({
-                  orderId: nanoid(),
+                  orderId: orderid,
                   orderName: `${roomTitle} - ${date} (${start + ":00"} ~ ${end + 1 + ":00"}) (${people}명)`,
                   customerName: `${sessionStorage.getItem("name")}`,
                   successUrl: window.location.origin + `/paysuccess?ordernum=${random}&ordertype=grouporder`,

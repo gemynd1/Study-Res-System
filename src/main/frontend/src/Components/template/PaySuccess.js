@@ -169,7 +169,7 @@ const PaySuccess = () => {
                 SGORegDate: formattedDate,
                 SGOStartDate : startdate,
                 SGOEndDate : enddate,
-                SGOpeople : orderContent[0]?.people,
+                SGOPeople : Number(orderContent[0]?.people),
             }))
         } else if(orderType === 'inviorder') {
             setOrderPayData((prevState) => ({

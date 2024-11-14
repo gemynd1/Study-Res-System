@@ -136,7 +136,7 @@
             )
     </insert>
     <insert id="InsertGOrderWait" parameterType="map">
-        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TSOPIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal)
+        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TSOPIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal, SGOPeople)
         values
             (
                 #{wait.SGONum},
@@ -147,6 +147,7 @@
                 to_date(#{wait.SGOStartDate}, 'yyyy-mm-dd HH24:mi'),
                 to_date(#{wait.SGOEndDate}, 'yyyy-mm-dd HH24:mi'),
                 #{wait.SGOtotal}
+                #{wait.SGOPeople}
             )
     </insert>
     <update id="InsertInOrderWait" parameterType="java.util.HashMap">

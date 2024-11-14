@@ -29,12 +29,13 @@ public class StudyGOrderVo {
     }
 
     // 예약 최종처리
-    public StudyGOrderVo(String SGONum, String SGORegDate, String SGOStartDate, String SGOEndDate, Integer SGOtotal, StudyGInfoVo studyGInfoVo, StudyOrderPayVo studyOrderPayVo) {
+    public StudyGOrderVo(String SGONum, String SGORegDate, String SGOStartDate, String SGOEndDate, Integer SGOtotal, Integer SGOPeople, StudyGInfoVo studyGInfoVo, StudyOrderPayVo studyOrderPayVo) {
         this.SGONum = SGONum;
         this.SGORegDate = SGORegDate;
         this.SGOStartDate = SGOStartDate;
         this.SGOEndDate = SGOEndDate;
         this.SGOtotal = SGOtotal;
+        this.SGOPeople = SGOPeople;
         this.studyGInfoVo = studyGInfoVo;
         this.studyOrderPayVo = studyOrderPayVo;
     }

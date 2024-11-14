@@ -83,18 +83,12 @@ const Header = () => {
     }
 
     // notification에 대한 정보
-    const [notifications, setNotifications] = useState([
-        // {id: 1, content: "1김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        // {id: 2, content: "2김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        // {id: 3, content: "3김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        // {id: 4, content: "4김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"},
-        // {id: 5, content: "5김지민 님의 모임에 참여하였습니다.김지민 님의 모임에 참여하였습니다.", date: "2024-09-08 22:51"}
-    ]);
+    const [notifications, setNotifications] = useState([]);
 
     // 하나씩 지우기
     const del_notification = (event) => {
         const id = event.target.getAttribute('data-id');
-        console.log(id);
+        // console.log(id);
         axios.post(`http://localhost:8099/api/notificationdel?maidx=${id}`, {headers: {'Content-Type': 'application/json'}})
         .then(res => {
             setNotifications(notifications.filter(notification => notification.maidx !== parseInt(id)));
