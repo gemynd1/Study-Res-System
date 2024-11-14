@@ -12,7 +12,7 @@ public interface ReviewMapper {
 
     int InsertReview(ReviewVo reviewVo);
 
-    int insertReviewImage(ReviewImgVo imgVo);
+    int insertReviewImage(String imgVo);
 
     // int InsertReviewImg(ReviewImgVo ReviewImgVo);
 }   

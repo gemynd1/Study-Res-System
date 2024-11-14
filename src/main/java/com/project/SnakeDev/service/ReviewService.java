@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReviewService {
     int InsertReview(ReviewVo reviewVo);
 
-    int insertReviewImage(ReviewImgVo imgVo);
+    int insertReviewImage(String sriImg);
     // int InsertReviewImg(ReviewImgVo reviewImgVo);
 
 }

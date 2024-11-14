@@ -13,23 +13,34 @@
                 sysdate)
     </insert>
 
-    <insert id="InsertReviewImg" parameterType="map">
-        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)
-        values ( 
-            SIINFO_SEQ.nextval,
-            SREVIEW_SEQ.nextval,
-            #{sriimg}
-        )
-    </insert>
+<!--    <insert id="InsertReviewImg" parameterType="map">-->
+<!--        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)-->
+<!--        values ( -->
+<!--            SIINFO_SEQ.nextval,-->
+<!--            SREVIEW_SEQ.nextval,-->
+<!--            #{sriimg}-->
+<!--        )-->
+<!--    </insert>-->
 
-    <insert id="insertReviewImage" parameterType="com.project.SnakeDev.vo.ReviewImgVo">
+    <insert id="insertReviewImage" parameterType="String">
+        <![CDATA[
         insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)
-        values ( 
-            SIINFO_SEQ.nextval,
-            #{srIdx},
+        values (
+            ComCom_seq.nextval,
+            (select * from (select sridx from tbl_studyreview order by sridx desc) where rownum <= 1),
             #{sriImg}
         )
+        ]]>
     </insert>
+
+<!--    <insert id="insertReviewImage" parameterType="map">-->
+<!--        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)-->
+<!--        values (-->
+<!--                   SIINFO_SEQ.nextval,-->
+<!--                   (select srIdx from tbl_studyreview where sgiIdx = #{sgiIdx}),-->
+<!--                   #{rs}-->
+<!--               )-->
+<!--    </insert>-->
 
 <!--    <insert id="InsertReivewTag" parameterType="map">-->
 <!--        insert into tbl_studyhastaglist (tshtlidx, tshtlcontent)-->

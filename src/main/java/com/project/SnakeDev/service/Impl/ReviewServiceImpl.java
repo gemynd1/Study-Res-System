@@ -29,7 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public int insertReviewImage(ReviewImgVo imgVo) {
-        return reviewMapper.insertReviewImage(imgVo);
+    public int insertReviewImage(String sriImg) {
+        return reviewMapper.insertReviewImage(sriImg);
     }
 }
