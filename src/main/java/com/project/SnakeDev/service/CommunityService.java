@@ -21,9 +21,13 @@ public interface CommunityService {
 
     public List<CommunityVo> ViewPost(String comIdx);
 
-    public List<CommunityVo> ViewComment(String comIdx);
+    public List<CommunityVo> ViewComment(String comIdx, String currentPage, String commentSize);
+
+    public int ViewCommentSize(String comIdx);
 
     public List<CommunityVo> ViewPost_forPostRewrite(String comIdx);
+
+    public List<TogetherStudyVo> ViewGroupMember_forPost(String comIdx);
 
     public List<TogetherStudyVo> ViewGroupMember_forPostRewrite(String comIdx);
 
@@ -32,4 +36,6 @@ public interface CommunityService {
     public Boolean updateCommunity(Map<String, Object> data);
 
     public Boolean deleteTogetherStudy(String comIdx, List<Map<String, Object>> groupMemberInfos);
+
+    public Boolean insert_comment_question(int comIdx,String comment,int maxCCGroupNum,String sessionId);
 }

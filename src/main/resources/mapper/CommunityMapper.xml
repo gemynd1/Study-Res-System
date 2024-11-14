@@ -52,17 +52,32 @@
         select
             c.*,
             m.MemberName,
-            listagg(ts.Midx, ', ') within group (order by ts.Midx) as MemberNames
+            m.MemberId,
+            cc.ComCateName as comCategoryName,
+            (SELECT MAX(CCGroupNum) FROM tbl_community_comment WHERE comidx = #{comIdx}) AS maxCCGroupNum
         from
             tbl_community c
-            join
+                join
             tbl_member m on c.midx = m.midx
-            left join
-            tbl_TogetherStudy ts on c.comidx = ts.comidx
+                left join
+            tbl_community_category cc on c.COMCATEIDX = cc.COMCATEIDX
         where
-            c.comidx = #{comidx}
+            c.comidx = #{comIdx}
         group by
-            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName, m.MemberId, cc.ComCateName
+    </select>
+
+    <select id="ViewGroupMember_forPost" resultType="com.project.SnakeDev.vo.TogetherStudyVo" parameterType="String">
+        select
+            ts.*,
+            m.MemberName,
+            m.MemberId
+        from
+            tbl_TogetherStudy ts
+        join
+            tbl_member m on ts.midx = m.midx
+        where
+            ts.comidx = #{comIdx}
     </select>
 
     <select id="ViewPost_forPostRewrite" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
@@ -88,8 +103,42 @@
             comidx = #{comIdx}
     </select>
 
-    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
-        select tcc.*,tm.membername  from tbl_community_comment tcc, tbl_member tm  where tcc.comidx = #{comidx} and tcc.midx = tm.midx
+    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="map">
+        WITH CommentWithDenseRank AS (
+            SELECT
+                tcc.*,
+                tm.membername,
+                tm.memberId,
+                DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
+            FROM
+                tbl_community_comment tcc
+                    JOIN
+                tbl_member tm ON tcc.midx = tm.midx
+            WHERE
+                tcc.comidx = #{comIdx}
+        )
+        SELECT
+            *
+        FROM
+            CommentWithDenseRank
+        WHERE
+            dense_rank BETWEEN (#{currentPage} * #{commentSize} - (#{commentSize} - (#{commentSize} - 1))) AND (#{currentPage} * #{commentSize})
+    </select>
+
+    <select id="ViewCommentSize" resultType="int" parameterType="String">
+        WITH RankedComments AS (
+            SELECT
+                tcc.*,
+                DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
+            FROM
+                tbl_community_comment tcc
+            WHERE
+                tcc.comidx = #{comIdx}
+        )
+        SELECT
+            NVL(CEIL(MAX(dense_rank) / 2), 0) AS pageSize
+        FROM
+            RankedComments
     </select>
 
     <select id="ViewMoreCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="map">
@@ -146,11 +195,23 @@
     <delete id="deleteTogetherStudy" parameterType="map">
         DELETE FROM tbl_TogetherStudy
         WHERE comidx = #{comIdx}
-          AND (comidx, midx) NOT IN (
-                                     <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
-                                         #{item.comIdx}, #{item.midx}
-                                     </foreach>
+            AND (comidx, midx) NOT IN (
+                <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
+                    #{item.comIdx}, #{item.midx}
+                </foreach>
             )
     </delete>
+
+    <insert id="insert_comment_question" parameterType="map">
+        insert into tbl_community_comment
+        values
+        (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, (#{maxCCGroupNum} + 1), #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+    </insert>
+
+<!--    <insert id="insert_comment_reply" parameterType="map">-->
+<!--        insert into tbl_community_comment-->
+<!--        values-->
+<!--            (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, #{maxCCGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)-->
+<!--    </insert>-->
 
 </mapper>
