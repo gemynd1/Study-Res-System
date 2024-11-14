@@ -814,11 +814,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     width: 500px;
-<<<<<<< HEAD
-    height: auto;
-=======
-    /* height: 900px; */
->>>>>>> f65fa4e0d38bdf6ac681a90c18ab585aaa8b6d95
 }
 
 .Modal-content {

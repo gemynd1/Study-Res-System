@@ -89,11 +89,11 @@ const Header = () => {
     const index_choice = (index) => {
         if(active_index === index) {
             setActive_index(null);
-            setChatingModal(false);
             setActive_message_index(null);
+            setXChat((prevState) => !prevState);
         }else{
             setActive_index(index);
-            setChatingModal(true)
+            setXChat((prevState) => prevState);
         }
     }
 
@@ -143,6 +143,11 @@ const Header = () => {
         }
     }
 
+    const [XChat, setXChat] = useState(false);
+
+    const handleClose = () => {
+        setXChat((prevState) => !prevState);
+    }
     const closeChat = (id) => {
         const chat_background = document.querySelector(`.chat-background-${id}`);
         chat_background.style.display = "none";
@@ -293,123 +298,144 @@ const Header = () => {
                 </div>
 
                 <div className="first-background" style={{display: active_index === 1 ? "block" : "none"}}>
-                    <div className="second-background">
-                        <div className="message-headerBar">
-                            <img src="/img/icon/chat(white).png" alt="채팅"
-                                 style={{width: "24px", height: "24px", marginLeft: "3%"}}/>
-                            <span>채팅방에 오신 것을 환영합니다</span>
-                        </div>
-
-                        <div className="message-section">
-                        <div className="typeBar">
-                            <div className="typeBar2">
-                                <div className={active_message_index === 0 ? "personal-message active" : "personal-message"} onClick={() => { message_type_choice(0) }}>
-                                    <span className="personal-message-text">받은 메시지함</span>
-                                </div>
-                                <div className={active_message_index === 1 ? "group-message active" : "group-message"} onClick={() => { message_type_choice(1) }}>
-                                    <span className="group-message-text">모임</span>
-                                </div>
+                    {XChat && (
+                        <div className="second-background">
+                            <div className="message-headerBar">
+                                <img src="/img/icon/chat(white).png" alt="채팅"
+                                     style={{width: "24px", height: "24px", marginLeft: "3%"}}/>
+                                <span>채팅방에 오신 것을 환영합니다</span>
+                                <img src="/img/icon/close(white).png" alt="닫기"
+                                     style={{width: "20px", height: "20px", marginLeft: "30%"}}
+                                     onClick={handleClose}/>
                             </div>
 
-                            {active_index === 1 && active_message_index === 1 && (
-                                <Join2
-                                    open={ChattingModal}
-                                    onClose={() => {
-                                        setChatingModal(false);
-                                        setActive_message_index(null);
-                                    }}
-                                />
-                            )}
-                        </div>
+                            <div className="message-section">
+                                <div className="typeBar">
+                                    <div className="typeBar2">
+                                        <div
+                                            className={active_message_index === 0 ? "personal-message active" : "personal-message"}
+                                            onClick={() => {
+                                                message_type_choice(0)
+                                            }}>
+                                            <span className="personal-message-text">받은 메시지함</span>
+                                        </div>
+                                        <div
+                                            className={active_message_index === 1 ? "group-message active" : "group-message"}
+                                            onClick={() => {
+                                                message_type_choice(1)
+                                            }}>
+                                            <span className="group-message-text">모임</span>
+                                        </div>
+                                    </div>
+
+                                    {active_index === 1 && active_message_index === 1 && (
+                                        <Join2
+                                            open={ChattingModal}
+                                            onClose={() => {
+                                                setChatingModal(false);
+                                                setActive_message_index(null);
+                                            }}
+                                        />
+                                    )}
+                                </div>
 
 
-                            {/*<div className="typeBar">*/}
-                            {/*    <div className={active_message_index === 0 ? "personal-message active" : "personal-message" } onClick={() => {message_type_choice(0)}}>*/}
-                            {/*        <span className="personal-message-text">받은 메시지함</span>*/}
-                            {/*    </div>*/}
-                            {/*    <div className={active_message_index === 1 ? "group-message active" : "group-message"} onClick={() => {message_type_choice(1)}}>*/}
-                            {/*        <span className="group-message-text">모임</span>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-
-                            <div className="personal-message-section" style={{display: active_message_index === 1 ? "none" : "block"}}>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                                <div className="personal-message-content">
-                                    <img src="/img/icon/person(comment).png" alt="personIcon" className="personIcon" />
-                                    <div className="text-group">
-                                        <span className="sender-text">정희수</span>
-                                        <p className="message-content">오늘은 무슨 공부할껀가요?</p>
-                                    </div>
-                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
-                                </div>
-                            </div>
-
-                            <div className="group-message-section" style={{display: active_message_index === 0 ? "none" : "block"}}>
-
-                                {/*{chatHeaderBars.map((chatHeaderBar) => (*/}
-                                {/*    <div className="group-message-content" onClick={() => {showChat(chatHeaderBar.id)}}>*/}
-                                {/*    <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />*/}
-                                {/*    <div className="text-group">*/}
-                                {/*        <span className="groupName-text">({chatHeaderBar.groupName}) {chatHeaderBar.groupMember.length > 8 ? chatHeaderBar.groupMember.substring(0,8) + "..." : chatHeaderBar.groupMember}</span>*/}
-                                {/*        {chatContents.map((chatContent) => (*/}
-                                {/*            chatContent.chatgroup === chatHeaderBar.id && */}
-                                {/*            chatContent.chatNum === Math.max(...chatContents.map(chatContent => chatContent.chatNum)) && (*/}
-                                {/*                <p className="message-content">{chatContent.content}</p>*/}
-                                {/*            )*/}
-                                {/*        ))}*/}
+                                {/*<div className="typeBar">*/}
+                                {/*    <div className={active_message_index === 0 ? "personal-message active" : "personal-message" } onClick={() => {message_type_choice(0)}}>*/}
+                                {/*        <span className="personal-message-text">받은 메시지함</span>*/}
                                 {/*    </div>*/}
-                                {/*    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />*/}
+                                {/*    <div className={active_message_index === 1 ? "group-message active" : "group-message"} onClick={() => {message_type_choice(1)}}>*/}
+                                {/*        <span className="group-message-text">모임</span>*/}
+                                {/*    </div>*/}
                                 {/*</div>*/}
-                                {/*))}*/}
 
-                                {/* <div className="group-message-content">
+                                <div className="personal-message-section"
+                                     style={{display: active_message_index === 1 ? "none" : "block"}}>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                    <div className="personal-message-content">
+                                        <img src="/img/icon/person(comment).png" alt="personIcon"
+                                             className="personIcon"/>
+                                        <div className="text-group">
+                                            <span className="sender-text">정희수</span>
+                                            <p className="message-content">오늘은 무슨 공부할껀가요?</p>
+                                        </div>
+                                        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
+                                    </div>
+                                </div>
+
+                                <div className="group-message-section"
+                                     style={{display: active_message_index === 0 ? "none" : "block"}}>
+
+                                    {/*{chatHeaderBars.map((chatHeaderBar) => (*/}
+                                    {/*    <div className="group-message-content" onClick={() => {showChat(chatHeaderBar.id)}}>*/}
+                                    {/*    <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />*/}
+                                    {/*    <div className="text-group">*/}
+                                    {/*        <span className="groupName-text">({chatHeaderBar.groupName}) {chatHeaderBar.groupMember.length > 8 ? chatHeaderBar.groupMember.substring(0,8) + "..." : chatHeaderBar.groupMember}</span>*/}
+                                    {/*        {chatContents.map((chatContent) => (*/}
+                                    {/*            chatContent.chatgroup === chatHeaderBar.id && */}
+                                    {/*            chatContent.chatNum === Math.max(...chatContents.map(chatContent => chatContent.chatNum)) && (*/}
+                                    {/*                <p className="message-content">{chatContent.content}</p>*/}
+                                    {/*            )*/}
+                                    {/*        ))}*/}
+                                    {/*    </div>*/}
+                                    {/*    <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />*/}
+                                    {/*</div>*/}
+                                    {/*))}*/}
+
+                                    {/* <div className="group-message-content">
                                     <img src="/img/icon/group(message).png" alt="groupIcon" className="groupIcon" />
                                     <div className="text-group">
                                         <span className="groupName-text">(123) 백지민, 김지민....</span>
@@ -425,11 +451,13 @@ const Header = () => {
                                     </div>
                                     <img src="/img/icon/redDot.png" alt="redDot" className="redDot" />
                                 </div> */}
+                                </div>
+
                             </div>
 
                         </div>
+                    )}
 
-                    </div>
                 </div>
 
                 <div className="chat-section">
@@ -440,16 +468,22 @@ const Header = () => {
 
                                 <div className="chat-headerBar">
                                     <p className="chat-partner">{chatHeaderBars.groupMember}</p>
-                                    <img src="/img/icon/arrow(down).png" alt="arrow-icon" className={`arrow-icon arrow-icon-${chatHeaderBars.id}`} onClick={() => {toggleChat(chatHeaderBars.id)}} />
-                                    <img src="/img/icon/x.png" alt="x-icon" className="x-icon" onClick={() => {closeChat(chatHeaderBars.id)}}/>
+                                    <img src="/img/icon/arrow(down).png" alt="arrow-icon"
+                                         className={`arrow-icon arrow-icon-${chatHeaderBars.id}`} onClick={() => {
+                                        toggleChat(chatHeaderBars.id)
+                                    }}/>
+                                    <img src="/img/icon/x.png" alt="x-icon" className="x-icon" onClick={() => {
+                                        closeChat(chatHeaderBars.id)
+                                    }}/>
                                 </div>
 
-                                <div className={`chat-main chat-main-${chatHeaderBars.id}`} >
+                                <div className={`chat-main chat-main-${chatHeaderBars.id}`}>
 
                                     <div className="chatbox">
                                         <div className="chatbox-background">
-                                            <input />
-                                            <img src="/img/icon/send-chat.png" alt="send-chat-icon" className="send-chat-icon" />
+                                            <input/>
+                                            <img src="/img/icon/send-chat.png" alt="send-chat-icon"
+                                                 className="send-chat-icon"/>
                                         </div>
                                     </div>
 
@@ -459,7 +493,8 @@ const Header = () => {
                                             chatContent.chatgroup === chatHeaderBars.id && (
                                                 chatContent.senderType === "recipient" ? (
                                                     <div className="chat-recipient">
-                                                        <img src="/img/icon/person(comment).png" alt="recipient-icon" className="recipient-icon" />
+                                                        <img src="/img/icon/person(comment).png" alt="recipient-icon"
+                                                             className="recipient-icon"/>
                                                         <div className="chat-info">
                                                             <span className="chat-recipient-name">{chatContent.name}</span>
                                                             <div className="chat-text-box">
@@ -474,8 +509,8 @@ const Header = () => {
                                                         </div>
                                                     </div>
                                                 )
-                                        )))}
-                                        
+                                            )))}
+
                                     </div>
 
                                 </div>
@@ -492,7 +527,7 @@ const Header = () => {
 
             </header>
         </>
-        
+
     );
 };
 

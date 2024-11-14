@@ -35,14 +35,12 @@ import ReviewDetail from "./Components/Content/Review/ReviewDetail";
 import Template_Create from "./Components/template/Template_Create";
 import Template_Editor from "./Components/template/Template_Editor";
 import PaySuccess from "./Components/template/PaySuccess";
-<<<<<<< HEAD
 import MypageCheck from "./Components/Content/Mypage/MypageCheck";
 import Chat from "./Components/Content/Page/Chating/Chat";
 import Join2 from "./Components/Content/Page/Chating/join2";
 
-=======
 import Loading from "./Components/template/Loading";
->>>>>>> f65fa4e0d38bdf6ac681a90c18ab585aaa8b6d95
+
 
 // import './App.css';
 const ScrollToTop  = () => {
@@ -117,13 +115,13 @@ function AppContent() {
           <Route  path="/teamdetail" />
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
-<<<<<<< HEAD
+
 
           <Route path="/chating/chat/*" element={<Chat />} />  {/* 채팅 */}
           <Route path="/chating/join2" element={<Join2 />} /> {/* 채팅 로그인 */}
-=======
+
           <Route path="/loading" element={<Loading />} />
->>>>>>> f65fa4e0d38bdf6ac681a90c18ab585aaa8b6d95
+
       </Routes>
       {!hideHeaderLogin && <Footer />}
 
