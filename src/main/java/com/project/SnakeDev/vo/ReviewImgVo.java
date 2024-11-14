@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor       // 기본 생성자 생성
 // 모든 필드를 매개변수로 받는 생성자 생성
 public class ReviewImgVo {
-    private Integer sriimgidx; // 스터디 리뷰사진 번호
+    private Integer sriImgIdx; // 스터디 리뷰사진 번호
     private Integer srIdx;       // 스터디룸 게시글 번호
-    private String sriimg; //스터디룸 사진 url
+    private String sriImg; //스터디룸 사진 url
 
 
     public ReviewImgVo() {
@@ -21,12 +21,12 @@ public class ReviewImgVo {
 //        this.sriimg = sriimg;
 //    }
 
-    public Integer getSrrImageIdx() {
-        return sriimgidx;
+    public Integer getSriImageIdx() {
+        return sriImgIdx;
     }
 
-    public void setSrrImageIdx(Integer sriimgidx) {
-        this.sriimgidx = sriimgidx;
+    public void setSriImageIdx(Integer sriImgIdx) {
+        this.sriImgIdx = sriImgIdx;
     }
 
     public Integer getSrIdx() {
@@ -38,18 +38,18 @@ public class ReviewImgVo {
     }
 
     public String getSriImg(){
-        return sriimg;
+        return sriImg;
     }
-    public void setSriImg(String sriimg){
-        this.sriimg = sriimg;
+    public void setSriImg(String sriImg){
+        this.sriImg = sriImg;
     }
 
     @Override
     public String toString() {
         return "ReviewImg{" +
-                "sriimgidx=" + sriimgidx +
+                "sriimgidx=" + sriImgIdx +
                 "srIdx=" + srIdx +
-                ", sriimg=" + sriimg +
+                ", sriimg=" + sriImg +
                 '}';
     }
 }

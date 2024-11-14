@@ -2,6 +2,7 @@ package com.project.SnakeDev.controller;
 
 import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.ReviewService;
+import com.project.SnakeDev.vo.ReviewImgVo;
 import com.project.SnakeDev.vo.ReviewVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,24 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @PostMapping("/review/content")
-public ResponseEntity<String> InsertReview(@RequestBody Map<String, Object> data1) {
+public ResponseEntity<String> reviewController(@RequestBody Map<String, Object> data1){
+
     try {
         ReviewVo reviewVo = VOMapper.mapToVO(data1, ReviewVo.class);
+        // if (reviewService.InsertReview(reviewVo) > 0) {
+        //     return ResponseEntity.ok("ok");
+        // }
+        // return ResponseEntity.badRequest().body("Insert Failed");
+        System.out.println("received data1: " + data1);
         if (reviewService.InsertReview(reviewVo) > 0) {
-            return ResponseEntity.ok("ok");
+            // 2. 이미지 리스트가 있을 경우, 반복문으로 insert 실행
+            if (reviewVo.getReviewImgVo() != null) {
+                for (ReviewImgVo imgVo : reviewVo.getReviewImgVo()) {
+                    imgVo.setSrIdx(reviewVo.getSgiIdx()); // srIdx 설정
+                    reviewService.insertReviewImage(imgVo);
+                }
+            }
+            return ResponseEntity.ok("Review and Images Inserted Successfully");
         }
         return ResponseEntity.badRequest().body("Insert Failed");
     } catch (Exception e) {

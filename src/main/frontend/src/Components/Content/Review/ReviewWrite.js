@@ -33,7 +33,7 @@ function InputFileUpload({ uploadedFiles, setUploadedFiles }) {
     const files = Array.from(event.target.files);
     if (uploadedFiles.length + files.length <= 3) {
       const newFiles = files.map(file => ({
-        file, // actual file object
+        name:file.name, // actual file object
         url: URL.createObjectURL(file) // URL for preview
       }));
       setUploadedFiles(prevFiles => [...prevFiles, ...newFiles]);
@@ -217,12 +217,19 @@ const ReviewWrite = () => {
   const [rating, setRating] = useState('');
   const [tags, setTags] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
   const [data1, setData1] = useState({
     sgiIdx:'',
     srContent: '',
     srStar: '',
     memberId: '',
   })
+
+  useEffect(() => {
+    const names = uploadedFiles.map(file => file.name);
+    setFileNames(names);
+  }, [uploadedFiles]);
+
   useEffect(() => {
     setData1((prevState) => ({
       ...prevState,
@@ -230,17 +237,20 @@ const ReviewWrite = () => {
       srContent: content,
       srStar: parseInt(rating),
       memberId: sessionStorage.getItem('id'),
+      sriImg: fileNames
     }))
   }, [data1])
 
   const handleCreate = (e) => {
 
-    console.log('studyRoom:',studyRoom);
-    console.log('content:',content)
-    console.log('rating',rating);
-    console.log(tags);
-    console.log(uploadedFiles);
-    console.log(data1)
+    // console.log('studyRoom:',studyRoom);
+    // console.log('content:',content)
+    // console.log('rating',rating);
+    // console.log(tags);
+    // console.log('uploadedFiles',uploadedFiles);
+    // console.log(fileNames)
+
+    console.log('data1', data1)
     e.preventDefault();
 
     //     setData1((prevState) => ({
@@ -252,19 +262,17 @@ const ReviewWrite = () => {
     // }))
 
     axios.post("http://localhost:8099/api/review/content", 
-      JSON.stringify(data1),// 중괄호 내부에서 제거하여 직접 전송
+      data1,
       {
         headers: {
           "Content-Type": "application/json"
         }
       })
       .then((response) => {
-        // 성공하면 리뷰메인으로 나가게 해주면 되고
         console.log('서버 응답:', response.data);
       })
       .catch((error) => {
           console.error(error);
-          // console.error("에러발생: ", error);
       })
   };
   

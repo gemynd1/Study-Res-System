@@ -1,6 +1,7 @@
 package com.project.SnakeDev.vo;
 
 import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 
 
@@ -17,8 +18,17 @@ public class ReviewVo {
     private Date srDelDate;      // 삭제일
     private Date srUpdate;       // 수정일
     private String memberId;
+    private List<ReviewImgVo> reviewImgVo;
 
     public ReviewVo() {
+    }
+
+    public List<ReviewImgVo> getReviewImgVo() {
+        return reviewImgVo;
+    }
+
+    public void setReviewImgVo(List<ReviewImgVo> reviewImgVo) {
+        this.reviewImgVo = reviewImgVo;
     }
 
 

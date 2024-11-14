@@ -27,4 +27,9 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.InsertReview(reviewVo);
     }
 
+    @Override
+    @Transactional
+    public int insertReviewImage(ReviewImgVo imgVo) {
+        return reviewMapper.insertReviewImage(imgVo);
+    }
 }

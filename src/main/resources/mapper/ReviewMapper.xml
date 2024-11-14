@@ -13,4 +13,29 @@
                 sysdate)
     </insert>
 
+    <insert id="InsertReviewImg" parameterType="map">
+        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)
+        values ( 
+            SIINFO_SEQ.nextval,
+            SREVIEW_SEQ.nextval,
+            #{sriimg}
+        )
+    </insert>
+
+    <insert id="insertReviewImage" parameterType="com.project.SnakeDev.vo.ReviewImgVo">
+        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)
+        values ( 
+            SIINFO_SEQ.nextval,
+            #{srIdx},
+            #{sriImg}
+        )
+    </insert>
+
+<!--    <insert id="InsertReivewTag" parameterType="map">-->
+<!--        insert into tbl_studyhastaglist (tshtlidx, tshtlcontent)-->
+<!--        values (-->
+<!--            SRMEMBERTAG_SEQ,-->
+<!--            #(tshtlcontent)-->
+<!--        )-->
+<!--    </insert>-->
 </mapper>
