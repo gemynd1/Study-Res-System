@@ -136,17 +136,60 @@ public class CommunityController {
         String comment = data.get("comment").toString();
         int maxCCGroupNum = Integer.parseInt(data.get("maxCCGroupNum").toString());
         String sessionId = data.get("sessionId").toString();
+        int currentComment = Integer.parseInt(data.get("currentComment").toString());
+        String add_or_edit = data.get("add_or_edit").toString();
+        int currentCommentGroupNum = Integer.parseInt(data.get("currentCommentGroupNum").toString());
 
-        if (commentType == 0) {
+//        System.out.print("data:" + data);
+
+        if (commentType == 0 && !comment.isEmpty() && add_or_edit.equals("add")) {
+
 //            sessionId와 memberId(댓글작성자)가 다른 경우
             return ResponseEntity.ok(communityService.insert_comment_question(comIdx, comment, maxCCGroupNum, sessionId));
-        }else if (commentType == 1) {
+
+        }else if (commentType == 1 && !comment.isEmpty() && currentComment != 0 && add_or_edit.equals("add")) {
+
 //            sessionId와 memberId(댓글작성자)가 같은 경우
-//            return ResponseEntity.ok(communityService.insert_comment_reply(comIdx, comment, maxCCGroupNum, sessionId));
-            return ResponseEntity.ok("success");
+            return ResponseEntity.ok(communityService.insert_comment_reply(comIdx, comment, maxCCGroupNum, sessionId, currentComment, currentCommentGroupNum));
+
+        }else if ((commentType == 1 && !comment.isEmpty() && currentComment != 0 && add_or_edit.equals("edit")) || (commentType == 0 && !comment.isEmpty() && add_or_edit.equals("edit"))) {
+
+//            sessionId와 memberId(댓글작성자)가 같거나 답글의 내용을 수정할 경우
+//            or
+//            sessionId와 memberId(댓글작성자)가 다르고 댓글의 내용을수정을 할 경우
+            return ResponseEntity.ok(communityService.updateComment_forSelf(comment, currentComment));
+
         }else {
-            return ResponseEntity.ok("fail");
+            return ResponseEntity.badRequest().body("에러 메시지");
         }
+    }
+
+    @PostMapping("/board/delete/comment")
+    public ResponseEntity<Object> delete_comment(@RequestBody Map<String, Object> data) {
+        int comment_ccidx = Integer.parseInt(data.get("comment_ccidx").toString());
+        int comment_ccgroupnum = Integer.parseInt(data.get("comment_ccgroupnum").toString());
+        int comment_comidx = Integer.parseInt(data.get("comment_comidx").toString());
+
+        System.out.print("data:" + data);
+
+        if(comment_ccidx != 0) {
+
+            return ResponseEntity.ok(communityService.deleteComment(comment_ccidx, comment_ccgroupnum, comment_comidx));
+
+        }
+        return ResponseEntity.badRequest().body("에러 메시지");
+    }
+
+    @PostMapping("/board/report/comment")
+    public ResponseEntity<Object> report_comment(@RequestBody Map<String, Object> data) {
+        int comment_ccidx = Integer.parseInt(data.get("comment_ccidx").toString());
+
+        if(comment_ccidx != 0) {
+
+            return ResponseEntity.ok(communityService.reportComment(comment_ccidx));
+
+        }
+        return ResponseEntity.badRequest().body("에러 메시지");
     }
 
 }

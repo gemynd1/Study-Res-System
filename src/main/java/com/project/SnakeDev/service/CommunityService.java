@@ -38,4 +38,12 @@ public interface CommunityService {
     public Boolean deleteTogetherStudy(String comIdx, List<Map<String, Object>> groupMemberInfos);
 
     public Boolean insert_comment_question(int comIdx,String comment,int maxCCGroupNum,String sessionId);
+
+    public Boolean insert_comment_reply(int comIdx, String comment,int maxCCGroupNum,String sessionId,int currentComment, int currentCommentGroupNum);
+
+    public Boolean updateComment_forSelf(String comment, int currentComment);
+
+    public Boolean deleteComment(int comment_ccidx, int comment_ccgroupnum, int comment_comidx);
+
+    public Boolean reportComment(int comment_ccidx);
 }

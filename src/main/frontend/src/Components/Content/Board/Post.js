@@ -25,32 +25,108 @@ import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // 댓글 더보기 버튼
-function FadeMenu({sessionId, sessionName, comment_memberName, comment_memberId, board_memberName, board_memberId}) {
+function FadeMenu({sessionId, sessionName, comment_memberName, comment_memberId, 
+                   board_memberName, board_memberId, ModalhandleOpen, comment_ccidx, 
+                   setCurrentComment, comment_cccontent, comment, setComment, add_or_edit, 
+                   setAdd_or_edit, setCurrentCommentGroupNum, comment_ccgroupnum, comment_comidx}) {
+
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+    // 모달에 상태에 대한 useState
+    // const [Modalopen, setOpen] = useState(false);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const edit_comment = () => {
+        setCurrentComment(comment_ccidx);
+        console.log("comment_ccidx:", comment_ccidx);
+        // console.log("comment_cccontent:", comment_cccontent);
+        // console.log("수정 버튼 클릭");
+        setAnchorEl(null);
+        ModalhandleOpen();
+        setComment(comment_cccontent);
+        setAdd_or_edit('edit');
+        // console.log("comment:", comment);
+    }
+
+    const delete_comment = () => {
+        setCurrentComment(comment_ccidx);
+        // console.log("comment_ccidx:", comment_ccidx);
+        // console.log("comment_ccgroupnum:", comment_ccgroupnum);
+        // console.log("comment_comidx:", comment_comidx);
+        console.log("삭제 버튼 클릭");
+
+        axios.post('http://localhost:8099/api/board/delete/comment', {
+            comment_ccidx: comment_ccidx,
+            comment_ccgroupnum: comment_ccgroupnum,
+            comment_comidx: comment_comidx
+        }, {
+            header: {'Content-Type': 'application/json'}
+        }).then(response => {
+            // console.log(response.data);
+            alert("댓글이 삭제되었습니다.");
+        }).catch(error => {
+            console.log(error);
+            alert("댓글 삭제를 실패하였습니다. 다시 시도해주세요");
+        })
+        setAnchorEl(null);
+    }
+
+    const report_comment = () => {
+        setCurrentComment(comment_ccidx);
+        // console.log("comment_ccidx:", comment_ccidx);
+        console.log("신고 버튼 클릭");
+
+        axios.post('http://localhost:8099/api/board/report/comment', {
+            comment_ccidx: comment_ccidx
+        },{
+            header: {'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log(response.data);
+            alert("댓글이 신고되었습니다.");
+        }).catch(error => {
+            console.log(error);
+            alert("댓글 신고를 실패하였습니다. 다시 시도해주세요");
+        })
+
+        setAnchorEl(null);
+    }
+
+    const reply_comment = () => {
+        setCurrentComment(comment_ccidx);
+        setCurrentCommentGroupNum(comment_ccgroupnum);
+        // console.log("comment_ccidx:", comment_ccidx);
+        // console.log("comment_ccgroupnum:", comment_ccgroupnum);
+        console.log("답글작성 버튼 클릭");
+        setAnchorEl(null);
+        ModalhandleOpen();
+        setAdd_or_edit('add');
+    }
 
     const menuItem = () => {
         const items = [];
 
         if (sessionId === board_memberId && sessionName === board_memberName) {
-            items.push(<MenuItem onClick={handleClose}>신고</MenuItem>)
-            items.push(<MenuItem onClick={handleClose}>답글작성</MenuItem>)
-            items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
+            items.push(<MenuItem onClick={report_comment}>신고</MenuItem>)
+            items.push(<MenuItem onClick={reply_comment}>답글작성</MenuItem>)
+            items.push(<MenuItem onClick={delete_comment}>개시글 삭제</MenuItem>)
         } else if (sessionId === comment_memberId && sessionName === comment_memberName) {
-            items.push(<MenuItem onClick={handleClose}>수정</MenuItem>)
-            items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
+            items.push(<MenuItem onClick={edit_comment}>수정</MenuItem>)
+            items.push(<MenuItem onClick={delete_comment}>개시글 삭제</MenuItem>)
         } else if (sessionId === board_memberId && sessionName === board_memberName && 
                    sessionId === comment_memberId && sessionName === comment_memberName) {
-            items.push(<MenuItem onClick={handleClose}>수정</MenuItem>)
-            items.push(<MenuItem onClick={handleClose}>개시글 삭제</MenuItem>)
+            items.push(<MenuItem onClick={edit_comment}>수정</MenuItem>)
+            items.push(<MenuItem onClick={delete_comment}>개시글 삭제</MenuItem>)
         } else {
-            items.push(<MenuItem onClick={handleClose}>신고</MenuItem>)
+            items.push(<MenuItem onClick={report_comment}>신고</MenuItem>)
         }
 
         return items;
@@ -79,12 +155,9 @@ function FadeMenu({sessionId, sessionName, comment_memberName, comment_memberId,
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                {/* <MenuItem onClick={handleClose}>신고</MenuItem>
-                <MenuItem onClick={handleClose}>답글작성</MenuItem>
-                <MenuItem onClick={handleClose}>수정</MenuItem>
-                <MenuItem onClick={handleClose}>개시글 삭제</MenuItem> */}
 
                 {menuItem().map((item)=>item)}
+
             </Menu>
         </div>
     );
@@ -101,7 +174,8 @@ function BasicPagination({currentPage, onChange, size}) {
 }   
 
 // input ui component
-function BasicTextFields({onChange}) {
+function BasicTextFields({onChange, comment_cccontent, name}) {
+    // console.log("comment_cccontent:", comment_cccontent);
     return (
         <Box
             component="form"
@@ -109,7 +183,7 @@ function BasicTextFields({onChange}) {
             noValidate
             autoComplete="off"
         >
-            <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} onChange={onChange} />
+            <TextField id="outlined-basic" label='내용' name={name} value={comment_cccontent} variant="outlined" multiline rows={9} onChange={onChange} />
         </Box>
     );
 }
@@ -128,8 +202,11 @@ const style = {
 };
 
 
-function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen, ModalhandleClose, open, setOpen}) {
-    const [comment, setComment] = useState();
+function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen, 
+                     ModalhandleClose, open, setOpen, comment, setComment, currentComment,
+                     setCurrentComment, add_or_edit, setAdd_or_edit, Modalstyle, currentCommentGroupNum}) {
+    // console.log("comment", comment);
+    console.log("add_or_edit:", add_or_edit);
 
     const handleComment = (e) => {
         setComment(e.target.value);
@@ -142,12 +219,14 @@ function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen
         // console.log(comment);
         // console.log("memberId:", memberId);
         // console.log("sessionId:", sessionId);
+        console.log("currentComment:", currentComment);
 
         // 값이 같으면 댓글에 대한 답글을 쓰는거고 다르면 그냥 댓글을 쓰는거임
         const commentType = memberId === sessionId ? 1 : 0;
 
         // console.log(commentType);
         // console.log("comIdx:", comIdx);
+        console.log("add_or_edit:", add_or_edit);
 
         axios.post('http://localhost:8099/api/board/insert/comment',
          {
@@ -155,7 +234,10 @@ function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen
             commentType: commentType,
             comment: comment,
             maxCCGroupNum: maxCCGroupNum,
-            sessionId: sessionId
+            sessionId: sessionId,
+            currentComment: currentComment,
+            add_or_edit: add_or_edit,
+            currentCommentGroupNum: currentCommentGroupNum
          }, {
             header: {'Content-Type': 'application/json'}
         }).then(response => {
@@ -168,51 +250,86 @@ function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen
             window.location.reload();
         })
 
+        setCurrentComment(0);
+        setAdd_or_edit('add');
         setOpen(false);
     }
 
-    // // 상태 업데이트 후에 렌더링이 완료된 다음에 상태 값을 확인
-    // useEffect(() => {
-    //     console.log("Modal open 상태가 변경되었습니다:", open);
-    // }, [open]);
-
     return (
-        <div className="QandA-button" onClick={ModalhandleOpen}>
-            <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
-            <div className="QandA-button-text">질문 작성하기</div>
-            <Modal
-                open={open}
-                onClose={ModalhandleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <div className="modal-header">
-                        <span className="modal-header-title">질문 작성하기</span>
-                    </div>
+        comment !== null ? (
+            <div className="QandA-button" onClick={ModalhandleOpen} style={Modalstyle}>
+                <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
+                <div className="QandA-button-text">질문 작성하기</div>
+                <Modal
+                    open={open}
+                    onClose={ModalhandleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div className="modal-header">
+                            <span className="modal-header-title">답글 작성하기</span>
+                        </div>
 
-                    <div className="modal-title-section">
-                        <span className="modal-title">질문</span>
-                        <span className="modal-title-count1">0자</span>
-                        <span className="modal-title-count2">/200자</span>
-                    </div>
-                    <BasicTextFields onChange={handleComment}/>
-                    <div className="modal-caution-section">
-                        <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
-                        <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
-                    </div>
-                    <div className="modal-button-section">
-                        <div className="modal-cancel-button" onClick={ModalhandleClose}>
-                            <span className="modal-cancel-text">취소</span>
+                        <div className="modal-title-section">
+                            <span className="modal-title">답글</span>
+                            <span className="modal-title-count1">0자</span>
+                            <span className="modal-title-count2">/200자</span>
                         </div>
-                        <div className="modal-active-button" onClick={insert_comment}>
-                            <span className="modal-active-text">등록</span>
+                        <BasicTextFields name="apply_comment" comment_cccontent={comment} onChange={handleComment}/>
+                        <div className="modal-caution-section">
+                            <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
+                            <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
                         </div>
-                    </div>
-                </Box>
-            </Modal>
-        </div>
-    );
+                        <div className="modal-button-section">
+                            <div className="modal-cancel-button" onClick={ModalhandleClose}>
+                                <span className="modal-cancel-text">취소</span>
+                            </div>
+                            <div className="modal-active-button" onClick={insert_comment}>
+                                <span className="modal-active-text">등록</span>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>
+            </div>
+        ) : (
+            <div className="QandA-button" onClick={ModalhandleOpen}>
+                <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
+                <div className="QandA-button-text">질문 작성하기</div>
+                <Modal
+                    open={open}
+                    onClose={ModalhandleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div className="modal-header">
+                            <span className="modal-header-title">질문 작성하기</span>
+                        </div>
+
+                        <div className="modal-title-section">
+                            <span className="modal-title">질문</span>
+                            <span className="modal-title-count1">0자</span>
+                            <span className="modal-title-count2">/200자</span>
+                        </div>
+                        <BasicTextFields name="question_comment" onChange={handleComment}/>
+                        <div className="modal-caution-section">
+                            <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
+                            <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
+                        </div>
+                        <div className="modal-button-section">
+                            <div className="modal-cancel-button" onClick={ModalhandleClose}>
+                                <span className="modal-cancel-text">취소</span>
+                            </div>
+                            <div className="modal-active-button" onClick={insert_comment}>
+                                <span className="modal-active-text">등록</span>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>
+            </div>
+        )
+    ) 
 }
 
 // 카카오맵
@@ -270,6 +387,14 @@ const Post = () => {
     const [commentSize, setCommentSize] = useState(0);
     // 모달의 open 상태를 관리하는 useState
     const [open, setOpen] = useState(false);
+    // 현재 seemore 버튼의 대상이 되는 댓글의 ccidx의 값을 저장하는 useState
+    const [currentComment, setCurrentComment] = useState(0);
+    // 현재 댓글의 groupNum의 값을 저장하는 useState
+    const [currentCommentGroupNum, setCurrentCommentGroupNum] = useState(0);
+    // 모달에서의 댓글의 내용을 저장하는 useState
+    const [comment, setComment] = useState('');
+    // 댓글 추가인지 수정인지 구분하는 useState
+    const [add_or_edit, setAdd_or_edit] = useState('add');
 
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
@@ -280,13 +405,15 @@ const Post = () => {
     // 모달 close 함수
     const ModalhandleClose = (event) => {
         event.stopPropagation()
+        setCurrentComment(0);
+        setComment('');
         setOpen(false);
     };
 
     // 페이지네이션의 페이지가 변경될 때 호출되는 함수
     const handlePageChange = (event, value) => {
         setCurrentPage(value); // 현재 페이지 상태 업데이트
-        console.log(currentPage)
+        // console.log(currentPage)
     };
 
     const insert_groupMember = () => {
@@ -366,32 +493,6 @@ const Post = () => {
         })
     }, [comIdx, currentPage, commentSize])
 
-    // useEffect(() => {
-    //     axios.get('http://localhost:8099/api/board/post', {
-    //         params: { comIdx },
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }
-    //     }).then(response => {
-    //         setBoardContents(...response.data)
-    //     }).catch(error => {
-    //         console.log(error);
-    //     })
-    // }, [comIdx]);
-
-    // useEffect(() => {
-    //     axios.get('http://localhost:8099/api/board/post/commentSize', {
-    //         params: { comIdx },
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }
-    //     }).then(response => {
-    //         setCommentSize(response.data)
-    //     }).catch(error => {
-    //         console.log(error);
-    //     })
-    // }, [comIdx]);
-
     useEffect(() => {
         axios.all([
             axios.get('http://localhost:8099/api/board/post/commentSize', {
@@ -417,11 +518,12 @@ const Post = () => {
 
     console.log(boardContents);
     console.log(commentData);
-    console.log(sessionId, sessionName);
-    console.log(boardContents.memberId, boardContents.memberName);
-    console.log(commentSize);
-    console.log(groupMemberInfos);
-    console.log(sessionId !== boardContents.memberId);
+    // console.log(sessionId, sessionName);
+    // console.log(boardContents.memberId, boardContents.memberName);
+    // console.log(commentSize);
+    // console.log(groupMemberInfos);
+    // console.log(sessionId !== boardContents.memberId);
+    // console.log(comment);
 
     if (!boardContents | !commentData | !groupMemberInfos) {
         return <div>Loading...</div>;
@@ -519,7 +621,7 @@ const Post = () => {
                     <div className="post-comment-header">
                         <span className="QandA">Q&A</span>
                         <span className="QandA-count">(2개)</span>
-                        {(sessionId !== boardContents.memberId && sessionId !== null) && (
+                        {(sessionId !== boardContents.memberId && sessionId !== null) ? (
                             <BasicModal comIdx={comIdx}
                                         sessionId={sessionId}
                                         memberId={boardContents.memberId} 
@@ -527,8 +629,46 @@ const Post = () => {
                                         ModalhandleOpen={ModalhandleOpen}
                                         ModalhandleClose={ModalhandleClose}
                                         open={open}
-                                        setOpen={setOpen} />
+                                        setOpen={setOpen}
+                                        comment={comment}
+                                        setComment={setComment}
+                                        currentComment={currentComment}
+                                        setCurrentComment={setCurrentComment}
+                                        add_or_edit={add_or_edit}
+                                        setAdd_or_edit={setAdd_or_edit}
+                                        currentCommentGroupNum={currentCommentGroupNum}/>
+                        ) : (
+                            <BasicModal Modalstyle={{display: 'none'}}
+                                        comIdx={comIdx}
+                                        sessionId={sessionId}
+                                        memberId={boardContents.memberId} 
+                                        maxCCGroupNum={boardContents.maxCCGroupNum}
+                                        ModalhandleOpen={ModalhandleOpen}
+                                        ModalhandleClose={ModalhandleClose}
+                                        open={open}
+                                        setOpen={setOpen}
+                                        comment={comment}
+                                        setComment={setComment}
+                                        currentComment={currentComment}
+                                        setCurrentComment={setCurrentComment}
+                                        add_or_edit={add_or_edit}
+                                        setAdd_or_edit={setAdd_or_edit}
+                                        currentCommentGroupNum={currentCommentGroupNum}/>
                         )}
+                        {/* <BasicModal comIdx={comIdx}
+                                        sessionId={sessionId}
+                                        memberId={boardContents.memberId} 
+                                        maxCCGroupNum={boardContents.maxCCGroupNum}
+                                        ModalhandleOpen={ModalhandleOpen}
+                                        ModalhandleClose={ModalhandleClose}
+                                        open={open}
+                                        setOpen={setOpen}
+                                        comment={comment}
+                                        setComment={setComment}
+                                        currentComment={currentComment}
+                                        setCurrentComment={setCurrentComment}
+                                        add_or_edit={add_or_edit}
+                                        setAdd_or_edit={setAdd_or_edit}/> */}
                     </div>
 
                     {/* {commentData.map((root) => (
@@ -573,7 +713,19 @@ const Post = () => {
                                               comment_memberName={comment.memberName}
                                               comment_memberId={comment.memberId}
                                               board_memberName={boardContents.memberName}
-                                              board_memberId={boardContents.memberId} />
+                                              board_memberId={boardContents.memberId}
+                                              ModalhandleOpen={ModalhandleOpen}
+                                              ModalhandleClose={ModalhandleClose}
+                                              comment_ccidx={comment.ccidx}
+                                              setCurrentComment={setCurrentComment}
+                                              comment_cccontent={comment.cccontent}
+                                              comment={comment}
+                                              setComment={setComment}
+                                              add_or_edit={add_or_edit}
+                                              setAdd_or_edit={setAdd_or_edit}
+                                              setCurrentCommentGroupNum={setCurrentCommentGroupNum}
+                                              comment_ccgroupnum={comment.ccgroupnum}
+                                              comment_comidx={comment.comidx} />
 
                                 </div>
                             ) : comment.ccrefnum === 2 ? (
@@ -593,7 +745,6 @@ const Post = () => {
                         ))}
                     </div>
 
-                    {/* props로 페이지네이션의 총 페이지 수를 넘겨서 사용해야함. */}
                     <BasicPagination page={currentPage} onChange={handlePageChange} size={commentSize} />
 
                 </div>

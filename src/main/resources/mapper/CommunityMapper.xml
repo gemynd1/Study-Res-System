@@ -208,10 +208,22 @@
         (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, (#{maxCCGroupNum} + 1), #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
     </insert>
 
-<!--    <insert id="insert_comment_reply" parameterType="map">-->
-<!--        insert into tbl_community_comment-->
-<!--        values-->
-<!--            (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, #{maxCCGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)-->
-<!--    </insert>-->
+    <insert id="insert_comment_reply" parameterType="map">
+        insert into tbl_community_comment
+        values
+            (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 2, 2, #{currentCommentGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+    </insert>
+
+    <update id="updateComment_forSelf" parameterType="map">
+        update tbl_community_comment set cccontent = #{comment}, ccupdate = SYSDATE where ccidx = #{currentComment}
+    </update>
+
+    <update id="deleteComment" parameterType="map">
+        update tbl_community_comment set ccdeldate = SYSDATE where (ccidx = #{comment_ccidx} or ccgroupnum = #{comment_ccgroupnum}) and comidx = #{comment_comidx}
+    </update>
+
+    <update id="reportComment" parameterType="int">
+        update tbl_community_comment set ccreportcount = ccreportcount + 1 where ccidx = #{comment_ccidx}
+    </update>
 
 </mapper>
