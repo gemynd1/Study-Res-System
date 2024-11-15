@@ -32,4 +32,16 @@ public class ReviewServiceImpl implements ReviewService {
     public int insertReviewImage(String sriImg) {
         return reviewMapper.insertReviewImage(sriImg);
     }
+
+    @Override
+    @Transactional
+    public int InsertReviewTag(String TSHTLContent){
+        return reviewMapper.InsertReviewTag(TSHTLContent);
+    }
+
+    @Override
+    @Transactional
+    public  int InsertReviewHasTag(){
+        return reviewMapper.InsertReviewHasTag();
+    }
 }

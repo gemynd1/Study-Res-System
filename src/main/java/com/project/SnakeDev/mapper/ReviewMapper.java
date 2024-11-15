@@ -14,5 +14,9 @@ public interface ReviewMapper {
 
     int insertReviewImage(String imgVo);
 
+    int InsertReviewTag(String Tag);
+
+    int InsertReviewHasTag();
+
     // int InsertReviewImg(ReviewImgVo ReviewImgVo);
 }   

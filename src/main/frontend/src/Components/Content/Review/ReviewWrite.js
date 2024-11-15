@@ -225,6 +225,7 @@ const ReviewWrite = () => {
     memberId: '',
   })
 
+
   useEffect(() => {
     const names = uploadedFiles.map(file => file.name);
     setFileNames(names);
@@ -237,7 +238,8 @@ const ReviewWrite = () => {
       srContent: content,
       srStar: parseInt(rating),
       memberId: sessionStorage.getItem('id'),
-      sriImg: fileNames
+      sriImg: fileNames,
+      TSHTlContent: tags
     }))
   }, [data1])
 
@@ -253,13 +255,6 @@ const ReviewWrite = () => {
     console.log('data1', data1)
     e.preventDefault();
 
-    //     setData1((prevState) => ({
-    //   ...prevState,
-    //   sgiIdx: studyRoom,
-    //   srContent: content,
-    //   srStar: rating,
-    //   memberId: sessionStorage.getItem('id'),
-    // }))
 
     axios.post("http://localhost:8099/api/review/content", 
       data1,

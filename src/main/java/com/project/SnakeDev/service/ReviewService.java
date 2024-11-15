@@ -13,6 +13,9 @@ public interface ReviewService {
     int insertReviewImage(String sriImg);
     // int InsertReviewImg(ReviewImgVo reviewImgVo);
 
+    int InsertReviewTag(String TSHTLContent);
+
+    int InsertReviewHasTag();
 }
 
 //public 사용시 다른 클래스에서 접근 가능 

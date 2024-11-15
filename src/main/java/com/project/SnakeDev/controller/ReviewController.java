@@ -33,22 +33,18 @@ public ResponseEntity<String> reviewController(@RequestBody Map<String, Object> 
 
             List<String> imgData = (List<String>) data1.get("sriImg");
             System.out.println("imgData: " + imgData);
-//            if (reviewVo.getReviewImgVo() != null && !reviewVo.getReviewImgVo().isEmpty()) {
+
+            List<String> Tags = (List<String>) data1.get("TSHTlContent");
+            System.out.println("Tags:" + Tags);
 
                 for(int i=0; i<imgData.size(); i++){
                     reviewService.insertReviewImage(imgData.get(i));
                 }
-//                for (ReviewImgVo imgVo : reviewVo.getReviewImgVo()) {
-////                    if (reviewVo.getSrIdx() != null) {
-//                        imgVo.setSrIdx(reviewVo.getSrIdx()); // srIdx 설정
-//                        reviewService.insertReviewImage(imgVo);
-//                        return ResponseEntity.ok("Review and Images Inserted Successfully");
-////                    } else {
-////
-////                        return ResponseEntity.badRequest().body("sgiIdx is null");
-////                    }
-//                }
-//            }
+                for(int i=0; i<Tags.size(); i++){
+                    reviewService.InsertReviewTag(Tags.get(i));
+                    reviewService.InsertReviewHasTag();
+                }
+
             return ResponseEntity.ok("그냥 성공");
         } else {
             return ResponseEntity.badRequest().body("Insert Failed");
@@ -60,27 +56,3 @@ public ResponseEntity<String> reviewController(@RequestBody Map<String, Object> 
 
 }
 
-//public ResponseEntity<String> reviewController(@RequestBody Map<String, Object> data1){
-//
-//    try {
-//        ReviewVo reviewVo = VOMapper.mapToVO(data1, ReviewVo.class);
-//        List<String> result = (List<String>) data1.get("sriImg");
-//        int sgiIdx = Integer.parseInt(data1.get("sgiIdx").toString());
-//
-//        if (reviewService.InsertReview(reviewVo) > 0) {
-//            // 2. 이미지 리스트가 있을 경우, 반복문으로 insert 실행
-//            if (reviewVo.getReviewImgVo() != null) {
-//                for (int i=0; i<result.size(); i++){
-//                    String rs = (String) result.get(i);
-//                    reviewService.insertReviewImage(sgiIdx, rs);
-//                }
-//            }
-//            return ResponseEntity.ok("Review and Images Inserted Successfully");
-//        }
-//        return ResponseEntity.badRequest().body("Insert Failed");
-//    } catch (Exception e) {
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-//    }
-//}
-//
-//}

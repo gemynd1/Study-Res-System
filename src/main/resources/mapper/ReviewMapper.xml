@@ -13,14 +13,6 @@
                 sysdate)
     </insert>
 
-<!--    <insert id="InsertReviewImg" parameterType="map">-->
-<!--        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)-->
-<!--        values ( -->
-<!--            SIINFO_SEQ.nextval,-->
-<!--            SREVIEW_SEQ.nextval,-->
-<!--            #{sriimg}-->
-<!--        )-->
-<!--    </insert>-->
 
     <insert id="insertReviewImage" parameterType="String">
         <![CDATA[
@@ -33,20 +25,28 @@
         ]]>
     </insert>
 
-<!--    <insert id="insertReviewImage" parameterType="map">-->
-<!--        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)-->
-<!--        values (-->
-<!--                   SIINFO_SEQ.nextval,-->
-<!--                   (select srIdx from tbl_studyreview where sgiIdx = #{sgiIdx}),-->
-<!--                   #{rs}-->
-<!--               )-->
-<!--    </insert>-->
 
-<!--    <insert id="InsertReivewTag" parameterType="map">-->
-<!--        insert into tbl_studyhastaglist (tshtlidx, tshtlcontent)-->
-<!--        values (-->
-<!--            SRMEMBERTAG_SEQ,-->
-<!--            #(tshtlcontent)-->
-<!--        )-->
-<!--    </insert>-->
+    <insert id="InsertReviewTag" parameterType="String">
+        insert into tbl_studyhastaglist (TSHTLIdx, TSHTLContent)
+        values (
+            SRMEMBERTAG_SEQ.nextval,
+            #{TSHTLContent}
+        )
+    </insert>
+
+    <insert id="InsertReviewHasTag">
+    <![CDATA[
+        insert into tbl_studyhastag (TSHTIdx, SRidx, TSHTLIdx)
+        SELECT
+            SHASTAG_SEQ.nextval,
+            (SELECT sridx FROM (SELECT sridx FROM tbl_studyreview ORDER BY sridx DESC) WHERE rownum = 1),
+            (SELECT TSHTLIdx FROM (SELECT TSHTLIdx FROM tbl_studyhastaglist ORDER BY TSHTLIdx DESC) WHERE rownum = 1)
+        FROM dual
+        ]]>
+</insert>
+<!--
+    dual테이블 -> Oracle 더미 테이블 단일 행과 열 가짐. Oracle에 기본적으로
+     존재, 목적 계산,상수 반환 ,서브 쿼리 실행 등 위해 select 문을 작성할 때
+     빈 테이블로 활용
+-->
 </mapper>

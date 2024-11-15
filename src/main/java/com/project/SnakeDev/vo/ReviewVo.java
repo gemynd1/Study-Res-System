@@ -19,10 +19,18 @@ public class ReviewVo {
     private Date srUpdate;       // 수정일
     private String memberId;
     private List<ReviewImgVo> reviewImgVo;
+    private List<ReviewTagVo> reviewTagVo;
 
     public ReviewVo() {
     }
 
+    public List<ReviewTagVo> getReviewTagVo() {
+        return reviewTagVo;
+    }
+
+    public void setReviewTagVo(List<ReviewTagVo> reviewTagVo) {
+        this.reviewTagVo = reviewTagVo;
+    }
     public List<ReviewImgVo> getReviewImgVo() {
         return reviewImgVo;
     }
