@@ -192,4 +192,43 @@ public class CommunityController {
         return ResponseEntity.badRequest().body("에러 메시지");
     }
 
+    @PostMapping("/board/insert/groupMember")
+    public ResponseEntity <Object> insert_groupMember(@RequestBody Map<String, Object> data) {
+        int comIdx = Integer.parseInt(data.get("comIdx").toString());
+        String sessionId = data.get("sessionId").toString();
+
+//        System.out.print("data: " + data);
+
+        if (comIdx != 0 && !sessionId.isEmpty()) {
+                return ResponseEntity.ok(communityService.insertTogetherStudy(comIdx, sessionId));
+        }else {
+            return ResponseEntity.badRequest().body("에러 메시지");
+        }
+    }
+
+    @PostMapping("/board/delete/groupMember")
+    public ResponseEntity <Object> delete_groupMember(@RequestBody Map<String, Object> data) {
+        int comIdx = Integer.parseInt(data.get("comIdx").toString());
+        String sessionId = data.get("sessionId").toString();
+
+        if (comIdx != 0 && !sessionId.isEmpty()) {
+            return ResponseEntity.ok(communityService.deleteTogetherStudy_forPost(comIdx, sessionId));
+        }else {
+            return ResponseEntity.badRequest().body("에러 메시지");
+        }
+    }
+
+    @PostMapping("/board/delete/post")
+    public ResponseEntity <Object> delete_post(@RequestBody Map<String, Object> data) {
+        int comIdx = Integer.parseInt(data.get("comIdx").toString());
+
+        if (comIdx != 0) {
+            Boolean rs1 = communityService.deletePost_allPost(comIdx);
+            Boolean rs2 = communityService.deleteComment_allPost(comIdx);
+            Boolean rs3 = communityService.deleteTogetherStudy_allPost(comIdx);
+            return ResponseEntity.ok("sql 성공");
+        }else {
+            return ResponseEntity.badRequest().body("에러 메시지");
+        }
+    }
 }

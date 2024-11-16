@@ -46,4 +46,14 @@ public interface CommunityService {
     public Boolean deleteComment(int comment_ccidx, int comment_ccgroupnum, int comment_comidx);
 
     public Boolean reportComment(int comment_ccidx);
+
+    public Boolean insertTogetherStudy(int comIdx, String sessionId);
+
+    public Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
+
+    public Boolean deletePost_allPost(int comIdx);
+
+    public Boolean deleteComment_allPost(int comIdx);
+
+    public Boolean deleteTogetherStudy_allPost(int comIdx);
 }

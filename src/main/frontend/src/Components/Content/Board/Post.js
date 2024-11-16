@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../../../style/post.css';
 
@@ -399,6 +399,9 @@ const Post = () => {
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
 
+    // 이전 페이지로 이동하는 함수
+    const navigate = useNavigate();
+
     // 모달 open 람수
     const ModalhandleOpen = () => setOpen(true);
 
@@ -419,51 +422,129 @@ const Post = () => {
     const insert_groupMember = () => {
         //현재 session이랑 해당 post의 groupmember들 작성자 확인 후 그리고 그룹의 인원 수가 현재인원수 보다 적으면 insert문 실행
         console.log("참여하기 버튼 클릭");
+        // console.log("comToCount: ", boardContents.comToCount);
+        // console.log("groupCount: ", groupMemberInfos.length + 1);
+        // console.log("comIdx: ", comIdx);
+        // console.log("sessionId: ", sessionId);
+        if (sessionId !== null && groupMemberInfos.length + 1 < boardContents.comToCount) {
+            axios.post("http://localhost:8099/api/board/insert/groupMember", {
+                comIdx: comIdx,
+                sessionId: sessionId
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                console.log(response.data);
+                alert("그룹 참여가 완료되었습니다.");
+                window.location.reload();
+            }).catch(error => {
+                console.log(error);
+                alert("그룹 참여를 실패하였습니다. 다시 시도해주세요.");
+            })
+        }else{
+            alert("그룹에 참여할 수 없습니다. 다시 시도해주세요.");
+        }
     }
 
-    const outPage = () => {
-        console.log("나가기 버튼 클릭");
-    }
-
-    const goto_PostRewrite = () => {
-        console.log("수정 버튼 클릭");
+    const groupOutPage = () => {
+        console.log("그룹 나가기 버튼 클릭");
+        // console.log("comIdx: ", comIdx);
+        // console.log("sessionId: ", sessionId);
+        if(sessionId !== null && comIdx !== 0) {
+            axios.post("http://localhost:8099/api/board/delete/groupMember", {
+                comIdx: comIdx,
+                sessionId: sessionId
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                console.log(response.data);
+                alert("그룹 나가기가 완료되었습니다.");
+                window.location.reload();
+            }).catch(error => {
+                console.log(error);
+                alert("그룹 나가기를 실패하였습니다. 다시 시도해주세요.");
+            })
+        }else{
+            alert("그룹에서 나갈 수 없습니다. 다시 시도해주세요.");
+        }
     }
 
     const post_delete = () => {
         console.log("삭제 버튼 클릭");
+        // console.log("comIdx: ", comIdx);
+        if(sessionId === boardContents.memberId) {
+            axios.post("http://localhost:8099/api/board/delete/post",  {
+                comIdx: comIdx
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                console.log(response.data);
+                alert("게시글이 삭제되었습니다.");
+                navigate(-1);
+            }).catch(error => {
+                console.log(error);
+                alert("게시글 삭제를 실패하였습니다. 다시 시도해주세요.");
+            })
+        }
+    }
+
+    const goto_back = () => {
+        console.log("뒤로가기 버튼 클릭");
+        navigate(-1);
     }
 
     const renderButtons = () => {
         if (groupMemberInfos.some(member => member.memberId === sessionId && member.memberName === sessionName)) {
             return (
-                <div className="out-button-section" onClick={outPage}>
-                    <div className="out-button">
-                        <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
-                        <span className="out-button-text">나가기</span>
+                <>
+                    <div className="out-button-section" onClick={groupOutPage}>
+                        <div className="out-button">
+                            <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                            <span className="out-button-text">그룹 나가기</span>
+                        </div>
                     </div>
-                </div>
+                    <div className="back-button-section" onClick={goto_back}>
+                        <div className="back-button">
+                            <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
+                            <span className="back-button-text">뒤로가기</span>
+                        </div>
+                    </div>
+                </>
             );
         }
 
         if (boardContents && sessionId === boardContents.memberId && sessionName === boardContents.memberName) {
             return (
                 <>
-                    <div className="fix-button-section" onClick={goto_PostRewrite}>
-                        <div className="fix-button">
-                            <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
-                            <span className="fix-button-text">수정</span>
+                    <Link to={`/board/postRewrite/?comIdx=${comIdx}`} style={{ textDecoration: "none"}}>
+                        <div className="fix-button-section">
+                            <div className="fix-button">
+                                <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
+                                <span className="fix-button-text">수정</span>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                     <div className="delete-button-section" onClick={post_delete}>
                         <div className="delete-button">
                             <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
                             <span className="delete-button-text">삭제</span>
                         </div>
                     </div>
-                    <div className="out-button-section" onClick={outPage} style={{marginTop: '40px'}}>
+                    <div className="out-button-section" onClick={groupOutPage} style={{marginTop: '40px'}}>
                         <div className="out-button">
                             <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
-                            <span className="out-button-text">나가기</span>
+                            <span className="out-button-text">그룹 나가기</span>
+                        </div>
+                    </div>
+                    <div className="back-button-section" onClick={goto_back}>
+                        <div className="back-button">
+                            <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
+                            <span className="back-button-text">뒤로가기</span>
                         </div>
                     </div>
                 </>
@@ -471,12 +552,20 @@ const Post = () => {
         }
 
         return (
-            <div className="join-button-section" onClick={insert_groupMember}>
-                <div className="join-button">
-                    <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
-                    <span className="join-button-text">참여하기</span>
+            <>
+                <div className="join-button-section" onClick={insert_groupMember}>
+                    <div className="join-button">
+                        <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
+                        <span className="join-button-text">참여하기</span>
+                    </div>
                 </div>
-            </div>
+                <div className="back-button-section" onClick={goto_back}>
+                    <div className="back-button">
+                        <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
+                        <span className="back-button-text">뒤로가기</span>
+                    </div>
+                </div>
+            </>
         );
     };
 
@@ -620,7 +709,7 @@ const Post = () => {
                 <div className="post-comment">
                     <div className="post-comment-header">
                         <span className="QandA">Q&A</span>
-                        <span className="QandA-count">(2개)</span>
+                        {/* <span className="QandA-count">({commentData.length}개)</span> */}
                         {(sessionId !== boardContents.memberId && sessionId !== null) ? (
                             <BasicModal comIdx={comIdx}
                                         sessionId={sessionId}
@@ -655,20 +744,6 @@ const Post = () => {
                                         setAdd_or_edit={setAdd_or_edit}
                                         currentCommentGroupNum={currentCommentGroupNum}/>
                         )}
-                        {/* <BasicModal comIdx={comIdx}
-                                        sessionId={sessionId}
-                                        memberId={boardContents.memberId} 
-                                        maxCCGroupNum={boardContents.maxCCGroupNum}
-                                        ModalhandleOpen={ModalhandleOpen}
-                                        ModalhandleClose={ModalhandleClose}
-                                        open={open}
-                                        setOpen={setOpen}
-                                        comment={comment}
-                                        setComment={setComment}
-                                        currentComment={currentComment}
-                                        setCurrentComment={setCurrentComment}
-                                        add_or_edit={add_or_edit}
-                                        setAdd_or_edit={setAdd_or_edit}/> */}
                     </div>
 
                     {/* {commentData.map((root) => (

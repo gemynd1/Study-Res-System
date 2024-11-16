@@ -114,8 +114,8 @@ div.board-page div.board-menubar a.writeButton {
     height: 52px;
     background: #6A8728;
     border-radius: 10px;
-    margin-top: 617px;
-    margin-left: 57px;
+    /* margin-top: 617px;
+    margin-left: 57px; */
     cursor: pointer;
 }
 
@@ -338,6 +338,9 @@ div.board-page div.board-category-2 div.board-category-2-background {
     height: 688px;
     background: #D9D9D9;
     border-radius: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 div.board-page div.board-category-2 div.board-category-2-headerbar {

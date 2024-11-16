@@ -106,4 +106,32 @@ public class CommunityServiceImpl implements CommunityService {
     public Boolean reportComment(int comment_ccidx) {
         return communityMapper.reportComment(comment_ccidx);
     }
+
+    @Override
+    public Boolean insertTogetherStudy(int comIdx, String sessionId) {
+        return communityMapper.insertTogetherStudy(comIdx, sessionId);
+    }
+
+    @Override
+    public Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId) {
+        return communityMapper.deleteTogetherStudy_forPost(comIdx, sessionId);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deletePost_allPost(int comIdx) {
+        return communityMapper.deletePost_allPost(comIdx);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteComment_allPost(int comIdx) {
+        return communityMapper.deleteComment_allPost(comIdx);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteTogetherStudy_allPost(int comIdx) {
+        return communityMapper.deleteTogetherStudy_allPost(comIdx);
+    }
 }

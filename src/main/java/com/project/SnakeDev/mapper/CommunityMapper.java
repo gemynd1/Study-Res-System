@@ -46,4 +46,14 @@ public interface CommunityMapper {
     Boolean deleteComment(int comment_ccidx, int comment_ccgroupnum, int comment_comidx);
 
     Boolean reportComment(int comment_ccidx);
+
+    Boolean insertTogetherStudy(int comIdx, String sessionId);
+
+    Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
+
+    Boolean deletePost_allPost(int comIdx);
+
+    Boolean deleteComment_allPost(int comIdx);
+
+    Boolean deleteTogetherStudy_allPost(int comIdx);
 }

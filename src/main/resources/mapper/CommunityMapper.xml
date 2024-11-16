@@ -50,16 +50,31 @@
 
     <select id="ViewPost" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
         select
-            c.*,
+            c.COMIDX,
+            c.COMCATEIDX,
+            c.MIDX,
+            c.COMTITLE,
+            c.COMCONTENT,
+            TO_CHAR(c.COMREGDATE, 'YYYY-MM-DD') AS COMREGDATE,
+            c.COMDELDATE,
+            c.COMUPDATE,
+            c.COMINTODATE,
+            c.COMTOCOUNT,
+            c.COMSTARTDATE,
+            c.COMENDDATE,
+            c.COMPLACE,
+            c.COMZIPCODE,
+            c.COMADDRESS,
+            c.COMREPORTCOUNT,
             m.MemberName,
             m.MemberId,
             cc.ComCateName as comCategoryName,
             (SELECT MAX(CCGroupNum) FROM tbl_community_comment WHERE comidx = #{comIdx}) AS maxCCGroupNum
         from
             tbl_community c
-                join
+        join
             tbl_member m on c.midx = m.midx
-                left join
+        left join
             tbl_community_category cc on c.COMCATEIDX = cc.COMCATEIDX
         where
             c.comidx = #{comIdx}
@@ -225,5 +240,25 @@
     <update id="reportComment" parameterType="int">
         update tbl_community_comment set ccreportcount = ccreportcount + 1 where ccidx = #{comment_ccidx}
     </update>
+
+    <insert id="insertTogetherStudy" parameterType="map">
+        insert into tbl_TogetherStudy values ((select midx from tbl_member where memberid = #{sessionId}), #{comIdx})
+    </insert>
+
+    <delete id="deleteTogetherStudy_forPost" parameterType="map">
+        delete from tbl_TogetherStudy where midx = (select midx from tbl_member where memberid = #{sessionId}) and comidx = #{comIdx}
+    </delete>
+
+    <update id="deletePost_allPost" parameterType="int">
+        update tbl_community set comdeldate = SYSDATE where comidx = #{comIdx}
+    </update>
+
+    <update id="deleteComment_allPost" parameterType="int">
+        update tbl_community_comment set ccdeldate = SYSDATE where comidx = #{comIdx}
+    </update>
+
+    <delete id="deleteTogetherStudy_allPost" parameterType="int">
+        delete from tbl_TogetherStudy where comidx = #{comIdx}
+    </delete>
 
 </mapper>

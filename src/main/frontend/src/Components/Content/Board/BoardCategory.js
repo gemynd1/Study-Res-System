@@ -1,14 +1,17 @@
 import React, { useState , useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../../style/boardCategory.css";
 
-const contentClick = (url) => {
-    window.open(url, "_blank", "noopener,noreferrer");
-}
 
 const BoardCategory = () => {
+    const navigate = useNavigate();
 
+    const contentClick = (url) => {
+        // window.open(url, "_blank", "noopener,noreferrer");
+        navigate(url);
+    }
+    
     const [boardContents, setBoardContents] = useState([
         // {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
         // {id:2, category:1, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
@@ -115,11 +118,11 @@ const BoardCategory = () => {
                                 </Link>
                             ) : null
                         ))}
+                        <Link to="/board/postWrite" className="writeButton">
+                            <div className="writeButton-1">글쓰기</div>
+                            {/* <div className="writeButton-2"></div> */}
+                        </Link>
                     </div>
-                    <Link to="/board/postWrite" className="writeButton">
-                        <div className="writeButton-1">글쓰기</div>
-                        {/* <div className="writeButton-2"></div> */}
-                    </Link>
                 </div>
                 <div className="board-category-1">
                     <div className="board-category-1-background">
