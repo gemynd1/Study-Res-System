@@ -39,7 +39,7 @@ public class CommunityController {
         if (currentCategory.equals("deadline")) {
             currentCategory = "곧 마감!";
         } else if (currentCategory.equals("new")) {
-            currentCategory = "new!";
+            currentCategory = "NEW!";
         } else if (currentCategory.equals("programming")) {
             currentCategory = "프로그래밍";
         } else  {
@@ -56,7 +56,7 @@ public class CommunityController {
         if (currentCategory.equals("deadline")) {
             currentCategory = "곧 마감!";
         } else if (currentCategory.equals("new")) {
-            currentCategory = "new!";
+            currentCategory = "NEW!";
         } else if (currentCategory.equals("programming")) {
             currentCategory = "프로그래밍";
         } else  {

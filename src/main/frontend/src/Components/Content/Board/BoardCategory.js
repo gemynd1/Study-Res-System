@@ -55,6 +55,8 @@ const BoardCategory = () => {
 
     console.log(categoryValue)
 
+    console.log(boardContents)
+
     const changeBoardContents = (currentCategoryValue) => {
         // db에서 categoryValue에 해당하는 데이터를 가져와서 boardContents의 값을 변경한다.
         // setBoardContents
