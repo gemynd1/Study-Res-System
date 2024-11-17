@@ -5,31 +5,24 @@ import "../../../style/boardCategory.css";
 
 
 const BoardCategory = () => {
+    const [boardContents, setBoardContents] = useState([]);
+    // 카테고리를 담어두는 state
+    const [boardCategorys, setBoardCategory] = useState([]);
+
+    const currentUrl = window.location.href;
+
+    const categoryMatch = currentUrl.match(/category\/([^/]+)/);
+    const categoryValue = categoryMatch ? categoryMatch[1] : null;
+
     const navigate = useNavigate();
+
+    //현재 주소 가져오기
+    const location = useLocation();
 
     const contentClick = (url) => {
         // window.open(url, "_blank", "noopener,noreferrer");
         navigate(url);
     }
-    
-    const [boardContents, setBoardContents] = useState([
-        // {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:2, category:1, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:3, category:1, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:4, category:1, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:5, category:1, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:6, category:2, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:7, category:2, title:"2이 글의 제목입니다.", detail:"2이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:8, category:2, title:"3이 글의 제목입니다.", detail:"3이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:9, category:2, title:"4이 글의 제목입니다.", detail:"4이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-        // {id:10, category:2, title:"5이 글의 제목입니다.", detail:"5이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
-    ]);
-
-    // 카테고리를 담어두는 state
-    const [boardCategorys, setBoardCategory] = useState([]);
-
-    //현재 주소 가져오기
-    const location = useLocation();
 
     const addBoardContent = () => {
         console.log(categoryValue + " - " + boardContents.length)
@@ -47,15 +40,22 @@ const BoardCategory = () => {
         },[]);
     }
 
-    const currentUrl = window.location.href;
-    console.log(currentUrl);
+    const headerbar_title_change = (categoryValue) => {
+        if(categoryValue === "deadline") {
+            return "시작이 얼마남지 않은 모임을 확인해보세요!";
+        } else if(categoryValue === "new") {
+            return "새로 만들어진 모임을 확인해보세요!";
+        } else if(categoryValue === "programming") {
+            return "프로그래밍 모임을 확인해보세요!";
+        }
+    }
 
-    const categoryMatch = currentUrl.match(/category\/([^/]+)/);
-    const categoryValue = categoryMatch ? categoryMatch[1] : null;
-
-    console.log(categoryValue)
-
-    console.log(boardContents)
+    const truncateText = (text, maxLength) => {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    };
 
     const changeBoardContents = (currentCategoryValue) => {
         // db에서 categoryValue에 해당하는 데이터를 가져와서 boardContents의 값을 변경한다.
@@ -81,21 +81,15 @@ const BoardCategory = () => {
         });
     }
 
-    const headerbar_title_change = (categoryValue) => {
-        if(categoryValue === "deadline") {
-            return "시작이 얼마남지 않은 모임을 확인해보세요!";
-        } else if(categoryValue === "new") {
-            return "새로 만들어진 모임을 확인해보세요!";
-        } else if(categoryValue === "programming") {
-            return "프로그래밍 모임을 확인해보세요!";
-        }
-    }
-
-
     useEffect(() => {
         const currentCategoryValue = location.pathname.split("/").pop();
         changeBoardContents(currentCategoryValue);
     },[location]);
+
+        
+    console.log(currentUrl);
+    console.log(categoryValue)
+    console.log(boardContents)
 
     return (
         <>
@@ -135,8 +129,8 @@ const BoardCategory = () => {
 
                         {boardContents.map((content) => (
                                 <div className="board-category-1-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
-                                    <p className="board-category-1-content-title">{content.comTitle}</p>
-                                    <p className="board-category-1-content-detail">{content.comContent}</p>
+                                    <p className="board-category-1-content-title">{truncateText(content.comTitle, 60)}</p>
+                                    <p className="board-category-1-content-detail">{truncateText(content.comContent, 70)}</p>
                                     <div className="board-category-1-content-info">
                                         <div className="board-category-1-content-info-dday">
                                             <span className="board-category-1-content-info-dday-text">D-DAY</span>

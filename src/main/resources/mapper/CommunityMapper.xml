@@ -187,7 +187,7 @@
             s.sgiidx, s.scidx, s.sginum, s.sgiusestate, s.sgicontent1, s.sgicontent2
     </select>
 
-    <update id="updateCommunity" parameterType="com.project.SnakeDev.vo.CommunityVo">
+    <update id="updateCommunity" parameterType="map">
         update tbl_community
             set ComIdx = #{ComIdx},
                 ComCateIdx = (select ComCateIdx from tbl_community_category where comCateName = #{comCategoryName}),
@@ -200,9 +200,23 @@
                 ComToCount = #{ComToCount},
                 ComStartDate = TO_DATE(#{ComStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
                 ComEndDate = TO_DATE(#{ComEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
-                ComPlace = #{ComPlace},
-                ComZipcode = #{ComZipcode},
-                ComAddress = #{ComAddress},
+                <choose>
+                    <when test="ComAddress == '스터디룸'">
+                        ComPlace = (select sgicontent1 from tbl_studyginfo where sgiidx = #{currentStudyRoom}),
+                        ComZipcode = #{ComZipcode},
+                        ComAddress = #{ComAddress},
+                    </when>
+                    <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
+                        ComPlace = #{enroll_company.detailedAddress},
+                        ComZipcode = #{enroll_company.zonecode},
+                        ComAddress = #{enroll_company.address},
+                    </when>
+                    <otherwise>
+                        ComPlace = #{ComPlace},
+                        ComZipcode = #{ComZipcode},
+                        ComAddress = #{ComAddress},
+                    </otherwise>
+                </choose>
                 ComReportCount = #{ComReportCount}
             where comidx = #{ComIdx}
     </update>
@@ -215,6 +229,10 @@
                     #{item.comIdx}, #{item.midx}
                 </foreach>
             )
+    </delete>
+
+    <delete id="deleteTogetherStudyAll" parameterType="int">
+        delete from tbl_TogetherStudy where comidx = #{comidx}
     </delete>
 
     <insert id="insert_comment_question" parameterType="map">

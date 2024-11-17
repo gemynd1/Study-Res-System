@@ -83,6 +83,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public Boolean deleteTogetherStudyAll(int comidx) {
+        return communityMapper.deleteTogetherStudyAll(comidx);
+    }
+
+    @Override
     public Boolean  insert_comment_question(int comIdx,String comment,int maxCCGroupNum,String sessionId) {
         return communityMapper.insert_comment_question(comIdx, comment, maxCCGroupNum, sessionId);
     }

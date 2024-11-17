@@ -51,6 +51,8 @@ public interface CommunityMapper {
 
     Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
 
+    Boolean deleteTogetherStudyAll(int comidx);
+
     Boolean deletePost_allPost(int comIdx);
 
     Boolean deleteComment_allPost(int comIdx);

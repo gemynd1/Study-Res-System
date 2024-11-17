@@ -109,7 +109,7 @@ public class CommunityController {
 
     @PostMapping("/board/post/postRewrite")
     public ResponseEntity<Object> post_postRewrite(@RequestBody Map<String, Object> data) {
-        System.out.print(data);
+        System.out.print("data: " + data);
 
         Boolean updateCommunity_result = false;
         updateCommunity_result = communityService.updateCommunity(data);
@@ -118,13 +118,25 @@ public class CommunityController {
 
         String comidx = data.get("ComIdx").toString();
         List<Map<String, Object>> groupMemberInfos = (List<Map<String, Object>>) data.get("groupMemberInfos");
+        List<Map<String, Object>> originalGroupMemberInfos = (List<Map<String, Object>>) data.get("originalGroupMemberInfos");
 
-        deleteTogetherStudy_result = communityService.deleteTogetherStudy(comidx, groupMemberInfos);
+        if(!originalGroupMemberInfos.isEmpty() && !groupMemberInfos.isEmpty()) {
+            deleteTogetherStudy_result = Boolean.TRUE;
+        }else if(!originalGroupMemberInfos.isEmpty() && groupMemberInfos.isEmpty()) {
+            deleteTogetherStudy_result = communityService.deleteTogetherStudyAll(Integer.parseInt(comidx));
+        }else if(!originalGroupMemberInfos.isEmpty()) {
+            deleteTogetherStudy_result = communityService.deleteTogetherStudy(comidx, groupMemberInfos);
+        }else if(originalGroupMemberInfos.isEmpty() && groupMemberInfos.isEmpty()) {
+            deleteTogetherStudy_result = Boolean.TRUE;
+        }else {
+            deleteTogetherStudy_result = Boolean.FALSE;
+        }
 
         List result = new ArrayList();
         result.add(updateCommunity_result);
         result.add(deleteTogetherStudy_result);
 
+        System.out.print("result: " + result);
         return ResponseEntity.ok(result);
     }
 

@@ -51,6 +51,8 @@ public interface CommunityService {
 
     public Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
 
+    public Boolean deleteTogetherStudyAll(int comidx);
+
     public Boolean deletePost_allPost(int comIdx);
 
     public Boolean deleteComment_allPost(int comIdx);

@@ -570,6 +570,20 @@ const Post = () => {
     };
 
     useEffect(() => {
+        axios.get('https://dapi.kakao.com/v2/local/search/address.json', {
+            params: { query: boardContents.comAddress },
+            headers: {
+                'Authorization': `KakaoAK 65f58b2d75b9c7633dbcbfb394c75a5d`,
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.log(error);
+        },[boardContents.comAddress])
+    })
+
+    useEffect(() => {
         axios.get('http://localhost:8099/api/board/post/comment', {
             params: { comIdx, currentPage, commentSize },
             headers: {
