@@ -779,7 +779,7 @@ const TeamDetail = () => {
               <li onClick={() => onContentClick(2)} style={{backgroundColor : getSelectColor(2)}}>유의사항</li>
               <li onClick={() => onContentClick(3)} style={{backgroundColor : getSelectColor(3)}}>환불정책</li>
               {/* <li onClick={() => onContentClick(4)} style={{backgroundColor : getSelectColor(4)}}>Q&A</li> */}
-              <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>이용후기</li>
+              <li onClick={() => onContentClick(5)} style={{backgroundColor : getSelectColor(5)}}>다른방보기</li>
             </ul>
           </div>
             {/* 공간소개 | 시설안내 | 유의사항 | 환불정책 | Q&A | 이용후기 */}
@@ -821,8 +821,9 @@ const TeamDetail = () => {
           </div> */}
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
-            <div className="teamDetail__main-content-text-title">이용후기</div>
-            <div className="flex fd-c ai-c ">
+            <div className="teamDetail__main-content-text-title">다른방보기</div>
+            
+            {/* <div className="flex fd-c ai-c ">
               <div className="teamDetail__main-review">
                 <div className="teamDetail__main-review-profileIcon">
                   <img
@@ -871,7 +872,7 @@ const TeamDetail = () => {
                   <Pagination count={5} />
                 </Stack>
               </div>
-            </div>
+            </div> */}
           </div>  
         </div>
       </div>

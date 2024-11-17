@@ -176,23 +176,29 @@ const MypageCheck = () => {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        {currentResults.map((result, index) => (
-                                            <tr key={index}>
-                                                <td>{result.sgonum}</td>
-                                                <td>{result.sgoregDate}</td>
-                                                <td>{result.studyGInfoVo.sgicontent1} - {result.sgoregDate} ({result.sgostartDate} ~ {result.sgoendDate}) - {result.sgopeople}명</td>
-                                                <td>{result.sgototal}원</td>
-                                                <td>
-                                                    <button>
-                                                        {
-                                                            new Date() > new Date(result.sgoregDate) ? "사용 완료" : 
-                                                                    new Date().getHours() === result.sgostartDate - 1 ? "예약 1시간 전" : "예약 완료"
-                                                        }
-                                                    </button>
-                                                </td>
-                                                {/* <td><button>취소</button></td> */}
+                                        {currentResults != '' ? 
+                                            currentResults.map((result, index) => (
+                                                <tr key={index}>
+                                                    <td>{result.sgonum}</td>
+                                                    <td>{result.sgoregDate}</td>
+                                                    <td>{result.studyGInfoVo.sgicontent1} - {result.sgoregDate} ({result.sgostartDate} ~ {result.sgoendDate}) - {result.sgopeople}명</td>
+                                                    <td>{result.sgototal}원</td>
+                                                    <td>
+                                                        <button>
+                                                            {
+                                                                new Date() > new Date(result.sgoregDate) ? "사용 완료" : 
+                                                                        new Date().getHours() === result.sgostartDate - 1 ? "예약 1시간 전" : "예약 완료"
+                                                            }
+                                                        </button>
+                                                    </td>
+                                                    {/* <td><button>취소</button></td> */}
+                                                </tr>
+                                            ))
+                                            : 
+                                            <tr>
+                                                <td colSpan="6">검색 결과가 없습니다.</td>
                                             </tr>
-                                        ))}
+                                        }
                                     </tbody>
                                 </table>
                                 <Pagination2
@@ -220,7 +226,8 @@ const MypageCheck = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {cuurentResults2.map((result, index) => (
+                                    {cuurentResults2 != '' ? 
+                                        cuurentResults2.map((result, index) => (
                                         <tr key={index}>
                                             <td>{result.ttocontent[0]?.random}</td>
                                             <td>{result.studyOrderPayVo.tsopdate?.replace(/T.*/, "")}</td>
@@ -237,7 +244,11 @@ const MypageCheck = () => {
                                                 <button>결제완료</button>
                                             </td>
                                         </tr>
-                                    ))}
+                                        )) :
+                                        <tr>
+                                            <td colSpan="6">검색 결과가 없습니다.</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                             <Pagination2

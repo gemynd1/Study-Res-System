@@ -211,28 +211,28 @@
     <select id="selectOptionTime" resultType="java.lang.Integer">
         select count(*) from tbl_member
             where midx = (select midx from tbl_member where memberid = #{MemberId}) and
-                to_date(sysdate, 'YYYY-MM-DD HH24:mi:ss') between
-                to_date(mstartindate, 'YYYY-MM-DD HH24:mi:ss') and to_date(mendindate, 'YYYY-MM-DD HH24:mi:ss');
+                to_date(sysdate,  'YYYY-MM-DD HH24:mi') between
+                to_date(mstartindate,  'YYYY-MM-DD HH24:mi') and to_date(mendindate,  'YYYY-MM-DD HH24:mi')
     </select>
     <select id="selectOptionTime2" resultType="java.lang.Integer">
         <![CDATA[
         select count(*) from tbl_member where
             midx = (select midx from tbl_member where MemberId = #{MemberId}) and
-            Musetime > #{selectedOption}
+            Musetime >= #{selectedOption}
         ]]>
     </select>
     <update id="updateIntime" parameterType="map">
-        update tbl_memberininfo set musetime =
+        update tbl_member set musetime =
             case when musetime >= #{selectedOption} then musetime - #{selectedOption}
             else musetime - 0 end
-        where midx = (select midx from tbl_member where memberid = #{MemberId})
+        where memberid = #{MemberId}
     </update>
     <update id="updateStudyInInfo" parameterType="map">
         UPDATE Tbl_StudyInInfo SET
            MIdx = (select midx from tbl_member where memberid = #{MemberId}),
            SeatUseState = 'Y',
-           SeatStartTime = to_date(#{seat.SeatStartTime}, 'YYYY-MM-DD HH24:mi:ss'),
-           SeatEndTime = to_date(#{seat.SeatEndTime}, 'YYYY-MM-DD HH24:mi:ss')
+           SeatStartTime = TRUNC(to_date(#{seat.SeatStartTime}, 'YYYY-MM-DD HH24:MI:SS'), 'MI'),
+           SeatEndTime = TRUNC(to_date(#{seat.SeatEndTime},  'YYYY-MM-DD HH24:MI:SS'), 'MI')
         WHERE SCIdx = 1111 and SeatNum = (select SeatNum from Tbl_StudyInInfo where SIINum = #{seatNum})
     </update>
 </mapper>

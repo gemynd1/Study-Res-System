@@ -17,11 +17,15 @@ import org.springframework.http.*;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -185,32 +189,49 @@ public class MainController {
     }
 
     @PostMapping("/seatOrder")
-    public ResponseEntity<Object> seatOrder(@RequestParam("MemberId") String MemberId,
-                                            @RequestParam("seatNum") Integer seatNum,
-                                            @RequestParam("orderdata") String orderdata,
-                                            @RequestParam("selectedOption") String selectedOption) {
+    public ResponseEntity<Object> seatOrder(@RequestBody Map<String, Object> body) {
         try {
-            Map<String, Object> orderData = objectMapper.readValue(orderdata, Map.class);
-            StudyInInfoVo studyInInfoVo = VOMapper.mapToVO(orderData, StudyInInfoVo.class);
-            System.out.println(orderdata);
+            String MemberId = (String) body.get("MemberId"); // String으로 캐스팅
+            Integer seatNum = Integer.parseInt(body.get("seatNum").toString()); // Integer로 변환
+            String startTime = (String) body.get("startTime");
+            String endTime = (String) body.get("endTime");
+            String selectedOption = (String) body.get("selectedOption");
 
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+            StudyInInfoVo studyInInfoVo = new StudyInInfoVo();
+//            Date startDate = formatter.parse(startTime);
+//            Date endDate = formatter.parse(endTime);
+
+//            studyInInfoVo.setSeatStartTime(startDate);
+//            studyInInfoVo.setSeatEndTime(endDate);
+            studyInInfoVo.setSeatStartTime(startTime);
+            studyInInfoVo.setSeatEndTime(endTime);
+            // ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY/MM/DD HH24:MI';
+
+            String MaContent = "";
             // 개인이 예약된 자리가 있는지 확인하는 DB
-            if(mainService.selectStudyininfo(MemberId) > 0) return ResponseEntity.ok(5);
+            if(mainService.selectStudyininfo(MemberId) > 0) return ResponseEntity.ok(6);
 
             if(selectedOption.equals("기간")) {
                 // 회원이 선택한 기간권안에 당일 예약 날짜가 포함이 되어있는지 확인하는 DB
-                if(mainService.selectOptionTime(MemberId) <= 0) return ResponseEntity.ok(4);
+                if(mainService.selectOptionTime(MemberId) <= 0) return ResponseEntity.ok(5);
+                MaContent = seatNum + "번 자리 " + selectedOption + startTime + " ~ " + endTime + " 까지 예약이 완료되었습니다.";
             } else {
                 // 회원이 시간제로 예약하였을 때 선택한 시간이 현재 충전이 되어있는지 확인하는 DB
                 if(mainService.selectOptionTime2(MemberId, selectedOption) <= 0) return ResponseEntity.ok(4);
+                // 회원이 충전이 되어있는지 확인이 완료되면 해당 시간을 차감시키고 예약 최종처리
                 if(mainService.updateIntime(MemberId, selectedOption) <= 0) return ResponseEntity.ok(3);
+                MaContent = seatNum + "번 자리 " + selectedOption + "시간" + startTime + " ~ " + endTime + " 까지 예약이 완료되었습니다.";
             }
-            if(mainService.updateStudyInInfo(seatNum, studyInInfoVo, MemberId) <= 0) {
+            if(mainService.updateStudyInInfo(seatNum, studyInInfoVo, MemberId) > 0) {
+
+                notificationService.OrderNotification(MaContent, MemberId);
                 return ResponseEntity.ok(2);
             } else {
                 return ResponseEntity.badRequest().body(1);
             }
-
+//            return ResponseEntity.ok(2);
             // 없다면 예약 진행
 //        if(mainService.updateStudyininfo(MemberId, seatNum) > 0) return ResponseEntity.ok(1);
         } catch (Exception e) {

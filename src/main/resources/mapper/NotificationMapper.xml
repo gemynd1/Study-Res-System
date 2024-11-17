@@ -3,7 +3,10 @@
 <mapper namespace="com.project.SnakeDev.mapper.NotificationMapper">
 
     <select id="ViewNotification" resultType="com.project.SnakeDev.vo.NotificationVo" parameterType="map">
-        select ma.* from tbl_member_alarm ma, tbl_member m
+        select
+            ma.*
+        from tbl_member_alarm ma
+            inner join tbl_member m on ma.midx = m.midx
         where m.MemberId = #{sessionId} and m.MemberName = #{sessionName}
         order by madate desc
     </select>
