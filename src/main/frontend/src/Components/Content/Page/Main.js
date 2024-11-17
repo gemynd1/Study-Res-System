@@ -79,17 +79,17 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
 
     const handleChange = (event) => {
         setSelectedOption(event.target.value);
-        console.log(event.target.value);
+        // console.log(event.target.value);
     };
 
     const handleChangeStartTime = (event) => {
         setSelectedOptionStartTime(event.target.value);
-        console.log(event.target.value);
+        // console.log(event.target.value);
     };
 
     const handleChangeEndTime = (event) => {
         setSelectedOptionEndTime(event.target.value);
-        console.log(event.target.value);
+        // console.log(event.target.value);
     };
 
     const handleOnclick = () => {
@@ -165,7 +165,8 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                         </table>
                     </div>
                     <div className="modal-seat-content">
-                        ※시간권 결제 하신분은 시간 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>'기간권사용'</b>으로 선택하시고 예약하기 버튼만 눌러주세요※ <br />
+                        ※ 시간권 결제 하신분은 시간 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>'기간권사용'</b>으로 선택하시고 예약하기 버튼만 눌러주세요<br />
+                        ※ 모든 좌석은 당일 이용입니다.
                     </div>
                     <div className="modal-seat-order">
                         <span>이용할 시간/기간 : 1시간 / 기간권이용</span>
