@@ -33,6 +33,21 @@
         select MemberName from tbl_member where MemberId = #{MemberId} and MemberPw = #{MemberPw}
     </select>
 
+    <select id="existsByKakaoId" parameterType="long" resultType="int">
+        select count(*) from tbl_member where Memberid = #{email}
+    </select>
+
+    <select id="findByKakaoId" parameterType="long" resultType="com.project.SnakeDev.vo.AuthVo">
+        select * from tbl_member where memberid = #{email}
+    </select>
+
+    <insert id="insertKakaoUser" parameterType="com.project.SnakeDev.vo.kakaoVo">
+        insert into tbl_member
+            (MIdx,MemberName,MemberId,MemberPw, MemberPhone, MRegDate, LoginType)
+        values
+            (#{kakaoId}, #{nickname}, #{email}, '', '', sysdate, 'kakao')
+    </insert>
+
 
     <!--    <insert id="InsertJoin" parameterType="com.project.SnakeDev.vo.AuthVo">-->
 <!--        INSERT INTO tbl_member (MIdx, MemberName, MemberId, MemberPw, MemberPhone, MregDate)-->

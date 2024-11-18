@@ -1,17 +1,24 @@
 package com.project.SnakeDev.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.project.SnakeDev.config.VOMapper;
 import com.project.SnakeDev.service.AuthService;
 import com.project.SnakeDev.service.Impl.AuthServiceImpl;
 import com.project.SnakeDev.vo.AuthVo;
+import com.project.SnakeDev.vo.dto.AuthDto;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.connector.Response;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Member;
 import java.util.HashMap;
@@ -89,6 +96,46 @@ public class AuthController {
         } else {
             return ResponseEntity.ok(false);
         }
+    }
+
+    @PostMapping("/kakao")
+    public ResponseEntity<Object> kakaoCallback(@RequestBody Map<String, String> request) {
+        String code = request.get("code");
+        String clinetid = "11d774c77f4b2e6630e873d9eccec5aa";
+
+        if (code == null || code.isEmpty()) {
+            return ResponseEntity.badRequest().body("Authorization Code is missing");
+        }
+
+        String tokenUrl = "https://kauth.kakao.com/oauth/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", clinetid);
+        params.add("redirect_uri", "http://localhost:3000/oauth");
+        params.add("code", code);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, entity, Map.class);
+            return ResponseEntity.ok(response.getBody());
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
+        }
+//        try {
+//            String code = request.get("code");
+////            String[] access_token = authService.getKakaoAccessToken(code);
+////            String access_found_in_token = access_token[0];
+//            return ResponseEntity.ok(authService.kakaoSignUp(code));
+//        } catch (Exception e) {
+//            e.printStackTrace(); // 오류를 콘솔에 출력
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+//        }
     }
 
     @GetMapping("/session-status")

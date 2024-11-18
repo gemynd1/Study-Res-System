@@ -477,9 +477,14 @@ const Main = () => {
                                             <span 
                                                 className="seat" 
                                                 id={"seat" + studyininfo.siinum}
-                                                onClick={() => 
-                                                    sessionStorage.getItem("id") === null ? alert("로그인 후 이용해주세요.") : handleOpenModal(studyininfo.siinum)
-                                                } 
+                                                onClick={() => {
+                                                    if(sessionStorage.getItem("id") === null) {
+                                                        alert('로그인 후 이용해주세요.');
+                                                        window.location.href = "/login";
+                                                    } else {
+                                                        handleOpenModal(studyininfo.siinum)
+                                                    } 
+                                                }} 
                                             />
                                         </React.Fragment>
                                     :

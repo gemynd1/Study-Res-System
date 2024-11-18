@@ -881,15 +881,15 @@ const TeamDetail = () => {
             </div>
           </div> */}
           <div className="teamDetail__main-header-line" />
-          <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
+          <div className="teamDetail__main-content-text-swiper" ref={contentRefs[5]}>
             <div className="teamDetail__main-content-text-title">다른방보기</div>
             <Swiper
                 slidesPerView={1} // 한번에 보여지는 slide 개수
                 spaceBetween={20} // slide간의 간격
-                loopedSlides={2}
+                loopedSlides={1}
                 loop={true}
-                // centeredSlides={true}
-                // modules={modules}
+                centeredSlides={true}
+                modules={modules}
                 // autoplay={{
                 //     delay: 3500,
                 //     disableOnInteraction: false,
@@ -900,11 +900,15 @@ const TeamDetail = () => {
                         slidesPerView: 1,
                     }, // width 값이 1200이 넘을때 실행
                 }}
-                className={'mySwiper teamdetail-swiper'}
+                className={'teamdetail-swiper'}
             >
               {StudyGInfo ? StudyGInfo.map((datas) => (
                   <SwiperSlide key={"studyginfo" + datas.sginum}>
-                      <Link to={`/teamdetail/${datas.sginum}`} state={{data: datas.sginum}}>
+                      {/* <Link to={`/teamdetail/${datas.sginum}`} state={{data: datas.sginum}}> */}
+                      <Link to="#" onClick={() => {
+                        const newUrl = `/teamdetail/${datas.sginum}`;
+                        window.location.href = newUrl;
+                      }}>
                           <div className="img-box">
                               <img src={datas.studyGImgVo.sgimg} alt="room1" />
                           </div>
