@@ -260,7 +260,7 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="notification-section">
-                            {notifications.map((notification) => (
+                            {notifications != '' ? notifications.map((notification) => (
                                 <div className="notification" key={notification.maidx}>
                                     <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" data-id={notification.maidx} onClick={del_notification} />
                                     <p className="notification-content">
@@ -270,7 +270,13 @@ const Header = () => {
                                         {notification.maDate}
                                     </span>
                                 </div>
-                            ))}
+                            )) : 
+                                <div className="notification">
+                                    <span className="notification-date-null">
+                                        알림 기록이 없습니다.
+                                    </span>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

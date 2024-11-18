@@ -301,6 +301,20 @@ header div.test div.test2 div.notification-section div.notification span.notific
     left: 69%;
 }
 
+header div.test div.test2 div.notification-section div.notification span.notification-date-null {
+    /* position: relative; */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 18px;
+    color: #808080;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 14px 0;
+}
+
 /* message css */
 
 header div.first-background {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import teamDetail from "../../../style/teamDetail.css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from 'swiper/modules';
 import Rating from "@mui/material/Rating";
 import Radio from "@mui/material/Radio";
 import Button from "@mui/material/Button";
@@ -20,6 +21,7 @@ import { Modal, Box, Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { loadTossPayments, ANONYMOUS } from "@tosspayments/tosspayments-sdk";
+import "swiper/css";
 
 const { nanoid } = require('nanoid');
 
@@ -500,6 +502,7 @@ const TimeSelector = ({ selectedTimes, onTimeChange, reservedTimes }) => {
   };
 
   const hours = Array.from({ length: 12 }, (_, i) => i + 10);
+  const currentHours = new Date().getHours();
 
   return (
     <>
@@ -556,6 +559,9 @@ const TeamDetail = () => {
       SGPPrice : '',
     }
   );
+
+  const modules = [Autoplay];
+  const [StudyGInfo, setStudyGInfo] = useState([]); // 스터디룸 정보
   
   const handleRadioChange = (event) => {
     setIsTimeChoiceSelected(event.target.value === "timeChoice");
@@ -600,44 +606,84 @@ const TeamDetail = () => {
   }, [contentRefs]);
 
   useEffect(() => {
-    axios.get('http://localhost:8099/api/studygInfoDetail', 
-    {
-      params: {
-        sgiId
-      },
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(res => {
-      // console.log(res.data);
-      const Img = res.data['studyGImg'];
-      const data = res.data['studyGInfoVo'];
+    axios.all([
+      axios.get('http://localhost:8099/api/studygInfoDetail', 
+        {
+          params: {
+            sgiId
+          },
+        }),
+      axios.get('http://localhost:8099/api/studygInfo')
+    ], {headers: { 'Content-Type': 'application/json' }})
+    .then(
+      axios.spread((res1, res2) => {
+        // console.log(res.data);
+        const Img = res1.data['studyGImg'];
+        const data = res1.data['studyGInfoVo'];
+        setStudyGInfo(res2.data);
+
+        sethtmlcontentdata((prevState) => ({
+          ...prevState,
+          SGINum : data.sginum,
+          SGIUseState : data.sgiuseState,
+          SGIContent1 : data.sgicontent1,
+          SGIContent2 : data.sgicontent2,
+          SGIDContent1 : data.sgidcontent1,
+          SGIDContent2 : data.sgidcontent2,
+          SGIDContent3 : data.sgidcontent3,
+          SGIDContent4 : data.sgidcontent4,
+          SGIDContent5 : data.sgidcontent5,
+          SGIDContent6 : data.sgidcontent6,
+          SGIDContent7 : data.sgidcontent7,
+          SGIDContent8 : data.sgidcontent8,
+          SGIDContent9 : Number(data.sgidcontent9),
+          SGIDContent10 : Number(data.sgidcontent10),
+          SGIIdx : data.studyGPareVo.sgiidx
+        }))
+        setCount(data.sgidcontent9);
+        setImgContent(Img);
+        setSelectedValue(data.studyGPareVo.sgpprice);
+      })
+    ).catch(error => console.log(error));
+
+    // axios.get('http://localhost:8099/api/studygInfoDetail', 
+    // {
+    //   params: {
+    //     sgiId
+    //   },
+    //   headers: { 'Content-Type': 'application/json' }
+    // })
+    // .then(res => {
+    //   // console.log(res.data);
+    //   const Img = res.data['studyGImg'];
+    //   const data = res.data['studyGInfoVo'];
       
-      sethtmlcontentdata((prevState) => ({
-        ...prevState,
-        SGINum : data.sginum,
-        SGIUseState : data.sgiuseState,
-        SGIContent1 : data.sgicontent1,
-        SGIContent2 : data.sgicontent2,
-        SGIDContent1 : data.sgidcontent1,
-        SGIDContent2 : data.sgidcontent2,
-        SGIDContent3 : data.sgidcontent3,
-        SGIDContent4 : data.sgidcontent4,
-        SGIDContent5 : data.sgidcontent5,
-        SGIDContent6 : data.sgidcontent6,
-        SGIDContent7 : data.sgidcontent7,
-        SGIDContent8 : data.sgidcontent8,
-        SGIDContent9 : Number(data.sgidcontent9),
-        SGIDContent10 : Number(data.sgidcontent10),
-        SGIIdx : data.studyGPareVo.sgiidx
-      }))
-      setCount(data.sgidcontent9);
-      setImgContent(Img);
-      setSelectedValue(data.studyGPareVo.sgpprice);
-    })
-    .catch(error => {
-      console.log(error);
-      return false;
-    })
+    //   sethtmlcontentdata((prevState) => ({
+    //     ...prevState,
+    //     SGINum : data.sginum,
+    //     SGIUseState : data.sgiuseState,
+    //     SGIContent1 : data.sgicontent1,
+    //     SGIContent2 : data.sgicontent2,
+    //     SGIDContent1 : data.sgidcontent1,
+    //     SGIDContent2 : data.sgidcontent2,
+    //     SGIDContent3 : data.sgidcontent3,
+    //     SGIDContent4 : data.sgidcontent4,
+    //     SGIDContent5 : data.sgidcontent5,
+    //     SGIDContent6 : data.sgidcontent6,
+    //     SGIDContent7 : data.sgidcontent7,
+    //     SGIDContent8 : data.sgidcontent8,
+    //     SGIDContent9 : Number(data.sgidcontent9),
+    //     SGIDContent10 : Number(data.sgidcontent10),
+    //     SGIIdx : data.studyGPareVo.sgiidx
+    //   }))
+    //   setCount(data.sgidcontent9);
+    //   setImgContent(Img);
+    //   setSelectedValue(data.studyGPareVo.sgpprice);
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    //   return false;
+    // })
   }, []);
 
   useEffect(() => {
@@ -688,6 +734,7 @@ const TeamDetail = () => {
           const start = parseInt(item.sgostartDate, 10);
           const end = parseInt(item.sgoendDate, 10);
           
+          
           // start부터 end까지의 시간을 포함하는 배열 생성
           const times = [];
           for (let hour = start; hour <= end; hour++) {
@@ -702,15 +749,29 @@ const TeamDetail = () => {
 
         setReservations(formattedData);
 
+        // 현재 날짜와 시간 가져오기
+        const now = new Date();
+        const currentDate = now.toISOString().split("T")[0]; // YYYY-MM-DD 형식
+        const currentHour = now.getHours() + 1;
+
         // 날짜별로 시간을 병합하여 blurTimes 객체에 저장
         const mergedBlurTimes = {};
         formattedData.forEach((item) => {
+          // 예약된 시간을 추가
           if (!mergedBlurTimes[item.date]) {
             mergedBlurTimes[item.date] = new Set(item.times);
           } else {
             item.times.forEach((time) => mergedBlurTimes[item.date].add(time));
           }
         });
+
+        // 현재 날짜에 현재 시간 이전 값을 추가
+        if (!mergedBlurTimes[currentDate]) {
+          mergedBlurTimes[currentDate] = new Set();
+        }
+        for (let hour = 0; hour < currentHour; hour++) {
+          mergedBlurTimes[currentDate].add(hour);
+        }
 
         // Set을 배열로 변환
         Object.keys(mergedBlurTimes).forEach(
@@ -822,7 +883,45 @@ const TeamDetail = () => {
           <div className="teamDetail__main-header-line" />
           <div className="teamDetail__main-content-text" ref={contentRefs[5]}>
             <div className="teamDetail__main-content-text-title">다른방보기</div>
-            
+            <Swiper
+                slidesPerView={1} // 한번에 보여지는 slide 개수
+                spaceBetween={20} // slide간의 간격
+                loopedSlides={2}
+                loop={true}
+                // centeredSlides={true}
+                // modules={modules}
+                // autoplay={{
+                //     delay: 3500,
+                //     disableOnInteraction: false,
+                // }}
+                breakpoints={{ // 반응형 구현
+                    1200: {
+                        // centeredSlides:true,
+                        slidesPerView: 1,
+                    }, // width 값이 1200이 넘을때 실행
+                }}
+                className={'mySwiper teamdetail-swiper'}
+            >
+              {StudyGInfo ? StudyGInfo.map((datas) => (
+                  <SwiperSlide key={"studyginfo" + datas.sginum}>
+                      <Link to={`/teamdetail/${datas.sginum}`} state={{data: datas.sginum}}>
+                          <div className="img-box">
+                              <img src={datas.studyGImgVo.sgimg} alt="room1" />
+                          </div>
+                          <div className="txt-box">
+                              <h4>
+                                  {datas.sgicontent2}
+                              </h4>
+                              <dl>
+                                  <dt>
+                                      {datas.sgicontent1}
+                                  </dt>
+                              </dl>
+                          </div>
+                      </Link>
+                  </SwiperSlide>
+              )) : ''}  
+            </Swiper>
             {/* <div className="flex fd-c ai-c ">
               <div className="teamDetail__main-review">
                 <div className="teamDetail__main-review-profileIcon">

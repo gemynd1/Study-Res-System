@@ -132,7 +132,7 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                 } else if (num === 2) {
                     alert(seatInfo + "번 자리 예약이 완료되었습니다.");
                 }
-                // window.location.reload();
+                window.location.reload();
             })
             .catch(error => {
                 console.log(error);
@@ -181,7 +181,7 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                                     <th>이용 시간</th>
                                     <td>
                                         <select value={selectedOptionStartTime} onChange={handleChangeStartTime} className="modal-seat-select-section-time">
-                                            {Array.from({ length: 20 }, (_, i) => {
+                                            {Array.from({ length: 12 }, (_, i) => {
                                                     const startTime = `${String(i + 9).padStart(2, "0")}:00`;
                                                     const now = new Date();
                                                     const currentHour = now.getHours();
@@ -201,7 +201,7 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                                         <select value={selectedOptionEndTime} onChange={selectedOption === "기간" ? handleChangeEndTime : undefined} className="modal-seat-select-section-time">
                                             {selectedOption === "기간"
                                             // 12
-                                                ? Array.from({ length: 20 }, (_, i) => {
+                                                ? Array.from({ length: 12 }, (_, i) => {
                                                     const endTime = `${String(i + 10).padStart(2, "0")}:00`;
                                                     const now = new Date();
                                                     const currentHour = now.getHours();
@@ -246,8 +246,10 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                     <div className="modal-seat-button-section" onClick={() => {
                             const startTime = selectedOptionStartTime.split(":").map(Number);
                             const endTime = selectedOptionEndTime.split(":").map(Number);
-                            const isBlurred = endTime < startTime || (endTime === startTime && endTime <= startTime);
-                            // console.log(selectedOptionStartTime, selectedOptionEndTime);
+                            const isBlurred = endTime > startTime || (endTime === startTime && endTime <= startTime);
+                            console.log(selectedOptionStartTime, selectedOptionEndTime);
+                            console.log(startTime, endTime);
+                            console.log(isBlurred);
                             if(!isBlurred){
                                 alert("종료 시간이 시작 시간보다 빠를 수 없습니다.");
                                 return 
