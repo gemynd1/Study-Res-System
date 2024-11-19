@@ -175,6 +175,10 @@
         OFFSET #{int_ContentNumber} ROWS FETCH NEXT 1 ROWS ONLY
     </select>
 
+    <select id="ViewCommunity_size" parameterType="String" resultType="int">
+        select count(*) from tbl_community where comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+    </select>
+
     <select id="ViewStudyroom" resultType="com.project.SnakeDev.vo.StudyGInfoVo">
         select
             s.*,

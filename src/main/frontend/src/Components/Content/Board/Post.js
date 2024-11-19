@@ -333,26 +333,26 @@ function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen
 }
 
 // 카카오맵
-const TheaterLocation = () => {
+const TheaterLocation = ({kakaoPlace}) => {
     return (
       <div className="kakaomap">
-        <Map
+        {/* <Map
           center={{ lat: 37.398184423401, lng: 126.91023974128 }}
           style={{
             width: '1090px',
             height: '378px',
             borderRadius: '20px',
           }}
-        >
+        > */}
         {/* 지도에 보여줄 위치 지정 (위도,경도)  */}
         
-          <MapMarker
+          {/* <MapMarker
             style={{ border: 'tranparent' }}
             position={{ lat: 37.398184423401, lng: 126.91023974128 }}
-          >
+          > */}
           {/* 핀 찍힐 위치 */}
           
-            <div
+            {/* <div
               style={{
                 color: '#9971ff',
                 fontSize: '19px',
@@ -365,9 +365,20 @@ const TheaterLocation = () => {
               연성대학교
             </div>
           </MapMarker>
+        </Map> */}
+
+        {/* TODO: 여기 각 위도 경도 변수들 처리를 해야함 */}
+        <Map
+        center={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}
+        style={{ width: '1090px',
+                 height: '378px',
+                 borderRadius: '20px' }}
+        >
+            <MapMarker position={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}>
+                <div style={{color:"#000"}}>{kakaoPlace.place_name}</div>
+            </MapMarker>
         </Map>
       </div>
-      //핀에 적힐 이름 (위치 이름)
     );
   };
 
@@ -395,6 +406,10 @@ const Post = () => {
     const [comment, setComment] = useState('');
     // 댓글 추가인지 수정인지 구분하는 useState
     const [add_or_edit, setAdd_or_edit] = useState('add');
+    // kakao restapi 값을 담는 변수
+    const [kakaoRestApi, setKakaoRestApi] = useState([]);
+    // kakao에서의 주소에 대한 장소id값을 담는 변수
+    const [kakaoPlace, setKakaoPlace] = useState({id: "", x: "", y: "", place_name: ""});
 
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
@@ -569,19 +584,47 @@ const Post = () => {
         );
     };
 
+    // useEffect(() => {
+    //     axios.get('https://dapi.kakao.com/v2/local/search/keyword.json', {
+    //         params: { query: boardContents.comAddress },
+    //         headers: {
+    //             'Authorization': `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }).then(response => {
+    //         console.log(response.data);
+    //         setKakaoRestApi(response.data);
+    //     }).catch(error => {
+    //         console.log(error);
+    //     })
+    // },[boardContents.comAddress])
+
     useEffect(() => {
-        axios.get('https://dapi.kakao.com/v2/local/search/address.json', {
-            params: { query: boardContents.comAddress },
-            headers: {
-                'Authorization': `KakaoAK 65f58b2d75b9c7633dbcbfb394c75a5d`,
-                'Content-Type': 'application/json',
+        const fetchAddressData = async () => {
+            if (!boardContents.comAddress) {
+                console.log('Missing comAddress');
+                return;
             }
-        }).then(response => {
-            console.log(response.data);
-        }).catch(error => {
-            console.log(error);
-        },[boardContents.comAddress])
-    })
+
+            try {
+                const response = await axios.get('https://dapi.kakao.com/v2/local/search/keyword.json', {
+                    params: { query: boardContents.comAddress },
+                    headers: {
+                        'Authorization': `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                console.log(response.data);
+                setKakaoRestApi(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (boardContents.comAddress) {
+            fetchAddressData();
+        }
+    }, [boardContents.comAddress]);
 
     useEffect(() => {
         axios.get('http://localhost:8099/api/board/post/comment', {
@@ -619,6 +662,31 @@ const Post = () => {
         })
     },[comIdx])
 
+    useEffect(() => {
+        if (kakaoRestApi && kakaoRestApi.documents) {
+            kakaoRestApi.documents.map((data, index) => {
+                if(data && index === 0) {
+                    // console.log("id_data: " + data.id);
+                    setKakaoPlace({id: data.id,
+                                   x: data.x, 
+                                   y: data.y, 
+                                   place_name: data.place_name});
+                    // console.log(kakaoPlace)
+
+                    // 위도와 경도의 값도 추출가능
+                    // console.log("x_data: " + data.x);
+                    // console.log("y_data: " + data.y);
+                }
+                return null;
+            });
+        }
+    }, [kakaoRestApi]);
+
+    useEffect(() => {
+        console.log(kakaoPlace);
+        console.log(parseFloat(kakaoPlace.x));
+    }, [kakaoPlace]); 
+
     console.log(boardContents);
     console.log(commentData);
     // console.log(sessionId, sessionName);
@@ -627,6 +695,7 @@ const Post = () => {
     // console.log(groupMemberInfos);
     // console.log(sessionId !== boardContents.memberId);
     // console.log(comment);
+    // console.log("kakaoRestApi: " + kakaoRestApi.documents);
 
     if (!boardContents | !commentData | !groupMemberInfos) {
         return <div>Loading...</div>;
@@ -698,21 +767,21 @@ const Post = () => {
 
                     <div className="kakao-button">
 
-                        <Link to="https://place.map.kakao.com/8430579" className="goto-info-button">
+                        <a href={`https://place.map.kakao.com/${kakaoPlace.id}`} className="goto-info-button">
                             <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
                             <span className="goto-info-text">정보보기</span>
-                        </Link>
+                        </a>
 
-                        <Link to="https://map.kakao.com/link/to/8430579" className="goto-road-button">
+                        <a href={`https://map.kakao.com/link/to/${kakaoPlace.place_name},${parseFloat(kakaoPlace.y).toFixed(6)},${parseFloat(kakaoPlace.x).toFixed(6)}`} className="goto-road-button">
                             <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
                             <span className="goto-road-text">길찾기</span>
-                        </Link>
+                        </a>
 
                     </div>
 
                     <div className="kakaomap">
                     </div>
-                    <TheaterLocation />
+                    <TheaterLocation kakaoPlace={kakaoPlace} />
                     
                 </div>
 

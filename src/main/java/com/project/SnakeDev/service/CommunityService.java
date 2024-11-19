@@ -16,6 +16,8 @@ public interface CommunityService {
     public List<CommunityCategoryVo> ViewCommunityCategory();
 
     public List<CommunityVo> ViewCurrentCommunity(String currentCategory);
+
+    public int ViewCommunity_size(String currentCategory);
     
     public List<CommunityVo> ViewMoreCommunity(String currentCategory, int int_ContentNumber);
 

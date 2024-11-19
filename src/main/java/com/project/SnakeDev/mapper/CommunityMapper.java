@@ -17,6 +17,8 @@ public interface CommunityMapper {
 
     List<CommunityVo> ViewCurrentCommunity(String currentCategory);
 
+    int ViewCommunity_size(String currentCategory);
+
     List<CommunityVo> ViewMoreCommunity(String currentCategory, int int_ContentNumber);
 
     List<CommunityVo> ViewPost(String comIdx);

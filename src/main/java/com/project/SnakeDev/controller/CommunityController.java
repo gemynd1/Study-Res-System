@@ -46,7 +46,17 @@ public class CommunityController {
             currentCategory = null;
         }
 
-        return ResponseEntity.ok(communityService.ViewCurrentCommunity(currentCategory));
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        int Community_size = communityService.ViewCommunity_size(currentCategory);
+        List<CommunityVo> communityVo = communityService.ViewCurrentCommunity(currentCategory);
+        if(communityVo != null) {
+            result.put("Community_size", Community_size);
+            result.put("Community", communityVo);
+            return ResponseEntity.ok(result);
+        }else {
+            return ResponseEntity.badRequest().body("에러 메시지");
+        }
     }
 
     @GetMapping("/board/select/category/more")

@@ -8,6 +8,7 @@ const BoardCategory = () => {
     const [boardContents, setBoardContents] = useState([]);
     // 카테고리를 담어두는 state
     const [boardCategorys, setBoardCategory] = useState([]);
+    const [communitySize, setCommunitySize] = useState(0);
 
     const currentUrl = window.location.href;
 
@@ -25,10 +26,7 @@ const BoardCategory = () => {
     }
 
     const addBoardContent = () => {
-        console.log(categoryValue + " - " + boardContents.length)
-        // db에서 boardContents.length+1부터 5개씩 가져오는 sql문을 만들어서 실행해야함 
-        // 그리고나서 boardContents안에 sql로 가져온 값을 추가해준면된다.
-        
+        // console.log(categoryValue + " - " + boardContents.length)
         axios.get('http://localhost:8099/api/board/select/category/more', {
             params : { currentCategory : categoryValue, ContentNumber : boardContents.length },
             headers : { 'Content-Type': 'application/json' }
@@ -72,14 +70,20 @@ const BoardCategory = () => {
         .then(
             axios.spread((res1, res2) => {
                 setBoardCategory(res1.data);
-                setBoardContents(res2.data);
-                console.log(currentCategoryValue + "db에서 사용할 카테고리 값")
+                setBoardContents(res2.data.Community);
+                setCommunitySize(res2.data.Community_size);
+                // console.log(currentCategoryValue + "db에서 사용할 카테고리 값")
             })
         )
         .catch(error => {
             console.log(error);
         });
     }
+
+    // useEffect(() => {
+    //     console.log(boardContents)
+    //     console.log(communitySize)
+    // },[boardContents, communitySize]);
 
     useEffect(() => {
         const currentCategoryValue = location.pathname.split("/").pop();
@@ -161,15 +165,17 @@ const BoardCategory = () => {
                             </div>
                         </div> */}
 
-                        <div className="moreButton" onClick={addBoardContent}>
-                            {/* moreButton-section영역은 boardContent의 데이터를 sql로 가져올때 
-                            카테고리에 해당하는 전체 게시물데이터의 개수를 가져와 boardContents의 크기가 
-                            전체게시글개수와 일치할때 display none의 값을 주면 된다. */}
-                            <div className="moreButton-section">
-                                <span className="moreButton-text">MORE</span>
-                                <img src="/img/icon/arrow(down).png" alt="moreButton" className="moreButton-arrow" onClick={addBoardContent} />
+                        {boardContents.length === communitySize ? null :(
+                            <div className="moreButton" onClick={addBoardContent}>
+                                {/* moreButton-section영역은 boardContent의 데이터를 sql로 가져올때 
+                                카테고리에 해당하는 전체 게시물데이터의 개수를 가져와 boardContents의 크기가 
+                                전체게시글개수와 일치할때 display none의 값을 주면 된다. */}
+                                <div className="moreButton-section">
+                                    <span className="moreButton-text">MORE</span>
+                                    <img src="/img/icon/arrow(down).png" alt="moreButton" className="moreButton-arrow"/>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
