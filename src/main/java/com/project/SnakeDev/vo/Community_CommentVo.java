@@ -6,6 +6,7 @@ public class Community_CommentVo {
     private int  CCREPORTCOUNT;
 
     private String MemberName;
+    private String MemberId;
 
     // 기본생성자
     public Community_CommentVo() {
@@ -28,9 +29,7 @@ public class Community_CommentVo {
     }
 
     // post페이지에서 comment데이터 가져올때 사용하는 vo
-
-
-    public Community_CommentVo(int CCIDX, int MIDX, int COMIDX, int CCREFNUM, int CCNUM, int CCGROUPNUM, String CCCONTENT, String CCREGDATE, String CCUPDATE, String CCDELDATE, int CCREPORTCOUNT, String memberName) {
+    public Community_CommentVo(int CCIDX, int MIDX, int COMIDX, int CCREFNUM, int CCNUM, int CCGROUPNUM, String CCCONTENT, String CCREGDATE, String CCUPDATE, String CCDELDATE, int CCREPORTCOUNT, String memberName, String memberId) {
         this.CCIDX = CCIDX;
         this.MIDX = MIDX;
         this.COMIDX = COMIDX;
@@ -43,6 +42,7 @@ public class Community_CommentVo {
         this.CCDELDATE = CCDELDATE;
         this.CCREPORTCOUNT = CCREPORTCOUNT;
         MemberName = memberName;
+        MemberId = memberId;
     }
 
     public int getCCIDX() {
@@ -139,5 +139,13 @@ public class Community_CommentVo {
 
     public void setMemberName(String memberName) {
         MemberName = memberName;
+    }
+
+    public String getMemberId() {
+        return MemberId;
+    }
+
+    public void setMemberId(String memberId) {
+        MemberId = memberId;
     }
 }

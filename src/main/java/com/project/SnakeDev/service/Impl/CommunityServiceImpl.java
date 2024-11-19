@@ -8,6 +8,7 @@ import com.project.SnakeDev.vo.StudyGInfoVo;
 import com.project.SnakeDev.vo.TogetherStudyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -43,13 +44,22 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public List<CommunityVo> ViewComment(String comIdx) {
-        return communityMapper.ViewComment(comIdx);
+    public List<CommunityVo> ViewComment(String comIdx, String currentPage, String commentSize) {
+        return communityMapper.ViewComment(comIdx, currentPage, commentSize);
+    }
+
+    @Override
+    public int ViewCommentSize(String comIdx) {
+        return communityMapper.ViewCommentSize(comIdx);
     }
 
     @Override
     public List<CommunityVo> ViewPost_forPostRewrite(String comIdx) {
         return communityMapper.ViewPost_forPostRewrite(comIdx);
+    }
+
+    public List<TogetherStudyVo> ViewGroupMember_forPost(String comIdx) {
+        return communityMapper.ViewGroupMember_forPost(comIdx);
     }
 
     @Override
@@ -70,5 +80,58 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public Boolean deleteTogetherStudy(String comIdx, List<Map<String, Object>> groupMemberInfos) {
         return communityMapper.deleteTogetherStudy(comIdx, groupMemberInfos);
+    }
+
+    @Override
+    public Boolean  insert_comment_question(int comIdx,String comment,int maxCCGroupNum,String sessionId) {
+        return communityMapper.insert_comment_question(comIdx, comment, maxCCGroupNum, sessionId);
+    }
+
+    @Override
+    public Boolean insert_comment_reply(int comIdx, String comment, int maxCCGroupNum, String sessionId, int currentComment, int currentCommentGroupNum) {
+        return communityMapper.insert_comment_reply(comIdx, comment, maxCCGroupNum, sessionId, currentComment, currentCommentGroupNum);
+    }
+
+    @Override
+    public Boolean updateComment_forSelf(String comment, int currentComment) {
+        return communityMapper.updateComment_forSelf(comment, currentComment);
+    }
+
+    @Override
+    public Boolean deleteComment(int comment_ccidx, int comment_ccgroupnum, int comment_comidx) {
+        return communityMapper.deleteComment(comment_ccidx, comment_ccgroupnum, comment_comidx);
+    }
+
+    @Override
+    public Boolean reportComment(int comment_ccidx) {
+        return communityMapper.reportComment(comment_ccidx);
+    }
+
+    @Override
+    public Boolean insertTogetherStudy(int comIdx, String sessionId) {
+        return communityMapper.insertTogetherStudy(comIdx, sessionId);
+    }
+
+    @Override
+    public Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId) {
+        return communityMapper.deleteTogetherStudy_forPost(comIdx, sessionId);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deletePost_allPost(int comIdx) {
+        return communityMapper.deletePost_allPost(comIdx);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteComment_allPost(int comIdx) {
+        return communityMapper.deleteComment_allPost(comIdx);
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteTogetherStudy_allPost(int comIdx) {
+        return communityMapper.deleteTogetherStudy_allPost(comIdx);
     }
 }

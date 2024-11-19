@@ -179,10 +179,18 @@ div.post div.post-info2 span.post-group2 {
     margin-left: 91px;
 }
 
+.post-info3-frame{
+    display: flex;
+    justify-content: flex-start;
+    height: 53px;
+    margin-left: 130px;
+}
 div.post div.post-info3 {
     position: relative;
     display: inline-block;
-    width: 1444px;
+    /* width: 1444px; */
+    width: 130px;
+    margin-right: 1%;
 }
 
 div.post div.post-info3 div.post-member {
@@ -192,7 +200,7 @@ div.post div.post-info3 div.post-member {
     height: 52px;
     background: #FFFFFF;
     border-radius: 10px;
-    margin-left: 133px;
+    /* margin-left: 133px;  */
 }
 
 div.post div.post-info3 div.post-member img.post-member-icon {
@@ -475,7 +483,7 @@ div.post div.post-comment div.post-comment-header div.QandA-button div.QandA-but
 
 div.post div.post-comment div.post-comment-main div.post-question {
     position: relative;
-    display: inline-block;
+    /* display: inline-block; */
     margin-top: 151px;
 }
 
@@ -699,6 +707,38 @@ div.post div.delete-button-section div.delete-button img.delete-button-icon {
 }
 
 div.post div.delete-button-section div.delete-button span.delete-button-text {
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+}
+
+div.post div.back-button-section {
+    position: relative;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+div.post div.back-button-section div.back-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1202px;
+    height: 58px;
+    background: rgba(38, 139, 95, 0.5);
+    border-radius: 30px;
+}
+
+div.post div.back-button-section div.back-button img.back-button-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 23px;
+}
+
+div.post div.back-button-section div.back-button span.back-button-text {
     font-weight: 400;
     font-size: 25px;
     line-height: 30px;
