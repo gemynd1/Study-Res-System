@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
@@ -99,43 +101,47 @@ public class AuthController {
     }
 
     @PostMapping("/kakao")
-    public ResponseEntity<Object> kakaoCallback(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> kakaoCallback(@RequestBody Map<String, String> request) {
         String code = request.get("code");
-        String clinetid = "11d774c77f4b2e6630e873d9eccec5aa";
+        String clinetid = "07644519945dac6578a2e7a01835e7de";
 
-        if (code == null || code.isEmpty()) {
-            return ResponseEntity.badRequest().body("Authorization Code is missing");
-        }
-
-        String tokenUrl = "https://kauth.kakao.com/oauth/token";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", clinetid);
-        params.add("redirect_uri", "http://localhost:3000/oauth");
-        params.add("code", code);
-
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, entity, Map.class);
-            return ResponseEntity.ok(response.getBody());
-        } catch (HttpClientErrorException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
-        }
 //        try {
-//            String code = request.get("code");
-////            String[] access_token = authService.getKakaoAccessToken(code);
-////            String access_found_in_token = access_token[0];
-//            return ResponseEntity.ok(authService.kakaoSignUp(code));
-//        } catch (Exception e) {
-//            e.printStackTrace(); // 오류를 콘솔에 출력
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+//            System.out.println(code);
+//            if (code == null || code.isEmpty()) {
+//                return ResponseEntity.badRequest().body("Authorization Code is missing");
+//            }
+//
+//            String tokenUrl = "https://kauth.kakao.com/oauth/token";
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//            params.add("grant_type", "authorization_code");
+//            params.add("client_id", clinetid);
+//            params.add("redirect_uri", "http://localhost:3000/oauth");
+//            params.add("code", code);
+//
+//            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+//
+//            RestTemplate restTemplate = new RestTemplate();
+//
+//            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, entity, Map.class);
+//            System.out.println("Kakao Response: " + response.getBody());
+//            return ResponseEntity.ok(response.getBody());
+//        } catch (HttpClientErrorException e) {
+//            System.err.println("Kakao API Error: " + e.getStatusCode() + e.getResponseBodyAsString());
+//            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
 //        }
+        try {
+//            String code = request.get("code");
+//            String[] access_token = authService.getKakaoAccessToken(code);
+//            String access_found_in_token = access_token[0];
+            return ResponseEntity.ok(authService.kakaoSignUp(code));
+        } catch (Exception e) {
+            e.printStackTrace(); // 오류를 콘솔에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
     }
 
     @GetMapping("/session-status")

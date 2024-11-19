@@ -16,46 +16,55 @@ const Oauth = () => {
         const code = params.get("code"); // Authorization Code 추출
         // console.log(code);
 
-        if (code) {
-            // Authorization Code를 백엔드로 전달
-            fetch("http://localhost:8099/api/kakao", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code }), // code 전달
+        // if (code) {
+        //     // Authorization Code를 백엔드로 전달
+        //     fetch(`http://localhost:8099/api/kakao?${code}`, {
+        //         method: "GET",
+        //         headers: { "Content-Type": "application/json" },
+        //         // body: JSON.stringify({ code }), // code 전달
+        //     })
+        //         .then((res) => {
+        //             console.log(res.data)
+        //         })
+        //         .catch((error) => console.error("Error:", error));
+        // } else {
+        //     console.error("Authorization Code is missing");
+        // }
+        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/kakao`,
+            {code: code},
+            {   
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // headers: {
+                //     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8;application/json",
+                // },
+                withCredentials: true,
+            }
+        )
+        .then((res) => {
+            //5. ok respone 확인하고, 이후 작업 해야함(유저로그인시키기, 토큰 브라우저에 저장)
+            console.log(res.data);
+            localStorage.setItem("token", res.data.token);
+            axios //서버에서 유저정보 요청하는 url 
+            .get(`${process.env.REACT_APP_SERVER_URL}/userinfo`, {
+                headers: {
+                //헤더에 token을 담아서 전달 
+                Authorization: "Bearer " + res.data.token,
+                },
             })
-                .then((res) => {
-                    console.log(res.data)
-                })
-                .catch((error) => console.error("Error:", error));
-        } else {
-            console.error("Authorization Code is missing");
-        }
-        // axios.get(`${process.env.REACT_APP_SERVER_URL}/api/kakao?code=${encodeURIComponent(JSON.stringify(code))}`, {
-        //     headers : "Content-Type: application/x-www-form-urlencoded;charset=utf-8"
-        // })
-        // .then((res) => {
-        //     //5. ok respone 확인하고, 이후 작업 해야함(유저로그인시키기, 토큰 브라우저에 저장)
-        //     console.log(res.data);
-        //     // localStorage.setItem("token", res.data.token);
-        //     // axios //서버에서 유저정보 요청하는 url 
-        //     // .get(`${process.env.REACT_APP_SERVER_URL}/userinfo`, {
-        //     //     headers: {
-        //     //     //헤더에 token을 담아서 전달 
-        //     //     Authorization: "Bearer " + res.data.token,
-        //     //     },
-        //     // })
-        //     //     //서버에서 유휴성 검사 - > 확인되면 유저 데이터 전달해주고 프론트에서는
-        //     //     // const setUser = useSetRecoilState(userState);
-        //     //     // recoilstate로 유저 데이터 저장
-        //     //     // 하고 dashboard로 이동 시키기  로그인끝!
-        //     // .then((response) => {
-        //     //     setUser(response.data);
-        //     //     navigate("/");
-        //     // });
-        // })
-        // .catch((error) => {
-        //     console.log(error);
-        // });
+                //서버에서 유휴성 검사 - > 확인되면 유저 데이터 전달해주고 프론트에서는
+                // const setUser = useSetRecoilState(userState);
+                // recoilstate로 유저 데이터 저장
+                // 하고 dashboard로 이동 시키기  로그인끝!
+            .then((response) => {
+                setUser(response.data);
+                navigate("/");
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     return (

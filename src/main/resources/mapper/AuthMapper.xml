@@ -45,7 +45,13 @@
         insert into tbl_member
             (MIdx,MemberName,MemberId,MemberPw, MemberPhone, MRegDate, LoginType)
         values
-            (#{kakaoId}, #{nickname}, #{email}, '', '', sysdate, 'kakao')
+            (#{kakaoId, jdbcType=INTEGER},
+             #{nickname, jdbcType=VARCHAR},
+             #{email, jdbcType=VARCHAR},
+             '',
+             '',
+             sysdate,
+             'kakao')
     </insert>
 
 

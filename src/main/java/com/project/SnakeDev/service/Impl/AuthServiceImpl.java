@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
@@ -74,19 +76,20 @@ public class AuthServiceImpl implements AuthService {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        Map<String, String> params = Map.of(
-            "grant_type", "authorization_code",
-            "client_id", clientId, // 카카오 앱 REST API 키
-            "redirect_uri","http://localhost:8099/api/kakao",
-            "code", code
-        );
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("grant_type", "authorization_code");
+            params.add("client_id", clientId);
+            params.add("redirect_uri", "http://localhost:3000/oauth");
+            params.add("code", code);
+
+            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 
 
         try {
-            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, params, Map.class);
-            System.out.println("Request Parameters: " + params);
+            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, entity, Map.class);
+            System.out.println("Request Parameters: " + entity);
             String accessToken = (String) response.getBody().get("access_token");
             System.out.println("Access Token: " + accessToken);
             if (response.getStatusCode() == HttpStatus.OK) {
