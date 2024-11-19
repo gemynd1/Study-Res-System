@@ -12,8 +12,8 @@ public class StudyInInfoVo {
   private Integer SCIdx;
   private Integer SIINum;
   private String SeatUseState;
-  private Date SeatStartTime;
-  private Date SeatEndTime;
+  private String SeatStartTime;
+  private String SeatEndTime;
 
   public StudyInInfoVo() {
   }
@@ -58,19 +58,19 @@ public class StudyInInfoVo {
     SeatUseState = seatUseState;
   }
 
-  public Date getSeatStartTime() {
+  public String getSeatStartTime() {
     return SeatStartTime;
   }
 
-  public void setSeatStartTime(Date seatStartTime) {
+  public void setSeatStartTime(String seatStartTime) {
     SeatStartTime = seatStartTime;
   }
 
-  public Date getSeatEndTime() {
+  public String getSeatEndTime() {
     return SeatEndTime;
   }
 
-  public void setSeatEndTime(Date seatEndTime) {
+  public void setSeatEndTime(String seatEndTime) {
     SeatEndTime = seatEndTime;
   }
 }

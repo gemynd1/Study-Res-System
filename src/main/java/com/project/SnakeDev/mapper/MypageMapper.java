@@ -17,9 +17,6 @@ public interface MypageMapper {
     AuthVo getMemberInfo(@Param("memberId") String memberId);
 
     // 회원 정보 수정 쿼리
-    int updateInfo(AuthVo authVo);
-
-
     int updateMemberInfo(AuthVo authVo);
     int updateMemberAddress(AuthVo authVo);
 
@@ -28,13 +25,16 @@ public interface MypageMapper {
 
     // 마이페이지 시간충전 보여주기
     List<StudyInPareVo> ViewStudyInPare();
-    List<AuthVo> mypageAddTime(@Param("memberid") String memberid);
+    AuthVo mypageAddTime(@Param("memberid") String memberid);
 
     // 내가 작성한 글 보여주기
     List<StudyCommunityVo> getBoardInfo(@Param("memberId") String memberId);
 
     // 내가 작성한 리뷰 보여주기
     List<StudyReviewVo> getReviewInfo(@Param("memberId") String memberId);
+
+    List<StudyGOrderVo> mypageGroupCheck(@Param("MemberId") String MemberId);
+    List<TemplateOrderVo> mypageInviCheck(@Param("MemberId") String MemberId);
 
     // 회원탈퇴
     AuthVo ExitMemberInfo(@Param("memberId") String memberId);

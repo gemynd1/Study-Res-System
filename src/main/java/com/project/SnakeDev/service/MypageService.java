@@ -21,13 +21,16 @@ public interface MypageService {
 
     // 시간충전 조회 메서드
     public List<StudyInPareVo> ViewStudyInPare();
-    public List<AuthVo> mypageAddTime(String memberid);
+    public AuthVo mypageAddTime(String memberid);
 
     // 내가 작성한 글 확인
     List<StudyCommunityVo> getBoardInfo(String memberId);
 
     // 내가 작성한 리뷰 확인
     List<StudyReviewVo> getReviewInfo(String memberId);
+
+    List<StudyGOrderVo> mypageGroupCheck(String MemberId);
+    List<TemplateOrderVo> mypageInviCheck(String MemberId);
 
     // 회원 탈퇴
     AuthVo ExitMemberInfo (String memberId);

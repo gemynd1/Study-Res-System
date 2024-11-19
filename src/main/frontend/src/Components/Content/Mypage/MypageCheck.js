@@ -3,112 +3,16 @@ import React, {useEffect, useState} from "react";
 import MemberDeleteModal from "./MemberDeleteModal";
 import Pagination from "./Pagination";
 import Pagination2 from "./Pagination2";
+import axios from "axios";
 
 const MypageCheck = () => {
-    const [MypageCheckResult] = useState([
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "금성방 2024-11-10 (15:00 ~ 16:00) (2명)",
-            Price : "10000",
-            situation : "취소"
-        }
-        ]);
+    const [MypageGroupResult, setMypageGroupResult] = useState([]);
+    const [MypageInviResult, setMypageInviResult] = useState([{
+        studyOrderPayVo : [],
+        ttocontent : "",
+    }]);
+    const [parsedResults, setParsedResults] = useState([]);
 
-
-    const [MypageCheckPerson] = useState([
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        },
-        {
-            Reservationnumber : "20241110",
-            Reservationdate : "2024-11-10",
-            Reservationdetails : "당일권(정기) 1시간",
-            Price : "10000",
-            situation : "취소"
-        }
-    ]);
     const [MypageCheck, setMypageCheck] = useState([]);
     const [MemberModalOpen, setMemberModalOpen] = useState(false);
 
@@ -121,12 +25,11 @@ const MypageCheck = () => {
 
     const indexOfLastResult = currentPage * resultsPerpage;
     const indexOfFirstResult = indexOfLastResult - resultsPerpage;
-    const currentResults = MypageCheckResult.slice(indexOfFirstResult, indexOfLastResult);
+    const currentResults = MypageGroupResult.slice(indexOfFirstResult, indexOfLastResult);
 
     const indexOfLastResult2 = currentPage2 * resultsPerpage2;
     const indexOfFirstResult2 = indexOfLastResult2 - resultsPerpage2;
-    const cuurentResults2 = MypageCheckPerson.slice(indexOfFirstResult2, indexOfLastResult2);
-
+    const cuurentResults2 = parsedResults.slice(indexOfFirstResult2, indexOfLastResult2);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -152,7 +55,39 @@ const MypageCheck = () => {
         };
     }, [MemberModalOpen]);
 
+    useEffect(() => {
+        Promise.all([
+            axios.get(`http://localhost:8099/api/mypage/mypageGroupCheck?MemberId=${sessionStorage.getItem("id")}`),
+            axios.get(`http://localhost:8099/api/mypage/mypageInviCheck?MemberId=${sessionStorage.getItem("id")}`)
+        ],
+            { headers : {'Content-Type' : 'application/json'}
+        })
+        .then(
+            axios.spread((res1, res2) => {
+                setMypageGroupResult(res1.data);
+                setMypageInviResult(res2.data);
+                console.log(res1.data)
+                console.log(res2.data)
+            })
+        )
+        .catch(error => {
+            console.error("에러발생: ", error);
+        });
+    }, []); 
 
+    useEffect(() => {
+        const parsedData = MypageInviResult.map((item) => {
+            try {
+                const parsedContent = JSON.parse(item.ttocontent);
+                // console.log(parsedContent);
+                return { ...item, ttocontent: parsedContent };
+            } catch (error) {
+                console.error("Error parsing ttocontent:", error);
+                return { ...item, ttocontent: [] };
+            }
+        });
+        setParsedResults(parsedData);
+    }, [MypageInviResult]);
 
     return(
         <div className="MyPage">
@@ -237,25 +172,38 @@ const MypageCheck = () => {
                                         <th>예약내역</th>
                                         <th>금액</th>
                                         <th>상태</th>
+                                        {/* <th>취소</th> */}
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        {currentResults.map((result, index) => (
-                                            <tr key={index}>
-                                                <td>{result.Reservationnumber}</td>
-                                                <td>{result.Reservationdate}</td>
-                                                <td>{result.Reservationdetails}</td>
-                                                <td>{result.Price}</td>
-                                                <td>
-                                                    <button>{result.situation}</button>
-                                                </td>
+                                        {currentResults != '' ? 
+                                            currentResults.map((result, index) => (
+                                                <tr key={index}>
+                                                    <td>{result.sgonum}</td>
+                                                    <td>{result.sgoregDate}</td>
+                                                    <td>{result.studyGInfoVo.sgicontent1} - {result.sgoregDate} ({result.sgostartDate} ~ {result.sgoendDate}) - {result.sgopeople}명</td>
+                                                    <td>{result.sgototal}원</td>
+                                                    <td>
+                                                        <button>
+                                                            {
+                                                                new Date() > new Date(result.sgoregDate) ? "사용 완료" : 
+                                                                        new Date().getHours() === result.sgostartDate - 1 ? "예약 1시간 전" : "예약 완료"
+                                                            }
+                                                        </button>
+                                                    </td>
+                                                    {/* <td><button>취소</button></td> */}
+                                                </tr>
+                                            ))
+                                            : 
+                                            <tr>
+                                                <td colSpan="6">검색 결과가 없습니다.</td>
                                             </tr>
-                                        ))}
+                                        }
                                     </tbody>
                                 </table>
                                 <Pagination2
                                     currentPage={currentPage}
-                                    totalPages={Math.ceil(MypageCheckResult.length / resultsPerpage)}
+                                    totalPages={Math.ceil(MypageGroupResult.length / resultsPerpage)}
                                     onPageChange={handlePageChange}
                                 />
                             </div>
@@ -264,36 +212,48 @@ const MypageCheck = () => {
                     <div className="CheckContent2">
                         <div className="CheckRoom">
                             <img src="/img/icon/logo.png" style={{width: "79px", height: "64px"}} alt="로고"/>
-                            <span>개인좌석 예약 목록</span>
+                            <span>개인좌석시간 충전 목록</span>
                         </div>
                         <div className="CheckRoom2">
                             <table className="CheckRoomTable">
                                 <thead>
                                 <tr>
-                                    <th>예약번호</th>
-                                    <th>예약일시</th>
-                                    <th>예약내역</th>
+                                    <th>충전번호</th>
+                                    <th>충전일시</th>
+                                    <th>충전내역</th>
                                     <th>금액</th>
                                     <th>상태</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {cuurentResults2.map((result, index) => (
-                                    <tr key={index}>
-                                        <td>{result.Reservationnumber}</td>
-                                        <td>{result.Reservationdate}</td>
-                                        <td>{result.Reservationdetails}</td>
-                                        <td>{result.Price}</td>
-                                        <td>
-                                            <button>{result.situation}</button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                    {cuurentResults2 != '' ? 
+                                        cuurentResults2.map((result, index) => (
+                                        <tr key={index}>
+                                            <td>{result.ttocontent[0]?.random}</td>
+                                            <td>{result.studyOrderPayVo.tsopdate?.replace(/T.*/, "")}</td>
+                                            <td>
+                                            {/* result.ttocontent[0]?.sipname && typeof result.ttocontent[0]?.sipname === "string"  */}
+                                                {
+                                                    result.ttocontent[0]?.sipname.includes("년") || result.ttocontent[0]?.sipname.includes("주") 
+                                                    ? result.ttocontent[0]?.sipname : result.ttocontent[0]?.sipname + "시간" 
+                                                }
+                                                    {/* : result.ttocontent[0]?.sipname */}
+                                            </td>
+                                            <td>{result.studyOrderPayVo.tsopprice}원</td>
+                                            <td>
+                                                <button>결제완료</button>
+                                            </td>
+                                        </tr>
+                                        )) :
+                                        <tr>
+                                            <td colSpan="6">검색 결과가 없습니다.</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                             <Pagination2
                                 currentPage={currentPage2}
-                                totalPages={Math.ceil(MypageCheckPerson.length / resultsPerpage2)}
+                                totalPages={Math.ceil(MypageInviResult.length / resultsPerpage2)}
                                 onPageChange={handlePageChange2}
                             />
                         </div>

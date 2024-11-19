@@ -23,6 +23,7 @@ import MypageReview from "./Components/Content/Mypage/MypageReview";
 import MypageAdd from "./Components/Content/Mypage/MypageAdd";
 import Login from "./Components/Content/Account/login";
 import Join from "./Components/Content/Account/join";
+import OAuth from "./Components/Content/Account/oauth";
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
 
 import CustomerService from "./Components/Content/CustomerHelp/CustomerService";
@@ -101,6 +102,7 @@ function AppContent() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
+        <Route path="/oauth" element={<OAuth />} />
 
           {/* mypage 따로 나눌수 있음 git merge */}
           <Route path="/mypage/*" element={<Mypage />} />
