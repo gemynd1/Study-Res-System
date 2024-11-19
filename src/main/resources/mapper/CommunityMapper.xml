@@ -4,21 +4,43 @@
 
     <select id="ViewCommunity" resultType="com.project.SnakeDev.vo.CommunityVo">
         <![CDATA[
-        select * from (
-            SELECT
-                c.*,
-                COUNT(ts.COMIDX) AS GroupCount
-            FROM
-                tbl_community c
-            LEFT JOIN
-                tbl_TogetherStudy ts
-            ON
-                c.COMIDX = ts.COMIDX
-            GROUP BY
-                c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
-            ORDER BY
-                c.COMIDX DESC
-        ) where rownum <= 5
+        SELECT * FROM (
+                          SELECT
+                              c.*,
+                              COUNT(ts.COMIDX) AS GroupCount
+                          FROM
+                              tbl_community c
+                                  LEFT JOIN
+                              tbl_TogetherStudy ts
+                              ON
+                                  c.COMIDX = ts.COMIDX
+                          WHERE c.COMCATEIDX = 1
+                            AND c.COMDELDATE = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+                          GROUP BY
+                              c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+                          ORDER BY
+                              c.COMIDX DESC
+                      ) WHERE ROWNUM <= 3
+
+        UNION ALL
+
+        SELECT * FROM (
+                          SELECT
+                              c.*,
+                              COUNT(ts.COMIDX) AS GroupCount
+                          FROM
+                              tbl_community c
+                                  LEFT JOIN
+                              tbl_TogetherStudy ts
+                              ON
+                                  c.COMIDX = ts.COMIDX
+                          WHERE c.COMCATEIDX = 2
+                            AND c.COMDELDATE = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+                          GROUP BY
+                              c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+                          ORDER BY
+                              c.COMIDX DESC
+                      ) WHERE ROWNUM <= 3
         ]]>
     </select>
 
@@ -35,6 +57,7 @@
             ON
                 c.COMIDX = ts.COMIDX
             WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+                and comdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
             GROUP BY
                 c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
             ORDER BY
@@ -131,6 +154,7 @@
                 tbl_member tm ON tcc.midx = tm.midx
             WHERE
                 tcc.comidx = #{comIdx}
+                and tcc.ccdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
         )
         SELECT
             *
@@ -149,6 +173,7 @@
                 tbl_community_comment tcc
             WHERE
                 tcc.comidx = #{comIdx}
+                and tcc.ccdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
         )
         SELECT
             NVL(CEIL(MAX(dense_rank) / 2), 0) AS pageSize
@@ -168,6 +193,7 @@
             c.COMIDX = ts.COMIDX
         WHERE
             comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+            and comdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
         GROUP BY
             c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
         ORDER BY
@@ -176,7 +202,7 @@
     </select>
 
     <select id="ViewCommunity_size" parameterType="String" resultType="int">
-        select count(*) from tbl_community where comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+        select count(*) from tbl_community where comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory}) and comdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
     </select>
 
     <select id="ViewStudyroom" resultType="com.project.SnakeDev.vo.StudyGInfoVo">

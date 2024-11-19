@@ -73,6 +73,7 @@ function FadeMenu({sessionId, sessionName, comment_memberName, comment_memberId,
         }).then(response => {
             // console.log(response.data);
             alert("댓글이 삭제되었습니다.");
+            window.location.reload();
         }).catch(error => {
             console.log(error);
             alert("댓글 삭제를 실패하였습니다. 다시 시도해주세요");
@@ -336,45 +337,13 @@ function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen
 const TheaterLocation = ({kakaoPlace}) => {
     return (
       <div className="kakaomap">
-        {/* <Map
-          center={{ lat: 37.398184423401, lng: 126.91023974128 }}
-          style={{
-            width: '1090px',
-            height: '378px',
-            borderRadius: '20px',
-          }}
-        > */}
-        {/* 지도에 보여줄 위치 지정 (위도,경도)  */}
-        
-          {/* <MapMarker
-            style={{ border: 'tranparent' }}
-            position={{ lat: 37.398184423401, lng: 126.91023974128 }}
-          > */}
-          {/* 핀 찍힐 위치 */}
-          
-            {/* <div
-              style={{
-                color: '#9971ff',
-                fontSize: '19px',
-                fontWeight: '700',
-                border: '4px solid #9971ff',
-                borderRadius: '10px',
-                padding: '2.5px',
-              }}
-            >
-              연성대학교
-            </div>
-          </MapMarker>
-        </Map> */}
-
-        {/* TODO: 여기 각 위도 경도 변수들 처리를 해야함 */}
         <Map
-        center={{ lat: 37.398184423401, lng: 126.91023974128 }}
+        center={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}
         style={{ width: '1090px',
                  height: '378px',
                  borderRadius: '20px' }}
         >
-            <MapMarker position={{ lat: 37.398184423401, lng: 126.91023974128 }}>
+            <MapMarker position={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}>
                 <div style={{color:"#000"}}>{kakaoPlace.place_name}</div>
             </MapMarker>
         </Map>
@@ -409,7 +378,7 @@ const Post = () => {
     // kakao restapi 값을 담는 변수
     const [kakaoRestApi, setKakaoRestApi] = useState([]);
     // kakao에서의 주소에 대한 장소id값을 담는 변수
-    const [kakaoPlace, setKakaoPlace] = useState({id: "", x: "", y: "", place_name: ""});
+    const [kakaoPlace, setKakaoPlace] = useState({id: "", x: 0, y: 0, place_name: ""});
 
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
@@ -684,7 +653,8 @@ const Post = () => {
 
     useEffect(() => {
         console.log(kakaoPlace);
-        console.log(parseFloat(kakaoPlace.x));
+        console.log(typeof(parseFloat(kakaoPlace.x)));
+        console.log(typeof(21.123123123));
     }, [kakaoPlace]); 
 
     console.log(boardContents);
