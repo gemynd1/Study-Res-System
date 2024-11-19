@@ -190,6 +190,22 @@ function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate, name, on
     dateValue = null;
   }
 
+  const [value, setValue] = useState(null);
+
+  useEffect(() => {
+    if (value && dayjs(value).isValid()) {
+      const stringValue = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      onChange(name, stringValue);
+      console.log(stringValue);
+    }
+  }, [value]);
+
+  const handleChange = (newValue) => {
+    if (dayjs(newValue).isValid()) {
+      setValue(newValue);
+    }
+  };
+
 	return (
 	  <LocalizationProvider dateAdapter={AdapterDayjs}>
 		<DemoContainer
@@ -198,7 +214,7 @@ function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate, name, on
 		  ]}
 		>
 		  <DemoItem label={dateTypeText}>
-			<DateTimePicker defaultValue={dayjs(dateValue)} name={name} onChange={onChange} />
+			<DateTimePicker defaultValue={dayjs(dateValue)} name={name} value={value} onChange={handleChange} />
 		  </DemoItem>
 		</DemoContainer>
 	  </LocalizationProvider>

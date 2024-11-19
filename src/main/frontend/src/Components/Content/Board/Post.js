@@ -369,12 +369,12 @@ const TheaterLocation = ({kakaoPlace}) => {
 
         {/* TODO: 여기 각 위도 경도 변수들 처리를 해야함 */}
         <Map
-        center={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}
+        center={{ lat: 37.398184423401, lng: 126.91023974128 }}
         style={{ width: '1090px',
                  height: '378px',
                  borderRadius: '20px' }}
         >
-            <MapMarker position={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}>
+            <MapMarker position={{ lat: 37.398184423401, lng: 126.91023974128 }}>
                 <div style={{color:"#000"}}>{kakaoPlace.place_name}</div>
             </MapMarker>
         </Map>
@@ -762,26 +762,31 @@ const Post = () => {
 
                     <div className="post-location">
                         <img src="/img/icon/location.png" alt="locationicon" className="post-location-icon" />
-                        <span className="post-location-text">{boardContents.comAddress} ({boardContents.comPlace})</span>
+                        <span className="post-location-text">{boardContents.comAddress} {boardContents.comAddress !== '온라인' ? "(" + boardContents.comPlace + ")" : null}</span>
                     </div>
 
-                    <div className="kakao-button">
 
-                        <a href={`https://place.map.kakao.com/${kakaoPlace.id}`} className="goto-info-button">
-                            <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
-                            <span className="goto-info-text">정보보기</span>
-                        </a>
+                    {/* <div className="kakaomap">
+                    </div> */}
+                    {boardContents.comAddress !== '온라인' && boardContents.comAddress !== '스터디룸' ? (
+                        <>
+                            <div className="kakao-button">
 
-                        <a href={`https://map.kakao.com/link/to/${kakaoPlace.place_name},${parseFloat(kakaoPlace.y).toFixed(6)},${parseFloat(kakaoPlace.x).toFixed(6)}`} className="goto-road-button">
-                            <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
-                            <span className="goto-road-text">길찾기</span>
-                        </a>
+                                <a href={`https://place.map.kakao.com/${kakaoPlace.id}`} className="goto-info-button">
+                                    <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
+                                    <span className="goto-info-text">정보보기</span>
+                                </a>
 
-                    </div>
+                                <a href={`https://map.kakao.com/link/to/${kakaoPlace.place_name},${parseFloat(kakaoPlace.y).toFixed(6)},${parseFloat(kakaoPlace.x).toFixed(6)}`} className="goto-road-button">
+                                    <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
+                                    <span className="goto-road-text">길찾기</span>
+                                </a>
 
-                    <div className="kakaomap">
-                    </div>
-                    <TheaterLocation kakaoPlace={kakaoPlace} />
+                            </div>
+
+                            <TheaterLocation kakaoPlace={kakaoPlace} />
+                        </>
+                    ) : null }
                     
                 </div>
 

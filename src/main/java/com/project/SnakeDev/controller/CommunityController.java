@@ -117,6 +117,13 @@ public class CommunityController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/board/get/postWrite")
+    public ResponseEntity<Object> get_postWrite() {
+        List<StudyGInfoVo> result_ViewStudyroom= communityService.ViewStudyroom();
+
+        return ResponseEntity.ok(result_ViewStudyroom);
+    }
+
     @PostMapping("/board/post/postRewrite")
     public ResponseEntity<Object> post_postRewrite(@RequestBody Map<String, Object> data) {
         System.out.print("data: " + data);
