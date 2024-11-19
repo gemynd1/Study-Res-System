@@ -173,8 +173,6 @@
                    #{CHContent},
                    #{CHTitle},
                    sysdate
-             start
-               )
     </insert>
 
     <select id="getCustomerHelpInfo" resultType="com.project.SnakeDev.vo.CustomerHelpVo">

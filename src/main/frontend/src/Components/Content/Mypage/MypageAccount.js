@@ -20,7 +20,7 @@ const MypageAccount = () => {
         e.preventDefault();
         if(sessionStorage.getItem("id") === id) {
             axios.get("http://localhost:8099/api/mypage/mypageAccount", {
-                params: { id, pw},
+                params: { id, pw },
                 headers: { 'Content-Type': 'application/json'},
                 withCredentials: true
             })

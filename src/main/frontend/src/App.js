@@ -66,12 +66,6 @@ function AppContent() {
   //       .catch(error => console.log(error))
   // }, []);
 
-  const [showChat, setShowChat] = useState(true);
-
-  const handleClick = () => {
-    setShowChat(false);
-  }
-
   return (
     <>
       {!hideHeaderLogin && <Header />}
@@ -117,9 +111,12 @@ function AppContent() {
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
 
+
           <Route path="/chating/chat/*" element={<Chat />} />  {/* 채팅 */}
           <Route path="/chating/join2" element={<Join2 />} /> {/* 채팅 로그인 */}
+
           <Route path="/loading" element={<Loading />} />
+
       </Routes>
       {!hideHeaderLogin && <Footer />}
 
