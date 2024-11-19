@@ -315,7 +315,7 @@ header div.first-background div.second-background {
     margin-left: 60%;
     margin-top: 6%;
     width: 524px;
-    height: 650px;
+    height: 800px;
 }
 
 header div.first-background div.second-background div.message-headerBar {
@@ -360,10 +360,10 @@ header div.first-background div.second-background div.message-headerBar span.mes
 header div.first-background div.second-background div.message-section {
     position: relative;
     width: 500px;
-    height: 650px;
+    height: 720px;
     background: #F3F0F0;
     overflow-y: auto; /* 세로 스크롤을 나타나게 하는 속성 추가 */
-    overflow-x: hidden; /* 가로 스크롤을 숨기는 속성 추가 */
+    /*overflow-x: hidden; !* 가로 스크롤을 숨기는 속성 추가 *!*/
 }
 
 header div.first-background div.second-background div.message-section div.typeBar {

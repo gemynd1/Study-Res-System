@@ -40,10 +40,6 @@ import Chat from "./Components/Content/Page/Chating/Chat";
 import Join2 from "./Components/Content/Page/Chating/join2";
 
 import Loading from "./Components/template/Loading";
-<<<<<<< HEAD
-
-=======
->>>>>>> 2ce3397b2d051e37f2ac4beeff11562e2b72fdfb
 
 // import './App.css';
 const ScrollToTop  = () => {
@@ -68,12 +64,6 @@ function AppContent() {
   //       })
   //       .catch(error => console.log(error))
   // }, []);
-
-  const [showChat, setShowChat] = useState(true);
-
-  const handleClick = () => {
-    setShowChat(false);
-  }
 
   return (
     <>
@@ -118,7 +108,6 @@ function AppContent() {
           <Route  path="/teamdetail" />
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
-<<<<<<< HEAD
 
 
           <Route path="/chating/chat/*" element={<Chat />} />  {/* 채팅 */}
@@ -126,12 +115,6 @@ function AppContent() {
 
           <Route path="/loading" element={<Loading />} />
 
-=======
-
-          <Route path="/chating/chat/*" element={<Chat />} />  {/* 채팅 */}
-          <Route path="/chating/join2" element={<Join2 />} /> {/* 채팅 로그인 */}
-          <Route path="/loading" element={<Loading />} />
->>>>>>> 2ce3397b2d051e37f2ac4beeff11562e2b72fdfb
       </Routes>
       {!hideHeaderLogin && <Footer />}
 

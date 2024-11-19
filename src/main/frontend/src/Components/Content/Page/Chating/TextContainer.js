@@ -7,26 +7,7 @@ import React from 'react';
 function TextContainer({ users }) {
     return (
         <div className='textContainer'>
-            <div>
-                <h1>
-                    실시간 채팅 프로그램{' '}
-                    <span role='img' aria-label='emoji'>
-          💬
-        </span>
-                </h1>
-                <h2>
-                    Created with React, Express, Node and Socket.IO{' '}
-                    <span role='img' aria-label='emoji'>
-          ❤️
-        </span>
-                </h2>
-                <h2>
-                    Try it out right now!{' '}
-                    <span role='img' aria-label='emoji'>
-          ⬅️
-        </span>
-                </h2>
-            </div>
+
             {users ? (
                 <div>
                     <h1>현재 채팅중인 사람들 : </h1>
@@ -35,7 +16,7 @@ function TextContainer({ users }) {
                             {users.map(({ name }) => (
                                 <div key={name} className='activeItem'>
                                     {name}
-                                    <img alt='Online Icon' />
+                                    <img src="/img/icon/onlineIcon.png" style={{width: "10px", height: "10px", marginLeft: "10px"}} alt='Online Icon' />
                                 </div>
                             ))}
                         </h2>

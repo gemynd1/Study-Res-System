@@ -116,9 +116,6 @@
                    #{CHContent},
                    #{CHTitle},
                    sysdate
-
-
-             start
                )
     </insert>
 

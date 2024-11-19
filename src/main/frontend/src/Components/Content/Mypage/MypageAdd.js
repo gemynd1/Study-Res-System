@@ -240,15 +240,6 @@ const MypageAdd = () => {
                         <div className="AddTime">
                             <div className="AddTime1">
                                 <img src="/img/icon/logo.png" alt="로고"/>
-<<<<<<< HEAD
-=======
-                                <span>{sessionStorage.getItem("name")}님의 잔여 시간입니다</span>
-                            </div>
-                            <div className="AddTimeText">
-                                <span>※당일권 1시간 결제하셨습니다</span>
-                            </div>
-                            <div className="AddStudyTime">
->>>>>>> 2ce3397b2d051e37f2ac4beeff11562e2b72fdfb
                                 <span>{sessionStorage.getItem('name')}님의 잔여 시간입니다</span>
                             </div>
                             {/* <div className="AddTimeText">
