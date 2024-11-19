@@ -198,18 +198,19 @@ header div.test div.test2 {
 
 header div.test div.test2 div.notification-section {
     position: relative;
-    width: 500px;
+    width: 450px;
     height: 650px;
     background: #F3F0F0;
     overflow-y: auto; /* 세로 스크롤을 나타나게 하는 속성 추가 */
     overflow-x: hidden; /* 가로 스크롤을 숨기는 속성 추가 */
+    border-radius: 0px 0px 20px 20px;
 }
 
 header div.test div.test2 div.notification-headerBar {
     position: relative;
     display: flex;
     align-items: center;
-    width: 500px;
+    width: 450px;
     height: 50px;
     background: #268B5F;
     border-radius: 20px 20px 0px 0px;
@@ -258,33 +259,35 @@ header div.test div.test2 div.notification-headerBar div.clear-button div.clear-
 
 header div.test div.test2 div.notification-section div.notification {
     position: relative;
-    width: 500px;
-    height: 140px;
+    width: 450px;
+    /* height: 100px; */
     cursor: default;
+    border-bottom: 1px solid #D9D9D9;
 }
 
 header div.test div.test2 div.notification-section div.notification img.notification-XIcon {
-    position: relative;
+    position: absolute;
     width: 27px;
     height: 27px;
     left: 91%;
-    margin-top: 3%;
+    /* margin-top: 3%; */
+    margin-top: 6px;
     cursor: pointer;
 }
 
 header div.test div.test2 div.notification-section div.notification p.notification-content {
-    width: 85%;
-    height: 60px;
+    width: 70%;
+    /* height: 60px; */
     position: relative;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
-    line-height: 28px;
+    font-size: 14px;
     color: #000000;
     margin-top: 0;
     margin-left: 5%;
     margin-bottom: 0;
+    padding: 10px 0px 10px 0px;
 }
 
 header div.test div.test2 div.notification-section div.notification span.notification-date {
@@ -295,7 +298,21 @@ header div.test div.test2 div.notification-section div.notification span.notific
     font-size: 12px;
     line-height: 18px;
     color: #808080;
-    left: 70%;
+    left: 69%;
+}
+
+header div.test div.test2 div.notification-section div.notification span.notification-date-null {
+    /* position: relative; */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 18px;
+    color: #808080;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 14px 0;
 }
 
 /* message css */

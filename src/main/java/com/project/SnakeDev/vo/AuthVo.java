@@ -1,9 +1,7 @@
 package com.project.SnakeDev.vo;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.SnakeDev.vo.dto.AuthDto;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -23,6 +21,7 @@ public class AuthVo {
     private Date MRegDate;
     private Date MStartinDate;
     private Date MEndinDate;
+    private String loginType;
 
     public AuthVo() {
     }
@@ -30,6 +29,11 @@ public class AuthVo {
     // 결제 내역 및 예약 처리를 위한 memberid 가져옴
     public AuthVo(String memberId) {
         MemberId = memberId;
+    }
+
+    public AuthVo(Integer MUseTime, Date MEndinDate) {
+        this.MUseTime = MUseTime;
+        this.MEndinDate = MEndinDate;
     }
 
     public AuthVo(String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude) {
@@ -221,6 +225,14 @@ public class AuthVo {
         this.MEndinDate = MEndinDate;
     }
 
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
+
     @Override
     public String toString() {
         return "AuthVo{" +
@@ -237,4 +249,14 @@ public class AuthVo {
                 ", MRegDate=" + MRegDate +
                 '}';
     }
+
+
+    public AuthDto toDTO(String token) {
+        return AuthDto.builder()
+                .MemberId(this.MemberId)
+                .MemberName(this.MemberName)
+                .token(token)
+                .build();
+    }
+
 }

@@ -102,8 +102,8 @@ div.board-page div.board-menubar a.writeButton {
     height: 52px;
     background: #6A8728;
     border-radius: 10px;
-    margin-top: 617px;
-    margin-left: 57px;
+    /* margin-top: 617px;
+    margin-left: 57px; */
 }
 
 div.board-page div.board-menubar a.writeButton div.writeButton-1 {

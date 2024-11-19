@@ -38,4 +38,22 @@ public interface CommunityMapper {
     Boolean deleteTogetherStudy(String comIdx, List<Map<String, Object>> groupMemberInfos);
 
     Boolean insert_comment_question(int comIdx,String comment,int maxCCGroupNum,String sessionId);
+
+    Boolean insert_comment_reply(int comIdx, String comment,int maxCCGroupNum,String sessionId,int currentComment, int currentCommentGroupNum);
+
+    Boolean updateComment_forSelf(String comment, int currentComment);
+
+    Boolean deleteComment(int comment_ccidx, int comment_ccgroupnum, int comment_comidx);
+
+    Boolean reportComment(int comment_ccidx);
+
+    Boolean insertTogetherStudy(int comIdx, String sessionId);
+
+    Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
+
+    Boolean deletePost_allPost(int comIdx);
+
+    Boolean deleteComment_allPost(int comIdx);
+
+    Boolean deleteTogetherStudy_allPost(int comIdx);
 }

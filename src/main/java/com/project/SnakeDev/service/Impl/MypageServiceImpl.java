@@ -51,7 +51,7 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
-    public List<AuthVo> mypageAddTime(String memberid) {
+    public AuthVo mypageAddTime(String memberid) {
         return mypageMapper.mypageAddTime(memberid);
     }
 
@@ -65,6 +65,16 @@ public class MypageServiceImpl implements MypageService {
     public List<StudyReviewVo> getReviewInfo(
             String memberId) {
         return mypageMapper.getReviewInfo(memberId);
+    }
+
+    @Override
+    public List<StudyGOrderVo> mypageGroupCheck(String MemberId) {
+        return mypageMapper.mypageGroupCheck(MemberId);
+    }
+
+    @Override
+    public List<TemplateOrderVo> mypageInviCheck(String MemberId) {
+        return mypageMapper.mypageInviCheck(MemberId);
     }
 
     @Override

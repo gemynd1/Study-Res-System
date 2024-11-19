@@ -103,7 +103,8 @@ const BasicModal = (props) => {
 const Join = () => {
   const isNumeric = (input) =>
     /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4}$/.test(input); // 전화번호 정규식
-  const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
+  // const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
+  const idRegex = (input) => /^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input);
 
   // input 체크
   const [authObj, setauthObj] = useState({
@@ -283,6 +284,7 @@ const Join = () => {
             <span>회원가입</span>
           </div>
           <div className="joinContent">
+          {/*
             <button onClick={handlekakaLogin} className="kakaoButton">
               <img src="/img/kakao_login_btn.png" />
             </button>
@@ -293,6 +295,7 @@ const Join = () => {
               </div>
               <hr className="line2" />
             </div>
+          */}
             <form className="form-content" onSubmit={onSubmit}>
               <div className="nickInput">
                 <input
@@ -396,7 +399,8 @@ const Join = () => {
                     {
                       fn: idRegex,
                       message:
-                        "아이디는 5~20자의 영소문자, 숫자만 입력 가능합니다.",
+                        // "아이디는 5~20자의 영소문자, 숫자만 입력 가능합니다.",
+                        "아이디는 이메일로 입력해주세요.",
                     },
                     {
                       fn: (input) => input.length >= 5,
