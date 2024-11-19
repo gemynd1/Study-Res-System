@@ -7,6 +7,9 @@ import com.project.SnakeDev.service.AuthService;
 import com.project.SnakeDev.service.Impl.AuthServiceImpl;
 import com.project.SnakeDev.vo.AuthVo;
 import com.project.SnakeDev.vo.dto.AuthDto;
+import com.project.SnakeDev.vo.kakaoVo;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -141,6 +144,32 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace(); // 오류를 콘솔에 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+    private final String secretKey = "WmZGdZkZmZmZXmZGdXJmZGVlYmRmY2RmZGZxdXVjaW1pZGdlZGVsYmRnYW1r==";
+    @GetMapping("/userinfo")
+    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String token) {
+        try {
+            System.out.println(token);
+            // Bearer 제거
+//            token = token.replace("Bearer ", "");
+
+            // JWT 검증 및 파싱
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // JWT에서 사용자 정보 추출
+            String email = claims.get("MemberId", String.class);
+            String nickname = claims.get("MemberName", String.class);
+            AuthVo authVo = new AuthVo();
+            authVo.setMemberId(email);
+            authVo.setMemberName(nickname);
+            // 사용자 정보 응답
+            return ResponseEntity.ok(authVo);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
         }
     }
 

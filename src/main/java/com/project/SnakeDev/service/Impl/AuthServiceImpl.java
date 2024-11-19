@@ -79,12 +79,12 @@ public class AuthServiceImpl implements AuthService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("grant_type", "authorization_code");
-            params.add("client_id", clientId);
-            params.add("redirect_uri", "http://localhost:3000/oauth");
-            params.add("code", code);
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", clientId);
+        params.add("redirect_uri", "http://localhost:3000/oauth");
+        params.add("code", code);
 
-            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 
 
         try {
@@ -131,9 +131,10 @@ public class AuthServiceImpl implements AuthService {
         ).getBody();
 
         var kakaoAccount = (Map) response.get("kakao_account");
-
+        int random = (int) (10000000 + Math.random() * 89999999);
         return kakaoVo.builder()
-                .kakaoId((Long) response.get("id"))
+//                .kakaoId((Long) response.get("id"))
+                .kakaoId(random)
                 .email((String) kakaoAccount.get("email"))
                 .nickname((String) ((Map) kakaoAccount.get("profile")).get("nickname"))
                 .build();

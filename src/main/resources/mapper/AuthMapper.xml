@@ -33,11 +33,11 @@
         select MemberName from tbl_member where MemberId = #{MemberId} and MemberPw = #{MemberPw}
     </select>
 
-    <select id="existsByKakaoId" parameterType="long" resultType="int">
+    <select id="existsByKakaoId" parameterType="String" resultType="int">
         select count(*) from tbl_member where Memberid = #{email}
     </select>
 
-    <select id="findByKakaoId" parameterType="long" resultType="com.project.SnakeDev.vo.AuthVo">
+    <select id="findByKakaoId" parameterType="String" resultType="com.project.SnakeDev.vo.AuthVo">
         select * from tbl_member where memberid = #{email}
     </select>
 

@@ -28,6 +28,7 @@
     "frontend": "file:",
     "fs-extra": "^11.2.0",
     "http-proxy-middleware": "^3.0.2",
+    "jwt-decode": "^4.0.0",
     "modal": "^1.2.0",
     "nanoid": "^5.0.8",
     "query-string": "^9.1.1",
