@@ -10,12 +10,14 @@ import com.project.SnakeDev.vo.dto.AuthDto;
 import com.project.SnakeDev.vo.kakaoVo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.connector.Response;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -117,7 +119,16 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
         }
     }
-    private final String secretKey = "WmZGdZkZmZmZXmZGdXJmZGVlYmRmY2RmZGZxdXVjaW1pZGdlZGVsYmRnYW1r==";
+
+    @Value("${SECRET_KEY}")
+    private String secretKeyInstance; // 비정적 변수
+
+    private static String secretKey; // 정적 변수
+
+    @PostConstruct
+    private void init() {
+        secretKey = secretKeyInstance;
+    }
     @GetMapping("/userinfo")
     public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String token) {
         try {

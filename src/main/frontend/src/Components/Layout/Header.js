@@ -196,7 +196,7 @@ const Header = () => {
         const sessionName = sessionStorage.getItem('name')
 
         if(sessionId !== null) {
-            // const interval = setInterval(() => {
+            const interval = setInterval(() => {
                 axios.get("http://localhost:8099/api/notification", 
                     {
                         params: { sessionId, sessionName },
@@ -205,20 +205,15 @@ const Header = () => {
                 )
                 .then(response => {
                     setNotifications(response.data);
-                    // console.log(response.data);
                 })
                 .catch(error => {
                     console.log(error);
                 });
-            // }, 1500);
-            // return () => clearInterval(interval);
+            }, 1500);
+            return () => clearInterval(interval);
         }
     }, []);
-
-    console.log("123");
-    console.log(notifications);
-
-
+    
     return (
         <>
             <header className="header">
