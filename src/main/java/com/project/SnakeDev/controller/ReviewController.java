@@ -107,31 +107,6 @@ public class ReviewController {
         return fileNames;
     }
 
-
-    @GetMapping("/reviews")
-    public ResponseEntity<List<Object>> getAllReviews1() {
-        try {
-
-            List<ReviewVo> reviews1 = reviewService.getAllReviews();
-            List<ReviewImgVo> reviews2 = reviewService.getImage();
-            List<ReviewTagVo> reviews3 = reviewService.getTagList();
-            List<ReviewHasTagVo> reviews4 = reviewService.getHasTag();
-
-
-            List<Object> allData = new ArrayList<>();
-                allData.addAll(reviews1); // List<ReviewVo>
-                allData.addAll(reviews2); // List<ReviewImgVo>
-                allData.addAll(reviews3); // List<ReviewTagVo>
-                allData.addAll(reviews4); // List<ReviewHasTagVo
-
-//            List<ReviewVo> reviews = reviewService.getAllReviews1();
-//            List<Object> getAllReviews1;
-            return ResponseEntity.ok(allData);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
     @GetMapping("/reviews/details")
     public ReviewDetailsVo getReviewDetails(@RequestParam("sridx") Integer sridx) {
         return reviewService.getReviewDetails(sridx);

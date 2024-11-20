@@ -49,6 +49,7 @@ const Review = () => {
     const [selectedStudyRoom, setSelectedStudyRoom] = useState("");
 
 
+
     // 서버에서 리뷰 데이터를 받아오는 useEffect
     useEffect(() => {
         axios.get("http://localhost:8099/api/reviews/all", {
@@ -63,15 +64,10 @@ const Review = () => {
             });
     }, []);
 
-    // const handleReviewClick = (id) => {
-    //     navigate(`/review/${id}`);
-    // };
 
     const handleReviewClick = (review) => {
-        // review 객체를 state로 전달하여 /review/{srIdx} 경로로 이동
         navigate(`/review/${review.srIdx}`, { state: { review } });
     };
-
 
     const handleLogin = () => {
         if (sessionStorage.getItem("id")) {
@@ -81,9 +77,12 @@ const Review = () => {
         }
     };
 
+    const handleReviewStudyroom = (selectedRoom) => {
+        setSelectedStudyRoom(selectedRoom); // Update the selected study room
+    };
+
     const filteredReviews = reviews.filter(
-        (review) =>
-            selectedStudyRoom === "" || review.studyRoomInfo === selectedStudyRoom
+        (review) => selectedStudyRoom === "" || review.sgiIdx === selectedStudyRoom
     );
 
     return (
@@ -93,7 +92,7 @@ const Review = () => {
                 <div className="review__page__main">
                     <div className="flex1">
                         <UnstyledInputBasic />
-                        <UnstyledSelectForm onChange={setSelectedStudyRoom} />
+                        <UnstyledSelectForm onChange={handleReviewStudyroom} />
                     </div>
                     <button onClick={handleLogin}>글쓰기</button>
                 </div>
