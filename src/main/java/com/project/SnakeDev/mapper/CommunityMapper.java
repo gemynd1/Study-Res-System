@@ -1,9 +1,6 @@
 package com.project.SnakeDev.mapper;
 
-import com.project.SnakeDev.vo.CommunityCategoryVo;
-import com.project.SnakeDev.vo.CommunityVo;
-import com.project.SnakeDev.vo.StudyGInfoVo;
-import com.project.SnakeDev.vo.TogetherStudyVo;
+import com.project.SnakeDev.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -60,4 +57,12 @@ public interface CommunityMapper {
     Boolean deleteComment_allPost(int comIdx);
 
     Boolean deleteTogetherStudy_allPost(int comIdx);
+
+    Boolean insertCommunity(Map<String, Object> data);
+
+    Boolean insertChatName(Map<String, Object> data);
+
+    Boolean insertAlarm(Map<String, Object> data);
+
+    List<ChatRoomVo> selectChatRoomInfo();
 }

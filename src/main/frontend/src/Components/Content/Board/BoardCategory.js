@@ -20,6 +20,9 @@ const BoardCategory = () => {
     //현재 주소 가져오기
     const location = useLocation();
 
+    const sessionId = sessionStorage.getItem("id");
+    const sessionName = sessionStorage.getItem("name");
+
     const contentClick = (url) => {
         // window.open(url, "_blank", "noopener,noreferrer");
         navigate(url);
@@ -118,10 +121,13 @@ const BoardCategory = () => {
                                 </Link>
                             ) : null
                         ))}
-                        <Link to="/board/postWrite" className="writeButton">
-                            <div className="writeButton-1">글쓰기</div>
-                            {/* <div className="writeButton-2"></div> */}
-                        </Link>
+
+                        {sessionId && sessionName ? (
+                            <Link to="/board/postWrite" className="writeButton">
+                                <div className="writeButton-1">글쓰기</div>
+                            </Link>
+                        ) : null}
+                        
                     </div>
                 </div>
                 <div className="board-category-1">

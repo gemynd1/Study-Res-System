@@ -230,23 +230,42 @@
                 ComToCount = #{ComToCount},
                 ComStartDate = TO_DATE(#{ComStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
                 ComEndDate = TO_DATE(#{ComEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComPlace =
                 <choose>
                     <when test="ComAddress == '스터디룸'">
-                        ComPlace = (select sgicontent1 from tbl_studyginfo where sgiidx = #{currentStudyRoom}),
-                        ComZipcode = #{ComZipcode},
-                        ComAddress = #{ComAddress},
+                        (select sgicontent1 from tbl_studyginfo where sgiidx = #{currentStudyRoom})
                     </when>
                     <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
-                        ComPlace = #{enroll_company.detailedAddress},
-                        ComZipcode = #{enroll_company.zonecode},
-                        ComAddress = #{enroll_company.address},
+                        #{enroll_company.detailedAddress}
                     </when>
                     <otherwise>
-                        ComPlace = #{ComPlace},
-                        ComZipcode = #{ComZipcode},
-                        ComAddress = #{ComAddress},
+                        #{ComPlace}
                     </otherwise>
-                </choose>
+                </choose>,
+                ComZipcode =
+                <choose>
+                    <when test="ComAddress == '스터디룸'">
+                        #{ComZipcode}
+                    </when>
+                    <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
+                        #{enroll_company.zonecode}
+                    </when>
+                    <otherwise>
+                        #{ComZipcode}
+                    </otherwise>
+                </choose>,
+                ComAddress =
+                <choose>
+                    <when test="ComAddress == '스터디룸'">
+                        #{ComAddress}
+                    </when>
+                    <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
+                        #{enroll_company.address}
+                    </when>
+                    <otherwise>
+                        #{ComAddress}
+                    </otherwise>
+                </choose>,
                 ComReportCount = #{ComReportCount}
             where comidx = #{ComIdx}
     </update>
@@ -309,4 +328,67 @@
         delete from tbl_TogetherStudy where comidx = #{comIdx}
     </delete>
 
+    <insert id="insertCommunity" parameterType="map">
+        insert into tbl_community (
+        comidx,
+        comcateidx,
+        midx,
+        comtitle,
+        comcontent,
+        comregdate,
+        comdeldate,
+        comupdate,
+        comintodate,
+        comtocount,
+        comstartdate,
+        comenddate,
+        complace,
+        comzipcode,
+        comaddress,
+        comreportcount
+        ) values (
+        c##snake2.Community_seq.NEXTVAL,
+        (select comcateidx from tbl_community_category where comcatename = #{boardContents.category1}),
+        (select midx from tbl_member where memberid = #{sessionId} and membername = #{sessionName}),
+        #{boardContents.title},
+        #{boardContents.content},
+        SYSDATE,
+        to_date('9999-12-31 00:00', 'YYYY-MM-DD HH24:MI'),
+        to_date('9999-12-31 00:00', 'YYYY-MM-DD HH24:MI'),
+        0,
+        #{boardContents.groupCount},
+        to_date(#{boardContents.startday}, 'YYYY-MM-DD HH24:MI:SS'),
+        to_date(#{boardContents.enddate}, 'YYYY-MM-DD HH24:MI:SS'),
+        <choose>
+            <when test="boardContents.comAddress == '스터디룸'">
+                (select sgicontent1 from tbl_studyginfo where sgiidx = #{currentStudyRoom}),
+                #{boardContents.comZipcode},
+                #{boardContents.comAddress}
+            </when>
+            <when test="boardContents.comAddress == '온라인'">
+                #{boardContents.comPlace},
+                #{boardContents.comZipcode},
+                #{boardContents.comAddress}
+            </when>
+            <otherwise>
+                #{enroll_company.detailedAddress},
+                #{enroll_company.zonecode},
+                #{enroll_company.address}
+            </otherwise>
+        </choose>,
+        0
+        )
+    </insert>
+
+    <insert id="insertChatName" parameterType="map">
+        insert into tbl_chatroom values (c##snake2.ChatRoom_seq.NEXTVAL, (select max(comidx) from tbl_community), #{boardContents.groupName})
+    </insert>
+
+    <insert id="insertAlarm" parameterType="map">
+        insert into tbl_member_alarm values (c##snake2.MAlarm_seq.NEXTVAL, (select midx from tbl_member where memberid = #{memberId}), #{alarm_title}, #{alarm_content}, SYSDATE)
+    </insert>
+
+    <select id="selectChatRoomInfo" resultType="com.project.SnakeDev.vo.ChatRoomVo">
+        select * from tbl_chatroom where comidx = (select max(comidx) from tbl_community)
+    </select>
 </mapper>
