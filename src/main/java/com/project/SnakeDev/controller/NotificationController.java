@@ -1,5 +1,6 @@
 package com.project.SnakeDev.controller;
 
+import com.project.SnakeDev.service.Impl.NotificationServiceImpl;
 import com.project.SnakeDev.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -13,25 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class NotificationController {
     @Autowired
-    private NotificationService notificationService;
+    private NotificationServiceImpl  notificationService;
 
     @GetMapping("/notification")
     public ResponseEntity<Object> notification(@RequestParam("sessionId") String sessionId,
-                                               @RequestParam("sessionName") String sessionName,
-                                               HttpServletRequest request, HttpSession session) {
-
-//        session = request.getSession();
-//
-//        String MemberId = (String) session.getAttribute("id");
-//        String MemberName = (String) session.getAttribute("name");
-//
-//        if (MemberId == null || MemberName == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("세션 정보가 없습니다.");
-//        }
-//
-//        System.out.println(MemberId);
-//        System.out.println(MemberName);
-
+                                               @RequestParam("sessionName") String sessionName) {
         return ResponseEntity.ok(notificationService.ViewNotification(sessionId, sessionName));
+    }
+
+    @PostMapping("/notificationdel")
+    public ResponseEntity<Object> notificationdel(@RequestParam("maidx") Integer maidx) {
+        return ResponseEntity.ok(notificationService.notificationdel(maidx));
+    }
+
+    @PostMapping("/notificationdelall")
+    public ResponseEntity<Object> notificationdelall() {
+        return ResponseEntity.ok(notificationService.notificationdelall());
     }
 }

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../style/board.css";
 
-const contentClick = (url) => {
-    window.open(url, "_blank", "noopener,noreferrer");
-}
+
 
 const Board = () => {
     // 게시글을 담아두는 state
@@ -19,6 +17,20 @@ const Board = () => {
 
     // 카테고리를 담어두는 state
     const [boardCategorys, setBoardCategory] = useState([]);
+
+    const navigate = useNavigate();
+
+    const contentClick = (url) => {
+        // window.open(url, "_blank", "noopener,noreferrer");
+        navigate(url);
+    }
+
+    const truncateText = (text, maxLength) => {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    };
 
     useEffect(() => {
         axios.all([
@@ -66,10 +78,10 @@ const Board = () => {
                                     </Link>
                                 ) : null
                             ))}
+                            <Link to="/board/postWrite" className="writeButton">
+                                <div className="writeButton-1">글쓰기</div>
+                            </Link>
                         </div>
-                        <Link to="/board/postWrite" className="writeButton">
-                            <div className="writeButton-1">글쓰기</div>
-                        </Link>
                     </div>
                     <div className="board-section">
                         <div className="board-category-1">
@@ -84,8 +96,8 @@ const Board = () => {
                                 {boardContents.map((content) => (
                                     content.comCateIdx === 1 ? (
                                             <div className="board-category-1-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
-                                                <p className="board-category-1-content-title">{content.comTitle}</p>
-                                                <p className="board-category-1-content-detail">{content.comContent}</p>
+                                                <p className="board-category-1-content-title">{truncateText(content.comTitle, 60)}</p>
+                                                <p className="board-category-1-content-detail">{truncateText(content.comContent, 70)}</p>
                                                 <div className="board-category-1-content-info">
                                                     <div className="board-category-1-content-info-dday">
                                                         <span className="board-category-1-content-info-dday-text">D-DAY</span>

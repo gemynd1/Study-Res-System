@@ -114,8 +114,8 @@ div.board-page div.board-menubar a.writeButton {
     height: 52px;
     background: #6A8728;
     border-radius: 10px;
-    margin-top: 617px;
-    margin-left: 57px;
+    /* margin-top: 617px;
+    margin-left: 57px; */
     cursor: pointer;
 }
 
@@ -335,9 +335,12 @@ div.board-page div.board-category-2 div {
 div.board-page div.board-category-2 div.board-category-2-background {
     position: relative;
     width: 1120px;
-    height: 688px;
+    height: auto;
     background: #D9D9D9;
     border-radius: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 div.board-page div.board-category-2 div.board-category-2-headerbar {
@@ -390,8 +393,8 @@ div.board-page div.board-category-2 div.board-category-2-background div.board-ca
 }
 
 div.board-page div.board-category-2 div.board-category-2-background .board-category-2-content {
-    margin-top: 72px;
-    position: absolute;
+    margin-top: 15px;
+    position: relative;
     width: 1090px;
     height: 136px;
     background: #FFFFFF;
@@ -399,6 +402,15 @@ div.board-page div.board-category-2 div.board-category-2-background .board-categ
     text-decoration: none;
     cursor: pointer;
 }
+
+div.board-page div.board-category-2 div.board-category-2-background .board-category-2-content:nth-of-type(2) {
+    margin-top: 72px;
+}
+
+div.board-page div.board-category-2 div.board-category-2-background .board-category-2-content:last-child {
+    margin-bottom: 15px;
+}
+
 
 div.board-page div.board-category-2 div.board-category-2-background .board-category-2-content p.board-category-2-content-title {
     margin-top: 13px;

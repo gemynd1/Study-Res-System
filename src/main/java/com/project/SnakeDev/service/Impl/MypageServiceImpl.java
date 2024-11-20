@@ -4,10 +4,13 @@ import com.project.SnakeDev.mapper.MypageMapper;
 import com.project.SnakeDev.service.MypageService;
 import com.project.SnakeDev.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
 @Transactional
@@ -30,6 +33,7 @@ public class MypageServiceImpl implements MypageService {
         return mypageMapper.getMemberInfo(memberId);
     }
 
+
     @Override
     public AuthVo getUpdateInfo(String memberId) {
         return mypageMapper.getUpdateInfo(memberId);
@@ -51,7 +55,7 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
-    public List<AuthVo> mypageAddTime(String memberid) {
+    public AuthVo mypageAddTime(String memberid) {
         return mypageMapper.mypageAddTime(memberid);
     }
 
@@ -68,9 +72,25 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
+    public List<StudyGOrderVo> mypageGroupCheck(String MemberId) {
+        return mypageMapper.mypageGroupCheck(MemberId);
+    }
+
+    @Override
+    public List<TemplateOrderVo> mypageInviCheck(String MemberId) {
+        return mypageMapper.mypageInviCheck(MemberId);
+    }
+
+    @Override
     public AuthVo ExitMemberInfo(
             String memberId){
         return mypageMapper.ExitMemberInfo(memberId);
+    }
+
+    @Override
+    public boolean deleteMember(String memberId) {
+        int result = mypageMapper.deleteMember(memberId); // 삭제 쿼리 실행
+        return result > 0; // 삭제된 행의 개수가 1 이상이면 true 반환
     }
 
     @Override

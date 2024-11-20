@@ -110,13 +110,19 @@
         from tbl_studygorder where sgiidx = #{sginum}
     </select>
     <insert id="saveTemplateOrder" parameterType="map">
-        insert into tbl_templateorder values(#{TTOIdx}, #{requestData}, 'N')
+        insert into tbl_templateorder
+        values (
+                   #{TTOIdx},
+                   #{TTOContent},
+                   'N',
+                   (select midx from tbl_member where memberid = #{MemberId})
+               )
     </insert>
     <select id="selectTemplateOrder" resultType="String">
-        select ttocontent from tbl_templateorder where ttoidx = #{ordernum}
+        select ttocontent from tbl_templateorder where ttoidx = #{orderid}
     </select>
     <update id="updateTemplateOrder" parameterType="java.lang.String">
-        update tbl_templateorder set ttostate = 'Y' where ttoidx = #{ordernum}
+        update tbl_templateorder set ttostate = 'Y' where ttoidx = #{orderid}
     </update>
     <insert id="InsertOrderPay" parameterType="map">
         insert into tbl_studyorderpay (TsopIdx, MIdx, TsopMethod, TsopPrice, TsopStatus, TsopDate, TsopDivi)
@@ -127,12 +133,12 @@
                 #{pay.TSOPMethod},
                 #{pay.TSOPPrice},
                 #{pay.TSOPStatus},
-                to_date(sysdate, 'yyyy-mm-dd'),
+                sysdate,
                 #{pay.TSOPDivi}
             )
     </insert>
     <insert id="InsertGOrderWait" parameterType="map">
-        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TSOPIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal)
+        insert into tbl_studygorder (SGONum, SGIIdx, MIdx, TSOPIdx, SGORegDate, SGOStartDate, SGOEndDate, SGOtotal, SGOPeople)
         values
             (
                 #{wait.SGONum},
@@ -142,7 +148,8 @@
                 to_date(#{wait.SGORegDate}, 'yyyy-mm-dd'),
                 to_date(#{wait.SGOStartDate}, 'yyyy-mm-dd HH24:mi'),
                 to_date(#{wait.SGOEndDate}, 'yyyy-mm-dd HH24:mi'),
-                #{wait.SGOtotal}
+                #{wait.SGOtotal},
+                #{wait.SGOPeople}
             )
     </insert>
     <update id="InsertInOrderWait" parameterType="java.util.HashMap">
@@ -171,15 +178,17 @@
                     end
                 where memberId = #{MemberId}
             </when>
-            <when test='SIPName == "1년이용권"'>
+            <when test='SIPName == "1년정기권"'>
                 update tbl_member set
                     MStartinDate = case
                         when MEndinDate > sysdate then MStartinDate
                         else sysdate
                     end,
                     MEndinDate = case
-                        when MEndinDate > sysdate then to_char(add_months(MEndinDate, 12), 'YYYY-MM-DD'))
-                        else to_char(to_date(add_months(sysdate, 12), 'YYYY-MM-DD'))
+                        when MEndinDate > sysdate then ADD_MONTHS(MEndinDate, 12)
+<!--                to_char(add_months(MEndinDate, 12), 'YYYY-MM-DD'))-->
+                        else ADD_MONTHS(sysdate, 12)
+<!--                to_char(to_date(add_months(sysdate, 12), 'YYYY-MM-DD'))-->
                     end
                 where memberId = #{MemberId}
             </when>
@@ -187,5 +196,45 @@
                 update tbl_member set MUseTime = MUseTime + #{SIPName, jdbcType=INTEGER} where memberId = #{MemberId}
             </otherwise>
         </choose>
+    </update>
+    <select id="myTimeInfo" resultType="com.project.SnakeDev.vo.AuthVo">
+        select MUseTime,
+           CASE
+               WHEN MEndinDate > TRUNC(SYSDATE) THEN MEndinDate
+           ELSE NULL
+           END AS MEndinDate
+        from tbl_member where memberid = #{MemberId}
+    </select>
+    <select id="selectStudyininfo" resultType="java.lang.Integer">
+        select count(*) from tbl_studyininfo tsi
+                                 inner join tbl_member tm on tm.midx = tsi.midx
+        where tm.midx = (select midx from tbl_member where memberid = #{MemberId})
+    </select>
+    <select id="selectOptionTime" resultType="java.lang.Integer">
+        select count(*) from tbl_member
+            where midx = (select midx from tbl_member where memberid = #{MemberId}) and
+                to_date(sysdate,  'YYYY-MM-DD HH24:mi') between
+                to_date(mstartindate,  'YYYY-MM-DD HH24:mi') and to_date(mendindate,  'YYYY-MM-DD HH24:mi')
+    </select>
+    <select id="selectOptionTime2" resultType="java.lang.Integer">
+        <![CDATA[
+        select count(*) from tbl_member where
+            midx = (select midx from tbl_member where MemberId = #{MemberId}) and
+            Musetime >= #{selectedOption}
+        ]]>
+    </select>
+    <update id="updateIntime" parameterType="map">
+        update tbl_member set musetime =
+            case when musetime >= #{selectedOption} then musetime - #{selectedOption}
+            else musetime - 0 end
+        where memberid = #{MemberId}
+    </update>
+    <update id="updateStudyInInfo" parameterType="map">
+        UPDATE Tbl_StudyInInfo SET
+           MIdx = (select midx from tbl_member where memberid = #{MemberId}),
+           SeatUseState = 'Y',
+           SeatStartTime = TRUNC(to_date(#{seat.SeatStartTime}, 'YYYY-MM-DD HH24:MI:SS'), 'MI'),
+           SeatEndTime = TRUNC(to_date(#{seat.SeatEndTime},  'YYYY-MM-DD HH24:MI:SS'), 'MI')
+        WHERE SCIdx = 1111 and SeatNum = (select SeatNum from Tbl_StudyInInfo where SIINum = #{seatNum})
     </update>
 </mapper>

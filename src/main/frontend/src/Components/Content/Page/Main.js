@@ -51,9 +51,95 @@ function useCountNum(end, start = 0, duration = 2000) {
 }
 
 const SeatModal = ({ open, handleClose, seatInfo }) => {
-    // useEffect(() => {
-    //     axios.get('http://localhost:8099/api/')
-    // }, [])
+    const [time, setTime] = useState([]);
+    const [selectedOption, setSelectedOption] = useState("기간");
+    const [selectedOptionStartTime, setSelectedOptionStartTime] = useState("09:00");
+    const [selectedOptionEndTime, setSelectedOptionEndTime] = useState("10:00");
+    const [selectedDuration, setSelectedDuration] = useState(1); // 초기값: 1시간
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    const day = String(today.getDate()).padStart(2, '0');
+    const orderdata = [
+        {
+            SeatStartTime : `${year}-${month}-${day} ${selectedOptionStartTime}:00`,
+            SeatEndTime : `${year}-${month}-${day} ${selectedOptionEndTime}:00`
+        }
+    ];
+
+    const handleChange = (event) => {
+        const selectTime = event.target.value;
+        setSelectedOption(selectTime);
+        if(selectTime !== "기간") {
+            const [startHour] = selectedOptionStartTime.split(":").map(Number);
+            const endHour = startHour + parseInt(selectTime, 10);
+            setSelectedDuration(parseInt(selectTime, 10));
+            setSelectedOptionEndTime(`${String(endHour).padStart(2, "0")}:00`);
+        }
+    };
+
+    const handleChangeStartTime = (event) => {
+        const startTime = event.target.value;
+        setSelectedOptionStartTime(startTime);
+    
+        if (selectedOption !== "기간") {
+            const [startHour] = startTime.split(":").map(Number);
+            const endHour = startHour + selectedDuration;
+            setSelectedOptionEndTime(`${String(endHour).padStart(2, "0")}:00`);
+        }
+    };
+
+    const handleChangeEndTime = (event) => {
+        setSelectedOptionEndTime(event.target.value);
+    };
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/api/myTimeInfo?MemberId=${sessionStorage.getItem("id")}`, {
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(res => {
+            setTime(res.data);
+            // console.log(res.data);
+        })
+    }, []);
+
+    const handleOnclick = () => {
+        // console.log(time);
+        if(selectedOption === "기간" && time.mendinDate === null) {
+            alert("기간권이 없습니다. 충전 후 이용해주세요");
+        } else if(selectedOption !== "기간" && time.museTime === null) { 
+            alert("충전된 시간이 없습니다. 충전 후 이용해주세요.");
+        } else {
+            axios.post(`${process.env.REACT_APP_SERVER_URL}/api/seatOrder`,
+                {
+                    MemberId : sessionStorage.getItem("id"), 
+                    seatNum : Number(seatInfo), 
+                    startTime : orderdata[0].SeatStartTime, 
+                    endTime : orderdata[0].SeatEndTime,
+                    selectedOption : selectedOption
+                },
+                {headers: {'Content-Type': 'application/json'}}
+            )
+            .then(res => {
+                const num = res.data;
+                if(num === 6) {
+                    alert("본인은 자리 2개 이상 예약할 수 없습니다.");
+                } else if (num === 5){
+                    alert("기간권이 없습니다. 충전 후 이용해주세요.");
+                } else if (num === 4) {
+                    alert("충전된 시간이 없습니다. 충전 후 이용해주세요.");
+                } else if (num === 2) {
+                    alert(seatInfo + "번 자리 예약이 완료되었습니다.");
+                }
+                window.location.reload();
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+    }
+    
     return (
         <div>
             <Modal
@@ -71,40 +157,106 @@ const SeatModal = ({ open, handleClose, seatInfo }) => {
                     </div>
                     <div className="modal-seat-content-section">
                         <table>
-                            <tr>
-                                <th>남은 시간</th>
-                                <td>10시간 / 시간 없음</td>
-                            </tr>
-                            <tr>
-                                <th>남은 기간</th>
-                                <td>~ 2024/12/12 / 기간 없음</td>
-                            </tr>
-                            <tr className="select">
-                                <th>사용 시간 선택</th>
-                                <td>
-                                    <select className="modal-seat-select-section">
-                                        <option value={"기간"}>기간권사용</option>
-                                        {Array.from({length:12}, (_, i) => (
-                                            <option key={i + 1} value={i + 1}>{i + 1}시간</option>
-                                        ))}
-                                    </select>
-                                </td>
-                            </tr>
-                            {/* <tr>
-                                <th>기간권 사용하기</th>
-                                <td>
-                                    <input className="modal-seat-input" placeholder="사용할 시간 입력(숫자만 입력해주세요...)" />
-                                </td>
-                            </tr> */}
+                            <tbody>
+                                <tr>
+                                    <th>남은 시간</th>
+                                    <td>{time.museTime === null ? "시간없음" : time.museTime + "시간"}</td>
+                                </tr>
+                                <tr>
+                                    <th>남은 기간</th>
+                                    <td>{time.mendinDate === null ? "기간없음" : "~" + time.mendinDate?.replace(/T.*/, "") + " 까지"}</td>
+                                </tr>
+                                <tr className="select">
+                                    <th>사용 시간 선택</th>
+                                    <td>
+                                        <select value={selectedOption} onChange={handleChange} className="modal-seat-select-section">
+                                            <option value={"기간"}>기간권사용</option>
+                                            {Array.from({length:12}, (_, i) => (
+                                                <option key={i + 1} value={i + 1}>{i + 1}시간</option>
+                                            ))}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>이용 시간</th>
+                                    <td>
+                                        <select value={selectedOptionStartTime} onChange={handleChangeStartTime} className="modal-seat-select-section-time">
+                                            {Array.from({ length: 12 }, (_, i) => {
+                                                    const startTime = `${String(i + 9).padStart(2, "0")}:00`;
+                                                    const now = new Date();
+                                                    const currentHour = now.getHours();
+                                                    const currentMinute = now.getMinutes();
+                                                    const [startHour, startMinute] = startTime.split(":").map(Number);
+
+                                                    // 현재 시간과 시작 시간 비교
+                                                    const isBlurred = startHour < currentHour || (startHour === currentHour && startMinute <= currentMinute);
+                                                    return (
+                                                        <option key={i + 9} value={startTime} disabled={isBlurred}>
+                                                            {startTime} {isBlurred && "(사용 불가)"}
+                                                        </option>
+                                                    )
+                                                }
+                                            )}
+                                        </select>
+                                        <select value={selectedOptionEndTime} onChange={selectedOption === "기간" ? handleChangeEndTime : undefined} className="modal-seat-select-section-time">
+                                            {selectedOption === "기간"
+                                            // 12
+                                                ? Array.from({ length: 12 }, (_, i) => {
+                                                    const endTime = `${String(i + 10).padStart(2, "0")}:00`;
+                                                    const now = new Date();
+                                                    const currentHour = now.getHours();
+                                                    const currentMinute = now.getMinutes();
+                                                    const [endHour, endMinute] = endTime.split(":").map(Number);
+
+                                                    // 현재 시간과 종료 시간 비교
+                                                    const isBlurred = endHour < currentHour || (endHour === currentHour && endMinute <= currentMinute);
+                                                    return (
+                                                        <option key={i + 10} value={endTime} disabled={isBlurred}>
+                                                            {endTime} {isBlurred  && "(사용 불가)"}
+                                                        </option>
+                                                        )
+                                                    })
+                                                : (() => {
+                                                    const now = new Date();
+                                                    const currentHour = now.getHours();
+                                                    const currentMinute = now.getMinutes();
+                                                    const [endHour, endMinute] = selectedOptionEndTime.split(":").map(Number);
+                                                    // 현재 시간과 종료 시간 비교
+                                                    const isBlurred = endHour < currentHour || (endHour === currentHour && endMinute <= currentMinute);
+
+                                                    return (
+                                                        <option value={selectedOptionEndTime} disabled={isBlurred}>
+                                                            {selectedOptionEndTime} {isBlurred && "(사용 불가)"}
+                                                        </option>
+                                                    );
+                                                })()}
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                     <div className="modal-seat-content">
-                        ※시간권 결제 하신분은 시간 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>'기간권사용'</b>으로 선택하시고 예약하기 버튼만 눌러주세요※ <br />
+                        ※ 시간권 결제 하신분은 시간 선택해주시고, 기간권 결제하신분은 <b style={{color:'red'}}>'기간권사용'</b>으로 선택하시고 예약하기 버튼만 눌러주세요<br />
+                        ※ 모든 좌석은 당일 이용입니다.
                     </div>
                     <div className="modal-seat-order">
-                        <span>이용할 시간/기간 : 1시간 / 기간권이용</span>
+                        <span>{selectedOption === "기간" ? "기간권 사용" : selectedOption + "시간"}</span>
                     </div>
-                    <div className="modal-seat-button-section">
+                    <div className="modal-seat-button-section" onClick={() => {
+                            const startTime = selectedOptionStartTime.split(":").map(Number);
+                            const endTime = selectedOptionEndTime.split(":").map(Number);
+                            const isBlurred = endTime > startTime || (endTime === startTime && endTime <= startTime);
+                            console.log(selectedOptionStartTime, selectedOptionEndTime);
+                            console.log(startTime, endTime);
+                            console.log(isBlurred);
+                            if(!isBlurred){
+                                alert("종료 시간이 시작 시간보다 빠를 수 없습니다.");
+                                return 
+                            }
+
+                            handleOnclick();
+                        }}>
                         <div onClick={handleClose} className="modal-seat-active-button">
                             <span className="modal-active-text">예약하기</span>
                         </div>
@@ -125,7 +277,7 @@ const Main = () => {
 
     const [StudyGInfo, setStudyGInfo] = useState([]); // 스터디룸 정보
     const [StudyInInfo, setStudyInInfo] = useState([]); // 개인좌석 정보
-    const baseUrl = "http://localhost:8099";
+    // const baseUrl = "http://localhost:8099";
 
     const [openModal, setOpenModal] = useState(false);
     const [selectedSeat, setSelectedSeat] = useState(null);
@@ -173,11 +325,9 @@ const Main = () => {
     useEffect(() => {
         axios
             .all([
-                axios.get(baseUrl + '/api/studygInfo'), 
-                axios.get(baseUrl + '/api/studyininfo')], 
-                {
-                    headers : { 'Content-Type': 'application/json' 
-                }
+                axios.get(`${process.env.REACT_APP_SERVER_URL}/api/studygInfo`), 
+                axios.get(`${process.env.REACT_APP_SERVER_URL}/api/studyininfo`)], 
+                { headers : { 'Content-Type': 'application/json'}
             })
             .then(
                 axios.spread((res1, res2) => {
@@ -327,9 +477,14 @@ const Main = () => {
                                             <span 
                                                 className="seat" 
                                                 id={"seat" + studyininfo.siinum}
-                                                onClick={() => 
-                                                    sessionStorage.getItem("id") === null ? alert("로그인 후 이용해주세요.") : handleOpenModal(studyininfo.siinum)
-                                                } 
+                                                onClick={() => {
+                                                    if(sessionStorage.getItem("id") === null) {
+                                                        alert('로그인 후 이용해주세요.');
+                                                        window.location.href = "/login";
+                                                    } else {
+                                                        handleOpenModal(studyininfo.siinum)
+                                                    } 
+                                                }} 
                                             />
                                         </React.Fragment>
                                     :

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../../../style/post.css';
 
@@ -25,17 +25,115 @@ import TextField from '@mui/material/TextField';
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // 댓글 더보기 버튼
-function FadeMenu(sessionId, sessionName, memberName, midx) {
+function FadeMenu({sessionId, sessionName, comment_memberName, comment_memberId, 
+                   board_memberName, board_memberId, ModalhandleOpen, comment_ccidx, 
+                   setCurrentComment, comment_cccontent, comment, setComment, add_or_edit, 
+                   setAdd_or_edit, setCurrentCommentGroupNum, comment_ccgroupnum, comment_comidx}) {
+
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+    // 모달에 상태에 대한 useState
+    // const [Modalopen, setOpen] = useState(false);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    // console.log(sessionId, sessionName, memberName, midx);
+    const edit_comment = () => {
+        setCurrentComment(comment_ccidx);
+        console.log("comment_ccidx:", comment_ccidx);
+        // console.log("comment_cccontent:", comment_cccontent);
+        // console.log("수정 버튼 클릭");
+        setAnchorEl(null);
+        ModalhandleOpen();
+        setComment(comment_cccontent);
+        setAdd_or_edit('edit');
+        // console.log("comment:", comment);
+    }
+
+    const delete_comment = () => {
+        setCurrentComment(comment_ccidx);
+        // console.log("comment_ccidx:", comment_ccidx);
+        // console.log("comment_ccgroupnum:", comment_ccgroupnum);
+        // console.log("comment_comidx:", comment_comidx);
+        console.log("삭제 버튼 클릭");
+
+        axios.post('http://localhost:8099/api/board/delete/comment', {
+            comment_ccidx: comment_ccidx,
+            comment_ccgroupnum: comment_ccgroupnum,
+            comment_comidx: comment_comidx
+        }, {
+            header: {'Content-Type': 'application/json'}
+        }).then(response => {
+            // console.log(response.data);
+            alert("댓글이 삭제되었습니다.");
+            window.location.reload();
+        }).catch(error => {
+            console.log(error);
+            alert("댓글 삭제를 실패하였습니다. 다시 시도해주세요");
+        })
+        setAnchorEl(null);
+    }
+
+    const report_comment = () => {
+        setCurrentComment(comment_ccidx);
+        // console.log("comment_ccidx:", comment_ccidx);
+        console.log("신고 버튼 클릭");
+
+        axios.post('http://localhost:8099/api/board/report/comment', {
+            comment_ccidx: comment_ccidx
+        },{
+            header: {'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log(response.data);
+            alert("댓글이 신고되었습니다.");
+        }).catch(error => {
+            console.log(error);
+            alert("댓글 신고를 실패하였습니다. 다시 시도해주세요");
+        })
+
+        setAnchorEl(null);
+    }
+
+    const reply_comment = () => {
+        setCurrentComment(comment_ccidx);
+        setCurrentCommentGroupNum(comment_ccgroupnum);
+        // console.log("comment_ccidx:", comment_ccidx);
+        // console.log("comment_ccgroupnum:", comment_ccgroupnum);
+        console.log("답글작성 버튼 클릭");
+        setAnchorEl(null);
+        ModalhandleOpen();
+        setAdd_or_edit('add');
+    }
+
+    const menuItem = () => {
+        const items = [];
+
+        if (sessionId === board_memberId && sessionName === board_memberName) {
+            items.push(<MenuItem onClick={report_comment}>신고</MenuItem>)
+            items.push(<MenuItem onClick={reply_comment}>답글작성</MenuItem>)
+            items.push(<MenuItem onClick={delete_comment}>개시글 삭제</MenuItem>)
+        } else if (sessionId === comment_memberId && sessionName === comment_memberName) {
+            items.push(<MenuItem onClick={edit_comment}>수정</MenuItem>)
+            items.push(<MenuItem onClick={delete_comment}>개시글 삭제</MenuItem>)
+        } else if (sessionId === board_memberId && sessionName === board_memberName && 
+                   sessionId === comment_memberId && sessionName === comment_memberName) {
+            items.push(<MenuItem onClick={edit_comment}>수정</MenuItem>)
+            items.push(<MenuItem onClick={delete_comment}>개시글 삭제</MenuItem>)
+        } else {
+            items.push(<MenuItem onClick={report_comment}>신고</MenuItem>)
+        }
+
+        return items;
+    }
+
+    // console.log(sessionId, sessionName, comment_memberName, comment_midx, board_memberName, board_midx);
 
     return (
         <div className="fademenu">
@@ -58,24 +156,27 @@ function FadeMenu(sessionId, sessionName, memberName, midx) {
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleClose}>신고</MenuItem>
-                <MenuItem onClick={handleClose}>답글작성</MenuItem>
-                <MenuItem onClick={handleClose}>수정</MenuItem>
-                <MenuItem onClick={handleClose}>개시글 삭제</MenuItem>
+
+                {menuItem().map((item)=>item)}
+
             </Menu>
         </div>
     );
 }
 // 댓글 페이지네이션
 // props로 페이지네이션의 총 페이지 수를 받아와서 사용해야함.
-function BasicPagination() {
+function BasicPagination({currentPage, onChange, size}) {
     return (
-    <Pagination count={10} />
+    <Pagination 
+        count={size}
+        page={currentPage}
+        onChange={onChange}/>
     );
 }   
 
 // input ui component
-function BasicTextFields() {
+function BasicTextFields({onChange, comment_cccontent, name}) {
+    // console.log("comment_cccontent:", comment_cccontent);
     return (
         <Box
             component="form"
@@ -83,7 +184,7 @@ function BasicTextFields() {
             noValidate
             autoComplete="off"
         >
-            <TextField id="outlined-basic" label='내용' variant="outlined" multiline rows={9} />
+            <TextField id="outlined-basic" label='내용' name={name} value={comment_cccontent} variant="outlined" multiline rows={9} onChange={onChange} />
         </Box>
     );
 }
@@ -101,95 +202,154 @@ const style = {
     boxShadow: 24,
 };
 
-function BasicModal() {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+
+function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen, 
+                     ModalhandleClose, open, setOpen, comment, setComment, currentComment,
+                     setCurrentComment, add_or_edit, setAdd_or_edit, Modalstyle, currentCommentGroupNum}) {
+    // console.log("comment", comment);
+    console.log("add_or_edit:", add_or_edit);
+
+    const handleComment = (e) => {
+        setComment(e.target.value);
+      }
+    
+
+    const insert_comment = (event) => {
+        event.stopPropagation()
+        // console.log("등록 버튼 클릭");
+        // console.log(comment);
+        // console.log("memberId:", memberId);
+        // console.log("sessionId:", sessionId);
+        console.log("currentComment:", currentComment);
+
+        // 값이 같으면 댓글에 대한 답글을 쓰는거고 다르면 그냥 댓글을 쓰는거임
+        const commentType = memberId === sessionId ? 1 : 0;
+
+        // console.log(commentType);
+        // console.log("comIdx:", comIdx);
+        console.log("add_or_edit:", add_or_edit);
+
+        axios.post('http://localhost:8099/api/board/insert/comment',
+         {
+            comIdx:comIdx,
+            commentType: commentType,
+            comment: comment,
+            maxCCGroupNum: maxCCGroupNum,
+            sessionId: sessionId,
+            currentComment: currentComment,
+            add_or_edit: add_or_edit,
+            currentCommentGroupNum: currentCommentGroupNum
+         }, {
+            header: {'Content-Type': 'application/json'}
+        }).then(response => {
+            console.log(response.data);
+            response.data === true ? alert("댓글이 등록되었습니다.") : alert("댓글등록을 실패하였습니다. 다시 시도해주세요");
+            window.location.reload();
+        }).catch(error => {
+            console.log(error);
+            alert("댓글등록을 실패하였습니다. 다시 시도해주세요");
+            window.location.reload();
+        })
+
+        setCurrentComment(0);
+        setAdd_or_edit('add');
+        setOpen(false);
+    }
 
     return (
-        <div className="QandA-button" >
-            <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
-            <div className="QandA-button-text" onClick={handleOpen}>질문 작성하기</div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <div className="modal-header">
-                        <span className="modal-header-title">질문 작성하기</span>
-                    </div>
+        comment !== null ? (
+            <div className="QandA-button" onClick={ModalhandleOpen} style={Modalstyle}>
+                <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
+                <div className="QandA-button-text">질문 작성하기</div>
+                <Modal
+                    open={open}
+                    onClose={ModalhandleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div className="modal-header">
+                            <span className="modal-header-title">답글 작성하기</span>
+                        </div>
 
-                    <div className="modal-title-section">
-                        <span className="modal-title">질문</span>
-                        <span className="modal-title-count1">0자</span>
-                        <span className="modal-title-count2">/200자</span>
-                    </div>
-                    <BasicTextFields />
-                    <div className="modal-caution-section">
-                        <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
-                        <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
-                    </div>
-                    <div className="modal-button-section">
-                        <div onClick={handleClose} className="modal-cancel-button">
-                            <span className="modal-cancel-text">취소</span>
+                        <div className="modal-title-section">
+                            <span className="modal-title">답글</span>
+                            <span className="modal-title-count1">0자</span>
+                            <span className="modal-title-count2">/200자</span>
                         </div>
-                        <div onClick={handleClose} className="modal-active-button">
-                            <span className="modal-active-text">등록</span>
+                        <BasicTextFields name="apply_comment" comment_cccontent={comment} onChange={handleComment}/>
+                        <div className="modal-caution-section">
+                            <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
+                            <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
                         </div>
-                    </div>
-                </Box>
-            </Modal>
-        </div>
-    );
+                        <div className="modal-button-section">
+                            <div className="modal-cancel-button" onClick={ModalhandleClose}>
+                                <span className="modal-cancel-text">취소</span>
+                            </div>
+                            <div className="modal-active-button" onClick={insert_comment}>
+                                <span className="modal-active-text">등록</span>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>
+            </div>
+        ) : (
+            <div className="QandA-button" onClick={ModalhandleOpen}>
+                <img src="/img/icon/write.png" alt="QandAicon" className="QandA-button-icon" />
+                <div className="QandA-button-text">질문 작성하기</div>
+                <Modal
+                    open={open}
+                    onClose={ModalhandleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <div className="modal-header">
+                            <span className="modal-header-title">질문 작성하기</span>
+                        </div>
+
+                        <div className="modal-title-section">
+                            <span className="modal-title">질문</span>
+                            <span className="modal-title-count1">0자</span>
+                            <span className="modal-title-count2">/200자</span>
+                        </div>
+                        <BasicTextFields name="question_comment" onChange={handleComment}/>
+                        <div className="modal-caution-section">
+                            <img src="/img/icon/!(modal).png" alt="!" className="modal-caution-icon" />
+                            <span className="modal-caution-text">단, 공간 및 예약에 대한 문의가 아닌 글은 무통보 삭제될 수 있습니다.</span>
+                        </div>
+                        <div className="modal-button-section">
+                            <div className="modal-cancel-button" onClick={ModalhandleClose}>
+                                <span className="modal-cancel-text">취소</span>
+                            </div>
+                            <div className="modal-active-button" onClick={insert_comment}>
+                                <span className="modal-active-text">등록</span>
+                            </div>
+                        </div>
+                    </Box>
+                </Modal>
+            </div>
+        )
+    ) 
 }
 
 // 카카오맵
-const TheaterLocation = () => {
+const TheaterLocation = ({kakaoPlace}) => {
     return (
       <div className="kakaomap">
         <Map
-          center={{ lat: 37.398184423401, lng: 126.91023974128 }}
-          style={{
-            width: '1090px',
-            height: '378px',
-            borderRadius: '20px',
-          }}
+        center={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}
+        style={{ width: '1090px',
+                 height: '378px',
+                 borderRadius: '20px' }}
         >
-        {/* 지도에 보여줄 위치 지정 (위도,경도)  */}
-        
-          <MapMarker
-            style={{ border: 'tranparent' }}
-            position={{ lat: 37.398184423401, lng: 126.91023974128 }}
-          >
-          {/* 핀 찍힐 위치 */}
-          
-            <div
-              style={{
-                color: '#9971ff',
-                fontSize: '19px',
-                fontWeight: '700',
-                border: '4px solid #9971ff',
-                borderRadius: '10px',
-                padding: '2.5px',
-              }}
-            >
-              연성대학교
-            </div>
-          </MapMarker>
+            <MapMarker position={{ lat: parseFloat(kakaoPlace.y), lng: parseFloat(kakaoPlace.x) }}>
+                <div style={{color:"#000"}}>{kakaoPlace.place_name}</div>
+            </MapMarker>
         </Map>
       </div>
-      //핀에 적힐 이름 (위치 이름)
     );
   };
-
-
-const pageNationData = (event) => {
-    const clickedElement = event.target;
-    console.log(clickedElement);
-    // clickedElement의 값을 사용해서 db에서 댓글에 대한 데이터를 select해오면 됨.
-}
 
 
 
@@ -200,57 +360,244 @@ const Post = () => {
     const comIdx = queryParams.get('comIdx');
 
     const [commentData, setCommentData] = useState([]);
-
-    const [boardContents, setBoardContents] = useState();
+    const [boardContents, setBoardContents] = useState({midx: "", memberName: "", comTitle: "", comContent: "", comRegDate: "", comStartDate: "", comEndDate: "", comAddress: "", comPlace: "", comToCount: "", groupCount: "", memberNames: ""});
+    // const [boardContents, setBoardContents] = useState();
+    const [groupMemberInfos, setGroupMemberInfos] = useState([{memberId: "", memberName: "", midx: "", comIdx: ""}]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [commentSize, setCommentSize] = useState(0);
+    // 모달의 open 상태를 관리하는 useState
+    const [open, setOpen] = useState(false);
+    // 현재 seemore 버튼의 대상이 되는 댓글의 ccidx의 값을 저장하는 useState
+    const [currentComment, setCurrentComment] = useState(0);
+    // 현재 댓글의 groupNum의 값을 저장하는 useState
+    const [currentCommentGroupNum, setCurrentCommentGroupNum] = useState(0);
+    // 모달에서의 댓글의 내용을 저장하는 useState
+    const [comment, setComment] = useState('');
+    // 댓글 추가인지 수정인지 구분하는 useState
+    const [add_or_edit, setAdd_or_edit] = useState('add');
+    // kakao restapi 값을 담는 변수
+    const [kakaoRestApi, setKakaoRestApi] = useState([]);
+    // kakao에서의 주소에 대한 장소id값을 담는 변수
+    const [kakaoPlace, setKakaoPlace] = useState({id: "", x: 0, y: 0, place_name: ""});
 
     const sessionId = sessionStorage.getItem('id');
     const sessionName = sessionStorage.getItem('name');
 
-    // useEffect(() => {
-    //     const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
-    //     console.log(currentPage);
-    // }, []);
+    // 이전 페이지로 이동하는 함수
+    const navigate = useNavigate();
 
-    // const pageNationButton = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button')
-    // pageNationButton.addEventListener('click', pageNationData);
+    // 모달 open 람수
+    const ModalhandleOpen = () => setOpen(true);
 
-    useEffect(() => {
-        const pageNationButton = document.querySelectorAll('nav.MuiPagination-root ul.MuiPagination-ul li button');
-        const currentPage = document.querySelector('nav.MuiPagination-root ul.MuiPagination-ul li button.Mui-selected');
-        console.log(currentPage)
-        
-        if (pageNationButton) {
-            pageNationButton.forEach(button => {
-                button.addEventListener('click', pageNationData);
+    // 모달 close 함수
+    const ModalhandleClose = (event) => {
+        event.stopPropagation()
+        setCurrentComment(0);
+        setComment('');
+        setOpen(false);
+    };
+
+    // 페이지네이션의 페이지가 변경될 때 호출되는 함수
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value); // 현재 페이지 상태 업데이트
+        // console.log(currentPage)
+    };
+
+    const insert_groupMember = () => {
+        //현재 session이랑 해당 post의 groupmember들 작성자 확인 후 그리고 그룹의 인원 수가 현재인원수 보다 적으면 insert문 실행
+        console.log("참여하기 버튼 클릭");
+        // console.log("comToCount: ", boardContents.comToCount);
+        // console.log("groupCount: ", groupMemberInfos.length + 1);
+        // console.log("comIdx: ", comIdx);
+        // console.log("sessionId: ", sessionId);
+        if (sessionId !== null && groupMemberInfos.length + 1 < boardContents.comToCount) {
+            axios.post("http://localhost:8099/api/board/insert/groupMember", {
+                comIdx: comIdx,
+                sessionId: sessionId
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                console.log(response.data);
+                alert("그룹 참여가 완료되었습니다.");
+                window.location.reload();
+            }).catch(error => {
+                console.log(error);
+                alert("그룹 참여를 실패하였습니다. 다시 시도해주세요.");
+            })
+        }else{
+            alert("그룹에 참여할 수 없습니다. 다시 시도해주세요.");
+        }
+    }
+
+    const groupOutPage = () => {
+        console.log("그룹 나가기 버튼 클릭");
+        // console.log("comIdx: ", comIdx);
+        // console.log("sessionId: ", sessionId);
+        if(sessionId !== null && comIdx !== 0) {
+            axios.post("http://localhost:8099/api/board/delete/groupMember", {
+                comIdx: comIdx,
+                sessionId: sessionId
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                console.log(response.data);
+                alert("그룹 나가기가 완료되었습니다.");
+                window.location.reload();
+            }).catch(error => {
+                console.log(error);
+                alert("그룹 나가기를 실패하였습니다. 다시 시도해주세요.");
+            })
+        }else{
+            alert("그룹에서 나갈 수 없습니다. 다시 시도해주세요.");
+        }
+    }
+
+    const post_delete = () => {
+        console.log("삭제 버튼 클릭");
+        // console.log("comIdx: ", comIdx);
+        if(sessionId === boardContents.memberId) {
+            axios.post("http://localhost:8099/api/board/delete/post",  {
+                comIdx: comIdx
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => {
+                console.log(response.data);
+                alert("게시글이 삭제되었습니다.");
+                navigate(-1);
+            }).catch(error => {
+                console.log(error);
+                alert("게시글 삭제를 실패하였습니다. 다시 시도해주세요.");
             })
         }
+    }
 
-        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-        return () => {
-            if (pageNationButton) {
-                pageNationButton.forEach(button => {
-                    button.addEventListener('click', pageNationData);
-                })
-            }
-        };
-    }, []); // 빈 배열은 컴포넌트가 마운트될 때 한 번만 실행되도록 합니다.
+    const goto_back = () => {
+        console.log("뒤로가기 버튼 클릭");
+        navigate(-1);
+    }
+
+    const renderButtons = () => {
+        if (groupMemberInfos.some(member => member.memberId === sessionId && member.memberName === sessionName)) {
+            return (
+                <>
+                    <div className="out-button-section" onClick={groupOutPage}>
+                        <div className="out-button">
+                            <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                            <span className="out-button-text">그룹 나가기</span>
+                        </div>
+                    </div>
+                    <div className="back-button-section" onClick={goto_back}>
+                        <div className="back-button">
+                            <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
+                            <span className="back-button-text">뒤로가기</span>
+                        </div>
+                    </div>
+                </>
+            );
+        }
+
+        if (boardContents && sessionId === boardContents.memberId && sessionName === boardContents.memberName) {
+            return (
+                <>
+                    <Link to={`/board/postRewrite/?comIdx=${comIdx}`} style={{ textDecoration: "none"}}>
+                        <div className="fix-button-section">
+                            <div className="fix-button">
+                                <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
+                                <span className="fix-button-text">수정</span>
+                            </div>
+                        </div>
+                    </Link>
+                    <div className="delete-button-section" onClick={post_delete}>
+                        <div className="delete-button">
+                            <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
+                            <span className="delete-button-text">삭제</span>
+                        </div>
+                    </div>
+                    <div className="out-button-section" onClick={groupOutPage} style={{marginTop: '40px'}}>
+                        <div className="out-button">
+                            <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
+                            <span className="out-button-text">그룹 나가기</span>
+                        </div>
+                    </div>
+                    <div className="back-button-section" onClick={goto_back}>
+                        <div className="back-button">
+                            <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
+                            <span className="back-button-text">뒤로가기</span>
+                        </div>
+                    </div>
+                </>
+            );
+        }
+
+        return (
+            <>
+                <div className="join-button-section" onClick={insert_groupMember}>
+                    <div className="join-button">
+                        <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
+                        <span className="join-button-text">참여하기</span>
+                    </div>
+                </div>
+                <div className="back-button-section" onClick={goto_back}>
+                    <div className="back-button">
+                        <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
+                        <span className="back-button-text">뒤로가기</span>
+                    </div>
+                </div>
+            </>
+        );
+    };
+
+    // useEffect(() => {
+    //     axios.get('https://dapi.kakao.com/v2/local/search/keyword.json', {
+    //         params: { query: boardContents.comAddress },
+    //         headers: {
+    //             'Authorization': `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }).then(response => {
+    //         console.log(response.data);
+    //         setKakaoRestApi(response.data);
+    //     }).catch(error => {
+    //         console.log(error);
+    //     })
+    // },[boardContents.comAddress])
 
     useEffect(() => {
-        axios.get('http://localhost:8099/api/board/post', {
-            params: { comIdx },
-            headers: {
-                'Content-Type': 'application/json',
+        const fetchAddressData = async () => {
+            if (!boardContents.comAddress) {
+                console.log('Missing comAddress');
+                return;
             }
-        }).then(response => {
-            setBoardContents(...response.data)
-        }).catch(error => {
-            console.log(error);
-        })
-    }, [comIdx]);
+
+            try {
+                const response = await axios.get('https://dapi.kakao.com/v2/local/search/keyword.json', {
+                    params: { query: boardContents.comAddress },
+                    headers: {
+                        'Authorization': `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                console.log(response.data);
+                setKakaoRestApi(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (boardContents.comAddress) {
+            fetchAddressData();
+        }
+    }, [boardContents.comAddress]);
 
     useEffect(() => {
         axios.get('http://localhost:8099/api/board/post/comment', {
-            params: { comIdx },
+            params: { comIdx, currentPage, commentSize },
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -259,13 +606,68 @@ const Post = () => {
         }).catch(error => {
             console.log(error);
         })
-    }, [comIdx]);
+    }, [comIdx, currentPage, commentSize])
+
+    useEffect(() => {
+        axios.all([
+            axios.get('http://localhost:8099/api/board/post/commentSize', {
+                params: { comIdx },
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }),
+            axios.get('http://localhost:8099/api/board/post', {
+                params: { comIdx },
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+        ]).then(axios.spread((commentSize, boardContents) => {
+            commentSize.data === 0 ? setCommentSize(0) : setCommentSize(commentSize.data)
+            setBoardContents(...boardContents.data.ViewPost)
+            setGroupMemberInfos(boardContents.data.ViewGroupMember_forPost)
+        })).catch(error => {
+            console.log(error);
+        })
+    },[comIdx])
+
+    useEffect(() => {
+        if (kakaoRestApi && kakaoRestApi.documents) {
+            kakaoRestApi.documents.map((data, index) => {
+                if(data && index === 0) {
+                    // console.log("id_data: " + data.id);
+                    setKakaoPlace({id: data.id,
+                                   x: data.x, 
+                                   y: data.y, 
+                                   place_name: data.place_name});
+                    // console.log(kakaoPlace)
+
+                    // 위도와 경도의 값도 추출가능
+                    // console.log("x_data: " + data.x);
+                    // console.log("y_data: " + data.y);
+                }
+                return null;
+            });
+        }
+    }, [kakaoRestApi]);
+
+    useEffect(() => {
+        console.log(kakaoPlace);
+        console.log(typeof(parseFloat(kakaoPlace.x)));
+        console.log(typeof(21.123123123));
+    }, [kakaoPlace]); 
 
     console.log(boardContents);
     console.log(commentData);
-    console.log(sessionId, sessionName);
+    // console.log(sessionId, sessionName);
+    // console.log(boardContents.memberId, boardContents.memberName);
+    // console.log(commentSize);
+    // console.log(groupMemberInfos);
+    // console.log(sessionId !== boardContents.memberId);
+    // console.log(comment);
+    // console.log("kakaoRestApi: " + kakaoRestApi.documents);
 
-    if (!boardContents | !commentData) {
+    if (!boardContents | !commentData | !groupMemberInfos) {
         return <div>Loading...</div>;
     }
 
@@ -273,14 +675,14 @@ const Post = () => {
         <>
             <div className="post">
 
-                <p className="title">{boardContents.comTitle} (곧 마감)</p>
+                <p className="title">{boardContents.comTitle}</p>
 
                 <div className="breadcrumb">
                     <img src="/img/icon/home(breadcrumb).png" alt="homeicon" className="breadcrumb-home" />
                     <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow" />
                     <span className="breadcrumb-board">게시판</span>
                     <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow2" />
-                    <span className="breadcrumb-category">곧 마감</span>
+                    <span className="breadcrumb-category">{boardContents.comCategoryName}</span>
                 </div>
 
                 <div className="contour"></div>
@@ -294,16 +696,26 @@ const Post = () => {
 
                 <div className="post-info2">
                     <img src="/img/icon/group.png" alt="groupicon" className="post-group-icon" />
-                    <span className="post-group">{boardContents.groupCount + 1} / {boardContents.comToCount} 명</span>
-                    <span className="post-group2">({boardContents.comToCount - (boardContents.groupCount + 1)}명 남음)</span>
+                    <span className="post-group">{groupMemberInfos.length + 1} / {boardContents.comToCount} 명</span>
+                    <span className="post-group2">({boardContents.comToCount - (groupMemberInfos.length + 1)}명 남음)</span>
                 </div>
 
-                <div className="post-info3">
-                    <div className="post-member">
-                        <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
-                        <span className="post-member-name">{boardContents.memberName}</span>
-                        {}
+                <div className="post-info3-frame">
+                    <div className="post-info3">
+                        <div className="post-member">
+                            <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
+                            <span className="post-member-name">{boardContents.memberName}</span>
+                        </div>
                     </div>
+
+                    {groupMemberInfos.map((groupMemberInfo) => (
+                        <div className="post-info3">
+                            <div className="post-member">
+                                <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
+                                <span className="post-member-name">{groupMemberInfo.memberName}</span>
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
                 <div className="post-info4">
@@ -320,26 +732,31 @@ const Post = () => {
 
                     <div className="post-location">
                         <img src="/img/icon/location.png" alt="locationicon" className="post-location-icon" />
-                        <span className="post-location-text">{boardContents.comAddress} ({boardContents.comPlace})</span>
+                        <span className="post-location-text">{boardContents.comAddress} {boardContents.comAddress !== '온라인' ? "(" + boardContents.comPlace + ")" : null}</span>
                     </div>
 
-                    <div className="kakao-button">
 
-                        <Link to="https://place.map.kakao.com/8430579" className="goto-info-button">
-                            <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
-                            <span className="goto-info-text">정보보기</span>
-                        </Link>
+                    {/* <div className="kakaomap">
+                    </div> */}
+                    {boardContents.comAddress !== '온라인' && boardContents.comAddress !== '스터디룸' ? (
+                        <>
+                            <div className="kakao-button">
 
-                        <Link to="https://map.kakao.com/link/to/8430579" className="goto-road-button">
-                            <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
-                            <span className="goto-road-text">길찾기</span>
-                        </Link>
+                                <a href={`https://place.map.kakao.com/${kakaoPlace.id}`} className="goto-info-button">
+                                    <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
+                                    <span className="goto-info-text">정보보기</span>
+                                </a>
 
-                    </div>
+                                <a href={`https://map.kakao.com/link/to/${kakaoPlace.place_name},${parseFloat(kakaoPlace.y).toFixed(6)},${parseFloat(kakaoPlace.x).toFixed(6)}`} className="goto-road-button">
+                                    <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
+                                    <span className="goto-road-text">길찾기</span>
+                                </a>
 
-                    <div className="kakaomap">
-                    </div>
-                    <TheaterLocation />
+                            </div>
+
+                            <TheaterLocation kakaoPlace={kakaoPlace} />
+                        </>
+                    ) : null }
                     
                 </div>
 
@@ -350,10 +767,68 @@ const Post = () => {
                 <div className="post-comment">
                     <div className="post-comment-header">
                         <span className="QandA">Q&A</span>
-                        <span className="QandA-count">(2개)</span>
-                        <BasicModal />
-                        {/* <span className="QandA-button-text">질문 작성하기</span> */}
+                        {/* <span className="QandA-count">({commentData.length}개)</span> */}
+                        {(sessionId !== boardContents.memberId && sessionId !== null) ? (
+                            <BasicModal comIdx={comIdx}
+                                        sessionId={sessionId}
+                                        memberId={boardContents.memberId} 
+                                        maxCCGroupNum={boardContents.maxCCGroupNum}
+                                        ModalhandleOpen={ModalhandleOpen}
+                                        ModalhandleClose={ModalhandleClose}
+                                        open={open}
+                                        setOpen={setOpen}
+                                        comment={comment}
+                                        setComment={setComment}
+                                        currentComment={currentComment}
+                                        setCurrentComment={setCurrentComment}
+                                        add_or_edit={add_or_edit}
+                                        setAdd_or_edit={setAdd_or_edit}
+                                        currentCommentGroupNum={currentCommentGroupNum}/>
+                        ) : (
+                            <BasicModal Modalstyle={{display: 'none'}}
+                                        comIdx={comIdx}
+                                        sessionId={sessionId}
+                                        memberId={boardContents.memberId} 
+                                        maxCCGroupNum={boardContents.maxCCGroupNum}
+                                        ModalhandleOpen={ModalhandleOpen}
+                                        ModalhandleClose={ModalhandleClose}
+                                        open={open}
+                                        setOpen={setOpen}
+                                        comment={comment}
+                                        setComment={setComment}
+                                        currentComment={currentComment}
+                                        setCurrentComment={setCurrentComment}
+                                        add_or_edit={add_or_edit}
+                                        setAdd_or_edit={setAdd_or_edit}
+                                        currentCommentGroupNum={currentCommentGroupNum}/>
+                        )}
                     </div>
+
+                    {/* {commentData.map((root) => (
+                        <div className="post-comment-main" key={root.CCGroupNum}>
+                            {commentData.map((comment) => (
+                                comment.ccrefnum === 1 && root.CCGroupNum === comment.CCGroupNum ? (
+                                    <div className="post-question">
+                                        <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
+                                        <div className="comment-text">
+                                            <span className="comment-author-name">{comment.memberName}</span>
+                                            <p className="comment-detail">{comment.cccontent}</p>
+                                            <span className="comment-loaddate">{comment.ccregdate}</span>
+                                        </div>
+
+                                        <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
+
+                                    </div>
+                                ) : comment.ccrefnum === 2 && root.CCGroupNum === comment.CCGroupNum ? (
+                                    <div className="post-reply">
+                                        <b className="post-reply-author">호스트의 답글</b>
+                                        <p className="reply-detail">{comment.cccontent}</p>
+                                        <span className="reply-loaddate">{comment.ccregdate}</span>
+                                    </div>
+                                ) : null
+                            ))}
+                        </div>
+                    ))} */}
 
                     <div className="post-comment-main">
                         {commentData.map((comment) => (
@@ -366,7 +841,24 @@ const Post = () => {
                                         <span className="comment-loaddate">{comment.ccregdate}</span>
                                     </div>
 
-                                    <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
+                                    <FadeMenu sessionId={sessionId}
+                                              sessionName={sessionName}
+                                              comment_memberName={comment.memberName}
+                                              comment_memberId={comment.memberId}
+                                              board_memberName={boardContents.memberName}
+                                              board_memberId={boardContents.memberId}
+                                              ModalhandleOpen={ModalhandleOpen}
+                                              ModalhandleClose={ModalhandleClose}
+                                              comment_ccidx={comment.ccidx}
+                                              setCurrentComment={setCurrentComment}
+                                              comment_cccontent={comment.cccontent}
+                                              comment={comment}
+                                              setComment={setComment}
+                                              add_or_edit={add_or_edit}
+                                              setAdd_or_edit={setAdd_or_edit}
+                                              setCurrentCommentGroupNum={setCurrentCommentGroupNum}
+                                              comment_ccgroupnum={comment.ccgroupnum}
+                                              comment_comidx={comment.comidx} />
 
                                 </div>
                             ) : comment.ccrefnum === 2 ? (
@@ -374,44 +866,24 @@ const Post = () => {
                                     <b className="post-reply-author">호스트의 답글</b>
                                     <p className="reply-detail">{comment.cccontent}</p>
                                     <span className="reply-loaddate">{comment.ccregdate}</span>
+                                    
+                                    {/* <FadeMenu sessionId={sessionId}
+                                    sessionName={sessionName}
+                                    comment_memberName={comment.memberName}
+                                    comment_midx={comment.midx}
+                                    board_memberName={boardContents.memberName}
+                                    board_memberId={boardContents.memberId} /> */}
                                 </div>
                             ) : null
                         ))}
                     </div>
 
-                    {/* props로 페이지네이션의 총 페이지 수를 넘겨서 사용해야함. */}
-                    <BasicPagination />
+                    <BasicPagination page={currentPage} onChange={handlePageChange} size={commentSize} />
 
                 </div>
 
-                <div className="join-button-section">
-                    <div className="join-button">
-                        <img src="/img/icon/check.png" alt="checkIcon" className="join-button-icon" />
-                        <span className="join-button-text">참여하기</span>
-                    </div>
-                </div>
+                {renderButtons()}
                 
-                <div className="out-button-section" style={{display: 'none'}}>
-                    <div className="out-button">
-                        <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
-                        <span className="out-button-text">나가기</span>
-                    </div>
-                </div>
-
-                <div className="fix-button-section" style={{display: 'none'}}>
-                    <div className="fix-button">
-                        <img src="/img/icon/fix.png" alt="fixIcon" className="fix-button-icon" />
-                        <span className="fix-button-text">수정</span>
-                    </div>
-                </div>
-
-                <div className="delete-button-section" style={{display: 'none'}}>
-                    <div className="delete-button">
-                        <img src="/img/icon/delete.png" alt="deleteIcon" className="delete-button-icon" />
-                        <span className="delete-button-text">삭제</span>
-                    </div>
-                </div>
-
             </div>
         </>
     )

@@ -1,12 +1,16 @@
 package com.project.SnakeDev.vo;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @AllArgsConstructor
 public class TemplateOrderVo {
     private String TTOIdx;
-    private String requestData;
+    private String TTOContent;
+    private String TTOState;
 
+    private AuthVo authVo;
+    private StudyOrderPayVo studyOrderPayVo;
 
     public TemplateOrderVo() {
     }
@@ -19,11 +23,35 @@ public class TemplateOrderVo {
         this.TTOIdx = TTOIdx;
     }
 
-    public String getJsonData() {
-        return requestData;
+    public String getTTOContent() {
+        return TTOContent;
     }
 
-    public void setJsonData(String requestData) {
-        this.requestData = requestData;
+    public void setTTOContent(String TTOContent) {
+        this.TTOContent = TTOContent;
+    }
+
+    public String getTTOState() {
+        return TTOState;
+    }
+
+    public void setTTOState(String TTOState) {
+        this.TTOState = TTOState;
+    }
+
+    public AuthVo getAuthVo() {
+        return authVo;
+    }
+
+    public void setAuthVo(AuthVo authVo) {
+        this.authVo = authVo;
+    }
+
+    public StudyOrderPayVo getStudyOrderPayVo() {
+        return studyOrderPayVo;
+    }
+
+    public void setStudyOrderPayVo(StudyOrderPayVo studyOrderPayVo) {
+        this.studyOrderPayVo = studyOrderPayVo;
     }
 }

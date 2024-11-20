@@ -2,8 +2,12 @@ package com.project.SnakeDev.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig {
@@ -17,6 +21,10 @@ public class WebConfig {
                         .allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메서드
                         .allowedHeaders("*") // 허용할 헤더
                         .allowCredentials(true); // 쿠키 허용 여부
+            }
+            @Override
+            public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+                converters.add(new AllEncompassingFormHttpMessageConverter());
             }
         };
     }

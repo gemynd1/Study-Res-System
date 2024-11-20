@@ -100,3 +100,7 @@
     border: none;
     transition: background-color 0.3s;
 }
+
+.confirmation-buttons {
+    margin: 5px;
+}

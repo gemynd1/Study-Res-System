@@ -17,10 +17,15 @@ import org.springframework.http.*;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Soundbank;
 import java.io.*;
+import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -29,7 +34,9 @@ import java.util.*;
 public class MainController {
     @Autowired
     private MainServiceImpl mainService;
+    @Autowired
     private NotificationServiceImpl notificationService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/studygInfo")
     public ResponseEntity<Object> studygInfo() {
@@ -76,23 +83,24 @@ public class MainController {
     @PostMapping("/templateOrder")
     public ResponseEntity<Object> templateOrder(
             @RequestParam("random") String TTOIdx,
-            @RequestParam("requestData") String requestData) {
-        mainService.saveTemplateOrder(TTOIdx, requestData);
+            @RequestParam("requestData") String TTOContent,
+            @RequestParam("memberid") String MemberId) {
+        mainService.saveTemplateOrder(TTOIdx, TTOContent, MemberId);
         return ResponseEntity.ok("ok");
     }
 
     @GetMapping("/templateOrderInfo")
-    public ResponseEntity<String> templateOrderInfo(@RequestParam("ordernum") String ordernum) {
-        int result1 =  mainService.updateTemplateOrder(ordernum);
+    public ResponseEntity<String> templateOrderInfo(@RequestParam("orderid") String orderid) {
+        int result1 =  mainService.updateTemplateOrder(orderid);
         if(result1 > 0) {
-            String result2 = mainService.selectTemplateOrder(ordernum);
+            String result2 = mainService.selectTemplateOrder(orderid);
             return ResponseEntity.ok(result2);
         } else {
             return ResponseEntity.badRequest().body("no");
         }
     }
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
     // 결제 승인 내역 DB저장
     @PostMapping("/OrderPay")
     public ResponseEntity<Object> OrderPay(@RequestParam("orderPayData") String orderPayDataJson,
@@ -141,9 +149,10 @@ public class MainController {
     }
 
     @PostMapping("/OrderNotification")
-    public ResponseEntity<Object> OrderNotification(@RequestParam("orderNotificationData") String MaContent) {
+    public ResponseEntity<Object> OrderNotification(@RequestParam("MaContent") String MaContent,
+                                                    @RequestParam("MemberId") String MemberId) {
         try {
-            if(notificationService.OrderNotification(MaContent) > 0) {
+            if(notificationService.OrderNotification(MaContent, MemberId) > 0) {
                 return ResponseEntity.ok("ok");
             } else {
                 return ResponseEntity.badRequest().body("no");
@@ -168,6 +177,63 @@ public class MainController {
             } else {
                 return ResponseEntity.badRequest().body("no");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+
+    @GetMapping("/myTimeInfo")
+    public ResponseEntity<Object> myTimeInfo(@RequestParam("MemberId") String MemberId) {
+        return ResponseEntity.ok(mainService.myTimeInfo(MemberId));
+    }
+
+    @PostMapping("/seatOrder")
+    public ResponseEntity<Object> seatOrder(@RequestBody Map<String, Object> body) {
+        try {
+            String MemberId = (String) body.get("MemberId"); // String으로 캐스팅
+            Integer seatNum = Integer.parseInt(body.get("seatNum").toString()); // Integer로 변환
+            String startTime = (String) body.get("startTime");
+            String endTime = (String) body.get("endTime");
+            String selectedOption = (String) body.get("selectedOption");
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+            StudyInInfoVo studyInInfoVo = new StudyInInfoVo();
+//            Date startDate = formatter.parse(startTime);
+//            Date endDate = formatter.parse(endTime);
+
+//            studyInInfoVo.setSeatStartTime(startDate);
+//            studyInInfoVo.setSeatEndTime(endDate);
+            studyInInfoVo.setSeatStartTime(startTime);
+            studyInInfoVo.setSeatEndTime(endTime);
+            // ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY/MM/DD HH24:MI';
+
+            String MaContent = "";
+            // 개인이 예약된 자리가 있는지 확인하는 DB
+            if(mainService.selectStudyininfo(MemberId) > 0) return ResponseEntity.ok(6);
+
+            if(selectedOption.equals("기간")) {
+                // 회원이 선택한 기간권안에 당일 예약 날짜가 포함이 되어있는지 확인하는 DB
+                if(mainService.selectOptionTime(MemberId) <= 0) return ResponseEntity.ok(5);
+                MaContent = seatNum + "번 자리 " + selectedOption + startTime + " ~ " + endTime + " 까지 예약이 완료되었습니다.";
+            } else {
+                // 회원이 시간제로 예약하였을 때 선택한 시간이 현재 충전이 되어있는지 확인하는 DB
+                if(mainService.selectOptionTime2(MemberId, selectedOption) <= 0) return ResponseEntity.ok(4);
+                // 회원이 충전이 되어있는지 확인이 완료되면 해당 시간을 차감시키고 예약 최종처리
+                if(mainService.updateIntime(MemberId, selectedOption) <= 0) return ResponseEntity.ok(3);
+                MaContent = seatNum + "번 자리 " + selectedOption + "시간" + startTime + " ~ " + endTime + " 까지 예약이 완료되었습니다.";
+            }
+            if(mainService.updateStudyInInfo(seatNum, studyInInfoVo, MemberId) > 0) {
+
+                notificationService.OrderNotification(MaContent, MemberId);
+                return ResponseEntity.ok(2);
+            } else {
+                return ResponseEntity.badRequest().body(1);
+            }
+//            return ResponseEntity.ok(2);
+            // 없다면 예약 진행
+//        if(mainService.updateStudyininfo(MemberId, seatNum) > 0) return ResponseEntity.ok(1);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");

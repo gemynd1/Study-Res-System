@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 const IdVali = (props) => {
     const [value, setValue] = useState(props.value ?? '');
@@ -65,7 +65,6 @@ const IdVali = (props) => {
                 value={value}
                 onChange={onChange}
                 placeholder="아이디"
-                required
             />
             <span style={{color: 'red', fontSize: '12px', display: 'block'}}>{error}</span>
         </>

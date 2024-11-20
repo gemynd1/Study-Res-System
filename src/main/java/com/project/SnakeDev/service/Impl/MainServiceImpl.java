@@ -63,19 +63,49 @@ public class MainServiceImpl implements MainService {
 
     @Override
     @Transactional
-    public int saveTemplateOrder(String TTOIdx, String requestData) {
-        return mainMapper.saveTemplateOrder(TTOIdx, requestData);
+    public int saveTemplateOrder(String TTOIdx, String TTOContent, String MemberId) {
+        return mainMapper.saveTemplateOrder(TTOIdx, TTOContent, MemberId);
     }
 
     @Override
     @Transactional
-    public String selectTemplateOrder(String ordernum) {
-        return mainMapper.selectTemplateOrder(ordernum);
+    public String selectTemplateOrder(String orderid) {
+        return mainMapper.selectTemplateOrder(orderid);
     }
 
     @Override
     @Transactional
-    public int updateTemplateOrder(String ordernum) {
-        return mainMapper.updateTemplateOrder(ordernum);
+    public int updateTemplateOrder(String orderid) {
+        return mainMapper.updateTemplateOrder(orderid);
+    }
+
+    @Override
+    public AuthVo myTimeInfo(String MemberId) {
+        return mainMapper.myTimeInfo(MemberId);
+    }
+
+    @Override
+    public int selectStudyininfo(String MemberId) {
+        return mainMapper.selectStudyininfo(MemberId);
+    }
+
+    @Override
+    public int selectOptionTime(String MemberId) {
+        return mainMapper.selectOptionTime(MemberId);
+    }
+
+    @Override
+    public int selectOptionTime2(String MemberId, String selectedOption) {
+        return mainMapper.selectOptionTime2(MemberId, selectedOption);
+    }
+
+    @Override
+    public int updateIntime(String MemberId, String selectedOption) {
+        return mainMapper.updateIntime(MemberId, selectedOption);
+    }
+
+    @Override
+    public int updateStudyInInfo(Integer seatNum, StudyInInfoVo studyInInfoVo, String MemberId) {
+        return mainMapper.updateStudyInInfo(seatNum, studyInInfoVo, MemberId);
     }
 }

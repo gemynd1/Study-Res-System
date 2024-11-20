@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import '../../../style/postWrite.css';
 
 
@@ -45,7 +46,7 @@ import PostCodePopup from "../Account/AccountCom/PostCodePopup";
 
 
 // input ui component
-function BasicTextFields({label}) {
+function BasicTextFields({label, title, onChange}) {
     const multiline = label === '내용' ? {multiline: true, rows: 15} : {};
 
     return (
@@ -55,17 +56,18 @@ function BasicTextFields({label}) {
         noValidate
         autoComplete="off"
       >
-        <TextField id="outlined-basic" label={label} variant="outlined" {...multiline} />
+        <TextField id="outlined-basic" label={label} variant="outlined" {...multiline} name={title} onChange={onChange} />
       </Box>
     );
   }
 
 // 카테고리select ui component
-function BasicSelect() {
+function BasicSelect({category1, value, onChange}) {
     const [category, setCategory] = React.useState('');
   
     const handleChange = (event) => {
       setCategory(event.target.value);
+      onChange(event);
     };
   
     return (
@@ -78,9 +80,10 @@ function BasicSelect() {
             value={category}
             label="카테고리"
             onChange={handleChange}
+            name={category1}
           >
-            <MenuItem value={"곧마감"}>곧마감</MenuItem>
-            <MenuItem value={"new"}>new</MenuItem>
+            <MenuItem value={"곧 마감!"}>곧마감</MenuItem>
+            <MenuItem value={"NEW!"}>new</MenuItem>
             <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
           </Select>
         </FormControl>
@@ -119,8 +122,30 @@ function RowRadioButtonsGroup({RadioValue, setRadioValue}) {
 }
 
 // startdate & enddate ui component
-function ResponsiveDateTimePickers({dateType}) {
-  const dateTypeText = dateType === 'startdate' ? '모임 시작일' : '모임 종료일';
+function ResponsiveDateTimePickers({dateType, name, setBoardContents}) {
+    const dateTypeText = dateType === 'startdate' ? '모임 시작일' : '모임 종료일';
+    const [value, setValue] = useState(null);
+
+    useEffect(() => {
+      if (value && dayjs(value).isValid()) {
+        const stringValue = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+        handleDateChange(name, stringValue);
+        console.log(stringValue);
+      }
+    }, [value]);
+  
+    const handleChange = (newValue) => {
+      if (dayjs(newValue).isValid()) {
+        setValue(newValue);
+      }
+    };
+
+    const handleDateChange = (name, value) => {
+        setBoardContents(boardContents => ({
+          ...boardContents,
+          [name]: value
+        }));
+      };
 
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -130,7 +155,9 @@ function ResponsiveDateTimePickers({dateType}) {
           ]}
         >
           <DemoItem label={dateTypeText}>
-            <DateTimePicker defaultValue={dayjs('2022-04-17T15:30')} />
+            <DateTimePicker defaultValue={dayjs('2022-04-17T15:30')}
+                            name={name}
+                            onChange={handleChange} />
           </DemoItem>
         </DemoContainer>
       </LocalizationProvider>
@@ -161,13 +188,33 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-function NumberInputAdornments() {
+function NumberInputAdornments({setBoardContents, name}) {
+  const [value, setValue] = React.useState(null);
+  useEffect(() =>{
+	  setValue(value);
+    setBoardContents(prevState => {
+      return {
+        ...prevState,
+        groupCount: value,
+      }
+    });
+    // console.log(value);
+
+  }, [value]); 
+
   return (
-    <Box
-      sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}
-    >
-      <NumberInput endAdornment={<InputAdornmentNumber>명</InputAdornmentNumber>} />
-    </Box>
+	<Box
+	  sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}
+	>
+	  <NumberInput endAdornment={<InputAdornmentNumber>명</InputAdornmentNumber>}
+	  			       name={name}
+                 value={value}
+                 onChange={(event, value) => setValue(value)}
+                 min={2}
+                 max={10}
+                 readOnly={true}
+	  />
+	</Box>
   );
 }
 
@@ -331,17 +378,23 @@ const Button = styled('button')(
 const PostRewrite = () => {
   const [RadioValue, setRadioValue] = useState('');
 
-  const [studyRoomInfos, setStudyRoomInfos] = useState([
-    {id: 1, name: '스터디룸1'},
-    {id: 2, name: '스터디룸2'},
-    {id: 3, name: '스터디룸3'}
-  ]);
+  const [studyRoomInfos, setStudyRoomInfos] = useState([]);
 
   const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
   const [popup, setPopup] = useState(false);
 
+  const [boardContents, setBoardContents] = useState({title: "", content: "", category: "", groupCount: 0, startday: "", enddate: ""});
+
   const handleComplete = (data) => {
       setPopup(!popup);
+  }
+
+  const handleBoardContents = (e) => {
+    const { name, value } = e.target;
+    setBoardContents({
+        ...boardContents,
+        [name]: value,
+    });
   }
 
   const handleInput = (e) => {
@@ -349,7 +402,22 @@ const PostRewrite = () => {
         ...enroll_company,
         [e.target.name]:e.target.value,
     });
-}
+  }
+
+  useEffect(() => {
+    axios.get(`http://localhost:8099/api/board/get/postWrite`, {
+        headers: { 'Content-Type': 'application' }
+    }).then((response) => {
+        console.log(response.data);
+        setStudyRoomInfos(response.data);
+    }).catch((error) => {
+        console.error(error);
+    })
+  }, [])
+
+  useEffect(() => {
+    console.log(boardContents)
+  }, [boardContents])
 
 
     return (
@@ -361,21 +429,21 @@ const PostRewrite = () => {
                         <div className="title">
                             <span className="title-text">제목</span>
                         </div>
-                        <BasicTextFields label="제목" />
+                        <BasicTextFields label="제목" title="title" value={boardContents.title} onChange={handleBoardContents} />
                     </div>
 
                     <div className="category-section">
                         <div className="category">
                             <span className="category-text">카테고리</span>
                         </div>
-                        <BasicSelect />
+                        <BasicSelect category1="category1" value={boardContents.category} onChange={handleBoardContents}/>
                     </div>
 
                     <div className="content-section">
                         <div className="content">
                             <span className="content-text">내용</span>
                         </div>
-                        <BasicTextFields label="내용" />
+                        <BasicTextFields label="내용" content="content" value={boardContents.content} onChange={handleBoardContents} />
                     </div>
 
                     <div className="groupCount-section">
@@ -385,7 +453,7 @@ const PostRewrite = () => {
                         <div className="testgroup">
                             <div className="maximum-count">
                                 {/* <InputAdornments type='maximum' /> */}
-                                <NumberInputAdornments />
+                                <NumberInputAdornments name="gorupCount" setBoardContents={setBoardContents} />
                                 <p className="maximum-count-text">모임의 최대인원</p>
                             </div>
                         </div>
@@ -396,9 +464,6 @@ const PostRewrite = () => {
                             <span className="meetingPoint-text">모임장소</span>
                         </div>
                         
-                        {/* 해당 라디오그룹은 props로 값들을 전달한다. 
-                        그리고 전달되어진 props의 값이 무엇인지에 따라서 
-                        밑에 나타나는 div의 내용을 달라지게 한다. */}
                         <RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue} />
 
                     </div>
@@ -440,14 +505,14 @@ const PostRewrite = () => {
                       <div className="meetingPoint-studyroom">
                         <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postWrite">
 
-                            {studyRoomInfos.map((studyRoomInfo) => (
-                                <SwiperSlide className="mySwiper_postWrite-slide">
-                                    <div className="studyroom">
-                                        <img src={`/img/room/study room${studyRoomInfo.id}-1.png`} alt={`room${studyRoomInfo.id}`} />
-                                        <div>{studyRoomInfo.name}</div>
-                                    </div>
-                                </SwiperSlide>
-                            ))}
+                          {studyRoomInfos.map((studyRoomInfo) => (
+                            <SwiperSlide className="mySwiper_postRewrite-slide">
+                              <div className="studyroom">
+                                <img src={`${studyRoomInfo.studyGImgs}`} alt={`room${studyRoomInfo.sgiidx}`} />
+                                <div>{studyRoomInfo.sgicontent1}</div>
+                              </div>
+                            </SwiperSlide>
+                          ))}
 
                         </Swiper>
                      </div>
@@ -457,14 +522,14 @@ const PostRewrite = () => {
                         <div className="startdate">
                             <span className="startdate-text">시작일</span>
                         </div>
-                        <ResponsiveDateTimePickers dateType='startdate' />
+                        <ResponsiveDateTimePickers dateType='startdate' name="startday" setBoardContents={setBoardContents} />
                     </div>
 
                     <div className="enddate-section">
                         <div className="enddate">
                             <span className="enddate-text">종료일</span>
                         </div>
-                        <ResponsiveDateTimePickers dateType='enddate' />
+                        <ResponsiveDateTimePickers dateType='enddate' name="enddate" setBoardContents={setBoardContents} />
                     </div>
 
                     <div className="button-section">

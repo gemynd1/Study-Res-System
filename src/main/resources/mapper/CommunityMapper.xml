@@ -4,21 +4,43 @@
 
     <select id="ViewCommunity" resultType="com.project.SnakeDev.vo.CommunityVo">
         <![CDATA[
-        select * from (
-            SELECT
-                c.*,
-                COUNT(ts.COMIDX) AS GroupCount
-            FROM
-                tbl_community c
-            LEFT JOIN
-                tbl_TogetherStudy ts
-            ON
-                c.COMIDX = ts.COMIDX
-            GROUP BY
-                c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
-            ORDER BY
-                c.COMIDX DESC
-        ) where rownum <= 5
+        SELECT * FROM (
+                          SELECT
+                              c.*,
+                              COUNT(ts.COMIDX) AS GroupCount
+                          FROM
+                              tbl_community c
+                                  LEFT JOIN
+                              tbl_TogetherStudy ts
+                              ON
+                                  c.COMIDX = ts.COMIDX
+                          WHERE c.COMCATEIDX = 1
+                            AND c.COMDELDATE = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+                          GROUP BY
+                              c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+                          ORDER BY
+                              c.COMIDX DESC
+                      ) WHERE ROWNUM <= 3
+
+        UNION ALL
+
+        SELECT * FROM (
+                          SELECT
+                              c.*,
+                              COUNT(ts.COMIDX) AS GroupCount
+                          FROM
+                              tbl_community c
+                                  LEFT JOIN
+                              tbl_TogetherStudy ts
+                              ON
+                                  c.COMIDX = ts.COMIDX
+                          WHERE c.COMCATEIDX = 2
+                            AND c.COMDELDATE = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+                          GROUP BY
+                              c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
+                          ORDER BY
+                              c.COMIDX DESC
+                      ) WHERE ROWNUM <= 3
         ]]>
     </select>
 
@@ -35,6 +57,7 @@
             ON
                 c.COMIDX = ts.COMIDX
             WHERE comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+                and comdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
             GROUP BY
                 c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
             ORDER BY
@@ -50,19 +73,49 @@
 
     <select id="ViewPost" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
         select
-            c.*,
+            c.COMIDX,
+            c.COMCATEIDX,
+            c.MIDX,
+            c.COMTITLE,
+            c.COMCONTENT,
+            TO_CHAR(c.COMREGDATE, 'YYYY-MM-DD') AS COMREGDATE,
+            c.COMDELDATE,
+            c.COMUPDATE,
+            c.COMINTODATE,
+            c.COMTOCOUNT,
+            c.COMSTARTDATE,
+            c.COMENDDATE,
+            c.COMPLACE,
+            c.COMZIPCODE,
+            c.COMADDRESS,
+            c.COMREPORTCOUNT,
             m.MemberName,
-            listagg(ts.Midx, ', ') within group (order by ts.Midx) as MemberNames
+            m.MemberId,
+            cc.ComCateName as comCategoryName,
+            (SELECT MAX(CCGroupNum) FROM tbl_community_comment WHERE comidx = #{comIdx}) AS maxCCGroupNum
         from
             tbl_community c
-            join
+        join
             tbl_member m on c.midx = m.midx
-            left join
-            tbl_TogetherStudy ts on c.comidx = ts.comidx
+        left join
+            tbl_community_category cc on c.COMCATEIDX = cc.COMCATEIDX
         where
-            c.comidx = #{comidx}
+            c.comidx = #{comIdx}
         group by
-            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName
+            c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT, m.MemberName, m.MemberId, cc.ComCateName
+    </select>
+
+    <select id="ViewGroupMember_forPost" resultType="com.project.SnakeDev.vo.TogetherStudyVo" parameterType="String">
+        select
+            ts.*,
+            m.MemberName,
+            m.MemberId
+        from
+            tbl_TogetherStudy ts
+        join
+            tbl_member m on ts.midx = m.midx
+        where
+            ts.comidx = #{comIdx}
     </select>
 
     <select id="ViewPost_forPostRewrite" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="String">
@@ -88,8 +141,44 @@
             comidx = #{comIdx}
     </select>
 
-    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="String">
-        select tcc.*,tm.membername  from tbl_community_comment tcc, tbl_member tm  where tcc.comidx = #{comidx} and tcc.midx = tm.midx
+    <select id="ViewComment" resultType="com.project.SnakeDev.vo.Community_CommentVo" parameterType="map">
+        WITH CommentWithDenseRank AS (
+            SELECT
+                tcc.*,
+                tm.membername,
+                tm.memberId,
+                DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
+            FROM
+                tbl_community_comment tcc
+                    JOIN
+                tbl_member tm ON tcc.midx = tm.midx
+            WHERE
+                tcc.comidx = #{comIdx}
+                and tcc.ccdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+        )
+        SELECT
+            *
+        FROM
+            CommentWithDenseRank
+        WHERE
+            dense_rank BETWEEN (#{currentPage} * #{commentSize} - (#{commentSize} - (#{commentSize} - 1))) AND (#{currentPage} * #{commentSize})
+    </select>
+
+    <select id="ViewCommentSize" resultType="int" parameterType="String">
+        WITH RankedComments AS (
+            SELECT
+                tcc.*,
+                DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
+            FROM
+                tbl_community_comment tcc
+            WHERE
+                tcc.comidx = #{comIdx}
+                and tcc.ccdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+        )
+        SELECT
+            NVL(CEIL(MAX(dense_rank) / 2), 0) AS pageSize
+        FROM
+            RankedComments
     </select>
 
     <select id="ViewMoreCommunity" resultType="com.project.SnakeDev.vo.CommunityVo" parameterType="map">
@@ -104,11 +193,16 @@
             c.COMIDX = ts.COMIDX
         WHERE
             comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory})
+            and comdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
         GROUP BY
             c.COMIDX, c.COMCATEIDX, c.MIDX, c.COMTITLE, c.COMCONTENT, c.COMREGDATE, c.COMDELDATE, c.COMUPDATE, c.COMINTODATE, c.COMTOCOUNT, c.COMSTARTDATE, c.COMENDDATE, c.COMPLACE, c.COMZIPCODE, c.COMADDRESS, c.COMREPORTCOUNT
         ORDER BY
             c.COMIDX DESC
         OFFSET #{int_ContentNumber} ROWS FETCH NEXT 1 ROWS ONLY
+    </select>
+
+    <select id="ViewCommunity_size" parameterType="String" resultType="int">
+        select count(*) from tbl_community where comcateidx = (select comcateidx from tbl_community_category where comcatename = #{currentCategory}) and comdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
     </select>
 
     <select id="ViewStudyroom" resultType="com.project.SnakeDev.vo.StudyGInfoVo">
@@ -123,7 +217,7 @@
             s.sgiidx, s.scidx, s.sginum, s.sgiusestate, s.sgicontent1, s.sgicontent2
     </select>
 
-    <update id="updateCommunity" parameterType="com.project.SnakeDev.vo.CommunityVo">
+    <update id="updateCommunity" parameterType="map">
         update tbl_community
             set ComIdx = #{ComIdx},
                 ComCateIdx = (select ComCateIdx from tbl_community_category where comCateName = #{comCategoryName}),
@@ -136,9 +230,23 @@
                 ComToCount = #{ComToCount},
                 ComStartDate = TO_DATE(#{ComStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
                 ComEndDate = TO_DATE(#{ComEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
-                ComPlace = #{ComPlace},
-                ComZipcode = #{ComZipcode},
-                ComAddress = #{ComAddress},
+                <choose>
+                    <when test="ComAddress == '스터디룸'">
+                        ComPlace = (select sgicontent1 from tbl_studyginfo where sgiidx = #{currentStudyRoom}),
+                        ComZipcode = #{ComZipcode},
+                        ComAddress = #{ComAddress},
+                    </when>
+                    <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
+                        ComPlace = #{enroll_company.detailedAddress},
+                        ComZipcode = #{enroll_company.zonecode},
+                        ComAddress = #{enroll_company.address},
+                    </when>
+                    <otherwise>
+                        ComPlace = #{ComPlace},
+                        ComZipcode = #{ComZipcode},
+                        ComAddress = #{ComAddress},
+                    </otherwise>
+                </choose>
                 ComReportCount = #{ComReportCount}
             where comidx = #{ComIdx}
     </update>
@@ -146,11 +254,59 @@
     <delete id="deleteTogetherStudy" parameterType="map">
         DELETE FROM tbl_TogetherStudy
         WHERE comidx = #{comIdx}
-          AND (comidx, midx) NOT IN (
-                                     <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
-                                         #{item.comIdx}, #{item.midx}
-                                     </foreach>
+            AND (comidx, midx) NOT IN (
+                <foreach collection="groupMemberInfos" item="item" open="(" close=")" separator=",">
+                    #{item.comIdx}, #{item.midx}
+                </foreach>
             )
+    </delete>
+
+    <delete id="deleteTogetherStudyAll" parameterType="int">
+        delete from tbl_TogetherStudy where comidx = #{comidx}
+    </delete>
+
+    <insert id="insert_comment_question" parameterType="map">
+        insert into tbl_community_comment
+        values
+        (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, (#{maxCCGroupNum} + 1), #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+    </insert>
+
+    <insert id="insert_comment_reply" parameterType="map">
+        insert into tbl_community_comment
+        values
+            (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 2, 2, #{currentCommentGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+    </insert>
+
+    <update id="updateComment_forSelf" parameterType="map">
+        update tbl_community_comment set cccontent = #{comment}, ccupdate = SYSDATE where ccidx = #{currentComment}
+    </update>
+
+    <update id="deleteComment" parameterType="map">
+        update tbl_community_comment set ccdeldate = SYSDATE where (ccidx = #{comment_ccidx} or ccgroupnum = #{comment_ccgroupnum}) and comidx = #{comment_comidx}
+    </update>
+
+    <update id="reportComment" parameterType="int">
+        update tbl_community_comment set ccreportcount = ccreportcount + 1 where ccidx = #{comment_ccidx}
+    </update>
+
+    <insert id="insertTogetherStudy" parameterType="map">
+        insert into tbl_TogetherStudy values ((select midx from tbl_member where memberid = #{sessionId}), #{comIdx})
+    </insert>
+
+    <delete id="deleteTogetherStudy_forPost" parameterType="map">
+        delete from tbl_TogetherStudy where midx = (select midx from tbl_member where memberid = #{sessionId}) and comidx = #{comIdx}
+    </delete>
+
+    <update id="deletePost_allPost" parameterType="int">
+        update tbl_community set comdeldate = SYSDATE where comidx = #{comIdx}
+    </update>
+
+    <update id="deleteComment_allPost" parameterType="int">
+        update tbl_community_comment set ccdeldate = SYSDATE where comidx = #{comIdx}
+    </update>
+
+    <delete id="deleteTogetherStudy_allPost" parameterType="int">
+        delete from tbl_TogetherStudy where comidx = #{comIdx}
     </delete>
 
 </mapper>
