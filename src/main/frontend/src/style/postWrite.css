@@ -502,3 +502,57 @@ div.postRewrite-section div.button-section div.active-button span.active-text {
     line-height: 27px;
     color: #000000;
 }
+
+
+
+/* 그룹이름 작성 input에 대한 css */
+div.postRewrite-section div.groupName-section {
+    display: flex;
+    justify-content: center;
+    /* margin-right: 30%; */
+    margin-bottom: 52px;
+}
+
+div.postRewrite-section div.groupName-section div.groupName {
+    position: relative;
+    display: inline;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    width: 167.44px;
+    height: 54px;
+    margin-right: 70px;
+}
+
+div.postRewrite-section div.groupName-section div.groupName span.groupName-text {
+    display: flex;
+    height: 53.93px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    color: #000000;
+}
+
+div.postRewrite-section div.groupName-section form.MuiBox-root {
+    display: inline;
+    position: relative;
+    width: 714px;
+    height: 54px;
+    background: #FFFFFF;
+    /* border: 1px solid #000000; */
+    border-radius: 10px;
+}
+
+div.postRewrite-section div.groupName-section form.MuiBox-root div.MuiFormControl-root {
+    width: 714px;
+    height: 54px;
+    margin: 0px;
+    border-radius: 10px;
+}
+
+div.postRewrite-section div.groupName-section form.MuiBox-root div.MuiFormControl-root div.MuiInputBase-root {
+    border-radius: 10px;
+}
