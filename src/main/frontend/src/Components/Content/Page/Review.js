@@ -7,51 +7,62 @@ import axios from "axios";
 
 const baseImage =  "/img/banner.png"
 // ReviewCard 컴포넌트
-const ReviewCard = ({ review, onClick }) => (
-    <div className="review-card" onClick={onClick}>
-        {review.sriImg && review.sriImg.length > 0 ? (
-            <img
-                src={`http://localhost:8099/${review.sriImg[0]}`}
-                alt="review"
-                className="review-card-image"
-            />
-        ) : (
-            <img
-                src={"/img/banner.png"}
-                alt="review"
-                className="review-card-image"
-            />
-        )}
 
-        <div className="overlay flex">
-            <div className="review-rating yellow-star">
-                {"★".repeat(review.srStar)}
+const ReviewCard = ({ review, onClick }) => {
+    const [midx, setMidx] = useState("");
+    useEffect(() => {
+        axios.get(`http://localhost:8099/api/getMidx?MemberId=${sessionStorage.getItem('id')}`)
+        .then(res => {
+            setMidx(res.data);
+        });
+    }, []);
+
+    return (
+        <div className="review-card" onClick={onClick}>
+            {review.sriImg && review.sriImg.length > 0 ? (
+                <img
+                    src={`http://localhost:8099/${review.sriImg[0]}`}
+                    alt="review"
+                    className="review-card-image"
+                />
+            ) : (
+                <img
+                    src={"/img/banner.png"}
+                    alt="review"
+                    className="review-card-image"
+                />
+            )}
+
+            <div className="overlay flex">
+                <div className="review-rating yellow-star">
+                    {"★".repeat(review.srStar)}
+                </div>
+                <div className="study-room">스터디룸 {review.sgiIdx}</div>
             </div>
-            <div className="study-room">스터디룸 {review.sgiIdx}</div>
+            <p className="review-text">{review.srContent}</p>
+            <div className="review-footer">
+                {/* 태그를 표시 (배열 형태이므로 join 사용) */}
+                <div className="color">
+                    {review.tshtlcontent && review.tshtlcontent.length > 0
+                        ? review.tshtlcontent.join(", ")
+                        : "No tags available"}
+                </div>
+                <span>{review.srRegDate.split("T")[0]}</span>
+                <div className="likes-comments">
+                    <span className="review-text">👍 0</span>
+                    <span className="review-text">💬 0</span>
+                </div>
+            </div>
         </div>
-        <p className="review-text">{review.srContent}</p>
-        <div className="review-footer">
-            {/* 태그를 표시 (배열 형태이므로 join 사용) */}
-            <div className="color">
-                {review.tshtlcontent && review.tshtlcontent.length > 0
-                    ? review.tshtlcontent.join(", ")
-                    : "No tags available"}
-            </div>
-            <span>{review.srRegDate.split("T")[0]}</span>
-            <div className="likes-comments">
-                <span className="review-text">👍 0</span>
-                <span className="review-text">💬 0</span>
-            </div>
-        </div>
-    </div>
-);
+    )
+};
 
 
 const Review = () => {
+
     const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
     const [selectedStudyRoom, setSelectedStudyRoom] = useState("");
-
 
 
     // 서버에서 리뷰 데이터를 받아오는 useEffect

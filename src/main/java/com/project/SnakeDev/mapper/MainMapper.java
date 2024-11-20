@@ -28,6 +28,7 @@ public interface MainMapper {
     int selectOptionTime2(String MemberId, String selectedOption);
     int updateIntime(String MemberId, String selectedOption);
     int updateStudyInInfo(Integer seatNum, @Param("seat") StudyInInfoVo studyInInfoVo, String MemberId);
+    int seatUpdate();
 
 
 }

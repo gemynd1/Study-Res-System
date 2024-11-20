@@ -8,7 +8,6 @@ const Login = () => {
     const K_REST_API_KEY = process.env.REACT_APP_KAKAO_LOGIN_KEY;
     const K_REDIRECT_URI = 'http://localhost:3000/oauth';
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${K_REST_API_KEY}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
-    const access_token_uri = 'https://kauth.kakao.com/oauth/token';
 
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');

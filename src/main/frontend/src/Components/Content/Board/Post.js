@@ -640,7 +640,7 @@ const Post = () => {
                                    x: data.x, 
                                    y: data.y, 
                                    place_name: data.place_name});
-                    // console.log(kakaoPlace)
+                    console.log(kakaoPlace)
 
                     // 위도와 경도의 값도 추출가능
                     // console.log("x_data: " + data.x);
@@ -665,7 +665,7 @@ const Post = () => {
     // console.log(groupMemberInfos);
     // console.log(sessionId !== boardContents.memberId);
     // console.log(comment);
-    // console.log("kakaoRestApi: " + kakaoRestApi.documents);
+    console.log("kakaoRestApi: " + kakaoRestApi.documents);
 
     if (!boardContents | !commentData | !groupMemberInfos) {
         return <div>Loading...</div>;

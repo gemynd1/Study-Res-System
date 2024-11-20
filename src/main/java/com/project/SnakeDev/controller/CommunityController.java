@@ -1,6 +1,7 @@
 package com.project.SnakeDev.controller;
 
 import com.project.SnakeDev.service.CommunityService;
+import com.project.SnakeDev.vo.ChatRoomVo;
 import com.project.SnakeDev.vo.CommunityVo;
 import com.project.SnakeDev.vo.StudyGInfoVo;
 import com.project.SnakeDev.vo.TogetherStudyVo;
@@ -122,6 +123,39 @@ public class CommunityController {
         List<StudyGInfoVo> result_ViewStudyroom= communityService.ViewStudyroom();
 
         return ResponseEntity.ok(result_ViewStudyroom);
+    }
+
+    @PostMapping("board/post/postWrite")
+    public ResponseEntity<Object> post_postWrite(@RequestBody Map<String, Object> data) {
+        System.out.print("data: " + data);
+        if(!data.isEmpty()) {
+
+            Boolean rs1 = communityService.insertCommunity(data);
+            Boolean rs2 = communityService.insertChatName(data);
+
+            List<ChatRoomVo> chatRoomInfo = communityService.selectChatRoomInfo();
+
+            String sessionId = data.get("sessionId").toString();
+            int chat_comidx = chatRoomInfo.get(0).getComIdx();
+            String chat_name = chatRoomInfo.get(0).getChatName();
+
+            Map<String, Object> alarmData = new HashMap<>();
+            alarmData.put("memberId", sessionId);
+            alarmData.put("alarm_title", "채팅방 정보");
+            alarmData.put("alarm_content", "채팅방의 번호는 " + chat_comidx + "이고 채팅방의 이름은" + chat_name + "입니다.");
+
+            System.out.print("alarmData: " + alarmData);
+
+            Boolean rs3 = communityService.insertAlarm(alarmData);
+
+            if(rs1 && rs2 && rs3) {
+                return ResponseEntity.ok("sql 성공");
+            }else {
+                return ResponseEntity.badRequest().body("에러 메시지");
+            }
+        }else {
+            return ResponseEntity.badRequest().body("에러 메시지");
+        }
     }
 
     @PostMapping("/board/post/postRewrite")

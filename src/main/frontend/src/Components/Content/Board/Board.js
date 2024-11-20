@@ -20,6 +20,9 @@ const Board = () => {
 
     const navigate = useNavigate();
 
+    const sessionId = sessionStorage.getItem("id"); 
+    const sessionName = sessionStorage.getItem("name"); 
+
     const contentClick = (url) => {
         // window.open(url, "_blank", "noopener,noreferrer");
         navigate(url);
@@ -78,9 +81,13 @@ const Board = () => {
                                     </Link>
                                 ) : null
                             ))}
-                            <Link to="/board/postWrite" className="writeButton">
-                                <div className="writeButton-1">글쓰기</div>
-                            </Link>
+
+                            {sessionId && sessionName ? (
+                                <Link to="/board/postWrite" className="writeButton">
+                                    <div className="writeButton-1">글쓰기</div>
+                                </Link>
+                            ) : null}
+                            
                         </div>
                     </div>
                     <div className="board-section">

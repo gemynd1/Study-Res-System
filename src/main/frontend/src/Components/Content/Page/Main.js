@@ -322,6 +322,18 @@ const Main = () => {
         };
     }, []);
 
+    // 1시간 단위로 자리 체크하여 자리 비움 처리
+    useEffect(() => {
+        const interval = setInterval(() => {
+            axios.get(`${process.env.REACT_APP_SERVER_URL}/api/seatUpdate`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).catch((error) => console.log(error));
+        }, 1000 * 60 * 5);
+        return () => clearInterval(interval);
+    }, []);
+
     useEffect(() => {
         axios
             .all([

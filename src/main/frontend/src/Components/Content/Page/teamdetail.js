@@ -645,45 +645,6 @@ const TeamDetail = () => {
         setSelectedValue(data.studyGPareVo.sgpprice);
       })
     ).catch(error => console.log(error));
-
-    // axios.get('http://localhost:8099/api/studygInfoDetail', 
-    // {
-    //   params: {
-    //     sgiId
-    //   },
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    // .then(res => {
-    //   // console.log(res.data);
-    //   const Img = res.data['studyGImg'];
-    //   const data = res.data['studyGInfoVo'];
-      
-    //   sethtmlcontentdata((prevState) => ({
-    //     ...prevState,
-    //     SGINum : data.sginum,
-    //     SGIUseState : data.sgiuseState,
-    //     SGIContent1 : data.sgicontent1,
-    //     SGIContent2 : data.sgicontent2,
-    //     SGIDContent1 : data.sgidcontent1,
-    //     SGIDContent2 : data.sgidcontent2,
-    //     SGIDContent3 : data.sgidcontent3,
-    //     SGIDContent4 : data.sgidcontent4,
-    //     SGIDContent5 : data.sgidcontent5,
-    //     SGIDContent6 : data.sgidcontent6,
-    //     SGIDContent7 : data.sgidcontent7,
-    //     SGIDContent8 : data.sgidcontent8,
-    //     SGIDContent9 : Number(data.sgidcontent9),
-    //     SGIDContent10 : Number(data.sgidcontent10),
-    //     SGIIdx : data.studyGPareVo.sgiidx
-    //   }))
-    //   setCount(data.sgidcontent9);
-    //   setImgContent(Img);
-    //   setSelectedValue(data.studyGPareVo.sgpprice);
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    //   return false;
-    // })
   }, []);
 
   useEffect(() => {
@@ -790,12 +751,7 @@ const TeamDetail = () => {
     
   }, [sgiId]);
 
-  useEffect(() => {
-    // if (reservations) {
-    //   console.log("가져온 데이터:", reservations);
-    //   console.log("Blur 처리할 시간들:", blurTimes);
-    // }
-  }, [reservations, blurTimes]);
+  useEffect(() => {}, [reservations, blurTimes]);
 
   // 선택된 날짜에 맞는 예약된 시간 필터링
   const reservedTimes = useMemo(() => {
@@ -884,20 +840,20 @@ const TeamDetail = () => {
           <div className="teamDetail__main-content-text-swiper" ref={contentRefs[5]}>
             <div className="teamDetail__main-content-text-title">다른방보기</div>
             <Swiper
-                slidesPerView={1} // 한번에 보여지는 slide 개수
+                slidesPerView={1.5} // 한번에 보여지는 slide 개수
                 spaceBetween={20} // slide간의 간격
                 loopedSlides={1}
                 loop={true}
                 centeredSlides={true}
                 modules={modules}
-                // autoplay={{
-                //     delay: 3500,
-                //     disableOnInteraction: false,
-                // }}
+                autoplay={{
+                    delay: 3500,
+                    disableOnInteraction: false,
+                }}
                 breakpoints={{ // 반응형 구현
                     1200: {
-                        // centeredSlides:true,
-                        slidesPerView: 1,
+                        centeredSlides:true,
+                        slidesPerView: 1.75,
                     }, // width 값이 1200이 넘을때 실행
                 }}
                 className={'teamdetail-swiper'}

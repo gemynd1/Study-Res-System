@@ -110,6 +110,7 @@ h2 {
   padding-bottom: 25px;
 }
 .teamDetail__main-content-title-option_list {
+  z-index: 1000;
   position: sticky;
   top: 0;
   width: 761px;
@@ -401,21 +402,28 @@ h2 {
   background-color: #ffd600 !important; /* 오늘 날짜의 배경색 */
 }
 
-.teamDetail__main-content-text-swiper {
-  scroll-margin-top: 80px;
-}
+
 
 /* 다른 방 보기 */
+.teamDetail__main-content-text-swiper {
+  scroll-margin-top: 80px;
+  /* display: flex; */
+  z-index: 0;
+}
+
 .teamDetail__main-content-text-swiper .teamdetail-swiper {
-  margin-top: 15px;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+  
 }
 
 .teamDetail__main-content-text-swiper .teamdetail-swiper .img-box {
-  width: 100%;
-  height: 550px;
+  /* width: 80%; */
+  height: 350px;
   position: relative;
   border-radius: 20px;
   overflow: hidden;
@@ -426,12 +434,12 @@ h2 {
   border-radius: 20px;
   width: 100%;
   height: 100%;
-  /* position: absolute; */
   left: 0;
   top: 0;
 }
 
 .teamDetail__main-content-text-swiper .teamdetail-swiper .txt-box {
+  /* width: 80%; */
   margin-top: 26px;
   padding: 0 30px;
 }
@@ -445,16 +453,23 @@ h2 {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  /* gap: 5px; */
   font-size: 16px;
   font-weight: 600;
 }
 
 .teamDetail__main-content-text-swiper .teamdetail-swiper .swiper-slide {
+  display: flex;
+  width: 80%;
   transition: all 0.4s;
+  /* border : 1px solid #000000; */
   box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   margin-bottom: 30px;
+}
+
+.teamDetail__main-content-text-swiper .teamdetail-swiper .swiper-slide-active {
+  transform: translateY(-50px);
 }
 
 .teamDetail__main-content-text-swiper .teamdetail-swiper .swiper-slide a {

@@ -108,4 +108,9 @@ public class MainServiceImpl implements MainService {
     public int updateStudyInInfo(Integer seatNum, StudyInInfoVo studyInInfoVo, String MemberId) {
         return mainMapper.updateStudyInInfo(seatNum, studyInInfoVo, MemberId);
     }
+
+    @Override
+    public int seatUpdate() {
+        return mainMapper.seatUpdate();
+    }
 }

@@ -232,12 +232,12 @@ const MypageCheck = () => {
                                             <td>{result.ttocontent[0]?.random}</td>
                                             <td>{result.studyOrderPayVo.tsopdate?.replace(/T.*/, "")}</td>
                                             <td>
-                                            {/* result.ttocontent[0]?.sipname && typeof result.ttocontent[0]?.sipname === "string"  */}
-                                                {
+                                                {result.ttocontent[0]?.sipname && typeof result.ttocontent[0]?.sipname === "string"  ?
                                                     result.ttocontent[0]?.sipname.includes("년") || result.ttocontent[0]?.sipname.includes("주") 
                                                     ? result.ttocontent[0]?.sipname : result.ttocontent[0]?.sipname + "시간" 
+                                                    : result.ttocontent[0]?.sipname
                                                 }
-                                                    {/* : result.ttocontent[0]?.sipname */}
+                                                    
                                             </td>
                                             <td>{result.studyOrderPayVo.tsopprice}원</td>
                                             <td>

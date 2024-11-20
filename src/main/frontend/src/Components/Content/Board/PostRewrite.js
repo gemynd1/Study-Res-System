@@ -245,11 +245,23 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-function NumberInputAdornments({comToCount, name}) {
+function NumberInputAdornments({comToCount, name, setBoardContents}) {
   const [value, setValue] = React.useState(null);
+
   useEffect(() =>{
 	  setValue(comToCount);
   }, [comToCount]); 
+
+  const handle = (event, value) => {
+	setValue(value);
+	setBoardContents(boardContents => {
+		return {
+			...boardContents,
+			comToCount: value
+		}
+	});
+  }
+
   return (
 	<Box
 	  sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}
@@ -257,7 +269,7 @@ function NumberInputAdornments({comToCount, name}) {
 	  <NumberInput endAdornment={<InputAdornmentNumber>명</InputAdornmentNumber>}
 	  			   name={name}
 				   value={value}
-				   onChange={(event, value) => setValue(value)}
+				   onChange={handle}
 				   min={2}
 				   max={10}
 				   readOnly={true}
@@ -523,45 +535,54 @@ const PostRewrite = () => {
 
   const updateContent = (e) => {
 	e.stopPropagation(); // 이벤트 전파 중지
-	axios.post("http://localhost:8099/api/board/post/postRewrite", 
-		{
-			ComIdx: boardContents.comIdx,
-			ComCateIdx: boardContents.comCateIdx,
-			MIdx: boardContents.mIdx,
-			ComTitle: boardContents.comTitle,
-			ComContent: boardContents.comContent,
-			ComRegDate: boardContents.comRegDate,
-			ComDelDate: boardContents.comDelDate,
-			ComUpDate: boardContents.comUpDate,
-			ComintoDate: boardContents.comintoDate,
-			ComToCount: boardContents.comToCount,
-			ComStartDate: boardContents.comStartDate,
-			ComEndDate: boardContents.comEndDate,
-			ComPlace: boardContents.comPlace,
-			ComZipcode: boardContents.comZipcode,
-			ComAddress: boardContents.comAddress,
-    		ComReportCount: boardContents.comReportCount,
-    		// ComGroupName: boardContents.comGroupName,
-			groupMemberInfos: groupMemberInfos,
-			comCategoryName: boardContents.comCategoryName,
-			currentStudyRoom: currentStudyRoom,
-			originalGroupMemberInfos: originalGroupMemberInfos,
-			enroll_company: enroll_company
-		},
-		{
-			headers: { 'Content-Type': 'application/json' }
-		}).then((response) => {
-			console.log(response.data);
-			if(response.data[0] === true && response.data[1] === true) {
-				alert("게시글 수정이 완료되었습니다. 성공!");
-				goto_postPage();
-			}else {
-				alert("게시글 수정에 실패하였습니다. 다시 시도해주세요.");
-			}
-		}).catch((error) => {
-			console.log(error);
-			alert("게시글 수정에 실패하였습니다. 다시 시도해주세요.");
-		});
+	if(boardContents.comStartDate > boardContents.comEndDate) {
+		alert("시작일이 종료일보다 빠를 수 없습니다.");
+		return;
+	}
+	if(boardContents) {
+
+		axios.post("http://localhost:8099/api/board/post/postRewrite", 
+			{
+				ComIdx: boardContents.comIdx,
+				ComCateIdx: boardContents.comCateIdx,
+				MIdx: boardContents.mIdx,
+				ComTitle: boardContents.comTitle,
+				ComContent: boardContents.comContent,
+				ComRegDate: boardContents.comRegDate,
+				ComDelDate: boardContents.comDelDate,
+				ComUpDate: boardContents.comUpDate,
+				ComintoDate: boardContents.comintoDate,
+				ComToCount: boardContents.comToCount,
+				ComStartDate: boardContents.comStartDate,
+				ComEndDate: boardContents.comEndDate,
+				ComPlace: boardContents.comPlace,
+				ComZipcode: boardContents.comZipcode,
+				ComAddress: boardContents.comAddress,
+				ComReportCount: boardContents.comReportCount,
+				ComGroupName: boardContents.comGroupName,
+				groupMemberInfos: groupMemberInfos,
+				comCategoryName: boardContents.comCategoryName,
+				currentStudyRoom: currentStudyRoom,
+				originalGroupMemberInfos: originalGroupMemberInfos,
+				enroll_company: enroll_company
+			},
+			{
+				headers: { 'Content-Type': 'application/json' }
+			}).then((response) => {
+				console.log(response.data);
+				if(response.data[0] === true && response.data[1] === true) {
+					alert("게시글 수정이 완료되었습니다. 성공!");
+					goto_postPage();
+				}else {
+					alert("게시글 수정에 실패하였습니다. 다시 시도해주세요(2).");
+				}
+			}).catch((error) => {
+				console.log(error);
+				alert("게시글 수정에 실패하였습니다. 다시 시도해주세요(3).");
+			});
+	}else{
+		alert("게시글 수정에 실패하였습니다. 다시 시도해주세요(1).");
+	}
   }
 
 
@@ -664,7 +685,7 @@ const PostRewrite = () => {
 //   }, [groupMemberInfos]);
   
   console.log(boardContents);
-  console.log(groupMemberInfos);
+//   console.log(groupMemberInfos);
 //   console.log(studyRoomInfos);
 //   console.log(RadioValue);
   console.log(enroll_company);
@@ -711,7 +732,7 @@ const PostRewrite = () => {
 							</div>
 							<div className="/">/</div>
 							<div className="maximum-count">
-								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount} onChange={handleNumberChange}/>
+								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount} setBoardContents={setBoardContents} onChange={handleNumberChange}/>
 								<p className="maximum-count-text">모임의 최대인원</p>
 							</div>
 						</div>

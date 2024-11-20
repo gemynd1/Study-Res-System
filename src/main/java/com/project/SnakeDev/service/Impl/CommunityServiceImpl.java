@@ -2,10 +2,7 @@ package com.project.SnakeDev.service.Impl;
 
 import com.project.SnakeDev.mapper.CommunityMapper;
 import com.project.SnakeDev.service.CommunityService;
-import com.project.SnakeDev.vo.CommunityCategoryVo;
-import com.project.SnakeDev.vo.CommunityVo;
-import com.project.SnakeDev.vo.StudyGInfoVo;
-import com.project.SnakeDev.vo.TogetherStudyVo;
+import com.project.SnakeDev.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -143,5 +140,25 @@ public class CommunityServiceImpl implements CommunityService {
     @Transactional
     public Boolean deleteTogetherStudy_allPost(int comIdx) {
         return communityMapper.deleteTogetherStudy_allPost(comIdx);
+    }
+
+    @Override
+    public Boolean insertCommunity(Map<String, Object> data) {
+        return communityMapper.insertCommunity(data);
+    }
+
+    @Override
+    public Boolean insertChatName(Map<String, Object> data) {
+        return communityMapper.insertChatName(data);
+    }
+
+    @Override
+    public Boolean insertAlarm(Map<String, Object> data) {
+        return communityMapper.insertAlarm(data);
+    }
+
+    @Override
+    public List<ChatRoomVo> selectChatRoomInfo() {
+        return communityMapper.selectChatRoomInfo();
     }
 }
