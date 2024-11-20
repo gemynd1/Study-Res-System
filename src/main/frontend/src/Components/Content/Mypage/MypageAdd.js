@@ -243,11 +243,7 @@ const MypageAdd = () => {
                         <div className="AddTime">
                             <div className="AddTime1">
                                 <img src="/img/icon/logo.png" alt="로고"/>
-<<<<<<< HEAD
-                                <span>{sessionStorage.getItem('name')}님의 잔여 시간입니다</span>
-=======
                                 <span>{sessionStorage.getItem("name")}님의 잔여 시간입니다</span>
->>>>>>> 0b7694efccdbea1fd7a8b1cdbe4da036c4c12c7d
                             </div>
                             {/* <div className="AddTimeText">
                                 <span>※ 당일권 1시간 선택하셨습니다</span>

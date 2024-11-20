@@ -57,11 +57,6 @@ const Header = () => {
         })
     }
 
-    const handleShowChat = () => {
-        setShowChat(true);
-    }
-
-
     const ChattingModal = () => {
         setChatingModal(true);
     }
@@ -79,7 +74,6 @@ const Header = () => {
             navigate('/mypage/mypageAccount')
         }
     }
-<<<<<<< HEAD
     //
     // const handleClick = () => {
     //     axios.get("http://localhost:8099/api/mypage/mypageAccount", {
@@ -101,11 +95,8 @@ const Header = () => {
     // }
 
     const handleClose = () => {
-        setXChat(prevState => !prevState);
+        setXChat(false);
     }
-
-=======
->>>>>>> 0b7694efccdbea1fd7a8b1cdbe4da036c4c12c7d
 
     const index_choice = (index) => {
         if(active_index === index) {
@@ -121,7 +112,6 @@ const Header = () => {
 
     const message_type_choice = (index) => {
         setActive_message_index(index);
-
     }
 
     // notification에 대한 정보
@@ -185,7 +175,7 @@ const Header = () => {
     //     chat_background.style.display = "block";
     // }
 
-    const handleChat = (index) => {
+    const handleChat = () => {
         setShowJoin2(prev => !prev);
     }
 
@@ -225,14 +215,10 @@ const Header = () => {
         }
     }, []);
 
-<<<<<<< HEAD
     console.log("123");
     console.log(notifications);
 
 
-
-=======
->>>>>>> 0b7694efccdbea1fd7a8b1cdbe4da036c4c12c7d
     return (
         <>
             <header className="header">
@@ -325,16 +311,9 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="notification-section">
-<<<<<<< HEAD
-                            {notifications.map((notification) => (
-                                <div className="notification" key={notification.id}>
-                                    <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon"
-                                         data-id={notification.id} onClick={del_notification}/>
-=======
                             {notifications != '' ? notifications.map((notification) => (
                                 <div className="notification" key={notification.maidx}>
                                     <img src="/img/icon/x.png" alt="XIcon" className="notification-XIcon" data-id={notification.maidx} onClick={del_notification} />
->>>>>>> 0b7694efccdbea1fd7a8b1cdbe4da036c4c12c7d
                                     <p className="notification-content">
                                         {notification.maContent}
                                     </p>
@@ -386,7 +365,7 @@ const Header = () => {
                                             </div>
                                         </div>
 
-                                        <div className="group-message-section"
+                                            <div className="group-message-section"
                                              style={{display: active_message_index === 0 ? "none" : "block"}}
                                         >
                                             {chatHeaderBars.map((chatHeaderBar) => (
@@ -407,12 +386,13 @@ const Header = () => {
                                                 </div>
 
                                             ))}
-                                            {showJoin2 && ChattingModal && active_index === 1 && active_message_index === 1 && (
+                                                {showJoin2 && ChattingModal && (
                                                 <Join2
                                                     open={ChattingModal}
                                                     onClose={handleCloseJoin2}
                                                 />
                                             )}
+
                                         </div>
                                     </div>
 
@@ -494,33 +474,31 @@ const Header = () => {
                                     {/*</div>*/}
                                 </div>
                             </div>
-                            {!XChat && (
-                                <button
-                                    onClick={handleClose}
-                                    style={{
-                                        position: 'fixed',
-                                        bottom: '100px',
-                                        right: '10px',
-                                        padding: '10px',
-                                        backgroundColor: '#268B5F',
-                                        color: '#FFF',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        width: '200px',
-                                        height: '40px',
-                                        borderRadius: "20px 20px 0 0",
-                                        fontSize: '16px'
+                            {/*{!XChat && (*/}
+                            {/*    <button*/}
+                            {/*        onClick={handleClose}*/}
+                            {/*        style={{*/}
+                            {/*            position: 'fixed',*/}
+                            {/*            bottom: '100px',*/}
+                            {/*            right: '10px',*/}
+                            {/*            padding: '10px',*/}
+                            {/*            backgroundColor: '#268B5F',*/}
+                            {/*            color: '#FFF',*/}
+                            {/*            border: 'none',*/}
+                            {/*            cursor: 'pointer',*/}
+                            {/*            width: '200px',*/}
+                            {/*            height: '40px',*/}
+                            {/*            borderRadius: "20px 20px 0 0",*/}
+                            {/*            fontSize: '16px'*/}
 
-                                    }}
-                                >
-                                    채팅방 닫기
-                                </button>
-                            )}
+                            {/*        }}*/}
+                            {/*    >*/}
+                            {/*        채팅방 닫기*/}
+                            {/*    </button>*/}
+                            {/*)}*/}
                         </div>
 
                     )}
-
-
                 </div>
 
                 {/*<div className="chat-section">*/}

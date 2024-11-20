@@ -173,6 +173,7 @@
                    #{CHContent},
                    #{CHTitle},
                    sysdate
+               )
     </insert>
 
     <select id="getCustomerHelpInfo" resultType="com.project.SnakeDev.vo.CustomerHelpVo">
@@ -190,7 +191,12 @@
         where tma.memberid = #{memberId}
     </select>
 
-<!--    <insert id="insertPayment" par ameterType="com.project.SnakeDev.vo.StudyOrderPayVo">-->
+    <delete id="deleteMember" parameterType="String">
+        DELETE FROM tbl_member WHERE memberId = #{memberId}
+    </delete>
+
+
+    <!--    <insert id="insertPayment" par ameterType="com.project.SnakeDev.vo.StudyOrderPayVo">-->
 <!--        insert into tbl_studyorderpay (tsopidx, midx, tsopmethod, tsopprice, tsopstatus, tsopdate, tsopdivi)-->
 <!--        values (#{tsopidx}, #{midx}, #{tsopmenthod}, #{tsopprice}, #{tsopstatus}, #{tsopdate}, #{tsopdivi})-->
 <!--    </insert>-->
