@@ -14,7 +14,6 @@
   margin: auto;
   box-sizing: border-box;
   margin-top: 200px;
-  background-color: aqua;
 }
 .reivew__detail__reivew{
   padding: 76px 120px;
@@ -104,7 +103,10 @@
   /* margin-right: 100px; */
   /* opacity: 0.5; */
 }
-
+.backbutton{
+  left: 82% !important;
+  background-color: aliceblue !important;
+}
 
 
 

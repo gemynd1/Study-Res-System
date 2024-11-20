@@ -17,10 +17,14 @@ public class ReviewDetailsVo {
     private String srContent;    // 내용
     private List<String> sriImg; // 이미지 리스트
     private Date srRegDate;      // 생성일
+    private String memberName;
 
     public ReviewDetailsVo() {}
 
-    // Getter/Setter
+    public String getMemberName() { return memberName; }
+
+    public void setMemberName(String memberName) { this.memberName = memberName; }
+
     public List<String> getTSHTLContent() {
         return TSHTLContent;
     }
