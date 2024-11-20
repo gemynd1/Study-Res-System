@@ -46,7 +46,7 @@ import PostCodePopup from "../Account/AccountCom/PostCodePopup";
 
 
 // input ui component
-function BasicTextFields({label, title, onChange}) {
+function BasicTextFields({label, name, onChange}) {
     const multiline = label === '내용' ? {multiline: true, rows: 15} : {};
 
     return (
@@ -56,7 +56,7 @@ function BasicTextFields({label, title, onChange}) {
         noValidate
         autoComplete="off"
       >
-        <TextField id="outlined-basic" label={label} variant="outlined" {...multiline} name={title} onChange={onChange} />
+        <TextField id="outlined-basic" label={label} variant="outlined" {...multiline} name={name} onChange={onChange} required={true} />
       </Box>
     );
   }
@@ -92,10 +92,46 @@ function BasicSelect({category1, value, onChange}) {
 }
 
 // meetingPoint-section radio ui component
-function RowRadioButtonsGroup({RadioValue, setRadioValue}) {
+function RowRadioButtonsGroup({RadioValue, setRadioValue, setBoardContents}) {
   const handleChange = (event) => {
-    setRadioValue(event.target.value);
-  }
+    const value = event.target.value;
+    setRadioValue(value);
+
+    // 라디오 버튼 값에 따라 상태 업데이트
+    if (value === '온라인') {
+        setBoardContents(prevState => ({
+            ...prevState,
+            comPlace: '',
+            comZipcode: '',
+            comAddress: '온라인'
+        }));
+    } else if (value === '스터디룸') {
+        setBoardContents(prevState => ({
+            ...prevState,
+            comPlace: '',
+            comZipcode: '',
+            comAddress: '스터디룸'
+        }));
+    } else if (value === '상세주소') {
+        setBoardContents(prevState => ({
+            ...prevState,
+            comPlace: "",
+            comZipcode: "",
+            comAddress: ""
+        }));
+    } else {
+        setBoardContents(prevState => ({
+            ...prevState,
+            comPlace: '',
+            comZipcode: '',
+            comAddress: ''
+        }));
+    }
+  };
+
+  // const handleChange = (event) => {
+  //   setRadioValue(event.target.value);
+  // }
 
   // userEffect함수는 컴포넌트가 렌더링 될 때 특정 작업을 수행하도록 설정할 수 있는 Hook  
   // RadioValue가 변경될 때마다 실행되는 useEffect
@@ -383,7 +419,14 @@ const PostRewrite = () => {
   const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
   const [popup, setPopup] = useState(false);
 
-  const [boardContents, setBoardContents] = useState({title: "", content: "", category: "", groupCount: 0, startday: "", enddate: ""});
+  const [boardContents, setBoardContents] = useState({title: "", content: "", category1: "", groupCount: 0, startday: "", enddate: "", comPlace: "", comZipcode: "", comAddress: "", groupName: ""});
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  //   현재 선택한 studyRoom에 key값을 저장하는 변수 
+  const [currentStudyRoom, setCurrentStudyRoom] = useState(0);
+
+  const sessionId = sessionStorage.getItem('id');
+  const sessionName = sessionStorage.getItem('name');
 
   const handleComplete = (data) => {
       setPopup(!popup);
@@ -404,6 +447,37 @@ const PostRewrite = () => {
     });
   }
 
+  // Swiper의 슬라이드 변경 이벤트 핸들러
+  const handleSlideChange = (swiper) => {
+    setCurrentSlide(swiper.activeIndex);
+    // console.log('Current Slide Index:', swiper.activeIndex);
+    };
+
+  const postWrite = () => {
+    if(!boardContents.title || !boardContents.category1 || !boardContents.content || !boardContents.startday || !boardContents.enddate || !boardContents.groupCount || (!boardContents.comAddress && !enroll_company.detailedAddress)) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+    if(boardContents.startday > boardContents.enddate) {
+      alert('시작일이 종료일보다 늦을 수 없습니다.');
+      return;
+    }
+    axios.post('http://localhost:8099/api/board/post/postWrite', {
+      boardContents: boardContents,
+      enroll_company: enroll_company,
+      currentStudyRoom: currentStudyRoom,
+      sessionId: sessionId,
+      sessionName: sessionName
+    }).then((response) => {
+      console.log(response.data);
+      alert('게시글이 작성되었습니다.');
+      window.location.href = '/board';
+    }).catch((error) => {
+      console.error(error);
+      alert('게시글 작성에 실패했습니다.');
+    })
+  }
+
   useEffect(() => {
     axios.get(`http://localhost:8099/api/board/get/postWrite`, {
         headers: { 'Content-Type': 'application' }
@@ -416,8 +490,19 @@ const PostRewrite = () => {
   }, [])
 
   useEffect(() => {
+    if(studyRoomInfos[currentSlide]) {
+      setCurrentStudyRoom(studyRoomInfos[currentSlide].sgiidx);
+      console.log('currentStudyRoom:', currentStudyRoom);
+    }
+    }, [currentSlide, studyRoomInfos, currentStudyRoom]);
+
+  useEffect(() => {
     console.log(boardContents)
   }, [boardContents])
+
+  useEffect(() => {
+    console.log(enroll_company);
+  }, [enroll_company]);
 
 
     return (
@@ -429,7 +514,7 @@ const PostRewrite = () => {
                         <div className="title">
                             <span className="title-text">제목</span>
                         </div>
-                        <BasicTextFields label="제목" title="title" value={boardContents.title} onChange={handleBoardContents} />
+                        <BasicTextFields label="제목" name="title" value={boardContents.title} onChange={handleBoardContents} />
                     </div>
 
                     <div className="category-section">
@@ -443,7 +528,7 @@ const PostRewrite = () => {
                         <div className="content">
                             <span className="content-text">내용</span>
                         </div>
-                        <BasicTextFields label="내용" content="content" value={boardContents.content} onChange={handleBoardContents} />
+                        <BasicTextFields label="내용" name="content" value={boardContents.content} onChange={handleBoardContents} />
                     </div>
 
                     <div className="groupCount-section">
@@ -464,7 +549,7 @@ const PostRewrite = () => {
                             <span className="meetingPoint-text">모임장소</span>
                         </div>
                         
-                        <RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue} />
+                        <RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue} setBoardContents={setBoardContents} />
 
                     </div>
 
@@ -503,7 +588,7 @@ const PostRewrite = () => {
                      </div>) }
                     {RadioValue === '스터디룸' && (
                       <div className="meetingPoint-studyroom">
-                        <Swiper navigation={true} modules={[Navigation]} className="mySwiper_postWrite">
+                        <Swiper navigation={true} modules={[Navigation]} onSlideChange={handleSlideChange} className="mySwiper_postWrite">
 
                           {studyRoomInfos.map((studyRoomInfo) => (
                             <SwiperSlide className="mySwiper_postRewrite-slide">
@@ -532,7 +617,14 @@ const PostRewrite = () => {
                         <ResponsiveDateTimePickers dateType='enddate' name="enddate" setBoardContents={setBoardContents} />
                     </div>
 
-                    <div className="button-section">
+                    <div className="groupName-section">
+                        <div className="groupName">
+                            <span className="groupName-text">그룹이름</span>
+                        </div>
+                        <BasicTextFields label="그룹이름" name="groupName" value={boardContents.groupName} onChange={handleBoardContents} />
+                    </div>
+
+                    <div className="button-section" onClick={postWrite}>
                         <div className="active-button">
                             <img src="/img/icon/check.png" alt="" className="activeIcon" />
                             <span className="active-text">작성하기</span>

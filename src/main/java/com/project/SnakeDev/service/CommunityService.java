@@ -1,13 +1,10 @@
 package com.project.SnakeDev.service;
 
-import com.project.SnakeDev.vo.CommunityCategoryVo;
-import com.project.SnakeDev.vo.CommunityVo;
+import com.project.SnakeDev.vo.*;
 
 import java.util.List;
 import java.util.Map;
 
-import com.project.SnakeDev.vo.StudyGInfoVo;
-import com.project.SnakeDev.vo.TogetherStudyVo;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CommunityService {
@@ -60,4 +57,12 @@ public interface CommunityService {
     public Boolean deleteComment_allPost(int comIdx);
 
     public Boolean deleteTogetherStudy_allPost(int comIdx);
+
+    public Boolean insertCommunity(Map<String, Object> data);
+
+    public Boolean insertChatName(Map<String, Object> data);
+
+    public Boolean insertAlarm(Map<String, Object> data);
+
+    public List<ChatRoomVo> selectChatRoomInfo();
 }
