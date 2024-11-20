@@ -1,14 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import BasicScrollToBottom from "react-scroll-to-bottom";
 import Message from "../Chating/Message/Message";
 
-// import './Messages.css';
+import "../../../../style/Chating.css";
 
 function Messages({ messages, name }) {
     useEffect(() => {
         console.log(messages);
     }, [messages]);
+
 
     return (
         <BasicScrollToBottom className="messages">
