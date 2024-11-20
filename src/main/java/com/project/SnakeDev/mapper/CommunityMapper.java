@@ -17,6 +17,8 @@ public interface CommunityMapper {
 
     List<CommunityVo> ViewCurrentCommunity(String currentCategory);
 
+    int ViewCommunity_size(String currentCategory);
+
     List<CommunityVo> ViewMoreCommunity(String currentCategory, int int_ContentNumber);
 
     List<CommunityVo> ViewPost(String comIdx);
@@ -50,6 +52,8 @@ public interface CommunityMapper {
     Boolean insertTogetherStudy(int comIdx, String sessionId);
 
     Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
+
+    Boolean deleteTogetherStudyAll(int comidx);
 
     Boolean deletePost_allPost(int comIdx);
 

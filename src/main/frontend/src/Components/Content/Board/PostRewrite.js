@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import '../../../style/postRewrite.css';
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // 텍스트 ui import
 import Box from '@mui/material/Box';
@@ -92,7 +92,7 @@ function BasicSelect({comCategoryName, onChange, name}) {
 			name={name}
 		  >
 			<MenuItem value={"곧 마감!"}>곧 마감!</MenuItem>
-			<MenuItem value={"new"}>new</MenuItem>
+			<MenuItem value={"NEW!"}>NEW!</MenuItem>
 			<MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
 		  </Select>
 		</FormControl>
@@ -122,16 +122,43 @@ function InputAdornments({type, groupCount}) {
 }
 
 // meetingPoint-section radio ui component
-function RowRadioButtonsGroup({RadioValue, setRadioValue}) {
-  const handleChange = (event) => {
-	setRadioValue(event.target.value);
-  }
+function RowRadioButtonsGroup({RadioValue, setRadioValue, boardContents, setBoardContents, enroll_company}) {
+	const handleChange = (event) => {
+        const value = event.target.value;
+        setRadioValue(value);
 
-  // userEffect함수는 컴포넌트가 렌더링 될 때 특정 작업을 수행하도록 설정할 수 있는 Hook  
-  // RadioValue가 변경될 때마다 실행되는 useEffect
-  useEffect(() => {
-	console.log(RadioValue);
-  }, [RadioValue]);
+        // 라디오 버튼 값에 따라 상태 업데이트
+        if (value === '온라인') {
+            setBoardContents(prevState => ({
+                ...prevState,
+                comPlace: '',
+                comZipcode: '',
+                comAddress: '온라인'
+            }));
+
+        } else if (value === '스터디룸') {
+            setBoardContents(prevState => ({
+                ...prevState,
+                comPlace: '',
+                comZipcode: '',
+                comAddress: '스터디룸'
+            }));
+        } else if (value === '상세주소') {
+			setBoardContents(prevState => ({
+                ...prevState,
+                comPlace: "",
+                comZipcode: "",
+                comAddress: ""
+            }));
+        } else {
+            setBoardContents(prevState => ({
+                ...prevState,
+                comPlace: '',
+                comZipcode: '',
+                comAddress: ''
+            }));
+        }
+    };
 
 	return (
 	  <FormControl>
@@ -163,6 +190,22 @@ function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate, name, on
     dateValue = null;
   }
 
+  const [value, setValue] = useState(null);
+
+  useEffect(() => {
+    if (value && dayjs(value).isValid()) {
+      const stringValue = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      onChange(name, stringValue);
+      console.log(stringValue);
+    }
+  }, [value]);
+
+  const handleChange = (newValue) => {
+    if (dayjs(newValue).isValid()) {
+      setValue(newValue);
+    }
+  };
+
 	return (
 	  <LocalizationProvider dateAdapter={AdapterDayjs}>
 		<DemoContainer
@@ -171,7 +214,7 @@ function ResponsiveDateTimePickers({dateType, comStartDate, comEndDate, name, on
 		  ]}
 		>
 		  <DemoItem label={dateTypeText}>
-			<DateTimePicker defaultValue={dayjs(dateValue)} name={name} onChange={onChange} />
+			<DateTimePicker defaultValue={dayjs(dateValue)} name={name} value={value} onChange={handleChange} />
 		  </DemoItem>
 		</DemoContainer>
 	  </LocalizationProvider>
@@ -202,17 +245,22 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-function NumberInputAdornments({comToCount, name, onChange}) {
+function NumberInputAdornments({comToCount, name}) {
+  const [value, setValue] = React.useState(null);
+  useEffect(() =>{
+	  setValue(comToCount);
+  }, [comToCount]); 
   return (
 	<Box
 	  sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}
 	>
 	  <NumberInput endAdornment={<InputAdornmentNumber>명</InputAdornmentNumber>}
 	  			   name={name}
-				   value={comToCount}
-				   onChange={onChange}
-				   min={1}
+				   value={value}
+				   onChange={(event, value) => setValue(value)}
+				   min={2}
 				   max={10}
+				   readOnly={true}
 	  />
 	</Box>
   );
@@ -380,19 +428,45 @@ const PostRewrite = () => {
   const queryParams = new URLSearchParams(location.search);
   const comIdx = queryParams.get('comIdx');
 
+  const navigate = useNavigate();
+
   const [RadioValue, setRadioValue] = useState("");
 
-  const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
+//   const [enroll_company, setEnroll_company] = useState({address : '', zonecode: '', detailedAddress: '', latitude : '', longitude : ''});
+  const [enroll_company, setEnroll_company] = useState({});
   const [popup, setPopup] = useState(false);
 
-  const [boardContents, setBoardContents] = useState();
+  const [boardContents, setBoardContents] = useState({comAddress: '', 
+													  comCateIdx: '',
+													  comCategoryName: '', 
+													  comContent: '', 
+													  comDelDate: '', 
+													  comEndDate: '', 
+													  comIdx: '', 
+													  comPlace: '', 
+													  comRegDate: '', 
+													  comReportCount: '', 
+													  comStartDate: '', 
+													  comTitle: '', 
+													  comToCount: '', 
+													  comUpDate: '', 
+													  comintoDate: '', 
+													  comZipcode: '', 
+													  mIdx: ''});
 
   const [studyRoomInfos, setStudyRoomInfos] = useState([]);
 
   // 해당 post에 참여중인 멤버들의 데이터를 처리하는 부분
   const [groupMemberInfos, setGroupMemberInfos] = useState();
+  // 해당 post에 원래 참여하고 있던 멤버들의 데이터를 저장하는 변수
+  const [originalGroupMemberInfos, setOriginalGroupMemberInfos] = useState();
 
-  
+//   db에 있는 값을 가져와서 해당 스터디룸을 swiper로 보여주기 위한 변수
+  const [initialSlide, setInitialSlide] = useState(0);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+//   현재 선택한 studyRoom에 key값을 저장하는 변수 
+  const [currentStudyRoom, setCurrentStudyRoom] = useState(0);
 
 
   const handleComplete = (data) => {
@@ -429,11 +503,23 @@ const PostRewrite = () => {
 	}));
   };
 
+  // Swiper의 슬라이드 변경 이벤트 핸들러
+  const handleSlideChange = (swiper) => {
+	setCurrentSlide(swiper.activeIndex);
+	// console.log('Current Slide Index:', swiper.activeIndex);
+  };
+
   const del_groupMember = (event) => {
 	const id = event.target.getAttribute('data-id');
 	// db에 실제로 데이터를 지워야함
 	setGroupMemberInfos(groupMemberInfos.filter((groupMemberInfo) => groupMemberInfo.midx !== Number(id)));
   }
+
+  const goto_postPage = () => {
+	navigate(`/board/post/?comIdx=${comIdx}`);
+	window.scrollTo(0, 0);
+  }
+
 
   const updateContent = (e) => {
 	e.stopPropagation(); // 이벤트 전파 중지
@@ -455,9 +541,12 @@ const PostRewrite = () => {
 			ComZipcode: boardContents.comZipcode,
 			ComAddress: boardContents.comAddress,
     		ComReportCount: boardContents.comReportCount,
-    		ComGroupName: boardContents.comGroupName,
+    		// ComGroupName: boardContents.comGroupName,
 			groupMemberInfos: groupMemberInfos,
-			comCategoryName: boardContents.comCategoryName
+			comCategoryName: boardContents.comCategoryName,
+			currentStudyRoom: currentStudyRoom,
+			originalGroupMemberInfos: originalGroupMemberInfos,
+			enroll_company: enroll_company
 		},
 		{
 			headers: { 'Content-Type': 'application/json' }
@@ -465,12 +554,23 @@ const PostRewrite = () => {
 			console.log(response.data);
 			if(response.data[0] === true && response.data[1] === true) {
 				alert("게시글 수정이 완료되었습니다. 성공!");
+				goto_postPage();
+			}else {
+				alert("게시글 수정에 실패하였습니다. 다시 시도해주세요.");
 			}
 		}).catch((error) => {
 			console.log(error);
 			alert("게시글 수정에 실패하였습니다. 다시 시도해주세요.");
 		});
   }
+
+
+  useEffect(() => {
+	if(studyRoomInfos[currentSlide]) {
+		setCurrentStudyRoom(studyRoomInfos[currentSlide].sgiidx);
+		// console.log('currentStudyRoom:', currentStudyRoom);
+	}
+  }, [currentSlide, studyRoomInfos, currentStudyRoom]);
 
   useEffect(()=> {
 	axios.get("http://localhost:8099/api/board/get/postRewrite", {
@@ -480,14 +580,15 @@ const PostRewrite = () => {
         setBoardContents(...response.data.community);
         setStudyRoomInfos(response.data.studyroom);
 		setGroupMemberInfos(response.data.groupMember);
+		setOriginalGroupMemberInfos(response.data.groupMember);
 	}).catch((error) => {
         console.log(error);
 	})
   },[comIdx])
 
   useEffect(() => {
-	console.log('useEffect 실행됨'); // useEffect 훅의 실행 여부 확인
-    console.log('boardContents:', boardContents); // boardContents 값 확인
+    // console.log('boardContents:', boardContents);
+
     // if(boardContents && boardContents.memberNames) {
 
 	// 	// listagg를 통해서 여러 멤버들의 이름값을 가져와서 split으로 처리하고 useState로 관리하는 부분
@@ -525,18 +626,32 @@ const PostRewrite = () => {
 	// }
 	if(boardContents) {
 		const usually_comAddress = boardContents.comAddress;
-			console.log('comAddress:', usually_comAddress); // 콘솔 로그로 값 확인
-			if (usually_comAddress === '온라인') {
-				setRadioValue('온라인');
-			} else if (usually_comAddress === '스터디룸') {
-				setRadioValue('스터디룸');
-			} else if (usually_comAddress) {
-				setRadioValue('상세주소');
-			} else {
-				setRadioValue('');
+		// console.log('comAddress:', usually_comAddress);
+		if (usually_comAddress === '온라인') {
+			setRadioValue('온라인');
+		} else if (usually_comAddress === '스터디룸') {
+			setRadioValue('스터디룸');
+			const current_studyRoom = boardContents.comPlace;
+			const index = studyRoomInfos.findIndex(room => room.sgicontent1 === current_studyRoom);
+			if(index !== -1) {
+				setInitialSlide(index);
 			}
+		} else if (usually_comAddress || usually_comAddress === '') {
+			setRadioValue('상세주소');
+		} else {
+			setRadioValue('온라인');
+		}
+		
+		// 해당 주소에 대한 값을 Enroll_company에 저장하는 부분
+		setEnroll_company({address : boardContents.comAddress,
+						   zonecode: boardContents.comZipcode, 
+						   detailedAddress: boardContents.comPlace, 
+						   latitude : '', 
+						   longitude : ''})
+
 	}
-  }, [boardContents]);
+
+  }, [boardContents, studyRoomInfos, initialSlide]);
 
 //   TODO: 스터디룸 이미지를 listagg로 여러개 가져와서 split으로 처리해야함
 //   useEffect(() => {
@@ -550,11 +665,13 @@ const PostRewrite = () => {
   
   console.log(boardContents);
   console.log(groupMemberInfos);
-  console.log(studyRoomInfos);
-  console.log(RadioValue);
+//   console.log(studyRoomInfos);
+//   console.log(RadioValue);
+  console.log(enroll_company);
+  
 
   // 데이터가 로드되기 전에는 로딩 메시지를 표시
-  if (!boardContents) {
+  if (!boardContents || !enroll_company || !studyRoomInfos || studyRoomInfos.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -617,10 +734,11 @@ const PostRewrite = () => {
 							<span className="meetingPoint-text">모임장소</span>
 						</div>
 						
-						{/* 해당 라디오그룹은 props로 값들을 전달한다. 
-						그리고 전달되어진 props의 값이 무엇인지에 따라서 
-						밑에 나타나는 div의 내용을 달라지게 한다. */}
-						<RowRadioButtonsGroup RadioValue={RadioValue} setRadioValue={setRadioValue}/>
+						<RowRadioButtonsGroup RadioValue={RadioValue}
+											  setRadioValue={setRadioValue}
+						 					  setBoardContents={setBoardContents}
+											  boardContents={boardContents}
+											  enroll_company={enroll_company}/>
 
 					</div>
 
@@ -665,7 +783,11 @@ const PostRewrite = () => {
 					 </div>)}
 					{RadioValue === '스터디룸' && 
 					(<div className="meetingPoint-studyroom">
-						<Swiper navigation={true} modules={[Navigation]} className="mySwiper_postRewrite">
+						<Swiper navigation={true}
+								modules={[Navigation]}
+								initialSlide={initialSlide}
+								onSlideChange={handleSlideChange} 
+								className="mySwiper_postRewrite">
 
 							{studyRoomInfos.map((studyRoomInfo) => (
 								<SwiperSlide className="mySwiper_postRewrite-slide">

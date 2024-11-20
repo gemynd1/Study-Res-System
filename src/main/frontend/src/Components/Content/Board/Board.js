@@ -6,13 +6,6 @@ import "../../../style/board.css";
 
 
 const Board = () => {
-    const navigate = useNavigate();
-
-    const contentClick = (url) => {
-        // window.open(url, "_blank", "noopener,noreferrer");
-        navigate(url);
-    }
-
     // 게시글을 담아두는 state
     const [boardContents, setBoardContents] = useState([
         // {id:1, category:1, title:"1이 글의 제목입니다.", detail:"1이 글의 내용부분입니다 이 글의 내용부분입니다 이 글의 내용부분입니다.", date:"2024년 09월 05일 AM 12:00", address:"장소: 경기도 안양시 만안구 양화로37번길 34 (연성대학교)", group:"1 / 5 명 (최소 2명)"},
@@ -24,6 +17,20 @@ const Board = () => {
 
     // 카테고리를 담어두는 state
     const [boardCategorys, setBoardCategory] = useState([]);
+
+    const navigate = useNavigate();
+
+    const contentClick = (url) => {
+        // window.open(url, "_blank", "noopener,noreferrer");
+        navigate(url);
+    }
+
+    const truncateText = (text, maxLength) => {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+        }
+        return text;
+    };
 
     useEffect(() => {
         axios.all([
@@ -89,8 +96,8 @@ const Board = () => {
                                 {boardContents.map((content) => (
                                     content.comCateIdx === 1 ? (
                                             <div className="board-category-1-content" onClick={() => contentClick(`/board/post/?comIdx=${content.comIdx}`)}>
-                                                <p className="board-category-1-content-title">{content.comTitle}</p>
-                                                <p className="board-category-1-content-detail">{content.comContent}</p>
+                                                <p className="board-category-1-content-title">{truncateText(content.comTitle, 60)}</p>
+                                                <p className="board-category-1-content-detail">{truncateText(content.comContent, 70)}</p>
                                                 <div className="board-category-1-content-info">
                                                     <div className="board-category-1-content-info-dday">
                                                         <span className="board-category-1-content-info-dday-text">D-DAY</span>

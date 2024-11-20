@@ -16,6 +16,8 @@ public interface CommunityService {
     public List<CommunityCategoryVo> ViewCommunityCategory();
 
     public List<CommunityVo> ViewCurrentCommunity(String currentCategory);
+
+    public int ViewCommunity_size(String currentCategory);
     
     public List<CommunityVo> ViewMoreCommunity(String currentCategory, int int_ContentNumber);
 
@@ -50,6 +52,8 @@ public interface CommunityService {
     public Boolean insertTogetherStudy(int comIdx, String sessionId);
 
     public Boolean deleteTogetherStudy_forPost(int comIdx, String sessionId);
+
+    public Boolean deleteTogetherStudyAll(int comidx);
 
     public Boolean deletePost_allPost(int comIdx);
 

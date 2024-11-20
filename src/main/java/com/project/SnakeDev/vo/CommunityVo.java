@@ -18,6 +18,7 @@ public class CommunityVo {
     private String MemberId;
     private int maxCCGroupNum;
     private String sessionId;
+    private int currentStudyRoom;
 
     // 기본생성자
     public CommunityVo() {
@@ -306,5 +307,13 @@ public class CommunityVo {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public int getCurrentStudyRoom() {
+        return currentStudyRoom;
+    }
+
+    public void setCurrentStudyRoom(int currentStudyRoom) {
+        this.currentStudyRoom = currentStudyRoom;
     }
 }
