@@ -20,10 +20,17 @@ public class ReviewVo {
     private String memberId;
     private List<ReviewImgVo> reviewImgVo;
     private List<ReviewTagVo> reviewTagVo;
+    private List<ReviewHasTagVo> reviewHasTagVo;
 
     public ReviewVo() {
     }
+    public List<ReviewHasTagVo> getReviewHasTagVo() {
+        return reviewHasTagVo;
+    }
 
+    public void setReviewHasTagVo(List<ReviewHasTagVo> reviewHasTagVo) {
+        this.reviewHasTagVo = reviewHasTagVo;
+    }
     public List<ReviewTagVo> getReviewTagVo() {
         return reviewTagVo;
     }

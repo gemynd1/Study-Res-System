@@ -1,3 +1,4 @@
+import { useNavigate, Link } from "react-router-dom";
 import "../../../style/reviewWrite.css";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -13,7 +14,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Stack from "@mui/material/Stack";
-import { Link } from "react-router-dom";
 import { useState,useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -31,11 +31,12 @@ const VisuallyHiddenInput = (props) => (
 function InputFileUpload({ uploadedFiles, setUploadedFiles }) {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    if (uploadedFiles.length + files.length <= 3) {
+    if (uploadedFiles.length + files.length <=  3) {
       const newFiles = files.map(file => ({
-        name:file.name, // actual file object
-        url: URL.createObjectURL(file) // URL for preview
-      }));
+        name: encodeURIComponent(file.name), // actual file object
+        url: URL.createObjectURL(file),// URL for preview
+        file: file
+    }));
       setUploadedFiles(prevFiles => [...prevFiles, ...newFiles]);
     } else {
       alert('최대 3장까지 업로드할 수 있습니다.');
@@ -199,19 +200,20 @@ function RowRadioButtonsGroup({ rating, setRating }) {
 }
 //4개의 crud 버튼
 function ContainedButtons({ handleCreate }) {
+
   return (
     <Stack direction="row" spacing={2}>
       <Button variant="contained" onClick={handleCreate}>생 성</Button>
       <Button variant="contained">수 정</Button>
       <Button variant="contained">삭 제</Button>
-      <Link to="/review">
-        <Button variant="contained">취 소</Button>
-      </Link>
+    <Link to="/review">
+      <Button variant="contained">취 소</Button>
+    </Link>
     </Stack>
   );
 }
 
-const ReviewWrite = () => {
+  const ReviewWrite = () => {
   const [studyRoom, setStudyRoom] = useState('');
   const [content, setContent] = useState('');
   const [rating, setRating] = useState('');
@@ -224,7 +226,12 @@ const ReviewWrite = () => {
     srStar: '',
     memberId: '',
   })
+  const navigate = useNavigate();
+  const formData = new FormData();
 
+  uploadedFiles.forEach(uploadedFile => {
+      formData.append("file", uploadedFile.file);
+  });
 
   useEffect(() => {
     const names = uploadedFiles.map(file => file.name);
@@ -245,16 +252,7 @@ const ReviewWrite = () => {
 
   const handleCreate = (e) => {
 
-    // console.log('studyRoom:',studyRoom);
-    // console.log('content:',content)
-    // console.log('rating',rating);
-    // console.log(tags);
-    // console.log('uploadedFiles',uploadedFiles);
-    // console.log(fileNames)
-
-    console.log('data1', data1)
     e.preventDefault();
-
 
     axios.post("http://localhost:8099/api/review/content", 
       data1,
@@ -265,12 +263,29 @@ const ReviewWrite = () => {
       })
       .then((response) => {
         console.log('서버 응답:', response.data);
+          navigate('/review');
       })
       .catch((error) => {
           console.error(error);
       })
+
+      // Send data to the backend using axios
+      axios.post("http://localhost:8099/api/upload", formData, {
+          headers: {
+              "Content-Type": "multipart/form-data",
+          },
+      })
+          .then((response) => {
+              console.log('Server response:', response.data);
+              navigate('/review');
+          })
+          .catch((error) => {
+              console.error('Error uploading files:', error);
+          });
   };
-  
+
+
+
 
 
   return (

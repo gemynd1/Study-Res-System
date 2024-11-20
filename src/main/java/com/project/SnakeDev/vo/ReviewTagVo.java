@@ -7,6 +7,9 @@ public class ReviewTagVo {
     private Integer TSHTLIdx; //해시태그목록id
     private String TSHTLContent; //내용
 
+
+
+
     public ReviewTagVo(){}
 
     public Integer getTSHTLIdx() {
