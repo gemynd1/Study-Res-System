@@ -245,8 +245,15 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-function NumberInputAdornments({comToCount, name, setBoardContents}) {
+function NumberInputAdornments({comToCount, name, setBoardContents, currentGroupMemberCount}) {
   const [value, setValue] = React.useState(null);
+  const [minGroupCount, setMinGroupCount] = React.useState(2);
+  
+  useEffect(() => {
+    if (currentGroupMemberCount !== 2) {
+      setMinGroupCount(currentGroupMemberCount);
+    }
+  }, [currentGroupMemberCount]);
 
   useEffect(() =>{
 	  setValue(comToCount);
@@ -270,7 +277,7 @@ function NumberInputAdornments({comToCount, name, setBoardContents}) {
 	  			   name={name}
 				   value={value}
 				   onChange={handle}
-				   min={2}
+				   min={minGroupCount}
 				   max={10}
 				   readOnly={true}
 	  />
@@ -732,7 +739,10 @@ const PostRewrite = () => {
 							</div>
 							<div className="/">/</div>
 							<div className="maximum-count">
-								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount} setBoardContents={setBoardContents} onChange={handleNumberChange}/>
+								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount}
+																		 setBoardContents={setBoardContents} 
+																		 onChange={handleNumberChange}
+																		 currentGroupMemberCount={groupMemberInfos.length + 1} />
 								<p className="maximum-count-text">모임의 최대인원</p>
 							</div>
 						</div>
