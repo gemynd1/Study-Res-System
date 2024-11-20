@@ -13,4 +13,214 @@
                 sysdate)
     </insert>
 
+
+    <insert id="insertReviewImage" parameterType="String">
+        <![CDATA[
+        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)
+        values (
+            ComCom_seq.nextval,
+            (select * from (select sridx from tbl_studyreview order by sridx desc) where rownum <= 1),
+            #{sriImg}
+        )
+        ]]>
+    </insert>
+
+
+    <insert id="InsertReviewTag" parameterType="String">
+        insert into tbl_studyhastaglist (TSHTLIdx, TSHTLContent)
+        values (
+            SRMEMBERTAG_SEQ.nextval,
+            #{TSHTLContent}
+        )
+    </insert>
+
+    <insert id="InsertReviewHasTag">
+    <![CDATA[
+        insert into tbl_studyhastag (TSHTIdx, SRidx, TSHTLIdx)
+        SELECT
+            SHASTAG_SEQ.nextval,
+            (SELECT sridx FROM (SELECT sridx FROM tbl_studyreview ORDER BY sridx DESC) WHERE rownum = 1),
+            (SELECT TSHTLIdx FROM (SELECT TSHTLIdx FROM tbl_studyhastaglist ORDER BY TSHTLIdx DESC) WHERE rownum = 1)
+        FROM dual
+        ]]>
+</insert>
+<!--
+    dual테이블 -> Oracle 더미 테이블 단일 행과 열 가짐. Oracle에 기본적으로
+     존재, 목적 계산,상수 반환 ,서브 쿼리 실행 등 위해 select 문을 작성할 때
+     빈 테이블로 활용
+-->
+
+    <select id="getAllReviews" resultType="com.project.SnakeDev.vo.ReviewVo">
+        SELECT * FROM tbl_studyreview
+    </select>
+
+    <select id="getImage" resultType="com.project.SnakeDev.vo.ReviewImgVo">
+        SELECT * FROM tbl_studyreviewimg
+    </select>
+
+    <select id="getTagList" resultType="com.project.SnakeDev.vo.ReviewTagVo">
+        SELECT * FROM tbl_studyhastaglist
+    </select>
+
+<!--    <select id="getHasTag" resultType="com.project.SnakeDev.vo.ReviewHasTagVo">-->
+<!--        SELECT * FROM tbl_studyhastag-->
+<!--    </select>-->
+
+
+    <select id="getHasTag" resultType="com.project.SnakeDev.vo.ReviewHasTagVo">
+        SELECT * FROM tbl_studyhastag
+    </select>
+
+
+<!--    <select id="getAllHasTag" resultType="com.project.SnakeDev.vo.ReviewTagSriVo">-->
+<!--        SELECT * FROM tbl_studyhastagSELECT-->
+<!--            tm.sridx AS sridx,-->
+<!--    tm.srcontent as srcontent,-->
+<!--    tm.sgiidx as sgiidx,-->
+<!--    tm.midx as midx,-->
+<!--    tm.srstar as srstar,-->
+<!--    tma.TSHTLIDX,-->
+<!--    tma.TSHTIDX,-->
+<!--    tmb.TSHTLCONTENT,-->
+<!--    tmc.sriimg-->
+<!--        FROM TBL_STUDYREVIEW tm-->
+<!--            LEFT JOIN TBL_STUDYHASTAG tma ON tm.sridx  = tma.sridx-->
+<!--            LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX-->
+<!--            LEFT JOIN TBL_studyreviewimg tmc ON tm.sridx = tmc.sridx-->
+<!--        where tm.sridx = #{srIdx}-->
+<!--        ORDER BY tm.sridx-->
+<!--    </select>-->
+
+<!-- 상세 조회 -->
+    <select id="getReviewDetails" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">
+        SELECT
+            tm.sridx AS srIdx,
+            tm.srcontent AS srContent,
+            tm.sgiidx AS sgiIdx,
+            tm.midx AS mIdx,
+            tm.srstar AS srStar,
+            tm.srregdate AS srRegDate,
+            (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ')
+                        WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
+        FROM TBL_STUDYHASTAG tma
+            LEFT JOIN TBL_STUDYHASTAGLIST tmb
+        ON tma.TSHTLIDX = tmb.TSHTLIDX
+        WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ')
+            WITHIN GROUP (ORDER BY tmc.sriimg)
+        FROM TBL_studyreviewimg tmc
+        WHERE tmc.sridx = tm.sridx) AS sriImg
+        FROM TBL_STUDYREVIEW tm
+        WHERE tm.sridx = #{sridx}
+    </select>
+
+<!-- 전체 조회 -->
+    <select id="getReviewAll" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">
+        SELECT
+            tm.sridx AS srIdx,
+            tm.srcontent AS srContent,
+            tm.sgiidx AS sgiIdx,
+            tm.midx AS mIdx,
+            tm.srstar AS srStar,
+            tm.srregdate AS srRegDate,
+            (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ')
+                        WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
+        FROM TBL_STUDYHASTAG tma
+            LEFT JOIN TBL_STUDYHASTAGLIST tmb
+        ON tma.TSHTLIDX = tmb.TSHTLIDX
+        WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ')
+            WITHIN GROUP (ORDER BY tmc.sriimg)
+        FROM TBL_studyreviewimg tmc
+        WHERE tmc.sridx = tm.sridx) AS sriImg
+        FROM TBL_STUDYREVIEW tm
+    </select>
+
+
+
+
+<!--    <select id="getTag" resultMap="Object">-->
+<!--        <![CDATA[-->
+<!--        SELECT * FROM tbl_studyhastagSELECT-->
+<!--            tm.sridx AS sridx,-->
+<!--    tm.srcontent as srcontent,-->
+<!--    tm.sgiidx as sgiidx,-->
+<!--    tm.midx as midx,-->
+<!--    tm.srstar as srstar,-->
+<!--    tma.TSHTLIDX,-->
+<!--    tma.TSHTIDX,-->
+<!--    tmb.TSHTLCONTENT,-->
+<!--    tmc.sriimg-->
+<!--        FROM TBL_STUDYREVIEW tm-->
+<!--            LEFT JOIN TBL_STUDYHASTAG tma ON tm.sridx  = tma.sridx-->
+<!--            LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX-->
+<!--            LEFT JOIN TBL_studyreviewimg tmc ON tm.sridx = tmc.sridx-->
+<!--        where tm.sridx = #{srIdx}-->
+<!--        ORDER BY tm.sridx-->
+<!--            ]]>-->
+<!--    </select>-->
+
+
+    <!-- SELECT 쿼리 -->
+<!--    <select id="getAllReviews1" resultMap="ReviewVoResultMap">-->
+<!--    <![CDATA[-->
+<!--        SELECT-->
+<!--            SR.SRIDX,-->
+<!--            SR.SGIIDX,-->
+<!--            SR.MIDX,-->
+<!--            SR.SRCONTENT,-->
+<!--            SR.SRSTAR,-->
+<!--            SR.SRREGDATE,-->
+<!--            NVL(SR.SRDELDATE, SYSDATE) AS SRDELDATE,-->
+<!--            NVL(SR.SRUPDATE, SYSDATE) AS SRUPDATE,-->
+<!--            SRI.SRIIMGIDX,-->
+<!--            SRI.SRIIMG,-->
+<!--            TH.TSHTIDX,-->
+<!--            TH.TSHTLIDX,-->
+<!--            TL.TSHTLCONTENT-->
+<!--        FROM-->
+<!--            TBL_STUDYREVIEW SR-->
+<!--                LEFT JOIN-->
+<!--            TBL_STUDYREVIEWIMG SRI ON SR.SRIDX = SRI.SRIDX-->
+<!--                LEFT JOIN-->
+<!--            TBL_STUDYHASTAG TH ON SR.SRIDX = TH.SRIDX-->
+<!--                LEFT JOIN-->
+<!--            TBL_STUDYHASTAGLIST TL ON TH.TSHTLIDX = TL.TSHTLIDX-->
+<!--        ORDER BY-->
+<!--            SR.SRREGDATE DESC-->
+<!--        ]]>-->
+<!--</select>-->
+
+<!--    <resultMap id="ReviewVoResultMap" type="com.project.SnakeDev.vo.ReviewVo">-->
+<!--        &lt;!&ndash; ReviewVo 객체의 필드와 SQL 결과 매핑 &ndash;&gt;-->
+<!--        <id property="srIdx" column="SRIDX" />-->
+<!--        <result property="sgiIdx" column="SGIIDX" />-->
+<!--        <result property="mIdx" column="MIDX" />-->
+<!--        <result property="srStar" column="SRSTAR" />-->
+<!--        <result property="srContent" column="SRCONTENT" />-->
+<!--        <result property="srRegDate" column="SRREGDATE" />-->
+<!--        <result property="srDelDate" column="SRDELDATE" />-->
+<!--        <result property="srUpdate" column="SRUPDATE" />-->
+<!--        <result property="memberId" column="MEMBERID" />-->
+
+<!--        &lt;!&ndash; ReviewImgVo 리스트 매핑 &ndash;&gt;-->
+<!--        <collection property="reviewImgVo" ofType="com.project.SnakeDev.vo.ReviewImgVo">-->
+<!--            <result property="sriImgIdx" column="SRIIMGIDX" />-->
+<!--            <result property="sriImg" column="SRIIMG" />-->
+<!--        </collection>-->
+
+<!--        &lt;!&ndash; ReviewTagVo 리스트 매핑 &ndash;&gt;-->
+<!--        <collection property="reviewTagVo" ofType="com.project.SnakeDev.vo.ReviewTagVo">-->
+<!--            <result property="TSHTIdx" column="TSHTIDX" />-->
+<!--            <result property="TSHTLIdx" column="TSHTLIDX" />-->
+<!--            <result property="TSHTLContent" column="TSHTLCONTENT" />-->
+<!--        </collection>-->
+
+<!--        &lt;!&ndash; ReviewHasTag 리스트 매핑 &ndash;&gt;-->
+<!--        <collection property="reviewHasTagVo" ofType="com.project.SnakeDev.vo.ReviewHasTagVo">-->
+<!--            <result property="TSHTIdx" column="TSHTIDX" />-->
+<!--            <result property="SRidx" column="SRIDX" />-->
+<!--            <result property="TSHTLIdx" column="TSHTLIDX" />-->
+<!--        </collection>-->
+<!--    </resultMap>-->
 </mapper>

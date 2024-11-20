@@ -16,7 +16,12 @@
         <typeAlias alias="StudyGImgVo" type="com.project.SnakeDev.vo.StudyGImgVo"></typeAlias>
         <typeAlias alias="StudyGPareVo" type="com.project.SnakeDev.vo.StudyGPareVo"></typeAlias>
         <typeAlias alias="StudyOrderPayVo" type="com.project.SnakeDev.vo.StudyOrderPayVo"></typeAlias>
+<<<<<<< HEAD
+<!--        <typeAlias alias="StudyGOrderVo" type="com.project.SnakeProject.vo.StudyGOrderVo"></typeAlias>-->
+
+=======
         <typeAlias alias="StudyGOrderVo" type="com.project.SnakeDev.vo.StudyGOrderVo"></typeAlias>
+>>>>>>> 81ef0f0d7514b8580a030bf41ea3e0ae04182228
         <!--        <typeAlias alias="StudyReviewImgVo" type="com.project.SnakeProject.vo.StudyReviewImgVo"></typeAlias>-->
 
         <!--        <typeAlias alias="MemberAlarmVo" type="com.project.SnakeProject.vo.MemberAlarmVo"></typeAlias>-->
