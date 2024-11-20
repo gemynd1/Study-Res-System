@@ -74,25 +74,6 @@ const Header = () => {
             navigate('/mypage/mypageAccount')
         }
     }
-    //
-    // const handleClick = () => {
-    //     axios.get("http://localhost:8099/api/mypage/mypageAccount", {
-    //         params: { id, pw },
-    //         headers: { 'Content-Type': 'application/json'},
-    //         withCredentials: true
-    //     })
-    //         .then(response => {
-    //             setUserInfo(response.data);
-    //             if (response.data.success) {
-    //                 navigate('/mypage/mypageAccount');
-    //             } else {
-    //                 navigate('/mypage');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         })
-    // }
 
     const handleClose = () => {
         setXChat(false);
@@ -209,11 +190,11 @@ const Header = () => {
                 .catch(error => {
                     console.log(error);
                 });
-            }, 1500);
+            }, 2000);
             return () => clearInterval(interval);
         }
     }, []);
-    
+
     return (
         <>
             <header className="header">
@@ -332,12 +313,12 @@ const Header = () => {
                         <div className="second-background">
                             <div className="message-headerBar">
                                 <img src="/img/icon/chat(white).png" alt="채팅"
-                                     style={{width: "24px", height: "24px", marginLeft: "3%"}}/>
+                                     style={{width: "24px", height: "24px", marginLeft: "15px"}}/> {/*, marginLeft: "3%" */}
                                 <span>채팅방에 오신 것을 환영합니다</span>
                                 <img src="/img/icon/close(white).png" alt="닫기"
-                                     style={{width: "20px", height: "20px", marginLeft: "30%"}}
+                                     style={{width: "20px", height: "20px", marginRight: "15px"}} 
                                      onClick={handleClose}
-                                />
+                                />{/*, marginLeft: "30%"*/}
                             </div>
                             <div>
                                 <div className="message-section">

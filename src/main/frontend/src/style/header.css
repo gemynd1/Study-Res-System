@@ -339,7 +339,8 @@ header div.first-background div.second-background div.message-headerBar {
     position: relative;
     display: flex;
     align-items: center;
-    width: 500px;
+    justify-content: space-between;
+    width: 450px;
     height: 50px;
     background: #268B5F;
     border-radius: 20px 20px 0px 0px;
@@ -369,18 +370,18 @@ header div.first-background div.second-background div.message-headerBar span.mes
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    line-height: 30px;
+    /* line-height: 30px; */
     color: #FFFFFF;
-    margin-left: 3%
+    /* margin-left: 3% */
 }
 
 header div.first-background div.second-background div.message-section {
     position: relative;
-    width: 500px;
+    width: 450px;
     height: 720px;
     background: #F3F0F0;
     overflow-y: auto; /* 세로 스크롤을 나타나게 하는 속성 추가 */
-    /*overflow-x: hidden; !* 가로 스크롤을 숨기는 속성 추가 *!*/
+    overflow-x: hidden; 
 }
 
 header div.first-background div.second-background div.message-section div.typeBar {
@@ -512,13 +513,13 @@ header div.first-background div.second-background div.message-section div.group-
 header div.first-background div.second-background div.message-section div.group-message-section div.group-message-content {
     display: flex;
     align-items: center;
-    margin-top: 8%;
+    margin-top: 6%;
     cursor: pointer;
 }
 
 header div.first-background div.second-background div.message-section div.group-message-section div.group-message-content img.groupIcon {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     margin-left: 5%;
 }
 
@@ -530,8 +531,8 @@ header div.first-background div.second-background div.message-section div.group-
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 15px;
+    /* line-height: 24px; */
     color: #000000;
 }
 

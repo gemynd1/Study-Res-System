@@ -18,16 +18,13 @@ public interface ReviewService {
 
     int InsertReviewHasTag();
 
-    List<ReviewVo> getAllReviews();
-    List<ReviewImgVo> getImage();
-    List<ReviewTagVo> getTagList();
-    List<ReviewHasTagVo> getHasTag();
 
 //    List<ReviewVo> getAllReviews1(String srIdx);
 
     ReviewDetailsVo getReviewDetails(Integer sridx);
 
     List<ReviewDetailsVo> getReviewAll();
+    String getMIdx(String MemberId);
 
 }
 

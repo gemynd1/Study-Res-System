@@ -8,31 +8,6 @@ const Oauth = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    const handleToken = (token) => {
-        try {
-            if(!token || typeof token !== "string") {
-                return
-            } else {
-                // 토큰 디코딩
-                const decoded = jwtDecode(token);
-                console.log("Decoded Token:", decoded);
-
-                // 필요한 정보 추출
-                const userInfo = {
-                    MemberId: decoded.MemberId, // 토큰에 저장된 subject
-                    MemberName: decoded.MemberName, // 토큰에 저장된 사용자 정보 (예시)
-                };
-
-                console.log("User Info from Token:", userInfo);
-
-                // 상태 관리 또는 로컬 스토리지에 저장
-                setUser(userInfo); // 예: Recoil이나 Context API 사용
-            }
-        } catch (error) {
-            console.error("Failed to decode token:", error);
-        }
-    };
-
     useEffect(() => {
         // 인가코드를 추출할 변수 생성 현재 url 가지고있음
         // const url = new URL(window.location.href);
@@ -41,22 +16,7 @@ const Oauth = () => {
         // 얻은 인가코드를 백엔드의 카카오 로그인 주소로 보냄
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code"); // Authorization Code 추출
-        // console.log(code);
-
-        // if (code) {
-        //     // Authorization Code를 백엔드로 전달
-        //     fetch(`http://localhost:8099/api/kakao?${code}`, {
-        //         method: "GET",
-        //         headers: { "Content-Type": "application/json" },
-        //         // body: JSON.stringify({ code }), // code 전달
-        //     })
-        //         .then((res) => {
-        //             console.log(res.data)
-        //         })
-        //         .catch((error) => console.error("Error:", error));
-        // } else {
-        //     console.error("Authorization Code is missing");
-        // }
+        
         axios.post(`${process.env.REACT_APP_SERVER_URL}/api/kakao`,
             {code: code},
             {   

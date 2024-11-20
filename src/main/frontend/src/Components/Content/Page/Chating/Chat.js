@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
 
@@ -22,6 +22,7 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
 
     const [showChat, setShowChat] = useState(true);
     const [XChat, setXChat] = useState(true);
+    const chatRef = useRef(null);
 
     const handleClick = () => {
         setShowChat(prevState => !prevState);
@@ -42,7 +43,7 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
         // socket.emit('join')이 실행되기 전에 setRoom과 setName이 실행되도록 해야 한다.
         const { name = '', room = '' } = queryString.parse(window.location.search)
 
-        console.log(name, room)
+        // console.log(name, room)
 
         if (!name.trim() || !room.trim()) {
             console.warn("Invalid name or room"); // 디버깅용 경고 메시지
@@ -51,9 +52,9 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
 
         if (socket) {
             socket.disconnect();
+        } else {
+            socket = io(ENDPOINT) // 중복 되지 않도록
         }
-
-        socket = io(ENDPOINT)
 
         setRoom(room)
         setName(name)
@@ -72,13 +73,27 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
     }, [window.location.search])
 
     useEffect(() => {
-        socket.on('message', (message) => {
-            setMessages((messages) => [...messages, message])
-        })
+        if (showChat && chatRef.current) {
+            chatRef.current.scrollTop = chatRef.current.scrollHeight;
+        }
+      }, [showChat]); // showChat 변경 시 실행
+    
+    useEffect(() => {
+        if (chatRef.current) {
+            chatRef.current.scrollTop = chatRef.current.scrollHeight;
+        }
+    }, [messages]);
 
-        socket.on('roomData', ({ users }) => {
-            setUsers(users)
-        })
+    useEffect(() => {
+        if(socket) {
+            socket.on('message', (message) => {
+                setMessages((messages) => [...messages, message])
+            })
+    
+            socket.on('roomData', ({ users }) => {
+                setUsers(users)
+            })
+        }
     }, [])
 
     const sendMessage = (event) => {
@@ -89,12 +104,12 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
             socket.emit('sendMessage', message, () => setMessage(''))
         }
     }
-    console.log("Sending message:", message);
+    // console.log("Sending message:", message);
 
     if (!XChat) {
         return null; // UI를 완전히 숨김
     }
-
+    
     return (
 
         <div className='outerContainer'>
@@ -104,7 +119,7 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
 
                 {showChat ? (
                     <>
-                        <div className="messageContent">
+                        <div className="messageContent" ref={chatRef}>
                             <Messages messages={messages} name={name} />
                         </div>
                         <div className="inputContent">
@@ -118,9 +133,9 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
                         onClick={handleClick}
                         style={{
                             position: 'fixed',
-                            bottom: '10px',
+                            bottom: '0',
                             right: '10px',
-                            padding: '10px',
+                            // padding: '5px',
                             backgroundColor: '#268B5F',
                             color: '#FFF',
                             border: 'none',
@@ -129,7 +144,6 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
                             height: '40px',
                             borderRadius: "20px 20px 0 0",
                             fontSize: '16px'
-
                         }}
                     >
                         채팅방 열기
