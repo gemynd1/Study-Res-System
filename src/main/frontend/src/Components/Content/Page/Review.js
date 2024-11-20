@@ -5,7 +5,9 @@ import UnstyledInputBasic from "../Review/UnstyledInputBasic";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
+const baseImage =  "/img/banner.png"
 // ReviewCard 컴포넌트
+
 const ReviewCard = ({ review, onClick }) => {
     const [midx, setMidx] = useState("");
     useEffect(() => {
@@ -17,15 +19,18 @@ const ReviewCard = ({ review, onClick }) => {
 
     return (
         <div className="review-card" onClick={onClick}>
-            {/* 첫 번째 이미지를 사용 */}
             {review.sriImg && review.sriImg.length > 0 ? (
                 <img
-                    src={`http://localhost:8099/${review.sriImg[0]}`} // 이미지 경로를 수정해주세요.
+                    src={`http://localhost:8099/${review.sriImg[0]}`}
                     alt="review"
                     className="review-card-image"
                 />
             ) : (
-                <div className="review-card-placeholder">No Image</div>
+                <img
+                    src={"/img/banner.png"}
+                    alt="review"
+                    className="review-card-image"
+                />
             )}
 
             <div className="overlay flex">
@@ -54,6 +59,7 @@ const ReviewCard = ({ review, onClick }) => {
 
 
 const Review = () => {
+
     const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
     const [selectedStudyRoom, setSelectedStudyRoom] = useState("");
@@ -73,15 +79,10 @@ const Review = () => {
             });
     }, []);
 
-    // const handleReviewClick = (id) => {
-    //     navigate(`/review/${id}`);
-    // };
 
     const handleReviewClick = (review) => {
-        // review 객체를 state로 전달하여 /review/{srIdx} 경로로 이동
         navigate(`/review/${review.srIdx}`, { state: { review } });
     };
-
 
     const handleLogin = () => {
         if (sessionStorage.getItem("id")) {
@@ -91,9 +92,12 @@ const Review = () => {
         }
     };
 
+    const handleReviewStudyroom = (selectedRoom) => {
+        setSelectedStudyRoom(selectedRoom); // Update the selected study room
+    };
+
     const filteredReviews = reviews.filter(
-        (review) =>
-            selectedStudyRoom === "" || review.studyRoomInfo === selectedStudyRoom
+        (review) => selectedStudyRoom === "" || review.sgiIdx === selectedStudyRoom
     );
 
     return (
@@ -103,7 +107,7 @@ const Review = () => {
                 <div className="review__page__main">
                     <div className="flex1">
                         <UnstyledInputBasic />
-                        <UnstyledSelectForm onChange={setSelectedStudyRoom} />
+                        <UnstyledSelectForm onChange={handleReviewStudyroom} />
                     </div>
                     <button onClick={handleLogin}>글쓰기</button>
                 </div>
