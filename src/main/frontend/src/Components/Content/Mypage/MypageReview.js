@@ -61,9 +61,9 @@ const MypageReview = () => {
         setCurrentPage(1);
     };
 
-    
     const handleReviewClick = (review) => {
-        navigate(`/review/${review}`, { state: { review } });
+        navigate(`/review?id=${review}`, { state: { review } });
+        window.location.reload();
     };
 
     return (
@@ -151,11 +151,11 @@ const MypageReview = () => {
                                     currentResults.map((result, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td onClick={() => handleReviewClick(result.sridx)}>
+                                            <td>
                                                 {/* onClick={() => handleReviewClick(result.sridx)} */}
-                                                {/* <Link to={`/review/${result.sridx}`}> */}
+                                                <Link to={`/review/${result.sridx}`} state={{data: result.sridx}}>
                                                     {result.srcontent}
-                                                {/* </Link> */}
+                                                </Link>
                                             </td>
                                             <td>{result.memberName}</td>
                                             <td>{result.srregDate ? format(new Date(result.srregDate), 'yyyy-MM-dd HH:mm:ss') : null}</td>

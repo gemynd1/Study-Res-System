@@ -264,20 +264,26 @@ function ContainedButtons({ handleCreate }) {
       })
       .then((response) => {
         // console.log('서버 응답:', response.data);
-        axios.post("http://localhost:8099/api/upload", formData,
-          {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        .then((response) => {
+        if(formData.getAll("file").length === 0) {
           alert("리뷰 작성이 완료되었습니다.");
           navigate('/review');
           window.location.reload();
-        })
-        .catch((error) => {
-            console.error('Error uploading files:', error);
-        });
+        } else {
+          axios.post("http://localhost:8099/api/upload", formData,
+            {
+              headers: {
+                  "Content-Type": "multipart/form-data",
+              },
+          })
+          .then((response) => {
+            alert("리뷰 작성이 완료되었습니다.");
+            navigate('/review');
+            window.location.reload();
+          })
+          .catch((error) => {
+              console.error('Error uploading files:', error);
+          });
+        }
       }).catch((error) => {
           console.error(error);
       })

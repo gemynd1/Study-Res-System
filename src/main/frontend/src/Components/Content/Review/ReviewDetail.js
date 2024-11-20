@@ -1,4 +1,4 @@
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Button from "@mui/material/Button";
@@ -6,47 +6,66 @@ import Button from "@mui/material/Button";
 import "../../../style/ReviewDetail.css";
 
 const ReviewDetail = () => {
-  const { id } = useParams();
+  const { srIdx } = useParams();
   const { state } = useLocation();
-  const [review, setReview] = useState(state?.review || null);
+  const [review, setReview] = useState([]);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     // 만약 state로 전달된 review 데이터가 없다면 API 호출
-    if (!review) {
+    // if (!review) {
       axios
-          .get(`http://localhost:8099/api/review/${id}`)
+          .get(`http://localhost:8099/api/review/details`, 
+          {
+            params: {
+              srIdx : srIdx
+            },
+            headers: { 'Content-Type': 'application/json' },
+          })
           .then((response) => {
+            console.log(response.data);
             setReview(response.data);
           })
           .catch((error) => {
             console.error("리뷰를 가져오는 중 오류 발생:", error);
           });
-    }
-  }, [id, review]);
+    // }
+  }, []);
 
-  if (!review) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {console.log(review)}, [review]);
+
+  // if (!review) {
+  //   return <div>Loading...</div>
+  // }
 
     return (
         <>
-          <div className='review__detail--main'>
+        <div className="review__detail">
+        <div className='review__detail--main'>
             <div className='reivew__detail__reivew'>
               <div className='review-hedaer-flex'>
                 <div className='profile-flex'>
                   {/* <div className='reivew__detail__reveiw--profile-icon'>(프로필사진)</div> */}
-                  <h3 className='reivew__detail__reveiw--profile-name'>{review.memberName}</h3>
+                  <h3 className='reivew__detail__reveiw--profile-name'>작성자 : {review.memberName}</h3>
                 </div>
-                <div className='reivew__detail__reveiw--star'>{"★".repeat(review.srStar)}</div>
+                <div className='reivew__detail__reveiw--star'>별점 : {"★".repeat(review.srStar)}</div>
               </div>
               <div className='review__detail__review--content'>
-                {review.srContent}
+                내용 : {review.srContent}
               </div>
               <div className='review__detail__reivew-wrap--img'>
-
-                <img className='review__detail_review--img' src={review.sriImg[0]
+                {review.sriImg && review.sriImg.length > 0 ? (
+                  review.sriImg.map((img, index) => (
+                    <img key={index} className='review__detail_review--img' src={`http://localhost:8099/${img}`} alt="review"/>
+                  ))
+                ) : (
+                  <img
+                    className="review__detail_review--img"
+                    src="/img/banner.png"
+                    alt="default-review"
+                  />
+                )}
+                {/* <img className='review__detail_review--img' src={review.sriImg[0]
                     ? `http://localhost:8099/${review.sriImg[0]}`
                     : "/img/banner.png"} alt="review"/>
                 <img className='review__detail_review--img' src={review.sriImg[1]
@@ -54,7 +73,7 @@ const ReviewDetail = () => {
                     : "/img/banner.png"} alt="review"/>
                 <img className='review__detail_review--img' src={review.sriImg[2]
                     ? `http://localhost:8099/${review.sriImg[2]}`
-                    : "/img/banner.png"} alt="review"/>
+                    : "/img/banner.png"} alt="review"/> */}
 
               </div>
               <div className='review__detail__reivew--date'>{new Date(review.srRegDate).toLocaleString()}</div>
@@ -152,7 +171,7 @@ const ReviewDetail = () => {
             </div>
             <Button className='backbutton' onClick={() => navigate('/review')}>리뷰 목록으로 돌아가기</Button>
           </div>
-
+        </div>
         </>
     );
 };
