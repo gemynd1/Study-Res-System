@@ -5,18 +5,22 @@ import UnstyledInputBasic from "../Review/UnstyledInputBasic";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
+const baseImage =  "/img/banner.png"
 // ReviewCard 컴포넌트
 const ReviewCard = ({ review, onClick }) => (
     <div className="review-card" onClick={onClick}>
-        {/* 첫 번째 이미지를 사용 */}
         {review.sriImg && review.sriImg.length > 0 ? (
             <img
-                src={`http://localhost:8099/${review.sriImg[0]}`} // 이미지 경로를 수정해주세요.
+                src={`http://localhost:8099/${review.sriImg[0]}`}
                 alt="review"
                 className="review-card-image"
             />
         ) : (
-            <div className="review-card-placeholder">No Image</div>
+            <img
+                src={"/img/banner.png"}
+                alt="review"
+                className="review-card-image"
+            />
         )}
 
         <div className="overlay flex">

@@ -1,6 +1,7 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Button from "@mui/material/Button";
 // import '../../../style/ReviewDetail';
 import "../../../style/ReviewDetail.css";
 
@@ -8,7 +9,6 @@ const ReviewDetail = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const [review, setReview] = useState(state?.review || null);
-  const memberName = sessionStorage.getItem("name"); //^^
   const navigate = useNavigate();
 
 
@@ -45,9 +45,16 @@ const ReviewDetail = () => {
                 {review.srContent}
               </div>
               <div className='review__detail__reivew-wrap--img'>
-                <img className='review__detail_review--img' src={`http://localhost:8099/${review.sriImg[0]}`} alt="review"/>
-                <img className='review__detail_review--img' src={`http://localhost:8099/${review.sriImg[1]}`} alt="review"/>
-                <img className='review__detail_review--img' src={`http://localhost:8099/${review.sriImg[2]}`} alt="review"/>
+
+                <img className='review__detail_review--img' src={review.sriImg[0]
+                    ? `http://localhost:8099/${review.sriImg[0]}`
+                    : "/img/banner.png"} alt="review"/>
+                <img className='review__detail_review--img' src={review.sriImg[1]
+                    ? `http://localhost:8099/${review.sriImg[1]}`
+                    : "/img/banner.png"} alt="review"/>
+                <img className='review__detail_review--img' src={review.sriImg[2]
+                    ? `http://localhost:8099/${review.sriImg[2]}`
+                    : "/img/banner.png"} alt="review"/>
 
               </div>
               <div className='review__detail__reivew--date'>{new Date(review.srRegDate).toLocaleString()}</div>
@@ -57,7 +64,7 @@ const ReviewDetail = () => {
                 <div className='review__detail__write__host-header-flex'>
                   <div className='write--flex'>
                     <h3 className='review__detail__write__host-header-name my-h3'>
-                      {memberName}님의 답글
+                      {review.memberName}님의 답글
                     </h3>
                     <div className='review__detail__write__host-header-date'>
                       2024.10.16 18:54:24
@@ -143,7 +150,7 @@ const ReviewDetail = () => {
                 <button className='review-button'>등록</button>
               </div>
             </div>
-            <button onClick={() => navigate('/review')}>리뷰 목록으로 돌아가기</button>
+            <Button className='backbutton' onClick={() => navigate('/review')}>리뷰 목록으로 돌아가기</Button>
           </div>
 
         </>
