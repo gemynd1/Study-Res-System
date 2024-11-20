@@ -25,4 +25,5 @@ public interface MainService {
     public int selectOptionTime2(String MemberId, String selectedOption);
     public int updateIntime(String MemberId, String selectedOption);
     public int updateStudyInInfo(Integer seatNum, StudyInInfoVo studyInInfoVo, String MemberId);
+    public int seatUpdate();
 }

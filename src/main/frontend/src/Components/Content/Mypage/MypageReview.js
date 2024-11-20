@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Pagination from "./Pagination";
 import MemberDeleteModal from "./MemberDeleteModal";
@@ -11,6 +11,7 @@ const MypageReview = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [resultsPerpage, setResultsPerpage] = useState(10);
     const [id, setId] = useState(sessionStorage.getItem("id"));
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get("http://localhost:8099/api/mypage/mypageReview",
@@ -58,6 +59,11 @@ const MypageReview = () => {
     const handleResultsPerPageChange = (e) => {
         setResultsPerpage(parseInt(e.target.value, 10));
         setCurrentPage(1);
+    };
+
+    
+    const handleReviewClick = (review) => {
+        navigate(`/review/${review}`, { state: { review } });
     };
 
     return (
@@ -133,22 +139,33 @@ const MypageReview = () => {
                         <div className="seeWrite">
                             <table className="table-container">
                                 <thead>
-                                <tr>
-                                    <th>번호</th>
-                                    <th>제목</th>
-                                    <th>작성자</th>
-                                    <th>작성일</th>
-                                </tr>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>작성자</th>
+                                        <th>작성일</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                {currentResults.map((result, index) => (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{result.srcontent}</td>
-                                        <td>{result.memberName}</td>
-                                        <td>{result.srregDate ? format(new Date(result.srregDate), 'yyyy-MM-dd') : null}</td>
+                                {currentResults != '' ?
+                                    currentResults.map((result, index) => (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td onClick={() => handleReviewClick(result.sridx)}>
+                                                {/* onClick={() => handleReviewClick(result.sridx)} */}
+                                                {/* <Link to={`/review/${result.sridx}`}> */}
+                                                    {result.srcontent}
+                                                {/* </Link> */}
+                                            </td>
+                                            <td>{result.memberName}</td>
+                                            <td>{result.srregDate ? format(new Date(result.srregDate), 'yyyy-MM-dd HH:mm:ss') : null}</td>
+                                        </tr>
+                                    ))
+                                    :
+                                    <tr>
+                                        <td colSpan="4">검색 결과가 없습니다.</td>
                                     </tr>
-                                ))}
+                                }
                                 </tbody>
                             </table>
                             <Pagination

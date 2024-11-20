@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 @Service
@@ -42,27 +43,6 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.InsertReviewHasTag();
     }
 
-    @Override
-    @Transactional
-    public List<ReviewVo> getAllReviews() {
-        return reviewMapper.getAllReviews();
-    }
-    @Override
-    @Transactional
-    public List<ReviewImgVo> getImage() {
-        return reviewMapper.getImage();
-    }
-    @Override
-    @Transactional
-    public List<ReviewTagVo> getTagList() {
-        return reviewMapper.getTagList();
-    }
-    @Override
-    @Transactional
-    public List<ReviewHasTagVo> getHasTag() {
-        return reviewMapper.getHasTag();
-    }
-
 //    @Override
 //    @Transactional
 //    public List<ReviewVo> getAllReviews1(String srIdx) {
@@ -78,5 +58,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public List<ReviewDetailsVo> getReviewAll(){
         return reviewMapper.getReviewAll();
+    }
+
+    @Override
+    @Transactional
+    public String getMIdx(String MemberId) {
+        return reviewMapper.getMIdx(MemberId);
     }
 }

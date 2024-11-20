@@ -188,6 +188,12 @@ public class MainController {
         return ResponseEntity.ok(mainService.myTimeInfo(MemberId));
     }
 
+    // 1시간 단위로 체크하여 현재 시간보다 지난 데이터들은 자리 비움으로 처리
+    @GetMapping("/seatUpdate")
+    public ResponseEntity<Object> seatUpdate() {
+        return ResponseEntity.ok(mainService.seatUpdate());
+    }
+
     @PostMapping("/seatOrder")
     public ResponseEntity<Object> seatOrder(@RequestBody Map<String, Object> body) {
         try {
@@ -200,11 +206,6 @@ public class MainController {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
             StudyInInfoVo studyInInfoVo = new StudyInInfoVo();
-//            Date startDate = formatter.parse(startTime);
-//            Date endDate = formatter.parse(endTime);
-
-//            studyInInfoVo.setSeatStartTime(startDate);
-//            studyInInfoVo.setSeatEndTime(endDate);
             studyInInfoVo.setSeatStartTime(startTime);
             studyInInfoVo.setSeatEndTime(endTime);
             // ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY/MM/DD HH24:MI';

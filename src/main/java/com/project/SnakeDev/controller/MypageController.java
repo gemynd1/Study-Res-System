@@ -102,7 +102,7 @@ public class MypageController {
     public ResponseEntity<Object> mypageReview(
             @RequestParam("id") String memberId) {
         List<StudyReviewVo> ReviewInfo = mypageService.getReviewInfo(memberId);
-        System.out.println(ReviewInfo);
+//        System.out.println(ReviewInfo);
         return ResponseEntity.ok(ReviewInfo);
     }
 

@@ -20,20 +20,12 @@ public interface ReviewMapper {
 
     int InsertReviewHasTag();
 
-    List<ReviewVo> getAllReviews();
-    List<ReviewImgVo> getImage();
-    List<ReviewTagVo> getTagList();
     List<ReviewHasTagVo> getHasTag();
-
-    // List<ReviewGetAll> getAllHasTag(@Param("srIdx") String srIdx);
-
-    int InsertReviewImg(ReviewImgVo ReviewImgVo);
-
 
     ReviewDetailsVo getReviewDetails(@Param("sridx") Integer sridx);
 
     List<ReviewDetailsVo> getReviewAll();
 
 
-
+    String getMIdx(String memberId);
 }   

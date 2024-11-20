@@ -144,14 +144,20 @@ const MypageBoard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentResults.map((result, index) => (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{result.comcontent}</td>
-                                            <td>{result.memberName}</td>
-                                            <td>{result.comintodate}</td>
+                                    {currentResults != '' ?
+                                        currentResults.map((result, index) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{result.comcontent}</td>
+                                                <td>{result.memberName}</td>
+                                                <td>{result.comintodate}</td>
+                                            </tr>
+                                        ))
+                                        :
+                                        <tr>
+                                            <td colSpan="4">검색 결과가 없습니다.</td>
                                         </tr>
-                                    ))}
+                                    }
                                 </tbody>
                             </table>
                             <Pagination

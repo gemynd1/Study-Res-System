@@ -232,6 +232,7 @@ function ContainedButtons({ handleCreate }) {
   uploadedFiles.forEach(uploadedFile => {
       formData.append("file", uploadedFile.file);
   });
+  formData.append("MemberId", sessionStorage.getItem('id'));
 
   useEffect(() => {
     const names = uploadedFiles.map(file => file.name);
@@ -262,26 +263,27 @@ function ContainedButtons({ handleCreate }) {
         }
       })
       .then((response) => {
-        console.log('서버 응답:', response.data);
+        // console.log('서버 응답:', response.data);
+        axios.post("http://localhost:8099/api/upload", formData,
+          {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+        .then((response) => {
+          alert("리뷰 작성이 완료되었습니다.");
           navigate('/review');
-      })
-      .catch((error) => {
+          window.location.reload();
+        })
+        .catch((error) => {
+            console.error('Error uploading files:', error);
+        });
+      }).catch((error) => {
           console.error(error);
       })
 
       // Send data to the backend using axios
-      axios.post("http://localhost:8099/api/upload", formData, {
-          headers: {
-              "Content-Type": "multipart/form-data",
-          },
-      })
-          .then((response) => {
-              console.log('Server response:', response.data);
-              navigate('/review');
-          })
-          .catch((error) => {
-              console.error('Error uploading files:', error);
-          });
+      
   };
 
 
