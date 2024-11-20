@@ -542,6 +542,11 @@ const PostRewrite = () => {
 
   const updateContent = (e) => {
 	e.stopPropagation(); // 이벤트 전파 중지
+	// TODO: 여기서도 입력안한거 있으면 입력하게 처리
+	if((!boardContents.comAddress && !enroll_company.detailedAddress)) {
+		alert('모든 필드를 입력해주세요.');
+		return;
+	  }
 	if(boardContents.comStartDate > boardContents.comEndDate) {
 		alert("시작일이 종료일보다 빠를 수 없습니다.");
 		return;
