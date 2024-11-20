@@ -9,10 +9,6 @@ public interface AuthService {
     int InsertMemberAddress(AuthVo authVo);
     boolean IdCheck(String id);
     String login(String MemberId, String MemberPw);
-
     String kakaoSignUp(String code);
-//
-//    String[] getKakaoAccessToken(String code);
-//    AuthVo createKakaoUser(String token);
 
 }

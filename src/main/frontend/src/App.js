@@ -56,7 +56,7 @@ const ScrollToTop  = () => {
 function AppContent() {
   const location = useLocation();
   const hideHeaderLogin =
-    location.pathname === "/login" || location.pathname === "/join" || location.pathname === "/paysuccess";
+    location.pathname === "/login" || location.pathname === "/join" || location.pathname === "/paysuccess" || location.pathname === "/oauth";
 
   // useEffect(() => {
   //   axios.get('/api/hello')

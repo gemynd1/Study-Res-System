@@ -81,21 +81,10 @@ const MypageAdd = () => {
                 axios.spread((res1, res2) => {
                     setTimeInfo(res1.data);
                     setAddTimeInfo(res2.data);
-                    console.log(res2.data)
+                    // console.log(res2.data);
                 })
             )
             .catch((error) => console.error(error))
-
-        // axios.get("http://localhost:8099/api/mypage/mypageTime", {
-        //     headers: { 'Content-Type': 'application/json' }
-        // })
-        //     .then(response => {
-        //         setTimeInfo(response.data);
-        //         console.log(response.data);
-        //     })
-        //     .catch(error => {
-        //         console.error('데이터 못가져옴: ', error);
-        //     })
     }, []);
 
     return (

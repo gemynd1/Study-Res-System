@@ -40,7 +40,6 @@ const PaySuccess = () => {
 
     const [orderNotification, setOrderNotification] = useState('');
     const [orderState, setOrderState] = useState(false);
-    const ordernum = searchParams.get('ordernum');
     const orderid = searchParams.get('orderId')
     // 임시 저장한 데이터 저장할 useState
     const [orderContent, setOrderContent] = useState("");
@@ -88,7 +87,6 @@ const PaySuccess = () => {
             } catch (error) {
                 console.error('결제 승인 실패:', error);
                 alert("결제 실패하였습니다.");
-                navigate('/payfail');
                 return null;
             }
         };
@@ -194,9 +192,9 @@ const PaySuccess = () => {
 
     useEffect(() => {
         if(orderState) {
-            console.log(orderPayData);
-            console.log(orderWaitData);
-            console.log(orderWaitinData);
+            // console.log(orderPayData);
+            // console.log(orderWaitData);
+            // console.log(orderWaitinData);
             axios.post('http://localhost:8099/api/OrderPay', null,
                 {
                     params : {
@@ -285,8 +283,7 @@ const PaySuccess = () => {
     };
 
     const handleReturnBack = () => {
-        navigate(-1);
-        window.location.reload();
+        window.history.back();
     };
 
     return (

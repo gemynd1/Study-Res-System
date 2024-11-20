@@ -113,6 +113,21 @@ public class AuthVo {
         this.MAlongitude = MAlongitude;
     }
 
+    // kakao
+    public AuthVo(Integer MIdx, String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude, String loginType) {
+        this.MIdx = MIdx;
+        MemberName = memberName;
+        MemberId = memberId;
+        MemberPw = memberPw;
+        MemberPhone = memberPhone;
+        this.MAaddress = MAaddress;
+        this.MZonecode = MZonecode;
+        this.MDetailaddress = MDetailaddress;
+        this.MAlatitude = MAlatitude;
+        this.MAlongitude = MAlongitude;
+        this.loginType = loginType;
+    }
+
     public Integer getMIdx() {
         return MIdx;
     }
@@ -247,6 +262,7 @@ public class AuthVo {
                 ", MAlatitude=" + MAlatitude +
                 ", MAlongitude=" + MAlongitude +
                 ", MRegDate=" + MRegDate +
+                ", loginType=" + loginType +
                 '}';
     }
 

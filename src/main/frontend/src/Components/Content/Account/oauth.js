@@ -75,11 +75,29 @@ const Oauth = () => {
             console.log("Token:", res.data);  
             // 로컬 스토리지에 저장
             localStorage.setItem("token", token);
-            // 토큰에서 정보 추출
-            handleToken(token);
-            console.log(user);
-            alert(user + "님 환영합니다.")
-            navigate("/");
+            // 토큰 디코딩
+            const decoded = jwtDecode(token);
+            console.log("Decoded Token:", decoded);
+
+            // 필요한 정보 추출
+            const userInfo = {
+                MemberId: decoded.MemberId, // 토큰에 저장된 subject
+                MemberName: decoded.MemberName, // 토큰에 저장된 사용자 정보 (예시)
+                MemberPw : decoded.MemberPw, // claim pw null체크하기 위함
+                MemberPhone : decoded.MemberPhone, // claim null 체크하기 위함
+            };
+
+            if(!userInfo.MemberPw || !userInfo.MemberPhone) {
+                alert("환영합니다. 통합 회원 로그인 후 이용 가능합니다")
+                navigate("/join?memberId=" + userInfo.MemberId + "&memberName=" + userInfo.MemberName + "&logintype=kakao");
+            } else {
+                sessionStorage.setItem("id", userInfo.MemberId);
+                sessionStorage.setItem("name", userInfo.MemberName);
+                alert(userInfo.MemberName + "님, 환영합니다.");
+                navigate("/");
+            }
+            
+            
             // axios.get(`${process.env.REACT_APP_SERVER_URL}/api/userinfo`, {
             //     headers: {
             //     //헤더에 token을 담아서 전달 
@@ -103,8 +121,12 @@ const Oauth = () => {
     }, [user]);
 
     return (
-        <div>
-            <h1>로그인</h1>
+        <div style={{ 
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
+            width: '100%', margin: 'auto', paddingTop: '300px', paddingBottom: '300px'
+        }}>
+            <img src='/img/icon/spinner.gif' alt='loading' />
+            <p>로그인 진행 중입니다. 잠시만 기다려 주세요...</p>
         </div>
     );
 };

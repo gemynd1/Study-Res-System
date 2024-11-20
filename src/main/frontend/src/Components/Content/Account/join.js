@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, cloneElement } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 import Box from "@mui/material/Box";
@@ -106,24 +106,27 @@ const Join = () => {
   // const idRegex = (input) => /^[a-z\d]{5,20}$/.test(input); // 아이디 정규식
   const idRegex = (input) => /^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input);
 
-  // input 체크
-  const [authObj, setauthObj] = useState({
-    nickname: "",
-    phonenumber: "",
-    id: "",
-    pw: "",
-    pwcheck: "",
-  });
-  const [isIdCheck, setIsIdCheck] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [isIdCheck, setIsIdCheck] = useState(searchParams === null ? false : true);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [PasswordMessage, setPasswordMessage] = useState("");
   const [PasswordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [allAgreed, setAllAgreed] = useState(false);
+  
   const [agreement, setAgreement] = useState({
     isAgree1: false,
     isAgree2: false,
     isAgree3: false,
+  });
+
+  // input 체크
+  const [authObj, setauthObj] = useState({
+    nickname: searchParams === null ? "" : searchParams.get("memberName"),
+    phonenumber: "",
+    id: searchParams === null ? "" : searchParams.get("memberId"),
+    pw: "",
+    pwcheck: "",
   });
 
   // 우편번호 API
@@ -237,11 +240,8 @@ const Join = () => {
     setMemberRandom(random);
 
     event.preventDefault();
-    if (
-      isPasswordConfirm === true &&
-      isIdCheck === true &&
-      isPassword === true
-    ) {
+    if (isPasswordConfirm === true && isIdCheck === true && isPassword === true) 
+    {
       axios
         .post(
           baseUrl + "/api/join",
@@ -256,6 +256,7 @@ const Join = () => {
             MDetailaddress: enroll_company.detailedAddress,
             MAlatitude: parseFloat(enroll_company.latitude),
             MAlongitude: parseFloat(enroll_company.longitude),
+            LoginType: searchParams.get("logintype"),
           },
           {
             headers: {
@@ -304,7 +305,7 @@ const Join = () => {
                   placeholder="닉네임"
                   onChange={handleInput2}
                   value={authObj.nickname}
-                  required
+                  required={searchParams != null}
                 />
               </div>
               <div className="postInput">
@@ -389,6 +390,7 @@ const Join = () => {
                   setCheck={setIsIdCheck}
                   setId={setauthObj}
                   value={authObj.id}
+                  required={searchParams != null}
                   onInput={handleInput2.id}
                   onChange={handleInput2}
                   validators={[
@@ -406,10 +408,6 @@ const Join = () => {
                       fn: (input) => input.length >= 5,
                       message: "5자 이상 입력해주세요.",
                     },
-                    // {
-                    //     fn: isIdCheck,
-                    //     message: '아이디 중복 검사를 해주세요.',
-                    // },
                   ]}
                 />
                 {/* <button type="button" className="idcheckbtn">중복확인</button> */}

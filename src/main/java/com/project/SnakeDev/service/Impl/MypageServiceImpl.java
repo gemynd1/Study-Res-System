@@ -4,10 +4,13 @@ import com.project.SnakeDev.mapper.MypageMapper;
 import com.project.SnakeDev.service.MypageService;
 import com.project.SnakeDev.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Service
 @Transactional

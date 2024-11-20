@@ -20,6 +20,8 @@ public class TokenProvider {
                 .setSubject(user.getMemberId())
                 .claim("MemberId", user.getMemberId())
                 .claim("MemberName", user.getMemberName())
+                .claim("MemberPw", user.getMemberPw())
+                .claim("MemberPhone", user.getMemberPhone())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(SECRET_KEY.getBytes()))
