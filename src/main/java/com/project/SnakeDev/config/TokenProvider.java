@@ -16,9 +16,6 @@ import static java.lang.Integer.parseInt;
 @Component
 public class TokenProvider {
 
-//    @Value("${SECRET_KEY}")
-//    private static final String SECRET_KEY = null;
-
     @Value("${SECRET_KEY}")
     private String secretKeyInstance; // 비정적 변수
 

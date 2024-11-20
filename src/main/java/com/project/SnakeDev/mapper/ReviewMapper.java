@@ -1,30 +1,31 @@
 package com.project.SnakeDev.mapper;
 
-import com.project.SnakeDev.vo.ReviewVo;
-//import com.project.SnakeDev.vo.ReviewImg;
+import com.project.SnakeDev.vo.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 // import java.util.List;
 
 @Mapper
 public interface ReviewMapper {
 
-//    Integer findMidxByUserName(String memberName);
-
     int InsertReview(ReviewVo reviewVo);
-//
-//    void insertReviewImage(Integer sriimgidx, String sriimg);
-//
-//    Integer findTagIdByContent(String tagContent);
-//
-//    void insertReviewTag(Integer srIdx, Integer tagId);
-//
-    // 새로운 태그 삽입 메서드 추가
-//    void insertTag(String tagContent);
 
-//    ReviewVo findById(Integer id);
+    int insertReviewImage(String imgVo);
 
-//    void insertReviewImg(ReviewImg reviewImg);
+    int InsertReviewTag(String Tag);
+
+    int InsertReviewHasTag();
+
+    List<ReviewHasTagVo> getHasTag();
+
+    ReviewDetailsVo getReviewDetails(@Param("sridx") Integer sridx);
+
+    List<ReviewDetailsVo> getReviewAll();
 
 
+    String getMIdx(String memberId);
 }   

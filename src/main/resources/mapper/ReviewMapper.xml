@@ -13,4 +13,93 @@
                 sysdate)
     </insert>
 
+
+    <insert id="insertReviewImage" parameterType="String">
+        <![CDATA[
+        insert into tbl_studyreviewimg (sriImgIdx, srIdx, sriImg)
+        values (
+            ComCom_seq.nextval,
+            (select * from (select sridx from tbl_studyreview order by sridx desc) where rownum <= 1),
+            #{sriImg}
+        )
+        ]]>
+    </insert>
+
+
+    <insert id="InsertReviewTag" parameterType="String">
+        insert into tbl_studyhastaglist (TSHTLIdx, TSHTLContent)
+        values (
+            SRMEMBERTAG_SEQ.nextval,
+            #{TSHTLContent}
+        )
+    </insert>
+
+    <insert id="InsertReviewHasTag">
+    <![CDATA[
+        insert into tbl_studyhastag (TSHTIdx, SRidx, TSHTLIdx)
+        SELECT
+            SHASTAG_SEQ.nextval,
+            (SELECT sridx FROM (SELECT sridx FROM tbl_studyreview ORDER BY sridx DESC) WHERE rownum = 1),
+            (SELECT TSHTLIdx FROM (SELECT TSHTLIdx FROM tbl_studyhastaglist ORDER BY TSHTLIdx DESC) WHERE rownum = 1)
+        FROM dual
+        ]]>
+</insert>
+<!--
+    dual테이블 -> Oracle 더미 테이블 단일 행과 열 가짐. Oracle에 기본적으로
+     존재, 목적 계산,상수 반환 ,서브 쿼리 실행 등 위해 select 문을 작성할 때
+     빈 테이블로 활용
+-->
+
+<!--    <select id="getHasTag" resultType="com.project.SnakeDev.vo.ReviewHasTagVo">-->
+<!--        SELECT * FROM tbl_studyhastag-->
+<!--    </select>-->
+
+
+    <select id="getHasTag" resultType="com.project.SnakeDev.vo.ReviewHasTagVo">
+        SELECT * FROM tbl_studyhastag
+    </select>
+
+<!-- 상세 조회 -->
+    <select id="getReviewDetails" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">
+        SELECT
+            tm.sridx AS srIdx,
+            tm.srcontent AS srContent,
+            tm.sgiidx AS sgiIdx,
+            tm.midx AS mIdx,
+            tm.srstar AS srStar,
+            tm.srregdate AS srRegDate,
+            (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
+            FROM TBL_STUDYHASTAG tma
+                LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
+            WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+            FROM TBL_studyreviewimg tmc
+            WHERE tmc.sridx = tm.sridx) AS sriImg
+        FROM TBL_STUDYREVIEW tm
+        WHERE tm.sridx = #{sridx}
+    </select>
+
+<!-- 전체 조회 -->
+    <select id="getReviewAll" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">
+        SELECT
+            tm.sridx AS srIdx,
+            tm.srcontent AS srContent,
+            tm.sgiidx AS sgiIdx,
+            tm.midx AS mIdx,
+            tm.srstar AS srStar,
+            tm.srregdate AS srRegDate,
+            (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ')WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
+            FROM TBL_STUDYHASTAG tma
+                LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
+            WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+            FROM TBL_studyreviewimg tmc
+            WHERE tmc.sridx = tm.sridx) AS sriImg
+        FROM TBL_STUDYREVIEW tm
+        order by tm.srregdate desc
+    </select>
+
+    <select id="getMIdx" resultType="string">
+        select midx from tbl_member where memberid = #{MemberId}
+    </select>
 </mapper>

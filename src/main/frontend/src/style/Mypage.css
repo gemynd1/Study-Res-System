@@ -50,10 +50,10 @@
 
 /* Account 마이페이지 */
 .editPersonal {
-    width: 75%;
+    /* width: 100%; */
     height: 70px;
     border-bottom: 4px solid #7E7E7E;
-    margin: 50px auto auto 200px;
+    margin: 50px 200px;
 }
 
 .AccountBody .editPersonal .logo {
@@ -215,11 +215,12 @@
 .MypageSelect {
     display: flex;
     box-sizing: border-box;
-    width: 1440px;
+    /* width: 1440px; */
     height: 241px;
-    left: 426px;
+    /* left: 426px; */
     top: 198px;
-    margin: 10px auto auto 200px;
+    margin: 10px 200px;
+    /* margin: 10px auto auto 200px; */
     background: #FFFFFF;
     border: 1px solid #C9C9C9;
     justify-content: space-evenly;
@@ -380,7 +381,7 @@
 }
 
 .MypageMenu2 {
-    height: 1500px;
+    height: 1100px;
     box-sizing: border-box;
     width: 17%;
     float: left;
@@ -513,7 +514,13 @@
 }
 
 .table-container {
-    width: 83%;
+    width: 90%;
+    margin-left: 16px;
+    border-spacing: 0;
+    margin-top: 20px;
+    /*border-style: none;*/
+
+    /* width: 83%;
     height: 300px;
     text-align: center;
     font-size: 18px;
@@ -522,7 +529,7 @@
     box-shadow: 0 2px 5px rgba(0,0,0,.25);
     border-collapse: collapse;
     border-radius: 5px;
-    overflow: hidden;
+    overflow: hidden; */
 }
 
 .table-container th {
@@ -530,12 +537,33 @@
     border-style: solid;
 }
 
+.table-container thead{
+    background: #f4f4f4;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+
+.table-container thead tr th {
+    border-top: 2px solid #b5b5b5;
+    border-bottom: 1px solid #dddddd;
+}
+
+.table-container tbody tr td {
+    border-bottom: 2px solid #b5b5b5;
+    padding: 15px;
+}
+
+.table-container tbody {
+    text-align: center;
+}
+
 .table-container td, th {
     padding: 1em .5em;
     vertical-align: middle;
 }
 
-.table-container th {
+/* .table-container th {
     border-bottom: 3px solid #a39485;
 }
 
@@ -545,7 +573,7 @@
 
 .table-container tbody tr:hover {
     background: #f0f0f0;
-}
+} */
 
 
 /* 페이지네이션 */
@@ -1285,7 +1313,7 @@
 /* 예약확인 css */
 .MypageCheck {
     width: 100%;
-    min-height: 1500px;
+    min-height: 1100px;
     height: auto;
 }
 .CheckBody {
@@ -1641,7 +1669,7 @@
 .DetailText{
     font-style: normal;
     font-weight: 700;
-    font-size: 65px;
+    font-size: 50px;
     line-height: 58px;
     color: #000000;
 }

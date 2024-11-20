@@ -55,9 +55,11 @@
                ) as SGImg
         from Tbl_studyGinfo sgi
     </select>
+
     <select id="ViewStudyInInfo" resultType="com.project.SnakeDev.vo.StudyInInfoVo">
         SELECT * FROM Tbl_StudyInInfo
     </select>
+
     <select id="ViewStudyGInfoDetail" resultMap="StudyGInfoVo2">
         select sgi.SGINum,
                sgi.SGIUseState,
@@ -234,5 +236,21 @@
            SeatStartTime = TRUNC(to_date(#{seat.SeatStartTime}, 'YYYY-MM-DD HH24:MI:SS'), 'MI'),
            SeatEndTime = TRUNC(to_date(#{seat.SeatEndTime},  'YYYY-MM-DD HH24:MI:SS'), 'MI')
         WHERE SCIdx = 1111 and SeatNum = (select SeatNum from Tbl_StudyInInfo where SIINum = #{seatNum})
+    </update>
+    <update id="seatUpdate">
+<!--        update tbl_studyininfo set-->
+<!--            midx = null,-->
+<!--            seatusestate = 'N',-->
+<!--            seatstarttime = null,-->
+<!--            seatendtime = null-->
+<!--        where to_date(sysdate) > seatendtime-->
+        <![CDATA[
+            update tbl_studyininfo set
+                midx = null,
+                seatusestate = 'N',
+                seatstarttime = null,
+                seatendtime = null
+            where seatendtime < sysdate
+        ]]>
     </update>
 </mapper>

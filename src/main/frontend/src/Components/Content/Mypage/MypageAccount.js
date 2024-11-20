@@ -7,7 +7,7 @@ import MypageUpdate from "./MypageUpdate";
 const MypageAccount = () => {
     const [MypageAccount, setMypageAccount] = useState('');
     const navigate = useNavigate();
-    const [id, setId] = useState('');
+    const [id, setId] = useState(sessionStorage.getItem("id"));
     const [pw, setPw] = useState('');
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -96,6 +96,7 @@ const MypageAccount = () => {
                             <div className="AccountInputID2">
                                 <input
                                     className="AccountExist"
+                                    value={id}
                                     onChange={(e) => setId(e.target.value)}
                                 />
                             </div>

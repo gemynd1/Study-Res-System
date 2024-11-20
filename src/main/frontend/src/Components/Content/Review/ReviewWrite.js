@@ -1,3 +1,4 @@
+import { useNavigate, Link } from "react-router-dom";
 import "../../../style/reviewWrite.css";
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -6,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-// import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Radio from "@mui/material/Radio";
@@ -14,7 +14,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Stack from "@mui/material/Stack";
-import { Link } from "react-router-dom";
 import { useState,useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -32,11 +31,12 @@ const VisuallyHiddenInput = (props) => (
 function InputFileUpload({ uploadedFiles, setUploadedFiles }) {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    if (uploadedFiles.length + files.length <= 3) {
+    if (uploadedFiles.length + files.length <=  3) {
       const newFiles = files.map(file => ({
-        file, // actual file object
-        url: URL.createObjectURL(file) // URL for preview
-      }));
+        name: encodeURIComponent(file.name), // actual file object
+        url: URL.createObjectURL(file),// URL for preview
+        file: file
+    }));
       setUploadedFiles(prevFiles => [...prevFiles, ...newFiles]);
     } else {
       alert('최대 3장까지 업로드할 수 있습니다.');
@@ -200,172 +200,94 @@ function RowRadioButtonsGroup({ rating, setRating }) {
 }
 //4개의 crud 버튼
 function ContainedButtons({ handleCreate }) {
+
   return (
     <Stack direction="row" spacing={2}>
       <Button variant="contained" onClick={handleCreate}>생 성</Button>
       <Button variant="contained">수 정</Button>
       <Button variant="contained">삭 제</Button>
-      <Link to="/review">
-        <Button variant="contained">취 소</Button>
-      </Link>
+    <Link to="/review">
+      <Button variant="contained">취 소</Button>
+    </Link>
     </Stack>
   );
 }
 
-const ReviewWrite = () => {
+  const ReviewWrite = () => {
   const [studyRoom, setStudyRoom] = useState('');
   const [content, setContent] = useState('');
   const [rating, setRating] = useState('');
   const [tags, setTags] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  // const [midx, setMidx] = useState(null);  // MIDX를 상태로 추가
-  // const [sriImg, setSriImg] = useState([]); // 이미지를 배열안에 string으로 url 가져오기
-  // const memberName = sessionStorage.getItem('name');
-  
+  const [fileNames, setFileNames] = useState([]);
   const [data1, setData1] = useState({
-    studyRoom:'',
-    content: '',
-    rating: '',
+    sgiIdx:'',
+    srContent: '',
+    srStar: '',
     memberId: '',
   })
-  // useEffect(() => {
-  //   setData1((prevState) => ({
-  //     ...prevState,
-  //     sgiIdx: studyRoom,
-  //     srContent: content,
-  //     srStar: rating,
-  //     memberId: sessionStorage.getItem('id'),
-  //   }))
-  // }, [])
+  const navigate = useNavigate();
+  const formData = new FormData();
+
+  uploadedFiles.forEach(uploadedFile => {
+      formData.append("file", uploadedFile.file);
+  });
+  formData.append("MemberId", sessionStorage.getItem('id'));
+
+  useEffect(() => {
+    const names = uploadedFiles.map(file => file.name);
+    setFileNames(names);
+  }, [uploadedFiles]);
+
+  useEffect(() => {
+    setData1((prevState) => ({
+      ...prevState,
+      sgiIdx: parseInt(studyRoom),
+      srContent: content,
+      srStar: parseInt(rating),
+      memberId: sessionStorage.getItem('id'),
+      sriImg: fileNames,
+      TSHTlContent: tags
+    }))
+  }, [data1])
 
   const handleCreate = (e) => {
-    // console.log('data1:', data1);
-    console.log('studyRoom:',studyRoom);
-    console.log('content:',content)
-    // console.log('data1.studyRoom:',data1.studyRoom);
-    // console.log('data1.content:',data1.content);
-    console.log('rating',rating);
-    console.log(tags);
-    console.log(uploadedFiles);
 
     e.preventDefault();
 
-    // data1 ->
-    // sgiIdx: Number(studyRoom),
-    //       srContent: content,
-    //       srStar: Number(rating),
-    //       memberId: sessionStorage.getItem("id"),
-
-    axios.post("http://localhost:8099/api/review/content", {
-        params : {data1},
-        // , tags, uploadedFiles
-      },
+    axios.post("http://localhost:8099/api/review/content", 
+      data1,
       {
-          headers: {
-              "Content-Type": "application/json", // 반드시 JSON으로 설정
-          },
+        headers: {
+          "Content-Type": "application/json"
+        }
       })
-      .then(response => {
-        // 성공하면 리뷰메인으로 나가게 해주면 되고
-          console.log(response.data);
-      })
-      .catch(error => {
+      .then((response) => {
+        // console.log('서버 응답:', response.data);
+        axios.post("http://localhost:8099/api/upload", formData,
+          {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+        .then((response) => {
+          alert("리뷰 작성이 완료되었습니다.");
+          navigate('/review');
+          window.location.reload();
+        })
+        .catch((error) => {
+            console.error('Error uploading files:', error);
+        });
+      }).catch((error) => {
           console.error(error);
-          // console.error("에러발생: ", error);
       })
+
+      // Send data to the backend using axios
+      
   };
 
-//   const requestMidx = async () => {
-//     try {
-//       const response = await axios.get(`http://localhost:8099/api/reviews/member/${memberName}`, {
-//         headers: { 'Content-Type': 'application/json' }
-//       });
-//
-//       if (response.status !== 200) {
-//         throw new Error('MIDX를 가져오는 데 실패했습니다.');
-//       }
-//
-//       return setMidx(response.data); // MIDX를 반환
-//     } catch (error) {
-//       console.error("Error fetching MIDX:", error);
-//       alert(error.message);
-//       return null;
-//     }
-//   };
-// requestMidx();
-
-// const requestSriImg = async () => { //
-//   try {
-//     const response = await axios.get('http://localhost:8099/api/reviews/img', {
-//       headers: { 'Content-Type': 'application/json' }
-//     });
-//
-//     if (response.status !== 200) {
-//       throw new Error('SriImg를 가져오는 데 실패했습니다.');
-//     }
-//   } catch (error) {
-//     console.error("Error fetching SriImg:", error);
-//     alert(error.message);
-//     return null;
-//   }
-// };
-// requestSriImg(); 
-  
-    
-  
 
 
-
-
-    // if (!studyRoom || !content || !rating || tags.length === 0 || uploadedFiles.length === 0) {
-    //   alert('모든 필드를 채워주세요.');
-    //   return;
-    // }
-
-    // const reviewFormData = new FormData();
-    // reviewFormData.append('SGIIDX', studyRoom);
-    // reviewFormData.append('SRCONTENT', content);
-    // reviewFormData.append('SRSTAR', rating);
-    // reviewFormData.append('TSHTLCONTENT', tags);
-    // reviewFormData.append('MIDX', midx); // MIDX 추가
-
-  //   for (let [key, value] of formData.entries()) {
-  //   if (value instanceof File) {
-  //     console.log(`${key}: ${value.name} (${value.size} bytes)`); // Log file name and size
-  //   } else {
-  //     console.log(`${key}: ${value}`); // Log other form data
-  //   }
-  // }
-  // reviewFormData .entries() 매서드 객체 FormData에 포함된 몯느 키-값 쌍의 반복자를 반환. 배열로 저장
-  //   try {
-  //     const reviewResponse = await axios.post('http://localhost:8099/api/reviews', reviewFormData );
-  //     if (reviewResponse.status !== 200) {
-  //       throw new Error('서버에 데이터를 저장하는 데 실패했습니다.');
-  //     }
-  //     alert('리뷰가 성공적으로 저장되었습니다.');
-  //     console.log(reviewResponse.data);
-  //
-  //     const imageFormData = new FormData();
-  //       uploadedFiles.forEach((uploadedFile) => {
-  //       imageFormData.append('SRIIMG', uploadedFile.file.name); // file 객체 자체를 추가x 나는 이미지 이름을 넣고 싶음
-  //     });
-  //     const imageResponse = await axios.post('http://localhost:8099/api/reviews/img', imageFormData, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //     });
-  //     if (imageResponse.status !== 200) {
-  //       throw new Error('이미지 데이터를 저장하는 데 실패했습니다.');
-  //     }
-  //     console.log('이미지가 성공적으로 저장되었습니다:', imageResponse.data);
-  //
-  //
-  //   } catch (error) {
-  //     console.error("Error:", error.response ? error.response.status : error.message);
-  //     alert(error.message);
-  //   }
-
-  
 
 
   return (

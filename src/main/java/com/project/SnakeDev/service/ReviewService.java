@@ -1,15 +1,30 @@
 package com.project.SnakeDev.service;
 
-import com.project.SnakeDev.vo.ReviewVo;
+import com.project.SnakeDev.vo.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 
 public interface ReviewService {
-    public int InsertReview(ReviewVo reviewVo);
+    int InsertReview(ReviewVo reviewVo);
+
+    int insertReviewImage(String sriImg);
+    // int InsertReviewImg(ReviewImgVo reviewImgVo);
+
+    int InsertReviewTag(String TSHTLContent);
+
+    int InsertReviewHasTag();
 
 
+//    List<ReviewVo> getAllReviews1(String srIdx);
+
+    ReviewDetailsVo getReviewDetails(Integer sridx);
+
+    List<ReviewDetailsVo> getReviewAll();
+    String getMIdx(String MemberId);
 
 }
 

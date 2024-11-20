@@ -114,6 +114,7 @@
                  inner join tbl_member tma
                             on tm.midx = tma.midx
         where tma.memberid = #{memberId}
+        order by tm.comregdate desc
     </select>
 
     <select id="getReviewInfo" resultType="com.project.SnakeDev.vo.StudyReviewVo">
@@ -123,13 +124,14 @@
             tm.midx as midx,
             tm.srcontent as srcontent,
             tm.srstar as srstar,
-            tm.srregdate as srregdate,
+            to_char(tm.srregdate, 'YYYY-mm-dd HH24:Mi:ss') as srregdate,
             tma.memberId as memberId,
             tma.memberName as memberName
         from tbl_studyReview tm
                  inner join tbl_member tma
                             on tm.midx = tma.midx
         where memberid = #{memberId}
+        order by tm.srregdate desc
     </select>
 
     <select id="mypageGroupCheck" resultMap="StudyGOrderVo">
