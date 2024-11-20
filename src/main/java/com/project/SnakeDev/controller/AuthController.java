@@ -7,6 +7,9 @@ import com.project.SnakeDev.service.AuthService;
 import com.project.SnakeDev.service.Impl.AuthServiceImpl;
 import com.project.SnakeDev.vo.AuthVo;
 import com.project.SnakeDev.vo.dto.AuthDto;
+import com.project.SnakeDev.vo.kakaoVo;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -36,9 +39,11 @@ public class AuthController {
 
     @PostMapping(value = "/join")
     public ResponseEntity<String> join(@RequestBody Map<String, Object> data) {
+        System.out.println(data);
         try {
             AuthVo authVo = VOMapper.mapToVO(data, AuthVo.class);
-//            System.out.println(authVo.toString());
+            System.out.println(authVo.toString());
+
             if(authService.InsertJoin(authVo) > 0) {
                 if(authService.InsertMemberAddress(authVo) > 0) {
                     return ResponseEntity.ok("ok");
@@ -103,44 +108,36 @@ public class AuthController {
     @PostMapping("/kakao")
     public ResponseEntity<?> kakaoCallback(@RequestBody Map<String, String> request) {
         String code = request.get("code");
-        String clinetid = "07644519945dac6578a2e7a01835e7de";
+//        String clinetid = "07644519945dac6578a2e7a01835e7de";
 
-//        try {
-//            System.out.println(code);
-//            if (code == null || code.isEmpty()) {
-//                return ResponseEntity.badRequest().body("Authorization Code is missing");
-//            }
-//
-//            String tokenUrl = "https://kauth.kakao.com/oauth/token";
-//
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//
-//            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//            params.add("grant_type", "authorization_code");
-//            params.add("client_id", clinetid);
-//            params.add("redirect_uri", "http://localhost:3000/oauth");
-//            params.add("code", code);
-//
-//            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
-//
-//            RestTemplate restTemplate = new RestTemplate();
-//
-//            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, entity, Map.class);
-//            System.out.println("Kakao Response: " + response.getBody());
-//            return ResponseEntity.ok(response.getBody());
-//        } catch (HttpClientErrorException e) {
-//            System.err.println("Kakao API Error: " + e.getStatusCode() + e.getResponseBodyAsString());
-//            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
-//        }
         try {
-//            String code = request.get("code");
-//            String[] access_token = authService.getKakaoAccessToken(code);
-//            String access_found_in_token = access_token[0];
             return ResponseEntity.ok(authService.kakaoSignUp(code));
         } catch (Exception e) {
             e.printStackTrace(); // 오류를 콘솔에 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
+    }
+    private final String secretKey = "WmZGdZkZmZmZXmZGdXJmZGVlYmRmY2RmZGZxdXVjaW1pZGdlZGVsYmRnYW1r==";
+    @GetMapping("/userinfo")
+    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String token) {
+        try {
+            System.out.println(token);
+
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // JWT에서 사용자 정보 추출
+            String email = claims.get("MemberId", String.class);
+            String nickname = claims.get("MemberName", String.class);
+            AuthVo authVo = new AuthVo();
+            authVo.setMemberId(email);
+            authVo.setMemberName(nickname);
+            // 사용자 정보 응답
+            return ResponseEntity.ok(authVo);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
         }
     }
 
