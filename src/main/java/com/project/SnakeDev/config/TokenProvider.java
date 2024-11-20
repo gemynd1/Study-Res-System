@@ -4,6 +4,8 @@ import com.project.SnakeDev.vo.AuthVo;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -13,7 +15,19 @@ import static java.lang.Integer.parseInt;
 
 @Component
 public class TokenProvider {
-    private static final String SECRET_KEY  = "WmZGdZkZmZmZXmZGdXJmZGVlYmRmY2RmZGZxdXVjaW1pZGdlZGVsYmRnYW1r==";
+
+//    @Value("${SECRET_KEY}")
+//    private static final String SECRET_KEY = null;
+
+    @Value("${SECRET_KEY}")
+    private String secretKeyInstance; // 비정적 변수
+
+    private static String SECRET_KEY; // 정적 변수
+
+    @PostConstruct
+    private void init() {
+        SECRET_KEY = secretKeyInstance;
+    }
 
     public static String create(AuthVo user) {
         return Jwts.builder()
