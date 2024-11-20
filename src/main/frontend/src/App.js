@@ -23,6 +23,7 @@ import MypageReview from "./Components/Content/Mypage/MypageReview";
 import MypageAdd from "./Components/Content/Mypage/MypageAdd";
 import Login from "./Components/Content/Account/login";
 import Join from "./Components/Content/Account/join";
+import OAuth from "./Components/Content/Account/oauth";
 import MypageAccount from "./Components/Content/Mypage/MypageAccount";
 
 import CustomerService from "./Components/Content/CustomerHelp/CustomerService";
@@ -55,7 +56,7 @@ const ScrollToTop  = () => {
 function AppContent() {
   const location = useLocation();
   const hideHeaderLogin =
-    location.pathname === "/login" || location.pathname === "/join" || location.pathname === "/paysuccess";
+    location.pathname === "/login" || location.pathname === "/join" || location.pathname === "/paysuccess" || location.pathname === "/oauth";
 
   // useEffect(() => {
   //   axios.get('/api/hello')
@@ -64,12 +65,6 @@ function AppContent() {
   //       })
   //       .catch(error => console.log(error))
   // }, []);
-
-  const [showChat, setShowChat] = useState(true);
-
-  const handleClick = () => {
-    setShowChat(false);
-  }
 
   return (
     <>
@@ -101,6 +96,7 @@ function AppContent() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
+        <Route path="/oauth" element={<OAuth />} />
 
           {/* mypage 따로 나눌수 있음 git merge */}
           <Route path="/mypage/*" element={<Mypage />} />
@@ -115,9 +111,12 @@ function AppContent() {
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
 
+
           <Route path="/chating/chat/*" element={<Chat />} />  {/* 채팅 */}
           <Route path="/chating/join2" element={<Join2 />} /> {/* 채팅 로그인 */}
+
           <Route path="/loading" element={<Loading />} />
+
       </Routes>
       {!hideHeaderLogin && <Footer />}
 

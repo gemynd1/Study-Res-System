@@ -36,6 +36,10 @@ public class StudyGInfoVo {
     this.SGIIdx = SGIIdx;
   }
 
+  public StudyGInfoVo(String SGIContent1) {
+    this.SGIContent1 = SGIContent1;
+  }
+
   // 룸 정보와 이미지 정보 vo
   public StudyGInfoVo(Integer SGINum, String SGIContent1, String SGIContent2, StudyGImgVo studyGImgVo) {
     this.SGINum = SGINum;

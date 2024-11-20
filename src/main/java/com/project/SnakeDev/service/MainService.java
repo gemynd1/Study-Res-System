@@ -16,7 +16,13 @@ public interface MainService {
     public int InsertOrderPay(String MemberId,StudyOrderPayVo studyOrderPayVo);
     public int InsertGOrderWait(String MemberId, StudyGOrderVo studyGOrderVo);
     public int InsertInOrderWait(HashMap<String, Object> params);
-    public int saveTemplateOrder(String TTOIdx, String requestData);
-    public String selectTemplateOrder(String ordernum);
-    public int updateTemplateOrder(String ordernum);
+    public int saveTemplateOrder(String TTOIdx, String TTOContent, String MemberId);
+    public String selectTemplateOrder(String orderid);
+    public int updateTemplateOrder(String orderid);
+    public AuthVo myTimeInfo(String MemberId);
+    public int selectStudyininfo(String MemberId);
+    public int selectOptionTime(String MemberId);
+    public int selectOptionTime2(String MemberId, String selectedOption);
+    public int updateIntime(String MemberId, String selectedOption);
+    public int updateStudyInInfo(Integer seatNum, StudyInInfoVo studyInInfoVo, String MemberId);
 }
