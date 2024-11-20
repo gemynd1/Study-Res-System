@@ -114,7 +114,7 @@ const CustomerService = () => {
                             </div>
                         </div>
                         <div className="BodyText">
-                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                            <span>개인좌석은 마이페이지에서 시간충전 후 메인페이지에서 예약 후 이용해주세요.</span>
                         </div>
                     </div>
                 )}
@@ -131,7 +131,7 @@ const CustomerService = () => {
                             </div>
                         </div>
                         <div className="BodyText">
-                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                            <span>룸 대여 이용방법은 메인페이지에서 원하시는 룸을 선택하신후 예약을 진행해주시길 바랍니다.</span>
                         </div>
                     </div>
                 )}
@@ -167,7 +167,7 @@ const CustomerService = () => {
                             </div>
                         </div>
                         <div className="BodyText">
-                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                            <span>게시판에서는 원하시는 글을 작성하실수 있습니다. 또한 원하시는 모임을 모집할 수 있습니다.</span>
                         </div>
                     </div>
                 )}
@@ -175,7 +175,7 @@ const CustomerService = () => {
                     <div className="newDiv">
                         <div className="newDivHeader">
                             <div className="HeaderText">
-                                <span>Q. 룸 대여 모임 안내</span>
+                                <span>Q. 채팅방 이용 안내</span>
                                 <button onClick={handleCloseClick} className="closeBtn">
                                     <img src="/img/icon/close.png" alt="닫기"
                                          style={{width: "30px", height: "30px", marginRight: "50px"}}/>
@@ -183,7 +183,7 @@ const CustomerService = () => {
                             </div>
                         </div>
                         <div className="BodyText">
-                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                            <span>각각의 모임이 있으시면 각 모임에 대한 채팅을 이용하실 수 있습니다.</span>
                         </div>
                     </div>
                 )}
@@ -199,7 +199,7 @@ const CustomerService = () => {
                             </div>
                         </div>
                         <div className="BodyText">
-                            <span>결제 문의는 고객센터로 문의 바랍니다.</span>
+                            <span>인원추가를 하실려면 고객센터로 문의해주시길 바랍니다.</span>
                         </div>
                     </div>
                 )}

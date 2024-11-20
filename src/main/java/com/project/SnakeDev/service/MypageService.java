@@ -35,6 +35,8 @@ public interface MypageService {
     // 회원 탈퇴
     AuthVo ExitMemberInfo (String memberId);
 
+    boolean deleteMember(String memberId); // 회원 탈퇴
+
     // 고객센터 문의
     int InsertCustomerHelp(CustomerHelpVo customerHelpVo);
 

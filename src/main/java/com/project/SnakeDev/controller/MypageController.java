@@ -139,5 +139,25 @@ public class MypageController {
         return ResponseEntity.ok(customerView);
     }
 
+    @PostMapping("/mypage/mypageExit")
+    public ResponseEntity<String> mypageExit(@RequestBody Map<String, String> requestData) {
+        String memberId = requestData.get("memberId");
+
+        if (memberId == null || memberId.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Member ID cannot be empty.");
+        }
+
+        try {
+            boolean isDeleted = mypageService.deleteMember(memberId);
+
+            if (isDeleted) {
+                return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원 정보를 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+        }
+    }
 
 }

@@ -39,6 +39,8 @@ public interface MypageMapper {
     // 회원탈퇴
     AuthVo ExitMemberInfo(@Param("memberId") String memberId);
 
+    int deleteMember(String memberId); // 회원 삭제 메서드
+
     // 고객센터 문의작성
     int InsertCustomerHelp(CustomerHelpVo customerHelpVo);
 
