@@ -16,7 +16,7 @@ const ReviewCard = ({ review }) => {
             
                 {review.sriImg && review.sriImg.length > 0 ? (
                     <img
-                        src={`http://localhost:8099/${review.sriImg[0]}`}
+                        src={`http://localhost:8099/${review.sriImg}`}
                         alt="review"
                         className="review-card-image"
                     />
@@ -32,14 +32,14 @@ const ReviewCard = ({ review }) => {
                     <div className="review-rating yellow-star">
                         {"★".repeat(review.srStar)}
                     </div>
-                    <div className="study-room">스터디룸 {review.sgiIdx}</div>
+                    <div className="study-room">{review.sgicontent1}</div>
                 </div>
                 <p className="review-text">{review.srContent}</p>
                 <div className="review-footer">
                     {/* 태그를 표시 (배열 형태이므로 join 사용) */}
                     <div className="color">
                         {review.tshtlcontent && review.tshtlcontent.length > 0
-                            ? review.tshtlcontent.join(", ")
+                            ? review.tshtlcontent.split(", ")
                             : "No tags available"}
                     </div>
                     <span>{review.srRegDate.split("T")[0]}</span>
@@ -102,7 +102,7 @@ const Review = () => {
             <div className="review__page__main__wrap">
                 <div className="review__page__main">
                     <div className="flex1">
-                        <UnstyledInputBasic />
+                        {/* <UnstyledInputBasic /> */}
                         <UnstyledSelectForm onChange={handleReviewStudyroom} />
                     </div>
                     <button onClick={handleLogin}>글쓰기</button>
@@ -118,7 +118,7 @@ const Review = () => {
                     ))}
                 </div>
             </div>
-            <button className="more-button">MORE</button>
+            {/* <button className="more-button">MORE</button> */}
         </div>
     );
 };

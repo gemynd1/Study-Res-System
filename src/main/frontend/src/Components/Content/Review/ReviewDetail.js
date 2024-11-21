@@ -9,6 +9,7 @@ const ReviewDetail = () => {
   const { srIdx } = useParams();
   const { state } = useLocation();
   const [review, setReview] = useState([]);
+  const [reviewimg, setReviewimg] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +24,13 @@ const ReviewDetail = () => {
             headers: { 'Content-Type': 'application/json' },
           })
           .then((response) => {
-            console.log(response.data);
+            // if(response.data['sriImg'] != undefined) {
+            const img = response.data['sriImg'];
+            const imageArray = img ? img.split(", ").map(item => item.trim()) : [];
+            // console.log(imageArray)
+            setReviewimg(imageArray);
+            // }
+            // console.log(response.data);
             setReview(response.data);
           })
           .catch((error) => {
@@ -32,7 +39,9 @@ const ReviewDetail = () => {
     // }
   }, []);
 
-  useEffect(() => {console.log(review)}, [review]);
+  useEffect(() => {
+    console.log(review, reviewimg)
+  }, [review, reviewimg]);
 
   // if (!review) {
   //   return <div>Loading...</div>
@@ -54,9 +63,10 @@ const ReviewDetail = () => {
                 내용 : {review.srContent}
               </div>
               <div className='review__detail__reivew-wrap--img'>
-                {review.sriImg && review.sriImg.length > 0 ? (
-                  review.sriImg.map((img, index) => (
-                    <img key={index} className='review__detail_review--img' src={`http://localhost:8099/${img}`} alt="review"/>
+                {reviewimg.length > 0 ? (
+                  reviewimg.map((img, index) => (
+                    <img key={index} className='review__detail_review--img' 
+                    src={`http://localhost:8099/${img}`} alt="review"/>
                   ))
                 ) : (
                   <img

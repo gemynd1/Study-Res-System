@@ -37,7 +37,7 @@ public class ReviewController {
     }
     @GetMapping("/review/details")
     public ReviewDetailsVo getReviewDetails(@RequestParam("srIdx") Integer sridx) {
-        System.out.println(sridx);
+//        System.out.println(sridx);
         return reviewService.getReviewDetails(sridx);
     }
 

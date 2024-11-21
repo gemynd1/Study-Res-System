@@ -9,15 +9,18 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 public class ReviewDetailsVo {
-    private List<String> TSHTLContent; // 태그 내용 리스트
+    private String TSHTLContent;
+//    private List<String> TSHTLContent; // 태그 내용 리스트
     private Integer srIdx;       // 스터디룸 게시글 번호
     private Integer sgiIdx;      // 스터디룸 idx
     private Integer mIdx;        // 회원키
     private Integer srStar;      // 별점
     private String srContent;    // 내용
-    private List<String> sriImg; // 이미지 리스트
+    private String sriImg;
+//    private List<String> sriImg; // 이미지 리스트
     private Date srRegDate;      // 생성일
     private String memberName;
+    private String SGIContent1;
 
     public ReviewDetailsVo() {}
 
@@ -25,12 +28,21 @@ public class ReviewDetailsVo {
 
     public void setMemberName(String memberName) { this.memberName = memberName; }
 
-    public List<String> getTSHTLContent() {
+//    public List<String> getTSHTLContent() {
+//        return TSHTLContent;
+//    }
+//
+//    public void setTSHTLContent(String TSHTLContent) {
+//        this.TSHTLContent = Arrays.asList(TSHTLContent.split(",\\s*"));
+//    }
+
+
+    public String getTSHTLContent() {
         return TSHTLContent;
     }
 
     public void setTSHTLContent(String TSHTLContent) {
-        this.TSHTLContent = Arrays.asList(TSHTLContent.split(",\\s*"));
+        this.TSHTLContent = TSHTLContent;
     }
 
     public Integer getSrIdx() {
@@ -73,12 +85,21 @@ public class ReviewDetailsVo {
         this.srContent = srContent;
     }
 
-    public List<String> getSriImg() {
+//    public List<String> getSriImg() {
+//        return sriImg;
+//    }
+//
+//    public void setSriImg(String sriImg) {
+//        this.sriImg = Arrays.asList(sriImg.split(",\\s*"));
+//    }
+
+
+    public String getSriImg() {
         return sriImg;
     }
 
     public void setSriImg(String sriImg) {
-        this.sriImg = Arrays.asList(sriImg.split(",\\s*"));
+        this.sriImg = sriImg;
     }
 
     public Date getSrRegDate() {
@@ -88,4 +109,20 @@ public class ReviewDetailsVo {
     public void setSrRegDate(Date srRegDate) {
         this.srRegDate = srRegDate;
     }
+
+//    public void setTSHTLContent(List<String> TSHTLContent) {
+//        this.TSHTLContent = TSHTLContent;
+//    }
+
+    public String getSGIContent1() {
+        return SGIContent1;
+    }
+
+    public void setSGIContent1(String SGIContent1) {
+        this.SGIContent1 = SGIContent1;
+    }
+
+//    public void setSriImg(List<String> sriImg) {
+//        this.sriImg = sriImg;
+//    }
 }
