@@ -35,8 +35,9 @@ public class ReviewController {
     public List<ReviewDetailsVo> getReviewAll(){
         return reviewService.getReviewAll();
     }
-    @GetMapping("/reviews/details")
-    public ReviewDetailsVo getReviewDetails(@RequestParam("sridx") Integer sridx) {
+    @GetMapping("/review/details")
+    public ReviewDetailsVo getReviewDetails(@RequestParam("srIdx") Integer sridx) {
+//        System.out.println(sridx);
         return reviewService.getReviewDetails(sridx);
     }
 
@@ -91,6 +92,7 @@ public class ReviewController {
                                               @RequestParam("MemberId") String MemberId) {
         try {
             String midx = reviewService.getMIdx(MemberId);
+
             // 저장 디렉토리 확인 및 생성
             File directory = new File(UPLOAD_DIR + "/" + midx);
             Files.createDirectories(Paths.get(UPLOAD_DIR));

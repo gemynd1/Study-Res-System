@@ -74,7 +74,7 @@ function AppContent() {
         <Route path="/info" element={<Info />} />
         <Route path="/board" element={<Board />} />
         <Route path="/review" element={<Review />} />
-        <Route path="/review/:id" element={<ReviewDetail/>} />
+        <Route path="/review/:srIdx" element={<ReviewDetail/>} />
 
         <Route
           path="/CustomerHelp/customerService"
@@ -107,7 +107,7 @@ function AppContent() {
           <Route path="/mypage/mypageAdd" element={<MypageAdd />} />
           <Route path="/mypage/mypageCheck" element={<MypageCheck />} />
 
-          <Route  path="/teamdetail" />
+          <Route path="/teamdetail" />
           <Route path="/teamdetail/:sgiId" element={<TeamDetail />} />
           <Route path="/paysuccess" element={<PaySuccess />} />  {/* 결제 성공창 */}
 

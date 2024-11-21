@@ -16,11 +16,11 @@ export default function UnstyledSelectForm({ onChange }) {
       {/* Material UI 기본 Select 사용 */}
       <Select defaultValue="" onChange={handleChange} displayEmpty>
         <MenuItem value="">전체 스터디룸</MenuItem>
-        <MenuItem value={1}>스터디룸1</MenuItem>
-        <MenuItem value={2}>스터디룸2</MenuItem>
-        <MenuItem value={3}>스터디룸3</MenuItem>
-        <MenuItem value={4}>스터디룸4</MenuItem>
-        <MenuItem value={5}>스터디룸5</MenuItem>
+        <MenuItem value={1}>수성방</MenuItem>
+        <MenuItem value={2}>금성방</MenuItem>
+        <MenuItem value={3}>지구방</MenuItem>
+        <MenuItem value={4}>화성방</MenuItem>
+        <MenuItem value={5}>달방</MenuItem>
       </Select>
     </form>
   );
