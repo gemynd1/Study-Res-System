@@ -105,7 +105,11 @@ const Review = () => {
                         {/* <UnstyledInputBasic /> */}
                         <UnstyledSelectForm onChange={handleReviewStudyroom} />
                     </div>
-                    <button onClick={handleLogin}>글쓰기</button>
+                    {sessionStorage.getItem("id") != undefined ? (
+                        <button onClick={handleLogin}>글쓰기</button>    
+                    ) : (
+                        ''
+                    )}
                 </div>
 
                 <div className="review-grid">

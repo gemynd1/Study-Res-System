@@ -75,16 +75,6 @@ const ReviewDetail = () => {
                     alt="default-review"
                   />
                 )}
-                {/* <img className='review__detail_review--img' src={review.sriImg[0]
-                    ? `http://localhost:8099/${review.sriImg[0]}`
-                    : "/img/banner.png"} alt="review"/>
-                <img className='review__detail_review--img' src={review.sriImg[1]
-                    ? `http://localhost:8099/${review.sriImg[1]}`
-                    : "/img/banner.png"} alt="review"/>
-                <img className='review__detail_review--img' src={review.sriImg[2]
-                    ? `http://localhost:8099/${review.sriImg[2]}`
-                    : "/img/banner.png"} alt="review"/> */}
-
               </div>
               <div className='review__detail__reivew--date'>{new Date(review.srRegDate).toLocaleString()}</div>
             </div>

@@ -102,6 +102,7 @@
 
     <select id="getBoardInfo" resultType="com.project.SnakeDev.vo.StudyCommunityVo">
         select
+            tm.comidx as comidx,
             tm.comcateidx as comcateidx,
             tm.midx as midx,
             tm.comtitle as comtitle,
