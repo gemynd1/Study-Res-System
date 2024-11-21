@@ -45,6 +45,36 @@
         ]]>
 </insert>
 
+<<<<<<< HEAD
+=======
+<!-- 상세 조회 -->
+<!--    <select id="getReviewDetails" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">-->
+<!--        SELECT-->
+<!--            tm.sridx AS srIdx,-->
+<!--            tm.srcontent AS srContent,-->
+<!--            tm.sgiidx AS sgiIdx,-->
+<!--            tm.midx AS mIdx,-->
+<!--            tm.srstar AS srStar,-->
+<!--            tm.srregdate AS srRegDate,-->
+<!--            (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ')-->
+<!--                        WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)-->
+<!--        FROM TBL_STUDYHASTAG tma-->
+<!--            LEFT JOIN TBL_STUDYHASTAGLIST tmb-->
+<!--        ON tma.TSHTLIDX = tmb.TSHTLIDX-->
+<!--        WHERE tma.sridx = tm.sridx) AS TSHTLContent,-->
+<!--            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ')-->
+<!--            WITHIN GROUP (ORDER BY tmc.sriimg)-->
+<!--        FROM TBL_studyreviewimg tmc-->
+<!--        WHERE tmc.sridx = tm.sridx) AS sriImg-->
+<!--        FROM TBL_STUDYREVIEW tm-->
+<!--        WHERE tm.sridx = #{sridx}-->
+<!--    </select>-->
+<!--
+    dual테이블 -> Oracle 더미 테이블 단일 행과 열 가짐. Oracle에 기본적으로
+     존재, 목적 계산,상수 반환 ,서브 쿼리 실행 등 위해 select 문을 작성할 때
+     빈 테이블로 활용
+-->
+>>>>>>> fbb0555aaa5c8a33012837bdb22a90c364350f8b
 
     <!-- 상세 조회 -->
     <!--    <select id="getReviewDetails" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">-->
@@ -93,14 +123,25 @@
             tm.midx AS mIdx,
             tm.srstar AS srStar,
             tm.srregdate AS srRegDate,
+            tmm.memberName as memberName,
             (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
+<<<<<<< HEAD
         FROM TBL_STUDYHASTAG tma
             LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
         WHERE tma.sridx = tm.sridx) AS TSHTLContent,
             (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
         FROM TBL_studyreviewimg tmc
         WHERE tmc.sridx = tm.sridx) AS sriImg
+=======
+            FROM TBL_STUDYHASTAG tma
+                LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
+            WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+                (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+            FROM TBL_studyreviewimg tmc
+            WHERE tmc.sridx = tm.sridx) AS sriImg
+>>>>>>> fbb0555aaa5c8a33012837bdb22a90c364350f8b
         FROM TBL_STUDYREVIEW tm
+            inner join tbl_member tmm on tm.midx = tmm.midx
         WHERE tm.sridx = #{sridx}
     </select>
 
@@ -110,9 +151,11 @@
             tm.sridx AS srIdx,
             tm.srcontent AS srContent,
             tm.sgiidx AS sgiIdx,
+            tsg.SGIContent1 as SGIContent1,
             tm.midx AS mIdx,
             tm.srstar AS srStar,
             tm.srregdate AS srRegDate,
+<<<<<<< HEAD
             tmb.membername AS memberName, -- memberName 추가
             -- 해시태그 리스트
             (SELECT LISTAGG(DISTINCT tmb2.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb2.TSHTLCONTENT)
@@ -125,6 +168,28 @@
         WHERE tmc.sridx = tm.sridx) AS sriImg
         FROM TBL_STUDYREVIEW tm
             LEFT JOIN TBL_MEMBER tmb ON tm.midx = tmb.midx -- TBL_MEMBER와 TBL_STUDYREVIEW를 mIdx로 연결
+=======
+            tmb.membername AS memberName,
+            -- 해시태그 리스트
+            (SELECT LISTAGG(DISTINCT tmb2.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb2.TSHTLCONTENT)
+            FROM TBL_STUDYHASTAG tma
+                LEFT JOIN TBL_STUDYHASTAGLIST tmb2 ON tma.TSHTLIDX = tmb2.TSHTLIDX
+            WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+            (select rs.sriimg
+                from
+                    (
+                        select
+                            a.*,
+                            row_number() over (partition by sridx order by sriimg) as rn
+                        from tbl_studyreviewimg a
+                        where a.sridx = tm.sridx
+                    ) rs
+                where rs.rn = 1
+            ) as sriimg
+            FROM TBL_STUDYREVIEW tm
+            LEFT JOIN TBL_MEMBER tmb ON tm.midx = tmb.midx
+            inner join tbl_studyginfo tsg on tm.sgiidx = tsg.sgiidx
+>>>>>>> fbb0555aaa5c8a33012837bdb22a90c364350f8b
         order by tm.srregdate desc
     </select>
     <select id="getMIdx" resultType="string">

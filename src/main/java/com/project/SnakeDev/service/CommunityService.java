@@ -64,5 +64,5 @@ public interface CommunityService {
 
     public Boolean insertAlarm(Map<String, Object> data);
 
-    public List<ChatRoomVo> selectChatRoomInfo();
+    public List<ChatRoomVo> selectChatRoomInfo(int comIdx);
 }

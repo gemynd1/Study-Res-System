@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Link, Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Pagination from "./Pagination";
 import MemberDeleteModal from "./MemberDeleteModal";
@@ -11,7 +11,7 @@ const MypageBoard = () => {
     const [resultsPerpage, setResultsPerpage] = useState(10);
 
     const [id, setId] = useState(sessionStorage.getItem("id"));
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get("http://localhost:8099/api/mypage/mypageBoard",
@@ -146,9 +146,13 @@ const MypageBoard = () => {
                                 <tbody>
                                     {currentResults != '' ?
                                         currentResults.map((result, index) => (
-                                            <tr key={index}>
+                                            <tr key={index} d>
                                                 <td>{index + 1}</td>
-                                                <td>{result.comcontent}</td>
+                                                <td>
+                                                    <Link to={`/board/post/?comIdx=${result.comidx}`}>
+                                                    {result.comcontent}
+                                                    </Link>
+                                                </td>
                                                 <td>{result.memberName}</td>
                                                 <td>{result.comintodate}</td>
                                             </tr>

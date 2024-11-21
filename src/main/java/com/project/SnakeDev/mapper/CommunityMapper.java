@@ -64,5 +64,5 @@ public interface CommunityMapper {
 
     Boolean insertAlarm(Map<String, Object> data);
 
-    List<ChatRoomVo> selectChatRoomInfo();
+    List<ChatRoomVo> selectChatRoomInfo(int comIdx);
 }

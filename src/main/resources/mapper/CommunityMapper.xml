@@ -219,55 +219,55 @@
 
     <update id="updateCommunity" parameterType="map">
         update tbl_community
-            set ComIdx = #{ComIdx},
-                ComCateIdx = (select ComCateIdx from tbl_community_category where comCateName = #{comCategoryName}),
-                ComTitle = #{ComTitle},
-                ComContent = #{ComContent},
-                ComRegDate = TO_DATE(#{ComRegDate}, 'YYYY-MM-DD HH24:MI:SS'),
-                ComDelDate = TO_DATE(#{ComDelDate}, 'YYYY-MM-DD HH24:MI:SS'),
-                ComUpDate = TO_DATE(#{ComUpDate}, 'YYYY-MM-DD HH24:MI:SS'),
-                ComintoDate = #{ComintoDate},
-                ComToCount = #{ComToCount},
-                ComStartDate = TO_DATE(#{ComStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
-                ComEndDate = TO_DATE(#{ComEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
+            set ComIdx = #{ComIdx, jdbcType=INTEGER},
+                ComCateIdx = (select ComCateIdx from tbl_community_category where comCateName = #{comCategoryName, jdbcType=VARCHAR}),
+                ComTitle = #{ComTitle, jdbcType=VARCHAR},
+                ComContent = #{ComContent, jdbcType=VARCHAR},
+                ComRegDate = TO_DATE(#{ComRegDate, jdbcType=VARCHAR}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComDelDate = TO_DATE(#{ComDelDate, jdbcType=VARCHAR}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComUpDate = TO_DATE(#{ComUpDate, jdbcType=VARCHAR}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComintoDate = #{ComintoDate, jdbcType=VARCHAR},
+                ComToCount = #{ComToCount, jdbcType=INTEGER},
+                ComStartDate = TO_DATE(#{ComStartDate, jdbcType=VARCHAR}, 'YYYY-MM-DD HH24:MI:SS'),
+                ComEndDate = TO_DATE(#{ComEndDate, jdbcType=VARCHAR}, 'YYYY-MM-DD HH24:MI:SS'),
                 ComPlace =
                 <choose>
                     <when test="ComAddress == '스터디룸'">
                         (select sgicontent1 from tbl_studyginfo where sgiidx = #{currentStudyRoom})
                     </when>
                     <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
-                        #{enroll_company.detailedAddress}
+                        #{enroll_company.detailedAddress, jdbcType=INTEGER}
                     </when>
                     <otherwise>
-                        #{ComPlace}
+                        #{ComPlace, jdbcType=VARCHAR}
                     </otherwise>
                 </choose>,
                 ComZipcode =
                 <choose>
                     <when test="ComAddress == '스터디룸'">
-                        #{ComZipcode}
+                        #{ComZipcode, jdbcType=VARCHAR}
                     </when>
                     <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
-                        #{enroll_company.zonecode}
+                        #{enroll_company.zonecode, jdbcType=VARCHAR}
                     </when>
                     <otherwise>
-                        #{ComZipcode}
+                        #{ComZipcode, jdbcType=VARCHAR}
                     </otherwise>
                 </choose>,
                 ComAddress =
                 <choose>
                     <when test="ComAddress == '스터디룸'">
-                        #{ComAddress}
+                        #{ComAddress, jdbcType=VARCHAR}
                     </when>
                     <when test="!enroll_company.zonecode.isEmpty() and enroll_company.zonecode != null">
-                        #{enroll_company.address}
+                        #{enroll_company.address, jdbcType=VARCHAR}
                     </when>
                     <otherwise>
-                        #{ComAddress}
+                        #{ComAddress, jdbcType=VARCHAR}
                     </otherwise>
                 </choose>,
-                ComReportCount = #{ComReportCount}
-            where comidx = #{ComIdx}
+                ComReportCount = #{ComReportCount, jdbcType=INTEGER}
+            where comidx = #{ComIdx, jdbcType=INTEGER}
     </update>
 
     <delete id="deleteTogetherStudy" parameterType="map">
@@ -388,7 +388,15 @@
         insert into tbl_member_alarm values (MAlarm_seq.NEXTVAL, (select midx from tbl_member where memberid = #{memberId}), #{alarm_title}, #{alarm_content}, SYSDATE)
     </insert>
 
-    <select id="selectChatRoomInfo" resultType="com.project.SnakeDev.vo.ChatRoomVo">
-        select * from tbl_chatroom where comidx = (select max(comidx) from tbl_community)
+    <select id="selectChatRoomInfo" parameterType="int" resultType="com.project.SnakeDev.vo.ChatRoomVo">
+        select * from tbl_chatroom
+        <where>
+            <if test="comIdx != 0">
+                comidx = #{comIdx}
+            </if>
+            <if test="comIdx == 0">
+                comidx = (select max(comidx) from tbl_community)
+            </if>
+        </where>
     </select>
 </mapper>

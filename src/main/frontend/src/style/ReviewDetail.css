@@ -8,15 +8,19 @@
   margin-top: 10px; /* 상단 여백 추가 */
 }
 
+.review__detail {
+  background-color: #f6f6f6;
+}
+
 .review__detail--main{
   width: 1220px;
   height: auto;
   margin: auto;
   box-sizing: border-box;
-  margin-top: 200px;
+  margin-top: 40px;
 }
 .reivew__detail__reivew{
-  padding: 76px 120px;
+  padding: 40px 120px;
 }
 .profile-flex{
   display: flex;

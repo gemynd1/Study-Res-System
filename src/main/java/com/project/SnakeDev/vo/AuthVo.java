@@ -21,7 +21,7 @@ public class AuthVo {
     private Date MRegDate;
     private Date MStartinDate;
     private Date MEndinDate;
-    private String loginType;
+    private String LoginType;
 
     private Integer ComIdx;
     private Integer ChatIdx;
@@ -142,7 +142,7 @@ public class AuthVo {
     }
 
     // kakao
-    public AuthVo(Integer MIdx, String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude, String loginType) {
+    public AuthVo(Integer MIdx, String memberName, String memberId, String memberPw, String memberPhone, String MAaddress, String MZonecode, String MDetailaddress, double MAlatitude, double MAlongitude, String LoginType) {
         this.MIdx = MIdx;
         MemberName = memberName;
         MemberId = memberId;
@@ -153,7 +153,7 @@ public class AuthVo {
         this.MDetailaddress = MDetailaddress;
         this.MAlatitude = MAlatitude;
         this.MAlongitude = MAlongitude;
-        this.loginType = loginType;
+        this.LoginType = LoginType;
     }
 
     public Integer getMIdx() {
@@ -269,11 +269,11 @@ public class AuthVo {
     }
 
     public String getLoginType() {
-        return loginType;
+        return LoginType;
     }
 
     public void setLoginType(String loginType) {
-        this.loginType = loginType;
+        this.LoginType = loginType;
     }
 
     @Override
@@ -290,7 +290,7 @@ public class AuthVo {
                 ", MAlatitude=" + MAlatitude +
                 ", MAlongitude=" + MAlongitude +
                 ", MRegDate=" + MRegDate +
-                ", loginType=" + loginType +
+                ", loginType=" + LoginType +
                 '}';
     }
 

@@ -96,6 +96,10 @@ public class CommunityController {
                                           @RequestParam("currentPage") String currentPage,
                                           @RequestParam("commentSize") String commentSize) {
 
+        System.out.print("comIdx: " + comIdx);
+        System.out.print("currentPage: " + currentPage);
+        System.out.print("commentSize: " + commentSize);
+
         return ResponseEntity.ok(communityService.ViewComment(comIdx, currentPage, commentSize));
     }
 
@@ -132,8 +136,9 @@ public class CommunityController {
 
             Boolean rs1 = communityService.insertCommunity(data);
             Boolean rs2 = communityService.insertChatName(data);
+            int comIdx = 0;
 
-            List<ChatRoomVo> chatRoomInfo = communityService.selectChatRoomInfo();
+            List<ChatRoomVo> chatRoomInfo = communityService.selectChatRoomInfo(comIdx);
 
             String sessionId = data.get("sessionId").toString();
             int chat_comidx = chatRoomInfo.get(0).getComIdx();
@@ -142,7 +147,7 @@ public class CommunityController {
             Map<String, Object> alarmData = new HashMap<>();
             alarmData.put("memberId", sessionId);
             alarmData.put("alarm_title", "채팅방 정보");
-            alarmData.put("alarm_content", "채팅방의 번호는 " + chat_comidx + "이고 채팅방의 이름은" + chat_name + "입니다.");
+            alarmData.put("alarm_content", "채팅방의 번호는 " + chat_comidx + "이고 채팅방의 이름은 " + chat_name + " 입니다.");
 
             System.out.print("alarmData: " + alarmData);
 
@@ -260,9 +265,25 @@ public class CommunityController {
         int comIdx = Integer.parseInt(data.get("comIdx").toString());
         String sessionId = data.get("sessionId").toString();
 
-//        System.out.print("data: " + data);
+        System.out.print("data: " + data);
 
-        if (comIdx != 0 && !sessionId.isEmpty()) {
+        List<ChatRoomVo> chatRoomInfo = communityService.selectChatRoomInfo(comIdx);
+
+        System.out.print("chatRoomInfo: " + chatRoomInfo);
+
+        int chat_comidx = chatRoomInfo.get(0).getComIdx();
+        String chat_name = chatRoomInfo.get(0).getChatName();
+
+        Map<String, Object> alarmData = new HashMap<>();
+        alarmData.put("memberId", sessionId);
+        alarmData.put("alarm_title", "채팅방 정보");
+        alarmData.put("alarm_content", "참여한 채팅방의 번호는 " + chat_comidx + "이고 채팅방의 이름은 " + chat_name + " 입니다. 해당하는 채팅방에서 소통해보세요^_^");
+
+        System.out.print("alarmData: " + alarmData);
+
+        Boolean rs3 = communityService.insertAlarm(alarmData);
+
+        if (comIdx != 0 && !sessionId.isEmpty() && rs3) {
                 return ResponseEntity.ok(communityService.insertTogetherStudy(comIdx, sessionId));
         }else {
             return ResponseEntity.badRequest().body("에러 메시지");

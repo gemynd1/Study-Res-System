@@ -165,11 +165,11 @@ function BasicSelect({ studyRoom, setStudyRoom }) {
           label="Study Room"
           onChange={handleChange}
         >
-          <MenuItem value={1}>스터디룸1</MenuItem>
-          <MenuItem value={2}>스터디룸2</MenuItem>
-          <MenuItem value={3}>스터디룸3</MenuItem>
-          <MenuItem value={4}>스터디룸4</MenuItem>
-          <MenuItem value={5}>스터디룸5</MenuItem>
+          <MenuItem value={1}>수성방</MenuItem>
+          <MenuItem value={2}>금성방</MenuItem>
+          <MenuItem value={3}>지구방</MenuItem>
+          <MenuItem value={4}>화성방</MenuItem>
+          <MenuItem value={5}>달방</MenuItem>
         </Select>
       </FormControl>
     </Box>
@@ -204,8 +204,8 @@ function ContainedButtons({ handleCreate }) {
   return (
     <Stack direction="row" spacing={2}>
       <Button variant="contained" onClick={handleCreate}>생 성</Button>
-      <Button variant="contained">수 정</Button>
-      <Button variant="contained">삭 제</Button>
+      {/* <Button variant="contained">수 정</Button>
+      <Button variant="contained">삭 제</Button> */}
     <Link to="/review">
       <Button variant="contained">취 소</Button>
     </Link>
@@ -264,20 +264,26 @@ function ContainedButtons({ handleCreate }) {
       })
       .then((response) => {
         // console.log('서버 응답:', response.data);
-        axios.post("http://localhost:8099/api/upload", formData,
-          {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        })
-        .then((response) => {
+        if(formData.getAll("file").length === 0) {
           alert("리뷰 작성이 완료되었습니다.");
           navigate('/review');
           window.location.reload();
-        })
-        .catch((error) => {
-            console.error('Error uploading files:', error);
-        });
+        } else {
+          axios.post("http://localhost:8099/api/upload", formData,
+            {
+              headers: {
+                  "Content-Type": "multipart/form-data",
+              },
+          })
+          .then((response) => {
+            alert("리뷰 작성이 완료되었습니다.");
+            navigate('/review');
+            window.location.reload();
+          })
+          .catch((error) => {
+              console.error('Error uploading files:', error);
+          });
+        }
       }).catch((error) => {
           console.error(error);
       })
