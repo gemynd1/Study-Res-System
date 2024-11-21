@@ -52,9 +52,9 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
 
         if (socket) {
             socket.disconnect();
-        } else {
-            socket = io(ENDPOINT) // 중복 되지 않도록
         }
+
+        socket = io(ENDPOINT)
 
         setRoom(room)
         setName(name)
@@ -77,7 +77,7 @@ const Chat = ({ location, open, onClose, onClick, url}) => {
             chatRef.current.scrollTop = chatRef.current.scrollHeight;
         }
       }, [showChat]); // showChat 변경 시 실행
-    
+
     useEffect(() => {
         if (chatRef.current) {
             chatRef.current.scrollTop = chatRef.current.scrollHeight;

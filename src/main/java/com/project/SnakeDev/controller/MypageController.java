@@ -161,4 +161,13 @@ public class MypageController {
         }
     }
 
+    @GetMapping("/mypage/chatRoom")
+    public ResponseEntity<Object> getChatRoom(
+            @RequestParam("memberId") String memberId,
+            @RequestParam("memberName") String memberName){
+        List<AuthVo> getChatRoom = mypageService.getChatRoom(memberId, memberName);
+        return ResponseEntity.ok(getChatRoom);
+    }
+
+
 }

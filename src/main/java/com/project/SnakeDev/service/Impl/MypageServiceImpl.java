@@ -107,4 +107,9 @@ public class MypageServiceImpl implements MypageService {
 //        mypageMapper.insertPayment(studyOrderPayVo);
 //    }
 
+    @Override
+    public List<AuthVo> getChatRoom(String memberId, String memberName) {
+        return mypageMapper.getChatRoom(memberId, memberName);
+    }
+
 }
