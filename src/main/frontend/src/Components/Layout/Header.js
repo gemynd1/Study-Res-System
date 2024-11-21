@@ -16,7 +16,9 @@ const Header = () => {
     const [ChatingModal, setChatingModal] = useState(false);
     const [showJoin2, setShowJoin2] = useState(false);
     const [showChat, setShowChat] = useState(false);
-
+    const [memberId, setMemberId] = useState(sessionStorage.getItem("id"));
+    const [memberName, setMemberName] = useState(sessionStorage.getItem("name"))
+    const [ChatResult, setChatResult] = useState([]);
 
     useEffect(() => {
         if(sessionStorage.getItem("id") != null && sessionStorage.getItem("id") !== "musenet") {
@@ -117,6 +119,20 @@ const Header = () => {
         })
         
     }
+
+    useEffect(() => {
+        axios.get("http://localhost:8099/api/mypage/chatRoom", {
+            params: { memberId, memberName },
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => {
+                setChatResult(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error("에러발생 : ", error);
+            })
+    }, []);
 
     // chat-section에 대한 정보
     const [chatHeaderBars, setChatHeaderBars] = useState([
@@ -342,26 +358,43 @@ const Header = () => {
                                         </div>
 
                                             <div className="group-message-section"
-                                             style={{display: active_message_index === 0 ? "none" : "block"}}
-                                        >
-                                            {chatHeaderBars.map((chatHeaderBar) => (
-                                                <div className="group-message-content" onClick={handleChat}>
-                                                    <img src="/img/icon/group(message).png" alt="groupIcon"
-                                                         className="groupIcon"/>
-                                                    <div className="text-group">
-                                                        <span className="groupName-text">
-                                                            ({chatHeaderBar.groupName}) {chatHeaderBar.groupMember.length > 8
-                                                            ? chatHeaderBar.groupMember.substring(0, 8) + "..."
-                                                            : chatHeaderBar.groupMember}
-                                                        </span>
-                                                        {chatContents.map((chatContent) => (
-                                                            chatContent.chatgroup === chatHeaderBar.id
-                                                        ))}
+                                             style={{display: active_message_index === 0 ? "none" : "block"}}>
+                                                {/*{ChatResult.map((result, index) => (*/}
+                                                    <div className="group-message-content" onClick={handleChat}>
+                                                        <img
+                                                            src="/img/icon/group(message).png"
+                                                            alt="groupIcon"
+                                                            className="groupIcon"
+                                                        />
+                                                        <div className="text-group">
+                                                            <span className="groupName-text">
+                                                                {ChatResult.length > 0
+                                                                    ? `(${ChatResult.map(result => result.memberName).join(', ')})`
+                                                                    : null}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>
-                                                </div>
+                                                {/*))}*/}
 
-                                            ))}
+
+                                                {/*{chatHeaderBars.map((chatHeaderBar) => (*/}
+                                                {/*    <div className="group-message-content" onClick={handleChat}>*/}
+                                                {/*        <img src="/img/icon/group(message).png" alt="groupIcon"*/}
+                                                {/*             className="groupIcon"/>*/}
+                                                {/*        <div className="text-group">*/}
+                                            {/*            <span className="groupName-text">*/}
+                                            {/*                ({chatHeaderBar.groupName}) {chatHeaderBar.groupMember.length > 8*/}
+                                            {/*                ? chatHeaderBar.groupMember.substring(0, 8) + "..."*/}
+                                            {/*                : chatHeaderBar.groupMember}*/}
+                                            {/*            </span>*/}
+                                            {/*            {chatContents.map((chatContent) => (*/}
+                                            {/*                chatContent.chatgroup === chatHeaderBar.id*/}
+                                            {/*            ))}*/}
+                                            {/*        </div>*/}
+                                            {/*        <img src="/img/icon/redDot.png" alt="redDot" className="redDot"/>*/}
+                                            {/*    </div>*/}
+
+                                            {/*))}*/}
                                                 {showJoin2 && ChattingModal && (
                                                 <Join2
                                                     open={ChattingModal}

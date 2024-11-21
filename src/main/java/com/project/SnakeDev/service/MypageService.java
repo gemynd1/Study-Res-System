@@ -43,6 +43,8 @@ public interface MypageService {
     // 고객센터 문의 보여주기
     List<CustomerHelpVo> getCustomerHelpInfo(String memberId);
 
+    List<AuthVo> getChatRoom(String memberId, String memberName);
+
     // 시간충전 결제 저장
 //    void savePayment(StudyOrderPayVo studyOrderPayVo) throws Exception;
 

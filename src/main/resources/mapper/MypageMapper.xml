@@ -197,6 +197,17 @@
         DELETE FROM tbl_member WHERE memberId = #{memberId}
     </delete>
 
+    <select id="getChatRoom" resultType="com.project.SnakeDev.vo.AuthVo">
+        select
+            distinct(tm.memberName) as memberName,
+                    tm.midx as midx,
+                    ttb.chatidx as chatidx,
+                    ttb.chatname as chatname
+        from tbl_member tm
+                 left join tbl_community tc on tm.midx = tc.midx
+                 left join tbl_chatroom ttb on ttb.comidx = tc.comidx
+                 right join tbl_togetherstudy tts on tm.midx = tts.midx or tts.comidx = tc.comidx
+    </select>
 
     <!--    <insert id="insertPayment" par ameterType="com.project.SnakeDev.vo.StudyOrderPayVo">-->
 <!--        insert into tbl_studyorderpay (tsopidx, midx, tsopmethod, tsopprice, tsopstatus, tsopdate, tsopdivi)-->

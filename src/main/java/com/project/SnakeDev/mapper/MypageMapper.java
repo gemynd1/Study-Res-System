@@ -49,4 +49,8 @@ public interface MypageMapper {
     // 시간충전 저장
 //    void insertPayment(StudyOrderPayVo studyOrderPayVo) throws Exception;
 
+    List<AuthVo> getChatRoom(@Param("memberId") String memberId,
+                             @Param("memberName") String memberName);
+
+
 }

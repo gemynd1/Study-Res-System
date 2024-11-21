@@ -287,13 +287,13 @@
     <insert id="insert_comment_question" parameterType="map">
         insert into tbl_community_comment
         values
-        (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, (#{maxCCGroupNum} + 1), #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+        (ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 1, 1, (#{maxCCGroupNum} + 1), #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
     </insert>
 
     <insert id="insert_comment_reply" parameterType="map">
         insert into tbl_community_comment
         values
-            (c##snake2.ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 2, 2, #{currentCommentGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
+            (ComComment_seq.NEXTVAL, (select Midx from tbl_member where MemberId = #{sessionId}), #{comIdx}, 2, 2, #{currentCommentGroupNum}, #{comment}, SYSDATE, to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), to_date('9999-12-31 00:00', 'YYYY/MM/DD HH24:MI'), 0)
     </insert>
 
     <update id="updateComment_forSelf" parameterType="map">
@@ -347,7 +347,7 @@
         comaddress,
         comreportcount
         ) values (
-        c##snake2.Community_seq.NEXTVAL,
+        Community_seq.NEXTVAL,
         (select comcateidx from tbl_community_category where comcatename = #{boardContents.category1}),
         (select midx from tbl_member where memberid = #{sessionId} and membername = #{sessionName}),
         #{boardContents.title},
@@ -381,11 +381,11 @@
     </insert>
 
     <insert id="insertChatName" parameterType="map">
-        insert into tbl_chatroom values (c##snake2.ChatRoom_seq.NEXTVAL, (select max(comidx) from tbl_community), #{boardContents.groupName})
+        insert into tbl_chatroom values (ChatRoom_seq.NEXTVAL, (select max(comidx) from tbl_community), #{boardContents.groupName})
     </insert>
 
     <insert id="insertAlarm" parameterType="map">
-        insert into tbl_member_alarm values (c##snake2.MAlarm_seq.NEXTVAL, (select midx from tbl_member where memberid = #{memberId}), #{alarm_title}, #{alarm_content}, SYSDATE)
+        insert into tbl_member_alarm values (MAlarm_seq.NEXTVAL, (select midx from tbl_member where memberid = #{memberId}), #{alarm_title}, #{alarm_content}, SYSDATE)
     </insert>
 
     <select id="selectChatRoomInfo" resultType="com.project.SnakeDev.vo.ChatRoomVo">

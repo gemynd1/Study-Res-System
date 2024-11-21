@@ -23,7 +23,35 @@ public class AuthVo {
     private Date MEndinDate;
     private String loginType;
 
+    private Integer ComIdx;
+    private Integer ChatIdx;
+
+
     public AuthVo() {
+    }
+
+    public AuthVo(Integer MIdx, String memberName, String memberId, Integer comIdx, Integer chatIdx) {
+        this.MIdx = MIdx;
+        MemberName = memberName;
+        MemberId = memberId;
+        ComIdx = comIdx;
+        ChatIdx = chatIdx;
+    }
+
+    public Integer getComIdx() {
+        return ComIdx;
+    }
+
+    public void setComIdx(Integer comIdx) {
+        ComIdx = comIdx;
+    }
+
+    public Integer getChatIdx() {
+        return ChatIdx;
+    }
+
+    public void setChatIdx(Integer chatIdx) {
+        ChatIdx = chatIdx;
     }
 
     // 결제 내역 및 예약 처리를 위한 memberid 가져옴
