@@ -96,6 +96,10 @@ public class CommunityController {
                                           @RequestParam("currentPage") String currentPage,
                                           @RequestParam("commentSize") String commentSize) {
 
+        System.out.print("comIdx: " + comIdx);
+        System.out.print("currentPage: " + currentPage);
+        System.out.print("commentSize: " + commentSize);
+
         return ResponseEntity.ok(communityService.ViewComment(comIdx, currentPage, commentSize));
     }
 
