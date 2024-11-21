@@ -520,12 +520,12 @@ const Post = () => {
                             <span className="delete-button-text">삭제</span>
                         </div>
                     </div>
-                    <div className="out-button-section" onClick={groupOutPage} style={{marginTop: '40px'}}>
+                    {/* <div className="out-button-section" onClick={groupOutPage} style={{marginTop: '40px'}}>
                         <div className="out-button">
                             <img src="/img/icon/out.png" alt="outIcon" className="out-button-icon" />
                             <span className="out-button-text">그룹 나가기</span>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="back-button-section" onClick={goto_back}>
                         <div className="back-button">
                             <img src="/img/icon/back.png" alt="backIcon" className="back-button-icon" />
