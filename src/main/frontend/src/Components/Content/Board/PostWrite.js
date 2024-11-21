@@ -161,6 +161,19 @@ function RowRadioButtonsGroup({RadioValue, setRadioValue, setBoardContents}) {
 function ResponsiveDateTimePickers({dateType, name, setBoardContents}) {
     const dateTypeText = dateType === 'startdate' ? '모임 시작일' : '모임 종료일';
     const [value, setValue] = useState(null);
+    // const [present, setPresent] = useState(null);
+
+    const now = new Date();
+
+    // useEffect(() => {
+    //   if (now) {
+    //     now.setSeconds(0, 0); // 초와 밀리초를 0으로 설정
+    //     const minutes = now.getMinutes();
+    //     const roundedMinutes = Math.ceil(minutes / 5) * 5; // 5분 단위로 반올림
+    //     now.setMinutes(roundedMinutes);
+    //     setPresent(dayjs(now).format('YYYY-MM-DD HH:mm:ss'))
+    //   } 
+    // }, [now]);
 
     useEffect(() => {
       if (value && dayjs(value).isValid()) {
@@ -191,7 +204,7 @@ function ResponsiveDateTimePickers({dateType, name, setBoardContents}) {
           ]}
         >
           <DemoItem label={dateTypeText}>
-            <DateTimePicker defaultValue={dayjs('2022-04-17T15:30')}
+            <DateTimePicker defaultValue={dayjs(now)}
                             name={name}
                             onChange={handleChange} />
           </DemoItem>

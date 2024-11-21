@@ -673,141 +673,167 @@ const Post = () => {
 
     return (
         <>
-            <div className="post">
+            <div className="ilovecoding">
+                <div className="post">
 
-                <p className="title">{boardContents.comTitle}</p>
+                    <p className="title">{boardContents.comTitle}</p>
 
-                <div className="breadcrumb">
-                    <img src="/img/icon/home(breadcrumb).png" alt="homeicon" className="breadcrumb-home" />
-                    <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow" />
-                    <span className="breadcrumb-board">게시판</span>
-                    <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow2" />
-                    <span className="breadcrumb-category">{boardContents.comCategoryName}</span>
-                </div>
-
-                <div className="contour"></div>
-
-                <div className="post-info1">
-                    <img src="/img/icon/person.png" alt="personicon" className="post-author-icon" />
-                    <span className="post-author">{boardContents.memberName} 님</span>
-                    <img src="/img/icon/calendar.png" alt="calendaricon" className="post-calendar-icon" />
-                    <span className="post-writeday">{boardContents.comRegDate}</span>
-                </div>
-
-                <div className="post-info2">
-                    <img src="/img/icon/group.png" alt="groupicon" className="post-group-icon" />
-                    <span className="post-group">{groupMemberInfos.length + 1} / {boardContents.comToCount} 명</span>
-                    <span className="post-group2">({boardContents.comToCount - (groupMemberInfos.length + 1)}명 남음)</span>
-                </div>
-
-                <div className="post-info3-frame">
-                    <div className="post-info3">
-                        <div className="post-member">
-                            <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
-                            <span className="post-member-name">{boardContents.memberName}</span>
-                        </div>
+                    <div className="breadcrumb">
+                        <img src="/img/icon/home(breadcrumb).png" alt="homeicon" className="breadcrumb-home" />
+                        <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow" />
+                        <span className="breadcrumb-board">게시판</span>
+                        <img src="/img/icon/arrow(breadcrumb).png" alt="arrowicon" className="breadcrumb-arrow2" />
+                        <span className="breadcrumb-category">{boardContents.comCategoryName}</span>
                     </div>
 
-                    {groupMemberInfos.map((groupMemberInfo) => (
+                    <div className="contour"></div>
+
+                    <div className="post-info1">
+                        <img src="/img/icon/person.png" alt="personicon" className="post-author-icon" />
+                        <span className="post-author">{boardContents.memberName} 님</span>
+                        <img src="/img/icon/calendar.png" alt="calendaricon" className="post-calendar-icon" />
+                        <span className="post-writeday">{boardContents.comRegDate}</span>
+                    </div>
+
+                    <div className="post-info2">
+                        <img src="/img/icon/group.png" alt="groupicon" className="post-group-icon" />
+                        <span className="post-group">{groupMemberInfos.length + 1} / {boardContents.comToCount} 명</span>
+                        <span className="post-group2">({boardContents.comToCount - (groupMemberInfos.length + 1)}명 남음)</span>
+                    </div>
+
+                    <div className="post-info3-frame">
                         <div className="post-info3">
                             <div className="post-member">
                                 <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
-                                <span className="post-member-name">{groupMemberInfo.memberName}</span>
+                                <span className="post-member-name">{boardContents.memberName}</span>
                             </div>
                         </div>
-                    ))}
-                </div>
 
-                <div className="post-info4">
-
-                    <div className="post-startdate">
-                        <img src="/img/icon/calendar(startdate).png" alt="startdateicon" className="post-startdate-icon" />
-                        <span className="post-startdate-text">{boardContents.comStartDate}</span>
-                    </div>
-
-                    <div className="post-enddate">
-                        <img src="/img/icon/calendar(enddate).png" alt="enddateicon" className="post-enddate-icon" />
-                        <span className="post-enddate-text">{boardContents.comEndDate}</span>
-                    </div>
-
-                    <div className="post-location">
-                        <img src="/img/icon/location.png" alt="locationicon" className="post-location-icon" />
-                        <span className="post-location-text">{boardContents.comAddress} {boardContents.comAddress !== '온라인' ? "(" + boardContents.comPlace + ")" : null}</span>
-                    </div>
-
-
-                    {/* <div className="kakaomap">
-                    </div> */}
-                    {boardContents.comAddress !== '온라인' && boardContents.comAddress !== '스터디룸' ? (
-                        <>
-                            <div className="kakao-button">
-
-                                <a href={`https://place.map.kakao.com/${kakaoPlace.id}`} className="goto-info-button">
-                                    <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
-                                    <span className="goto-info-text">정보보기</span>
-                                </a>
-
-                                <a href={`https://map.kakao.com/link/to/${kakaoPlace.place_name},${parseFloat(kakaoPlace.y).toFixed(6)},${parseFloat(kakaoPlace.x).toFixed(6)}`} className="goto-road-button">
-                                    <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
-                                    <span className="goto-road-text">길찾기</span>
-                                </a>
-
+                        {groupMemberInfos.map((groupMemberInfo) => (
+                            <div className="post-info3">
+                                <div className="post-member">
+                                    <img src="/img/icon/person.png" alt="personicon" className="post-member-icon" />
+                                    <span className="post-member-name">{groupMemberInfo.memberName}</span>
+                                </div>
                             </div>
-
-                            <TheaterLocation kakaoPlace={kakaoPlace} />
-                        </>
-                    ) : null }
-                    
-                </div>
-
-                <div className="post-content">
-                    <p className="post-content-text">{boardContents.comContent}</p>
-                </div>
-
-                <div className="post-comment">
-                    <div className="post-comment-header">
-                        <span className="QandA">Q&A</span>
-                        {/* <span className="QandA-count">({commentData.length}개)</span> */}
-                        {(sessionId !== boardContents.memberId && sessionId !== null) ? (
-                            <BasicModal comIdx={comIdx}
-                                        sessionId={sessionId}
-                                        memberId={boardContents.memberId} 
-                                        maxCCGroupNum={boardContents.maxCCGroupNum}
-                                        ModalhandleOpen={ModalhandleOpen}
-                                        ModalhandleClose={ModalhandleClose}
-                                        open={open}
-                                        setOpen={setOpen}
-                                        comment={comment}
-                                        setComment={setComment}
-                                        currentComment={currentComment}
-                                        setCurrentComment={setCurrentComment}
-                                        add_or_edit={add_or_edit}
-                                        setAdd_or_edit={setAdd_or_edit}
-                                        currentCommentGroupNum={currentCommentGroupNum}/>
-                        ) : (
-                            <BasicModal Modalstyle={{display: 'none'}}
-                                        comIdx={comIdx}
-                                        sessionId={sessionId}
-                                        memberId={boardContents.memberId} 
-                                        maxCCGroupNum={boardContents.maxCCGroupNum}
-                                        ModalhandleOpen={ModalhandleOpen}
-                                        ModalhandleClose={ModalhandleClose}
-                                        open={open}
-                                        setOpen={setOpen}
-                                        comment={comment}
-                                        setComment={setComment}
-                                        currentComment={currentComment}
-                                        setCurrentComment={setCurrentComment}
-                                        add_or_edit={add_or_edit}
-                                        setAdd_or_edit={setAdd_or_edit}
-                                        currentCommentGroupNum={currentCommentGroupNum}/>
-                        )}
+                        ))}
                     </div>
 
-                    {/* {commentData.map((root) => (
-                        <div className="post-comment-main" key={root.CCGroupNum}>
+                    <div className="post-info4">
+
+                        <div className="post-startdate">
+                            <img src="/img/icon/calendar(startdate).png" alt="startdateicon" className="post-startdate-icon" />
+                            <span className="post-startdate-text">{boardContents.comStartDate}</span>
+                        </div>
+
+                        <div className="post-enddate">
+                            <img src="/img/icon/calendar(enddate).png" alt="enddateicon" className="post-enddate-icon" />
+                            <span className="post-enddate-text">{boardContents.comEndDate}</span>
+                        </div>
+
+                        <div className="post-location">
+                            <img src="/img/icon/location.png" alt="locationicon" className="post-location-icon" />
+                            <span className="post-location-text">{boardContents.comAddress} {boardContents.comAddress !== '온라인' ? "(" + boardContents.comPlace + ")" : null}</span>
+                        </div>
+
+
+                        {/* <div className="kakaomap">
+                        </div> */}
+                        {boardContents.comAddress !== '온라인' && boardContents.comAddress !== '스터디룸' ? (
+                            <>
+                                <div className="kakao-button">
+
+                                    <a href={`https://place.map.kakao.com/${kakaoPlace.id}`} className="goto-info-button">
+                                        <img src="/img/icon/information.png" alt="informationicon" className="goto-info-icon" />
+                                        <span className="goto-info-text">정보보기</span>
+                                    </a>
+
+                                    <a href={`https://map.kakao.com/link/to/${kakaoPlace.place_name},${parseFloat(kakaoPlace.y).toFixed(6)},${parseFloat(kakaoPlace.x).toFixed(6)}`} className="goto-road-button">
+                                        <img src="/img/icon/road.png" alt="roadicon" className="goto-road-icon" />
+                                        <span className="goto-road-text">길찾기</span>
+                                    </a>
+
+                                </div>
+
+                                <TheaterLocation kakaoPlace={kakaoPlace} />
+                            </>
+                        ) : null }
+                        
+                    </div>
+
+                    <div className="post-content">
+                        <p className="post-content-text">{boardContents.comContent}</p>
+                    </div>
+
+                    <div className="post-comment">
+                        <div className="post-comment-header">
+                            <span className="QandA">Q&A</span>
+                            {/* <span className="QandA-count">({commentData.length}개)</span> */}
+                            {(sessionId !== boardContents.memberId && sessionId !== null) ? (
+                                <BasicModal comIdx={comIdx}
+                                            sessionId={sessionId}
+                                            memberId={boardContents.memberId} 
+                                            maxCCGroupNum={boardContents.maxCCGroupNum}
+                                            ModalhandleOpen={ModalhandleOpen}
+                                            ModalhandleClose={ModalhandleClose}
+                                            open={open}
+                                            setOpen={setOpen}
+                                            comment={comment}
+                                            setComment={setComment}
+                                            currentComment={currentComment}
+                                            setCurrentComment={setCurrentComment}
+                                            add_or_edit={add_or_edit}
+                                            setAdd_or_edit={setAdd_or_edit}
+                                            currentCommentGroupNum={currentCommentGroupNum}/>
+                            ) : (
+                                <BasicModal Modalstyle={{display: 'none'}}
+                                            comIdx={comIdx}
+                                            sessionId={sessionId}
+                                            memberId={boardContents.memberId} 
+                                            maxCCGroupNum={boardContents.maxCCGroupNum}
+                                            ModalhandleOpen={ModalhandleOpen}
+                                            ModalhandleClose={ModalhandleClose}
+                                            open={open}
+                                            setOpen={setOpen}
+                                            comment={comment}
+                                            setComment={setComment}
+                                            currentComment={currentComment}
+                                            setCurrentComment={setCurrentComment}
+                                            add_or_edit={add_or_edit}
+                                            setAdd_or_edit={setAdd_or_edit}
+                                            currentCommentGroupNum={currentCommentGroupNum}/>
+                            )}
+                        </div>
+
+                        {/* {commentData.map((root) => (
+                            <div className="post-comment-main" key={root.CCGroupNum}>
+                                {commentData.map((comment) => (
+                                    comment.ccrefnum === 1 && root.CCGroupNum === comment.CCGroupNum ? (
+                                        <div className="post-question">
+                                            <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
+                                            <div className="comment-text">
+                                                <span className="comment-author-name">{comment.memberName}</span>
+                                                <p className="comment-detail">{comment.cccontent}</p>
+                                                <span className="comment-loaddate">{comment.ccregdate}</span>
+                                            </div>
+
+                                            <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
+
+                                        </div>
+                                    ) : comment.ccrefnum === 2 && root.CCGroupNum === comment.CCGroupNum ? (
+                                        <div className="post-reply">
+                                            <b className="post-reply-author">호스트의 답글</b>
+                                            <p className="reply-detail">{comment.cccontent}</p>
+                                            <span className="reply-loaddate">{comment.ccregdate}</span>
+                                        </div>
+                                    ) : null
+                                ))}
+                            </div>
+                        ))} */}
+
+                        <div className="post-comment-main">
                             {commentData.map((comment) => (
-                                comment.ccrefnum === 1 && root.CCGroupNum === comment.CCGroupNum ? (
+                                comment.ccrefnum === 1 ? (
                                     <div className="post-question">
                                         <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
                                         <div className="comment-text">
@@ -816,74 +842,50 @@ const Post = () => {
                                             <span className="comment-loaddate">{comment.ccregdate}</span>
                                         </div>
 
-                                        <FadeMenu sessionId={sessionId} sessionName={sessionName} memberName={comment.memberName} comidx={comment.midx} />
+                                        <FadeMenu sessionId={sessionId}
+                                                sessionName={sessionName}
+                                                comment_memberName={comment.memberName}
+                                                comment_memberId={comment.memberId}
+                                                board_memberName={boardContents.memberName}
+                                                board_memberId={boardContents.memberId}
+                                                ModalhandleOpen={ModalhandleOpen}
+                                                ModalhandleClose={ModalhandleClose}
+                                                comment_ccidx={comment.ccidx}
+                                                setCurrentComment={setCurrentComment}
+                                                comment_cccontent={comment.cccontent}
+                                                comment={comment}
+                                                setComment={setComment}
+                                                add_or_edit={add_or_edit}
+                                                setAdd_or_edit={setAdd_or_edit}
+                                                setCurrentCommentGroupNum={setCurrentCommentGroupNum}
+                                                comment_ccgroupnum={comment.ccgroupnum}
+                                                comment_comidx={comment.comidx} />
 
                                     </div>
-                                ) : comment.ccrefnum === 2 && root.CCGroupNum === comment.CCGroupNum ? (
+                                ) : comment.ccrefnum === 2 ? (
                                     <div className="post-reply">
                                         <b className="post-reply-author">호스트의 답글</b>
                                         <p className="reply-detail">{comment.cccontent}</p>
                                         <span className="reply-loaddate">{comment.ccregdate}</span>
+                                        
+                                        {/* <FadeMenu sessionId={sessionId}
+                                        sessionName={sessionName}
+                                        comment_memberName={comment.memberName}
+                                        comment_midx={comment.midx}
+                                        board_memberName={boardContents.memberName}
+                                        board_memberId={boardContents.memberId} /> */}
                                     </div>
                                 ) : null
                             ))}
                         </div>
-                    ))} */}
 
-                    <div className="post-comment-main">
-                        {commentData.map((comment) => (
-                            comment.ccrefnum === 1 ? (
-                                <div className="post-question">
-                                    <img src="/img/icon/person(comment).png" alt="personicon" className="comment-author" />
-                                    <div className="comment-text">
-                                        <span className="comment-author-name">{comment.memberName}</span>
-                                        <p className="comment-detail">{comment.cccontent}</p>
-                                        <span className="comment-loaddate">{comment.ccregdate}</span>
-                                    </div>
+                        <BasicPagination page={currentPage} onChange={handlePageChange} size={commentSize} />
 
-                                    <FadeMenu sessionId={sessionId}
-                                              sessionName={sessionName}
-                                              comment_memberName={comment.memberName}
-                                              comment_memberId={comment.memberId}
-                                              board_memberName={boardContents.memberName}
-                                              board_memberId={boardContents.memberId}
-                                              ModalhandleOpen={ModalhandleOpen}
-                                              ModalhandleClose={ModalhandleClose}
-                                              comment_ccidx={comment.ccidx}
-                                              setCurrentComment={setCurrentComment}
-                                              comment_cccontent={comment.cccontent}
-                                              comment={comment}
-                                              setComment={setComment}
-                                              add_or_edit={add_or_edit}
-                                              setAdd_or_edit={setAdd_or_edit}
-                                              setCurrentCommentGroupNum={setCurrentCommentGroupNum}
-                                              comment_ccgroupnum={comment.ccgroupnum}
-                                              comment_comidx={comment.comidx} />
-
-                                </div>
-                            ) : comment.ccrefnum === 2 ? (
-                                <div className="post-reply">
-                                    <b className="post-reply-author">호스트의 답글</b>
-                                    <p className="reply-detail">{comment.cccontent}</p>
-                                    <span className="reply-loaddate">{comment.ccregdate}</span>
-                                    
-                                    {/* <FadeMenu sessionId={sessionId}
-                                    sessionName={sessionName}
-                                    comment_memberName={comment.memberName}
-                                    comment_midx={comment.midx}
-                                    board_memberName={boardContents.memberName}
-                                    board_memberId={boardContents.memberId} /> */}
-                                </div>
-                            ) : null
-                        ))}
                     </div>
 
-                    <BasicPagination page={currentPage} onChange={handlePageChange} size={commentSize} />
-
+                    {renderButtons()}
+                    
                 </div>
-
-                {renderButtons()}
-                
             </div>
         </>
     )

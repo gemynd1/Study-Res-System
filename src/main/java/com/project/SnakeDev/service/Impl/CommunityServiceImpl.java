@@ -158,7 +158,7 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public List<ChatRoomVo> selectChatRoomInfo() {
-        return communityMapper.selectChatRoomInfo();
+    public List<ChatRoomVo> selectChatRoomInfo(int comIdx) {
+        return communityMapper.selectChatRoomInfo(comIdx);
     }
 }
