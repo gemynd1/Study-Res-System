@@ -75,6 +75,8 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  margin-bottom: 100px;
+  margin-top: 20px;
 }
 
 /* 리뷰 카드 */

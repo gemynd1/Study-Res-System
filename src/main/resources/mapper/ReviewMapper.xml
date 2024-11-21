@@ -91,14 +91,16 @@
             tm.midx AS mIdx,
             tm.srstar AS srStar,
             tm.srregdate AS srRegDate,
+            tmm.memberName as memberName,
             (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
             FROM TBL_STUDYHASTAG tma
                 LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
             WHERE tma.sridx = tm.sridx) AS TSHTLContent,
-            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+                (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
             FROM TBL_studyreviewimg tmc
             WHERE tmc.sridx = tm.sridx) AS sriImg
         FROM TBL_STUDYREVIEW tm
+            inner join tbl_member tmm on tm.midx = tmm.midx
         WHERE tm.sridx = #{sridx}
     </select>
 
@@ -108,9 +110,36 @@
             tm.sridx AS srIdx,
             tm.srcontent AS srContent,
             tm.sgiidx AS sgiIdx,
+            tsg.SGIContent1 as SGIContent1,
             tm.midx AS mIdx,
             tm.srstar AS srStar,
             tm.srregdate AS srRegDate,
+<<<<<<< HEAD
+            tmb.membername AS memberName,
+            -- 해시태그 리스트
+            (SELECT LISTAGG(DISTINCT tmb2.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb2.TSHTLCONTENT)
+        FROM TBL_STUDYHASTAG tma
+            LEFT JOIN TBL_STUDYHASTAGLIST tmb2 ON tma.TSHTLIDX = tmb2.TSHTLIDX
+        WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+        -- 이미지 리스트
+            (select rs.sriimg
+        from
+            (
+            select
+            a.*,
+            row_number() over (partition by sridx order by sriimg) as rn
+            from tbl_studyreviewimg a
+            where a.sridx = tm.sridx
+            ) rs
+        where rs.rn = 1
+            ) as sriimg
+        --                (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+--            FROM TBL_STUDYREVIEWIMG tmc
+--            WHERE tmc.sridx = tm.sridx) AS sriImg
+        FROM TBL_STUDYREVIEW tm
+            LEFT JOIN TBL_MEMBER tmb ON tm.midx = tmb.midx
+            inner join tbl_studyginfo tsg on tm.sgiidx = tsg.sgiidx
+=======
             tmb.membername AS memberName, -- memberName 추가
             -- 해시태그 리스트
             (SELECT LISTAGG(DISTINCT tmb2.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb2.TSHTLCONTENT)
@@ -123,7 +152,30 @@
             WHERE tmc.sridx = tm.sridx) AS sriImg
         FROM TBL_STUDYREVIEW tm
             LEFT JOIN TBL_MEMBER tmb ON tm.midx = tmb.midx -- TBL_MEMBER와 TBL_STUDYREVIEW를 mIdx로 연결
+>>>>>>> 5f81e24115c8dd77000285072dec8b64357fb52d
         order by tm.srregdate desc
+--         SELECT
+--             tm.sridx AS srIdx,
+--             tm.srcontent AS srContent,
+--             tm.sgiidx AS sgiIdx,
+--             tsg.SGIContent1 as SGIContent1,
+--             tm.midx AS mIdx,
+--             tm.srstar AS srStar,
+--             tm.srregdate AS srRegDate,
+--             tmb.membername AS memberName,
+--             -- 해시태그 리스트
+--             (SELECT LISTAGG(DISTINCT tmb2.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb2.TSHTLCONTENT)
+--             FROM TBL_STUDYHASTAG tma
+--                 LEFT JOIN TBL_STUDYHASTAGLIST tmb2 ON tma.TSHTLIDX = tmb2.TSHTLIDX
+--             WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+--             -- 이미지 리스트
+--                 (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+--             FROM TBL_STUDYREVIEWIMG tmc
+--             WHERE tmc.sridx = tm.sridx) AS sriImg
+--             FROM TBL_STUDYREVIEW tm
+--             LEFT JOIN TBL_MEMBER tmb ON tm.midx = tmb.midx
+--             inner join tbl_studyginfo tsg on tm.sgiidx = tsg.sgiidx
+--         order by tm.srregdate desc
     </select>
     <select id="getMIdx" resultType="string">
         select midx from tbl_member where memberid = #{MemberId}

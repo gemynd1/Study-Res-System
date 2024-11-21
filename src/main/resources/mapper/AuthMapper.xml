@@ -3,7 +3,7 @@
 <mapper namespace="com.project.SnakeDev.mapper.AuthMapper">
     <insert id="InsertJoin" parameterType="map">
         <choose>
-            <when test='loginType == "kakao"'>
+            <when test='LoginType == "kakao"'>
                 update tbl_member set
                         MemberPw = #{MemberPw},
                         MemberPhone = #{MemberPhone}
