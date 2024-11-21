@@ -245,8 +245,15 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-function NumberInputAdornments({comToCount, name, setBoardContents}) {
+function NumberInputAdornments({comToCount, name, setBoardContents, currentGroupMemberCount}) {
   const [value, setValue] = React.useState(null);
+  const [minGroupCount, setMinGroupCount] = React.useState(2);
+  
+  useEffect(() => {
+    if (currentGroupMemberCount !== 2) {
+      setMinGroupCount(currentGroupMemberCount);
+    }
+  }, [currentGroupMemberCount]);
 
   useEffect(() =>{
 	  setValue(comToCount);
@@ -270,7 +277,7 @@ function NumberInputAdornments({comToCount, name, setBoardContents}) {
 	  			   name={name}
 				   value={value}
 				   onChange={handle}
-				   min={2}
+				   min={minGroupCount}
 				   max={10}
 				   readOnly={true}
 	  />
@@ -535,6 +542,11 @@ const PostRewrite = () => {
 
   const updateContent = (e) => {
 	e.stopPropagation(); // 이벤트 전파 중지
+	// TODO: 여기서도 입력안한거 있으면 입력하게 처리
+	if((!boardContents.comAddress && !enroll_company.detailedAddress)) {
+		alert('모든 필드를 입력해주세요.');
+		return;
+	  }
 	if(boardContents.comStartDate > boardContents.comEndDate) {
 		alert("시작일이 종료일보다 빠를 수 없습니다.");
 		return;
@@ -732,7 +744,10 @@ const PostRewrite = () => {
 							</div>
 							<div className="/">/</div>
 							<div className="maximum-count">
-								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount} setBoardContents={setBoardContents} onChange={handleNumberChange}/>
+								<NumberInputAdornments name="comToCount" comToCount={boardContents.comToCount}
+																		 setBoardContents={setBoardContents} 
+																		 onChange={handleNumberChange}
+																		 currentGroupMemberCount={groupMemberInfos.length + 1} />
 								<p className="maximum-count-text">모임의 최대인원</p>
 							</div>
 						</div>
