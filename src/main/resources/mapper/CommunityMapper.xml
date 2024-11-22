@@ -150,18 +150,23 @@
                 DENSE_RANK() OVER (ORDER BY tcc.CCGROUPNUM DESC) AS dense_rank
             FROM
                 tbl_community_comment tcc
-                    JOIN
+            JOIN
                 tbl_member tm ON tcc.midx = tm.midx
             WHERE
                 tcc.comidx = #{comIdx}
-                and tcc.ccdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
-        )
-        SELECT
-            *
-        FROM
-            CommentWithDenseRank
-        WHERE
-            dense_rank BETWEEN (#{currentPage} * #{commentSize} - (#{commentSize} - (#{commentSize} - 1))) AND (#{currentPage} * #{commentSize})
+                AND tcc.ccdeldate = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+            )
+                SELECT
+                    *
+                FROM
+                    CommentWithDenseRank
+                WHERE
+                    <if test="currentPage == 1 and commentSize == 1">
+                        dense_rank BETWEEN 1 AND 2
+                    </if>
+                    <if test="currentPage != 1 or commentSize != 1">
+                        dense_rank BETWEEN ((#{currentPage} - 1) * #{commentSize} + 1) AND (#{currentPage} * #{commentSize})
+                    </if>
     </select>
 
     <select id="ViewCommentSize" resultType="int" parameterType="String">

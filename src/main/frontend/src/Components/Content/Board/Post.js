@@ -245,7 +245,6 @@ function BasicModal({comIdx, memberId, sessionId, maxCCGroupNum, ModalhandleOpen
             console.log(response.data);
             response.data === true ? alert("댓글이 등록되었습니다.") : alert("댓글등록을 실패하였습니다. 다시 시도해주세요");
             window.location.reload();
-            
         }).catch(error => {
             console.log(error);
             alert("댓글등록을 실패하였습니다. 다시 시도해주세요");

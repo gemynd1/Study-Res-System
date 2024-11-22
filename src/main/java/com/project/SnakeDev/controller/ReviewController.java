@@ -31,8 +31,6 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-<<<<<<< HEAD
-=======
     @GetMapping("/reviews/all")
     public List<ReviewDetailsVo> getReviewAll(){
         return reviewService.getReviewAll();
@@ -42,8 +40,6 @@ public class ReviewController {
 //        System.out.println(sridx);
         return reviewService.getReviewDetails(sridx);
     }
-
->>>>>>> fbb0555aaa5c8a33012837bdb22a90c364350f8b
     @PostMapping("/review/content")
     public ResponseEntity<String> reviewController(@RequestBody Map<String, Object> data1){
 
@@ -147,19 +143,5 @@ public class ReviewController {
         }
         return fileNames;
     }
-<<<<<<< HEAD
-
-    @GetMapping("/reviews/details")
-    public ReviewDetailsVo getReviewDetails(@RequestParam("sridx") Integer sridx) {
-        return reviewService.getReviewDetails(sridx);
-    }
-
-    @GetMapping("/reviews/all")
-    public List<ReviewDetailsVo> getReviewAll(){
-        return reviewService.getReviewAll();
-    }
-
-=======
->>>>>>> fbb0555aaa5c8a33012837bdb22a90c364350f8b
 }
 
