@@ -48,7 +48,7 @@ function Join2({open, onClose, onEnterCheck}) {
                 {/*</div>*/}
                 <div className="chatJoinContent">
                     <span>채팅방에 입장하시려면</span>
-                    <span>이름과 결제하신 방 이름을 입력해주세요.</span>
+                    <span>채팅방 번호를 입력해주세요.</span>
                 </div>
                 <div className="joinInput">
                     <input
@@ -62,7 +62,7 @@ function Join2({open, onClose, onEnterCheck}) {
                 </div>
                 <div className="joinInput2">
                     <input
-                        placeholder='채팅방'
+                        placeholder='채팅방 번호'
                         className='joinInput mt-20'
                         type='text'
                         value={room}
