@@ -44,6 +44,10 @@
         FROM dual
         ]]>
 </insert>
+<<<<<<< HEAD
+
+=======
+>>>>>>> dcec9abade2b2e2cd8e9007d5a936a540222179b
 <!-- 상세 조회 -->
 <!--    <select id="getReviewDetails" resultType="com.project.SnakeDev.vo.ReviewDetailsVo">-->
 <!--        SELECT-->
@@ -121,12 +125,21 @@
             tm.srregdate AS srRegDate,
             tmm.memberName as memberName,
             (SELECT LISTAGG(DISTINCT tmb.TSHTLCONTENT, ', ') WITHIN GROUP (ORDER BY tmb.TSHTLCONTENT)
+<<<<<<< HEAD
+        FROM TBL_STUDYHASTAG tma
+            LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
+        WHERE tma.sridx = tm.sridx) AS TSHTLContent,
+            (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
+        FROM TBL_studyreviewimg tmc
+        WHERE tmc.sridx = tm.sridx) AS sriImg
+=======
             FROM TBL_STUDYHASTAG tma
                 LEFT JOIN TBL_STUDYHASTAGLIST tmb ON tma.TSHTLIDX = tmb.TSHTLIDX
             WHERE tma.sridx = tm.sridx) AS TSHTLContent,
                 (SELECT LISTAGG(DISTINCT tmc.sriimg, ', ') WITHIN GROUP (ORDER BY tmc.sriimg)
             FROM TBL_studyreviewimg tmc
             WHERE tmc.sridx = tm.sridx) AS sriImg
+>>>>>>> dcec9abade2b2e2cd8e9007d5a936a540222179b
         FROM TBL_STUDYREVIEW tm
             inner join tbl_member tmm on tm.midx = tmm.midx
         WHERE tm.sridx = #{sridx}
