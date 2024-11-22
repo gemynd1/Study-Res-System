@@ -40,6 +40,11 @@ public class ReviewController {
 //        System.out.println(sridx);
         return reviewService.getReviewDetails(sridx);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dcec9abade2b2e2cd8e9007d5a936a540222179b
     @PostMapping("/review/content")
     public ResponseEntity<String> reviewController(@RequestBody Map<String, Object> data1){
 
