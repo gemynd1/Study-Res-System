@@ -1,44 +1,32 @@
-# 기본 규칙
+# Study-Res-System
 
-- main에 push 또는 pullrequest 하지말 것
-- 본인의 branch외에는 push 하지말 것
-- 각 branch들은 무조건 main에서만 pull할 것 
-- main이 아닌 다른 branch에서 pull 하지말 것
+![Study-Res-System 메인 페이지](./references/68670403_게시판.png)
 
+## 📋 프로젝트 개요
 
-# commit 방식
-
-(본인이 만들고 있는 기능) (현재기능의 상태) (본인의 이름) <br>
-ex) feat: 로그인기능 <br>
-    fix: 메인페이지ui
+Study-Reservation-System은 기존 예약 시스템의 복잡한 절차와 소통의 부재를 해결하기 위해 개발되었습니다.
 
 
-# git 명령어 
+### 기술 스택
+- **Backend**: Java, Spring Framework, MyBatis
+- **Frontend**: React, CKEditor 5
+- **Database**: Oracle
 
-### 설정에 대한 git 명령어
-- `git init` : 해당 폴더를 git으로 관리하겠다는 시작 명령어
-- `git remote add origin {해당 github프로젝트 url}` : origin이라는 이름으로 해당 github프로젝트를 원격(remote)으로 조정하겠다는 명령어 → origin은 다른 이름으로 변경가능
 
-### local의 프로젝트를 저장하고 remote(원격저장소 github)에 올리는 명령어
-- `git add .` :  현재 프로젝트를 저장시키는 명령어
-- `git commit -m ‘버전의 이름’` : 현재 프로젝트를 git에 '버전이름'을 설정해서 log를 남기는 명령어
-- `git push origin {본인의 branch이름}` : 해당 github에 본인의 branch에 코드를 올리는 명령어
+## 참고 자료
 
-### branch를 이동하거나 본인의 log를 볼때 사용하는 명령어
-- `git log` : 본인이 commit한 log를 볼수있는 명령어
-- `git staus` : 본인의 현재 프로젝트의 상태(?)를 볼 수 있는 명령어 add가 된 파일들 혹은 되지않은 파일들을 볼 수 있음..
-- `git branch` : 본인의 local에 있는 branch들을 볼 수 있는 명령어 
-- `git branch {생성할 branch 이름}` : 본인의 local에 branch를 만드는 명령어
-- `git branch -r` : 본인의 remote(원격저장소 github)에 있는 branch들을 볼 수 있는 명령어 
-- `git checkout {변경할 branch 이름}` : 이름에 해당하는 branch로 이동할수 있는 명령어 
+<details>
+<summary>프로젝트 (초창기) 발표 자료</summary>
 
-### remote(원격저장소 github)에 있는 프로젝트를 가져오는 명령어
-- `git pull origin {코드를 가져올 branch이름}` : 본인의 local코드에 remote(원격저장소 github)에 있는 코드를 합치는 명령어
-- `git clone (github에서 프로젝트의 주소)` : 해당 github의 주소에 해당하는 프로젝트를 다운로드해오는 명령어 
-<br>
+### PDF 및 문서 자료
+- [프로젝트 발표 자료](./references/24_3B_Snake프로젝트.pdf)
 
-## 만약에 본인의 local코드에 다른 branch의 코드가 pull 되지 않을 경우에는 커밋내역이 맞지않아서 그런것일 수 있음 작업중인 파일이 있다면 stash를 사용해보기
-- `git stash` : 현재 작업중인 코드를 잠시 다른공간(?)에 저장시두는 명령어 **(git pull을 하기전에 remote의 커밋과 local의 커밋내역이 맞지않으면 pull이 되지않기 때문에 하는 것 )** 
-- `git stash apply` : 내가 stash로 저장했던 코드를 다시 local에 가져오는 명령어
-- `git stash list` : 내가 stash명령어로 저장시켜놓은 hunk(깃에서 하나의 변경사항이 담긴 단위)들을 확인하는 명령어
-- `git stash drop` : 내가 stash명령어로 저장시켜놓은 hunk(깃에서 하나의 변경사항이 담긴 단위) 하나를 삭제하는 명령어 가장 최근에 만든 hunk 하나만 삭제된다.
+</details>
+
+<details>
+<summary>프로젝트 디지텍대회 자료</summary>
+
+### PDF 및 문서 자료
+- [프로젝트 디지텍대회 자료](./references/디지텍고등직업교육협의회 캡스톤디자인 경진대회(뱀띠).pdf)
+
+</details>
